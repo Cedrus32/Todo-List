@@ -1,0 +1,41 @@
+:root {
+
+}
+
+.hide {
+    display: none;
+}
+
+body {
+    height: 100vh;
+}
+
+    header {
+        grid-area: header;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    main {
+        display: grid;
+        grid-template-columns: 3fr 7fr;
+        grid-template-rows: auto 1fr;
+        grid-template-areas: 'header  header'
+                            'display display';
+
+        height: inherit;
+        padding: 1em;
+    }
+
+        #view-prefs {
+            grid-area: view-prefs;
+
+            position: absolute;
+            top: 0px; left: 0px;
+        }
+
+        #display {
+            grid-area: display;
+        }
