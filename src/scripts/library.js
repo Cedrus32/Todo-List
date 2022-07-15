@@ -60,12 +60,11 @@ const library = (() => {
     // managers
 
     // methods
-    function createTask(projectName, type, title, description, dueDate, priority, tags) {
+    function createTask(attributeArray) {
         let id = _taskCounter;
-        let newTask = task(id, projectName, type, title, description, dueDate, priority, tags);
+        let newTask = task(id, ...attributeArray);
         _libArray.push(newTask);
         _taskCounter++;
-        return newTask;
     }
     function deleteTask() {
         // index into libArray, delete task
@@ -73,6 +72,7 @@ const library = (() => {
 
     // helpers
     function viewLibArray() {
+        console.log(_libArray);
         for (let t in _libArray) {
             _libArray[t].viewInfo();
         };

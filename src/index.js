@@ -5,6 +5,7 @@ import './styles/shaping.css';
 import './styles/colors.css';
 
 import library from './scripts/library'
+import samples from './scripts/samples';
 
 // manager function here
 
@@ -14,9 +15,6 @@ title.addEventListener('click', () => {
     viewPrefs.classList.toggle('hide');
 });
 
-// qc
-let task1 = library.createTask('project', 'type', 'title', 'desc', 'date', 'priority', 'tag')
-console.log(task1);
-console.log('');
+// actions
+samples.addSamples();
 library.viewLibArray();
-console.log('');
