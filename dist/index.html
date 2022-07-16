@@ -37,6 +37,62 @@
 
             <section id='display'>
                 <!-- generate display -->
+                <!-- generate project header -- (started in dom.js) -->
+                
+                <div class='proj container'>
+                    <div class='proj header'>
+                        <h1 class='title'>projTitle</h1>
+                        <span class='modify'>...</span>
+                        <span class='delete'>X</span>
+                    </div>
+                    <div class='description'>projDesc</div>
+                </div>
+
+                <div class='task container'>
+                    <div class='task-controls'>
+                        <div class='tally'>Tasks (<span id='tally'>#</span>)</div>
+                        <div class='create'>+</div>
+                    </div>
+
+                    <div class='card singleton'>
+                        <input type='checkbox' id='1' name='1'>
+                        <div class='content'>
+                            <div class='header'>
+                                <label for='1' class='title'><h2>taskTitle</h2></label>
+                                <span class='date'>dueDate</span>
+                                <span class='modify'>...</span>
+                                <span class='delete'>X</span>
+                            </div>
+                            <div class='description'>taskDesc</div>
+                            <div class='details'>
+                                <div class='priority'>taskPriority</div>
+                                <div class='tags'>tags</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class='card checklist'>
+                        <div class='header'>
+                            <h2 class='title'>taskTitle</h2>
+                            <span class='date'>dueDate</span>
+                            <span class='modify'>...</span>
+                            <span class='delete'>X</span>
+                        </div>
+                        <div class='description'>taskDesc</div>
+                        <div class='checks'>
+                            <ul>
+                                <li><input type='checkbox' id='2' name='2'><label for='2'>check 2</label></li>
+                                <li><input type='checkbox' id='3' name='3'><label for='3'>check 3</label></li>
+                                <li><input type='checkbox' id='4' name='4'><label for='4'>check 4</label></li>
+                            </ul>
+                        </div>
+                        <div class='details'>
+                            <div class='priority'>taskPriority</div>
+                            <div class='tags'>tags</div>
+                        </div>
+                    </div>
+                    
+                </div>
             </section>
         </main>
         
