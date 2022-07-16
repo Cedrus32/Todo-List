@@ -1,90 +1,173 @@
 const library = (() => {
-    // data
-    let _libArray = [];
+    // dynamic data
+    let taskLib = [];
+    let projLib = [];
     let _taskCounter = 1;
+    let _projectCounter = 1;
 
     //// cache DOM
 
     // bind events
 
-    // task factory
-    const task = function (id, projectName, type, title, description, dueDate, priority, tags) {
-        let _id = id;
-        let _project = projectName;
-        let _type = type;
-        let _title = title;
-        let _description = description;
-        let _dueDate = dueDate;
-        let _priority = priority;
-        let _tags = tags;
+    // factories
+    const _project = function(projID, projTitle, projDesc) {
+        // data
+        let _id = projID;
+        let title = projTitle;
+        let desc = projDesc;
+
+        // setters
+        function setTitle(value) {
+            if (value !== title) {
+                title = value;
+            };
+        }
+        function setDesc(value) {
+            if (value !== desc) {
+                desc = value;
+            };
+        }
+
+        // getters
+        function getData() {
+            let dataArray = [_id, title, desc];
+            return dataArray;
+        }
+        function getID() {
+            return id;
+        }
+        function getTitle() {
+            return title;
+        }
+        function getDesc() {
+            return desc;
+        }
 
         // methods
-        const modTitle = (title) => {
-            _title = title;
+
+        return {
+            setTitle,   // ...
+            setDesc,    // ...
+            getData,    // dom.js (projHeader() -- qc)
+            getID,      // ...
+            getTitle,   // ...
+            getDesc,    // dom.js (projJeader())
         }
-        const modDesc = (description) => {
-            _desc = description;
+    }
+    const _task = function(taskID, projectID, taskType, taskTitle, taskDesc, taskDue, taskPriority, taskTags) {
+        // data
+        let _id = taskID;
+        let _projectID = projectID;
+        let _type = taskType;
+        let title = taskTitle;
+        let desc = taskDesc;
+        let dueDate = taskDue;
+        let priority = taskPriority;
+        let tags = taskTags;
+
+        // setters
+        function setTitle(value) {
+            if (value !== title) {
+                title = value;
+            };
         }
-        const modDate = (dueDate) => {
-            _dueDate = dueDate;
+        function setDesc(value) {
+            if (value !== desc) {
+                desc = value;
+            };
         }
-        const modPriority = (priority) => {
-            _priority = priority;
+        function setDue(value) {
+            if (value !== dueDate) {
+                dueDate = value;
+            };
         }
-        const modTags = (tags) => {
-            _tags = tags;
+        function setPriority(value) {
+            if (value !== priority) {
+                priority = value;
+            };
+        }
+        function setTags(value) {
+            if (value !== tags) {
+                tags = value;
+            };
         }
 
-        // helpers
-        const viewInfo = () => {
-            console.log(_id);
-            console.log(_project);
-            console.log(_type);
-            console.log(_title);
-            console.log(_description);
-            console.log(_dueDate);
-            console.log(_priority);
-            console.log(_tags);
+        // getters
+        function getData() {
+            let infoArray = [_id, _projectID, _type, title, desc, dueDate, priority, tags];
+            return infoArray;
+        }
+        function getTitle() {
+            return title;
+        }
+        function getDesc() {
+            return desc;
+        }
+        function getDue() {
+            return dueDate;
+        }
+        function getPriority() {
+            return priority;
+        }
+        function getTags() {
+            return tags;
         }
 
         return {
-            modTitle,
-            modDesc,
-            modDate,
-            modPriority,
-            modTags,
-            viewInfo,
+            setTitle,       // ...
+            setDesc,        // ...
+            setDue,         // ...
+            setPriority,    // ...
+            setTags,        // ...
+            getData,        // dom.js (taskCard() -- qc)
+            getTitle,       // ...
+            getDesc,        // dom.js (taskCard())
+            getDue,         // ...
+            getPriority,    // ...
+            getTags,        // ...
         }
     }
 
-    // managers
+    // getters
+    function getProjLib() {
+        return projLib;
+    }
+    function getTaskLib() {
+        return taskLib;
+    }
 
     // methods
+    function createProject(attributeArray) {
+        let _id = _projectCounter;
+        let _newProject = _project(_id, ...attributeArray);
+        projLib.push(_newProject);
+        _projectCounter++;
+    }
     function createTask(attributeArray) {
         let id = _taskCounter;
-        let newTask = task(id, ...attributeArray);
-        _libArray.push(newTask);
+        let newTask = _task(id, ...attributeArray);
+        //// console.log('createTask() check');
+        //// newTask.viewInfo();
+        //// console.log('');
+        taskLib.push(newTask);
         _taskCounter++;
     }
+    function deleteProject() {
+        // * index into projArray, delete project
+        // * send notification to update sidebar
+    }
     function deleteTask() {
-        // index into libArray, delete task
+        // * index into libArray, delete task
     }
-
-    // helpers
-    function viewLibArray() {
-        console.log(_libArray);
-        for (let t in _libArray) {
-            _libArray[t].viewInfo();
-        };
-    }
-
-    // actions
 
     // make public
     return {
-        createTask,
-        deleteTask,
-        viewLibArray,
+        getProjLib,     // genDefault.js (_genDefDisplay())
+        getTaskLib,     // genDefault.js (_genDefDisplay())
+        createProject,  // genDefault.js (_createDefaultProjs())
+        createTask,     // genDefault.js (_createDefaultTasks())
+        deleteProject,  // ...
+        deleteTask,     // ...
     };
 
 })();
