@@ -4,8 +4,7 @@ import './styles/typo.css';
 import './styles/shaping.css';
 import './styles/colors.css';
 
-import library from './scripts/library'
-import samples from './scripts/samples';
+import genDefault from './scripts/genDefault';
 
 // manager function here
 
@@ -16,5 +15,4 @@ title.addEventListener('click', () => {
 });
 
 // actions
-samples.addSamples();
-library.viewLibArray();
+genDefault.init();
