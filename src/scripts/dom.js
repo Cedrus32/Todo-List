@@ -8,7 +8,7 @@ const dom = (() => {
     let taskContainer = document.getElementById('task-container');
 
     // project manager factory
-    const genProjInfo = function(project) {
+    const genProj = function(project) {
         //// console.log(project.getData());
         //// console.log(project.getDesc());
         let header = projHeader(project.getTitle());
@@ -34,8 +34,25 @@ const dom = (() => {
     }
 
     // task manager factories
-    const genTasks = function(task) {
-        
+    const genTasks = function(tasks) {
+        let taskNum = tasks.length;
+        let controls = taskControls(taskNum);
+
+        taskContainer.appendChild(controls);
+    }
+
+    // task helper factories
+    const taskControls = function(num) {
+        let divControls = _div('', '.task-controls');
+
+        let content = 'Tasks (' + num + ')';
+        let divTally = _div(content, '.tally');
+        let divCreate = _div('+', '.create');
+
+        divControls.appendChild(divTally);
+        divControls.appendChild(divCreate);
+
+        return divControls;
     }
     const singletonCard = function(task) {
         //// console.log(task.getData());
@@ -43,8 +60,6 @@ const dom = (() => {
         let card = _div(task.getDesc(), '');
         display.appendChild(card);
     }
-
-    // task helper factories
 
     // basic helper factories
     const _div = function(content, ...args) {
@@ -154,7 +169,7 @@ const dom = (() => {
     }
 
     return {
-        genProjInfo,  // genDefault.js (_genDefDisplay())
+        genProj,  // genDefault.js (_genDefDisplay())
         genTasks,  // genDefault.js (_genDefDisplay())
     }
 
