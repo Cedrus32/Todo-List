@@ -4,21 +4,18 @@ const dom = (() => {
     let element;
 
     // cache DOM
-    let display = document.getElementById('display');
+    let projContainer = document.getElementById('proj-container');
+    let taskContainer = document.getElementById('task-container');
 
     // project manager factory
-    const projContainer = function(project) {
+    const genProjInfo = function(project) {
         //// console.log(project.getData());
         //// console.log(project.getDesc());
-        let divContainer = _div('', '.proj', '.container');
-
         let header = projHeader(project.getTitle());
         let description = _div(project.getDesc(), '.description');
 
-        divContainer.appendChild(header);
-        divContainer.appendChild(description);
-
-        display.appendChild(divContainer);
+        projContainer.appendChild(header);
+        projContainer.appendChild(description);
     }
 
     // project helper factories
@@ -37,7 +34,10 @@ const dom = (() => {
     }
 
     // task manager factories
-    const taskCard = function(task) {
+    const genTasks = function(task) {
+        
+    }
+    const singletonCard = function(task) {
         //// console.log(task.getData());
         //// console.log(task.getDesc());
         let card = _div(task.getDesc(), '');
@@ -154,7 +154,8 @@ const dom = (() => {
     }
 
     return {
-        projContainer,  // genDefault.js (_genDefDisplay())
+        genProjInfo,  // genDefault.js (_genDefDisplay())
+        genTasks,  // genDefault.js (_genDefDisplay())
     }
 
 })();
