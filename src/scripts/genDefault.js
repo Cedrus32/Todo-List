@@ -14,6 +14,7 @@ const genDefault = (() => {
     function init() {
         _createDefaultProjs();
         _createDefTasks();
+
         _genDefDisplay();
     }
 
@@ -28,16 +29,15 @@ const genDefault = (() => {
             library.createTask(_tasks[t]);
         };
     }
-    // * call on methods from elements to generate default view
     function _genDefDisplay() {
         let projectLib = library.getProjLib();
         for (let p in projectLib) {
-            dom.projHeader(projectLib[p]);
+            dom.projContainer(projectLib[p]);
         };
-        let taskLib = library.getTaskLib();
-        for (let t in taskLib) {
-            dom.taskCard(taskLib[t]);
-        };
+        // let taskLib = library.getTaskLib();
+        // for (let t in taskLib) {
+        //     dom.taskCard(taskLib[t]);
+        // };
     }
 
     return {
