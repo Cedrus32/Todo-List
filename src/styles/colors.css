@@ -3,3 +3,11 @@ header,
 #display {
     border: 1px solid black;
 }
+
+.container {
+    border: 1px solid blue;
+}
+
+.card {
+    border: 1px solid orangered;
+}

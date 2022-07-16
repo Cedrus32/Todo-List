@@ -10,6 +10,10 @@ body {
     height: 100vh;
 }
 
+    ul {
+        list-style: none;
+    }
+
     header {
         grid-area: header;
 
@@ -38,4 +42,50 @@ body {
 
         #display {
             grid-area: display;
+            /* make grid */
         }
+
+            .container {
+                display: flex;
+                flex-flow: column;
+                gap: 0.25em;
+
+                padding: 1em;
+            }
+
+                .header {
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+
+                    width: 100%;
+                }
+
+                    .title {
+                        margin-right: auto;
+                    }
+                
+                .task-controls {
+                    display: flex;
+                    justify-content: flex-start;
+                }
+
+                    .tally {
+                        margin-right: auto;
+                    }
+
+                .singleton {
+                    display: flex;
+                    align-items: flex-start;
+                }
+
+                    .content {
+                        display: flex;
+                        flex-flow: column;
+
+                        width: 100%;
+                    }
+
+                        .details {
+                            display: flex;
+                        }
