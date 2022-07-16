@@ -32,12 +32,11 @@ const genDefault = (() => {
     function _genDefDisplay() {
         let projectLib = library.getProjLib();
         for (let p in projectLib) {
-            dom.projContainer(projectLib[p]);
+            dom.genProjInfo(projectLib[p]);
         };
-        // let taskLib = library.getTaskLib();
         // for (let t in taskLib) {
-        //     dom.taskCard(taskLib[t]);
-        // };
+        //     dom.genTasks(taskLib[t]);
+        // }
     }
 
     return {
