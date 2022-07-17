@@ -37,16 +37,26 @@ const dom = (() => {
     const genTasks = function(tasks) {
         let taskNum = tasks.length;
         let controls = taskControls(taskNum);
-
         taskContainer.appendChild(controls);
+
+        for (let t in tasks) {
+            let card;
+            if (tasks[t].getType() === 'singleton') {
+                card = singleton(tasks[t]);
+            } else if (tasks[t][1] === 'checklist') {
+                // generate checklist card
+                // let card = checklist();
+            };
+            taskContainer.appendChild(card);
+        };
     }
 
     // task helper factories
     const taskControls = function(num) {
         let divControls = _div('', '.task-controls');
 
-        let content = 'Tasks (' + num + ')';
-        let divTally = _div(content, '.tally');
+        let tallyContent = 'Tasks (' + num + ')';
+        let divTally = _div(tallyContent, '.tally');
         let divCreate = _div('+', '.create');
 
         divControls.appendChild(divTally);
@@ -54,11 +64,73 @@ const dom = (() => {
 
         return divControls;
     }
-    const singletonCard = function(task) {
-        //// console.log(task.getData());
-        //// console.log(task.getDesc());
-        let card = _div(task.getDesc(), '');
-        display.appendChild(card);
+    const singleton = function(task) {
+        let divCard = _div('', '.card', '.singleton');
+
+        let inputElem = _input(task.getID());
+        let cardContent = singletonContent(task.getID(), task.getTitle(), task.getDue(), task.getDesc(), task.getPriority(), task.getTags());
+
+        divCard.appendChild(inputElem);
+        divCard.appendChild(cardContent);
+
+        return divCard;
+    }
+    const singletonContent = function(id, title, dueDate, desc, priority, tags) {
+        let divContent = _div('', '.content');
+
+        let header = singletonHeader(id, title, dueDate);
+        let description = _div(desc, '.description');
+        let details = taskDetails(priority, tags);
+
+        divContent.appendChild(header);
+        divContent.appendChild(description);
+        divContent.appendChild(details);
+
+        return divContent;
+    }
+    const singletonHeader = function(id, title, dueDate) {
+        let divHeader = _div('', '.header');
+
+        let titleH2 = _h2(title, '');
+        let labelTitle = _label(id, titleH2);
+        labelTitle.appendChild(titleH2);
+
+        let spanDate = _span(dueDate, '.date');
+        let spanModify = _span('...', '.modify');
+        let spanDelete = _span('X', '.delete');
+
+        divHeader.appendChild(labelTitle);
+        divHeader.appendChild(spanDate);
+        divHeader.appendChild(spanModify);
+        divHeader.appendChild(spanDelete);
+
+        return divHeader;
+    }
+    // const checklist = function() {
+    //     let divCard = _dic('', '.card', '.checklist');
+
+    //     let header = checklistHeader();
+    //     let description = _div(task.getDesc(), '.description');
+    //     let checks = checklist
+
+    //     return divCard;
+    // }
+    // const checklistContent = function() {
+
+    // }
+    // const checklistHeader = function() {
+
+    // }
+    const taskDetails = function(priority, tags) {
+        let divDetails = _div('', '.details');
+
+        let divPriority = _div(priority, '.priority');
+        let divTags = _div(tags, '.tags');
+
+        divDetails.appendChild(divPriority);
+        divDetails.appendChild(divTags);
+
+        return divDetails;
     }
 
     // basic helper factories
@@ -92,16 +164,29 @@ const dom = (() => {
         _attributes = [];
         return element;
     }
-    // const _nav = function(content, ...args) {
-    //     _content = content;
-    //     _attributes = [...args];
-    //     element = document.createElement('nav');
-    //     if (_attributes.length > 0) {
-    //         _setAtts(element, _attributes);
-    //     };
-    //     _clearData();
-    //     return element;
-    // }
+    const _input = function(id) {
+        element = document.createElement('input');
+        element.type = 'checkbox';
+        element.id = toString(id);
+        element.name = toString(id);
+        return element;
+    }
+    const _label = function(id) {
+        element = document.createElement('label');
+        element.for = toString(id);
+        element.classList = 'title';
+        return element;
+    }
+    const _h2 = function(content, ...args) {
+        _attributes = [...args];
+        element = document.createElement('h2');
+        if (_attributes.length > 0) {
+            _setAtts(element, _attributes);
+        };
+        element.textContent = content;
+        _attributes = [];
+        return element;
+    }
     // const _ul = function(...args) {
     //     _attributes = [...args];
     //     element = document.createElement('ul');
@@ -120,36 +205,9 @@ const dom = (() => {
     //     _clearData();
     //     return element;
     // }
-    // const _img = function(...args) {
-    //     _attributes = [...args];
-    //     element = document.createElement('img');
-    //     if (_attributes.length > 0) {
-    //         _setAtts(element, _attributes);
-    //     };
-    //     _attributes = [];
-    //     return element;
-    // }
     // const _a = function(...args) {
     //     _attributes = [...args];
     //     element = document.createElement('a');
-    //     if (_attributes.length > 0) {
-    //         _setAtts(element, _attributes);
-    //     };
-    //     _attributes = [];
-    //     return element;
-    // }
-    // const _h2 = function(...args) {
-    //     _attributes = [...args];
-    //     element = document.createElement('h2');
-    //     if (_attributes.length > 0) {
-    //         _setAtts(element, _attributes);
-    //     };
-    //     _attributes = [];
-    //     return element;
-    // }
-    // const _h3 = function(...args) {
-    //     _attributes = [...args];
-    //     element = document.createElement('h3');
     //     if (_attributes.length > 0) {
     //         _setAtts(element, _attributes);
     //     };
