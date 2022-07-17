@@ -54,7 +54,7 @@ const library = (() => {
             getDesc,    // dom.js (projJeader())
         }
     }
-    const _task = function(taskID, projectID, taskType, taskTitle, taskDesc, taskDue, taskPriority, taskTags) {
+    const _task = function(taskID, projectID, taskType, taskTitle, taskDesc, taskDue, taskPriority, taskTags, taskItems) {
         // data
         let id = taskID;
         let _projectID = projectID;
@@ -64,6 +64,10 @@ const library = (() => {
         let dueDate = taskDue;
         let priority = taskPriority;
         let tags = taskTags;
+        let items = [];
+        if (type === 'checklist') {
+            items = taskItems;
+        }
 
         // setters
         function setTitle(value) {
@@ -118,6 +122,9 @@ const library = (() => {
         function getTags() {
             return tags;
         }
+        function getItems() {
+            return items;
+        }
 
         return {
             setTitle,       // ...
@@ -133,6 +140,7 @@ const library = (() => {
             getDue,         // ...
             getPriority,    // ...
             getTags,        // ...
+            getItems,       // ...
         }
     }
 
