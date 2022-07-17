@@ -144,16 +144,6 @@ const dom = (() => {
         _attributes = [];
         return element;
     }
-    const _h1 = function(content, ...args) {
-        _attributes = [...args];
-        element = document.createElement('h1');
-        if (_attributes.length > 0) {
-            _setAtts(element, _attributes);
-        };
-        element.textContent = content;
-        _attributes = [];
-        return element;
-    }
     const _span = function(content, ...args) {
         _attributes = [...args];
         element = document.createElement('span');
@@ -164,17 +154,14 @@ const dom = (() => {
         _attributes = [];
         return element;
     }
-    const _input = function(id) {
-        element = document.createElement('input');
-        element.type = 'checkbox';
-        element.id = toString(id);
-        element.name = toString(id);
-        return element;
-    }
-    const _label = function(id) {
-        element = document.createElement('label');
-        element.for = toString(id);
-        element.classList = 'title';
+    const _h1 = function(content, ...args) {
+        _attributes = [...args];
+        element = document.createElement('h1');
+        if (_attributes.length > 0) {
+            _setAtts(element, _attributes);
+        };
+        element.textContent = content;
+        _attributes = [];
         return element;
     }
     const _h2 = function(content, ...args) {
@@ -185,6 +172,21 @@ const dom = (() => {
         };
         element.textContent = content;
         _attributes = [];
+        return element;
+    }
+    const _input = function(id) {
+        element = document.createElement('input');
+        element.type = 'checkbox';
+        element.id = String(id);
+        element.name = String(id);
+        console.log({element});
+        return element;
+    }
+    const _label = function(id) {
+        element = document.createElement('label');
+        element.for = String(id);
+        element.classList = 'title';
+        console.log({element});
         return element;
     }
     // const _ul = function(...args) {
