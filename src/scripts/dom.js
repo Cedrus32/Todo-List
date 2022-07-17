@@ -43,8 +43,7 @@ const dom = (() => {
             let card;
             if (tasks[t].getType() === 'singleton') {
                 card = singleton(tasks[t]);
-            } else if (tasks[t][1] === 'checklist') {
-                // generate checklist card
+            } else if (tasks[t].getType() === 'checklist') {
                 card = checklist(tasks[t]);
             };
             taskContainer.appendChild(card);
@@ -107,7 +106,7 @@ const dom = (() => {
         return divHeader;
     }
     const checklist = function(task) {
-        let divCard = _dic('', '.card', '.checklist');
+        let divCard = _div('', '.card', '.checklist');
 
         let header = checklistHeader(task.getTitle(), task.getDue());
         let description = _div(task.getDesc(), '.description');
@@ -116,7 +115,7 @@ const dom = (() => {
 
         divCard.appendChild(header);
         divCard.appendChild(description);
-        // divCard.appendChild(checks);
+        divCard.appendChild(checks);
         divCard.appendChild(details);
 
         return divCard;
@@ -146,12 +145,14 @@ const dom = (() => {
 
             let checkbox = _input(itemCount);
             let label = _label(items[i], itemCount, '');
+            itemCount++;
 
             liItem.appendChild(checkbox);
             liItem.appendChild(label);
 
             ul.appendChild(liItem);
         }
+        divChecks.appendChild(ul);
         
         return divChecks;
     }
