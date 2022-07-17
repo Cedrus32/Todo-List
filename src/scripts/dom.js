@@ -45,7 +45,7 @@ const dom = (() => {
                 card = singleton(tasks[t]);
             } else if (tasks[t][1] === 'checklist') {
                 // generate checklist card
-                // card = checklist(tasks[t]);
+                card = checklist(tasks[t]);
             };
             taskContainer.appendChild(card);
         };
