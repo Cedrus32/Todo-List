@@ -1,7 +1,11 @@
 header,
-#views,
+#view-prefs,
 #display {
     border: 1px solid black;
+}
+
+#view-prefs {
+    background-color: white;
 }
 
 .container {
