@@ -12,7 +12,7 @@ const library = (() => {
     // factories
     const _project = function(projID, projTitle, projDesc) {
         // data
-        let _id = projID;
+        let id = projID;
         let title = projTitle;
         let desc = projDesc;
 
@@ -56,9 +56,9 @@ const library = (() => {
     }
     const _task = function(taskID, projectID, taskType, taskTitle, taskDesc, taskDue, taskPriority, taskTags) {
         // data
-        let _id = taskID;
+        let id = taskID;
         let _projectID = projectID;
-        let _type = taskType;
+        let type = taskType;
         let title = taskTitle;
         let desc = taskDesc;
         let dueDate = taskDue;
@@ -97,6 +97,12 @@ const library = (() => {
             let infoArray = [_id, _projectID, _type, title, desc, dueDate, priority, tags];
             return infoArray;
         }
+        function getID() {
+            return id;
+        }
+        function getType() {
+            return type;
+        }
         function getTitle() {
             return title;
         }
@@ -120,6 +126,8 @@ const library = (() => {
             setPriority,    // ...
             setTags,        // ...
             getData,        // dom.js (taskCard() -- qc)
+            getID,          // ...
+            getType,        // ...
             getTitle,       // ...
             getDesc,        // dom.js (taskCard())
             getDue,         // ...
