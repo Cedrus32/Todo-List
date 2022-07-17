@@ -24,7 +24,7 @@ const dom = (() => {
 
         let h1Title = _h1(title, '.title');
         let spanModify = _span('...', '.modify');
-        let spanDelete = _span('X', 'delete');
+        let spanDelete = _span('X', '.delete');
 
         divHeader.appendChild(h1Title);
         divHeader.appendChild(spanModify);
@@ -45,7 +45,7 @@ const dom = (() => {
                 card = singleton(tasks[t]);
             } else if (tasks[t][1] === 'checklist') {
                 // generate checklist card
-                // let card = checklist();
+                // card = checklist(tasks[t]);
             };
             taskContainer.appendChild(card);
         };
@@ -91,9 +91,9 @@ const dom = (() => {
     const singletonHeader = function(id, title, dueDate) {
         let divHeader = _div('', '.header');
 
-        let titleH2 = _h2(title, '');
-        let labelTitle = _label(id, titleH2);
-        labelTitle.appendChild(titleH2);
+        let h2Title = _h2(title, '');
+        let labelTitle = _label('', id, '.title');
+        labelTitle.appendChild(h2Title);
 
         let spanDate = _span(dueDate, '.date');
         let spanModify = _span('...', '.modify');
@@ -106,21 +106,55 @@ const dom = (() => {
 
         return divHeader;
     }
-    // const checklist = function() {
-    //     let divCard = _dic('', '.card', '.checklist');
+    const checklist = function(task) {
+        let divCard = _dic('', '.card', '.checklist');
 
-    //     let header = checklistHeader();
-    //     let description = _div(task.getDesc(), '.description');
-    //     let checks = checklist
+        let header = checklistHeader(task.getTitle(), task.getDue());
+        let description = _div(task.getDesc(), '.description');
+        let checks = checklistContent(task.getItems());
+        let details = taskDetails(task.getPriority(), task.getTags());
 
-    //     return divCard;
-    // }
-    // const checklistContent = function() {
+        divCard.appendChild(header);
+        divCard.appendChild(description);
+        // divCard.appendChild(checks);
+        divCard.appendChild(details);
 
-    // }
-    // const checklistHeader = function() {
+        return divCard;
+    }
+    const checklistHeader = function(title, dueDate) {
+        let divHeader = _div('', '.header');
 
-    // }
+        let h2Title = _h2(title, '.title');
+        let spanDate = _span(dueDate, '.date');
+        let spanModify = _span('...', '.modify');
+        let spanDelete = _span('X', '.delete');
+
+        divHeader.appendChild(h2Title);
+        divHeader.appendChild(spanDate);
+        divHeader.appendChild(spanModify);
+        divHeader.appendChild(spanDelete);
+
+        return divHeader;
+    }
+    const checklistContent = function(items) {
+        let itemCount = 1;
+        let divChecks = _div('', '.checks');
+
+        let ul = _ul('', '');
+        for (let i in items) {
+            let liItem = _li('', '');
+
+            let checkbox = _input(itemCount);
+            let label = _label(items[i], itemCount, '');
+
+            liItem.appendChild(checkbox);
+            liItem.appendChild(label);
+
+            ul.appendChild(liItem);
+        }
+        
+        return divChecks;
+    }
     const taskDetails = function(priority, tags) {
         let divDetails = _div('', '.details');
 
@@ -174,39 +208,44 @@ const dom = (() => {
         _attributes = [];
         return element;
     }
+    const _ul = function(content, ...args) {
+        _attributes = [...args];
+        element = document.createElement('ul');
+        if (_attributes.length > 0) {
+            _setAtts(element, _attributes);
+        };
+        element.textContent = content;
+        _attributes = [];
+        return element;
+    }
+    const _li = function(content, ...args) {
+        _attributes = [...args];
+        element = document.createElement('li');
+        if (_attributes.length > 0) {
+            _setAtts(element, _attributes);
+        };
+        element.textContent = content;
+        _attributes = [];
+        return element;
+    }
     const _input = function(id) {
         element = document.createElement('input');
         element.type = 'checkbox';
         element.id = String(id);
         element.name = String(id);
-        console.log({element});
         return element;
     }
-    const _label = function(id) {
+    const _label = function(content, id, ...args) {
+        _attributes = [...args];
         element = document.createElement('label');
+        if (_attributes.length > 0) {
+            _setAtts(element, _attributes);
+        };
         element.for = String(id);
-        element.classList = 'title';
-        console.log({element});
+        element.textContent = content;
+        _attributes = [];
         return element;
     }
-    // const _ul = function(...args) {
-    //     _attributes = [...args];
-    //     element = document.createElement('ul');
-    //     if (_attributes.length > 0) {
-    //         _setAtts(element, _attributes);
-    //     };
-    //     _clearData();
-    //     return element;
-    // }
-    // const _li = function(...args) {
-    //     _attributes = [...args];
-    //     element = document.createElement('li');
-    //     if (_attributes.length > 0) {
-    //         _setAtts(element, _attributes);
-    //     };
-    //     _clearData();
-    //     return element;
-    // }
     // const _a = function(...args) {
     //     _attributes = [...args];
     //     element = document.createElement('a');
