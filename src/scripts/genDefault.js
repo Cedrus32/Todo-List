@@ -7,7 +7,7 @@ const genDefault = (() => {
                     ];
     let _tasks = [[0, 'singleton', 'Task 1', 'this is a sample task', '01/01/01', 3, '#tag'],
                   [0, 'singleton', 'Task 2', 'this is #2', '02/02/02', 2, ''],
-                //   [0, 'checklist', 'Task 3', 'this is a checklist', '03/03/03', 1, '#tig #tog'],
+                  [0, 'checklist', 'Task 3', 'this is a checklist', '03/03/03', 1, '#tig #tog', ['item 1', 'item 2', 'item 3']],
                  ];
 
     // manager
