@@ -8,6 +8,7 @@ import display from './scripts/display';
 
 // manager function here
 
+// ! move vvv into domDisplay
 let viewPrefs = document.getElementById('view-prefs');
 let title = document.getElementById('title');
 title.addEventListener('click', () => {
@@ -15,4 +16,8 @@ title.addEventListener('click', () => {
 });
 
 // actions
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 display.initDefault();
