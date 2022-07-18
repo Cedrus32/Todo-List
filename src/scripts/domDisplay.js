@@ -11,11 +11,16 @@ const domDisplay = (() => {
     const genProj = function(project) {
         //// console.log(project.getData());
         //// console.log(project.getDesc());
+        let cardID = '#proj' + project.getID();
+        let card = create.div('', '.card', '.project', cardID);
+
         let header = projHeader(project.getTitle());
         let description = create.div(project.getDesc(), '.description');
 
-        projContainer.appendChild(header);
-        projContainer.appendChild(description);
+        card.appendChild(header);
+        card.appendChild(description);
+
+        projContainer.appendChild(card);
     }
 
     // project helper factories
@@ -64,7 +69,8 @@ const domDisplay = (() => {
         return divControls;
     }
     const singleton = function(task) {
-        let divCard = create.div('', '.card', '.singleton');
+        let cardID = '#task' + task.getID();
+        let divCard = create.div('', '.card', '.singleton', cardID);
 
         let inputElem = create.input(task.getID());
         let cardContent = singletonContent(task.getID(), task.getTitle(), task.getDue(), task.getDesc(), task.getPriority(), task.getTags());
@@ -106,7 +112,8 @@ const domDisplay = (() => {
         return divHeader;
     }
     const checklist = function(task) {
-        let divCard = create.div('', '.card', '.checklist');
+        let cardID = '#task' + task.getID();
+        let divCard = create.div('', '.card', '.checklist', cardID);
 
         let header = checklistHeader(task.getTitle(), task.getDue());
         let description = create.div(task.getDesc(), '.description');
