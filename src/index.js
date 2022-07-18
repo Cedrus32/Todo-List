@@ -4,7 +4,7 @@ import './styles/typo.css';
 import './styles/shaping.css';
 import './styles/colors.css';
 
-import genDefault from './scripts/genDefault';
+import display from './scripts/display';
 
 // manager function here
 
@@ -15,4 +15,4 @@ title.addEventListener('click', () => {
 });
 
 // actions
-genDefault.init();
+display.initDefault();
