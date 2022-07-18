@@ -30,6 +30,71 @@
             </ul>
         </section>
 
+        <section id='project-form' class='form-container'>
+            <form>
+                <fieldset>
+                    <legend>Project</legend>
+                    <label for='title'>Project Name</label>
+                    <input type='text' id='title' name='title' placeholder='name'
+                           required aria-required='true'>
+                    <label for='desc'>Project Description</label>
+                    <input type='text' id='desc' name='desc' placeholder='description'
+                           aria-required='false'>
+                </fieldset>
+            </form>
+            <div id='buttons'>
+                <div class='row-group'>
+                    <button>confirm</button>
+                    <button>cancel</button>
+                </div>
+                <button>delete this project?</button>
+            </div>
+        </section>
+        
+        <section id='task-form' class='form-container hide'>
+            <form>
+                <fieldset>
+                    <legend>Task</legend>
+                    <label for='title'>Task Name</label>
+                    <input type='text' id='title' name='title' placeholder='name'
+                           required aria-required='true'>
+                    <label for='desc'>Task Description</label>
+                    <input type='text' id='desc' name='desc' placeholder='description'
+                           aria-required='false'>
+                    <label for='date'>Due Date</label>
+                    <input type='date' id='date' name='date'
+                            aria-required='false'>
+                    <div class='dropdowns'>
+                        <div>
+                            <label for='priority'>Priority</label>
+                            <select id='priority' name='priority'>
+                                <option value='0'>none ( )</option>
+                                <option value='1'>low (!)</option>
+                                <option value='2'>medium (!!)</option>
+                                <option value='3'>high (!!!)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for='proj'>Project</label>
+                            <select id='proj' name='proj'>
+                                <!-- generate options list from library -->
+                            </select>
+                        </div>
+                    </div>
+                    <label for='tags'>Tags</label>
+                    <input type='text' id='tags' name='tags'
+                            aria-required='false'>
+                </fieldset>
+            </form>
+            <div id='buttons'>
+                <div class='row-group'>
+                    <button>confirm</button>
+                    <button>cancel</button>
+                </div>
+                <button>delete this task?</button>
+            </div>
+        </section>
+
         <main>
             <header id='title'>
                 <h1>Todo List</h1>

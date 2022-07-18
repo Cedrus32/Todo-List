@@ -1,10 +1,12 @@
 header,
 #view-prefs,
-#display {
+#display,
+.form-container {
     border: 1px solid black;
 }
 
-#view-prefs {
+#view-prefs,
+.form-container {
     background-color: white;
 }
 
