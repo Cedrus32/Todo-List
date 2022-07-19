@@ -9,9 +9,11 @@ const forms = (() => {
 
     // cache DOM
     let projForm = document.getElementById('proj-form');
-    let projInputs = projForm.querySelectorAll('input');
     let taskForm = document.getElementById('task-form');
+
+    let projInputs = projForm.querySelectorAll('input');
     let taskInputs = taskForm.querySelectorAll('input');
+
     let confirmBtns = document.querySelectorAll('button.confirm');
     let cancelBtns = document.querySelectorAll('button.cancel');
 
@@ -26,17 +28,17 @@ const forms = (() => {
     // factories
 
     // manager methods
-    function openCreate(formType) {
-        _showForm(formType);
+    function openCreate(event) {
+        _showForm(event.target.classList[0]);
     }
-    function openModify(formType) {
+    function openModify(event) {
         // * query library: get card id -> scrub for object ID -> get object form library
-        let _dataArray = _queryLibrary();
-        _fillValues(_dataArray);
+        //// let _dataArray = _queryLibrary();
+        //// _fillValues(_dataArray);
         // ? _dataArray = [];
         
         // * populate fields
-        _showForm(formType);
+        _showForm(event.target.classList[0]);
     }
     function _confirmInput() {
         _hideForm();
