@@ -4,11 +4,14 @@ import library from './library';
 
 const forms = (() => {
     // data
-    let _currentForm;
+    let _currForm;
+    let _dataArray = [];
 
     // cache DOM
     let projForm = document.getElementById('proj-form');
+    let projInputs = projForm.querySelectorAll('input');
     let taskForm = document.getElementById('task-form');
+    let taskInputs = taskForm.querySelectorAll('input');
     let confirmBtns = document.querySelectorAll('button.confirm');
     let cancelBtns = document.querySelectorAll('button.cancel');
 
@@ -27,34 +30,55 @@ const forms = (() => {
         _showForm(formType);
     }
     function openModify(formType) {
-        // * query library
+        // * query library: get card id -> scrub for object ID -> get object form library
+        let _dataArray = _queryLibrary();
+        _fillValues(_dataArray);
+        // ? _dataArray = [];
+        
         // * populate fields
         _showForm(formType);
     }
     function _confirmInput() {
         _hideForm();
         // * push new to library OR modify library item
-        // * clear input values
+        _clearValues();
 
     }
     function _cancelInput() {
         _hideForm();
-        // * clear input values
+        _clearValues();
     }
 
     // helper methods
     function _showForm(formType) {
         if (formType === 'proj') {
-            _currentForm = projForm;
+            _currForm = projForm;
             projForm.classList.remove('hide');
         } else if (formType === 'task') {
-            _currentForm = taskForm;
+            _currForm = taskForm;
             taskForm.classList.remove('hide');
         };
     }
     function _hideForm() {
-        _currentForm.classList.add('hide');
-        _currentForm = '';
+        _currForm.classList.add('hide');
+    }
+    function _queryLibrary() {
+        // * get relevant card
+        // * scrub card id for library reference
+        // * call library functions to get object
+        // * populate into array (like in display.js)
+        // * return array
+    }
+    function _fillValues() {
+        // * conditional to populate correct form
+    }
+    function _clearValues() {
+        if (_currForm === projForm) {
+            projInputs.forEach(input => input.value = '');
+        } else if (_currForm === taskForm) {
+            taskInputs.forEach(input => input.value = '');
+        };
+        _currForm = '';
     }
 
     return {
