@@ -1,20 +1,40 @@
 import library from './library';
 
-// * interface to get/set library data
+// * manages interface between form DOM & library arrays
 
 const forms = (() => {
     // data
 
     // cache DOM
+    let projForm = document.getElementById('proj-form');
+    let taskForm = document.getElementById('task-form');
 
     // bind events
 
     // factories
 
-    // methods
+    // manager methods
+    function openCreate(formType) {
+        showForm(formType);
+    }
+    function openModify(formType) {
+        // query library
+        // populate fields
+        showForm(formType);
+    }
+
+    // helper methods
+    function showForm(formType) {
+        if (formType === 'proj') {
+            projForm.classList.remove('hide');
+        } else if (formType === 'task') {
+            taskForm.classList.remove('hide');
+        };
+    }
 
     return {
-        
+        openCreate, // domDisplay.js (addEvent())
+        openModify, // domDisplay.js (addEvent())
     }
 
 })();
