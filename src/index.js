@@ -16,16 +16,4 @@ title.addEventListener('click', () => {
 });
 
 // actions
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
-=======
-
->>>>>>> Stashed changes
-=======
-
->>>>>>> Stashed changes
 display.initDefault();
