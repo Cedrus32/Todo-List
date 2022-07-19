@@ -13,9 +13,9 @@ const forms = (() => {
     let cancelBtns = document.querySelectorAll('button.cancel');
 
     // bind events
-    // confirmBtns.forEach(btn => btn.addEventListener('click', () => {
-    //     // call _confirmInput();
-    // }));
+    confirmBtns.forEach(btn => btn.addEventListener('click', () => {
+        _confirmInput();
+    }));
     cancelBtns.forEach(btn => btn.addEventListener('click', () => {
         _cancelInput();
     }));
@@ -27,19 +27,19 @@ const forms = (() => {
         _showForm(formType);
     }
     function openModify(formType) {
-        // query library
-        // populate fields
+        // * query library
+        // * populate fields
         _showForm(formType);
     }
     function _confirmInput() {
         _hideForm();
-        // push new to library OR modify library item
-        // clear input values
+        // * push new to library OR modify library item
+        // * clear input values
 
     }
     function _cancelInput() {
         _hideForm();
-        // clear input values
+        // * clear input values
     }
 
     // helper methods
