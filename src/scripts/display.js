@@ -19,8 +19,8 @@ const display = (() => {
     function initDefault() {
         _createProj(_project);
         _createTasks(_tasks);
-
         _genDisplay();
+        domDisplay.assignEvents();
     }
 
     // helpers
