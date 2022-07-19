@@ -1,6 +1,7 @@
 import create from './domBase';
+import forms from './forms';
 
-// * creates/appends project & task DOM groupings
+// * factory class for display DOM groupings
 
 const domDisplay = (() => {
     // cache DOM
@@ -28,8 +29,10 @@ const domDisplay = (() => {
         let divHeader = create.div('', '.header');
 
         let h1Title = create.h1(title, '.title');
-        let spanModify = create.span('...', '.modify');
+        let spanModify = create.span('...', '.proj', '.modify');
+        addEvent(spanModify); // * eventListener
         let spanDelete = create.span('X', '.delete');
+        // * add eventListener
 
         divHeader.appendChild(h1Title);
         divHeader.appendChild(spanModify);
@@ -61,7 +64,8 @@ const domDisplay = (() => {
 
         let tallyContent = 'Tasks (' + num + ')';
         let divTally = create.div(tallyContent, '.tally');
-        let divCreate = create.div('+', '.create');
+        let divCreate = create.div('+', '.task', '.create');
+        addEvent(divCreate); // * eventListener
 
         divControls.appendChild(divTally);
         divControls.appendChild(divCreate);
@@ -101,8 +105,10 @@ const domDisplay = (() => {
         labelTitle.appendChild(h2Title);
 
         let spanDate = create.span(dueDate, '.date');
-        let spanModify = create.span('...', '.modify');
+        let spanModify = create.span('...', '.task', '.modify');
+        addEvent(spanModify); // * eventListener
         let spanDelete = create.span('X', '.delete');
+        // * add eventListener
 
         divHeader.appendChild(labelTitle);
         divHeader.appendChild(spanDate);
@@ -132,8 +138,10 @@ const domDisplay = (() => {
 
         let h2Title = create.h2(title, '.title');
         let spanDate = create.span(dueDate, '.date');
-        let spanModify = create.span('...', '.modify');
+        let spanModify = create.span('...', '.task', '.modify');
+        addEvent(spanModify); // * eventListener
         let spanDelete = create.span('X', '.delete');
+        // * add eventListener
 
         divHeader.appendChild(h2Title);
         divHeader.appendChild(spanDate);
@@ -176,6 +184,19 @@ const domDisplay = (() => {
     }
 
     // methods
+    function addEvent(element) {
+        if (element.classList.contains('modify')) {
+            element.addEventListener('click', () => {
+                forms.openModify(element.classList[0]);
+            });
+        } else if (element.classList.contains('create')) {
+            element.addEventListener('click', () => {
+                forms.openCreate(element.classList[0]);
+            });
+        } else if (element.classList.contains('delete')) {
+            // element.addEventListener('click', forms.deleteItem(containerRef));
+        };
+    }
     // function clear {
     //     while (projContainer.lastChild) {
     //         projContainer.remove(projContainer.lastChild);
