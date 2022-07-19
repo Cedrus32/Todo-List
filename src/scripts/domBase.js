@@ -1,3 +1,5 @@
+// * factory class for base-level DOM elements
+
 const create = (() => {
     // data
     let _attributes = [];

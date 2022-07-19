@@ -1,6 +1,8 @@
 import library from './library';
 import domDisplay from './domDisplay';
 
+// * manages interface between display DOM & library arrays
+
 // ! add conditional that receives a notification from viewPrefs OR forms to update display (handled in index.js?)
 // ! create additional file viewPrefs.js
 

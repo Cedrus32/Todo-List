@@ -1,3 +1,5 @@
+// * 'backend' manager class containing project/task states, factories, & methods
+
 const library = (() => {
     // dynamic data
     let taskLib = [];
