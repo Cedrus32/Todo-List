@@ -83,10 +83,10 @@ fieldset {
             width: 50%;
         }
 
-#buttons {
+#proj-buttons,
+#task-buttons {
     display: flex;
-    flex-flow: column;
-    align-items: center;
+    justify-content: center;
 }
 
 /* --- CONTENT */
@@ -124,7 +124,7 @@ fieldset {
             grid-area: display;
         }
 
-            .container {
+            .display-container {
                 display: flex;
                 flex-flow: column;
                 gap: var(--small-gap);
