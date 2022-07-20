@@ -103,7 +103,7 @@ const library = (() => {
         // getters
         function getData() {
             let projName = _getProjName(projID);
-            let infoArray = [objType, id, projID, type, title, desc, dueDate, priority, projName, tags, items];
+            let infoArray = [objType, id, type, title, desc, dueDate, priority, projID, tags, items];
             return infoArray;
         }
         function getID() {
@@ -177,6 +177,16 @@ const library = (() => {
             };
         };
     }
+    function getProjOptionData() {
+        let dataArray = [];
+        for (let p in projLib) {
+            dataArray.push([projLib[p].getID(), projLib[p].getTitle()]);
+        }
+        console.log('******* DATA ARRAY *******')
+        console.log(dataArray);
+        console.log('******* DATA ARRAY *******')
+        return dataArray;
+    }
     function _getProjName(projRef) {
         for (let p in projLib) {
             if (projLib[p].getID() === projRef) {
@@ -211,13 +221,14 @@ const library = (() => {
 
     // make public
     return {
-        getProjLib,     // genDefault.js (_genDefDisplay())
-        getTaskLib,     // genDefault.js (_genDefDisplay())
-        getItem,        // forms.js (_queryLibrary())
-        createProject,  // genDefault.js (_createDefaultProjs())
-        createTask,     // genDefault.js (_createDefaultTasks())
-        deleteProject,  // ...
-        deleteTask,     // ...
+        getProjLib,         // genDefault.js (_genDefDisplay())
+        getTaskLib,         // genDefault.js (_genDefDisplay())
+        getItem,            // forms.js (_queryLibrary())
+        getProjOptionData,  // index.js -> forms.js (genProjOptions())
+        createProject,      // genDefault.js (_createDefaultProjs())
+        createTask,         // genDefault.js (_createDefaultTasks())
+        deleteProject,      // ...
+        deleteTask,         // ...
     };
 
 })();
