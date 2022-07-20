@@ -102,7 +102,8 @@ const library = (() => {
 
         // getters
         function getData() {
-            let infoArray = [objType, id, projID, type, title, desc, dueDate, priority, tags, items];
+            let projName = _getProjName(projID);
+            let infoArray = [objType, id, projID, type, title, desc, dueDate, priority, projName, tags, items];
             return infoArray;
         }
         function getID() {
@@ -158,7 +159,6 @@ const library = (() => {
     function getItem(cardID) {
         let libRef = cardID.slice(0, (cardID.length - 1));
         let itemRef = cardID.slice(-1);
-
         console.log(libRef);
         console.log(itemRef);
 
@@ -174,6 +174,13 @@ const library = (() => {
                 if (taskLib[t].getID() == itemRef) {
                     return taskLib[t].getData();
                 };
+            };
+        };
+    }
+    function _getProjName(projRef) {
+        for (let p in projLib) {
+            if (projLib[p].getID() === projRef) {
+                return projLib[p].getTitle();
             };
         };
     }
