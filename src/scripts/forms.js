@@ -12,7 +12,7 @@ const forms = (() => {
     let taskForm = document.getElementById('task-form');
 
     let projInputs = projForm.querySelectorAll('input');
-    let taskInputs = taskForm.querySelectorAll('input');
+    let taskInputs = taskForm.querySelectorAll('.input');
 
     let confirmBtns = document.querySelectorAll('button.confirm');
     let cancelBtns = document.querySelectorAll('button.cancel');
@@ -78,6 +78,8 @@ const forms = (() => {
             };
         } else if (array[0] === 'task') {
             for (let i = 0; i < (taskInputs.length); i++) {
+                console.log(taskInputs[i]);
+                console.log(array[i + 4]);
                 taskInputs[i].value = array[i + 4];
             };
         };
