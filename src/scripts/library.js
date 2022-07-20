@@ -14,6 +14,7 @@ const library = (() => {
     // factories
     const _project = function(projID, projTitle, projDesc) {
         // data
+        const objType = 'proj';
         let id = projID;
         let title = projTitle;
         let desc = projDesc;
@@ -32,7 +33,7 @@ const library = (() => {
 
         // getters
         function getData() {
-            let dataArray = [_id, title, desc];
+            let dataArray = [objType, id, title, desc];
             return dataArray;
         }
         function getID() {
@@ -58,8 +59,9 @@ const library = (() => {
     }
     const _task = function(taskID, projectID, taskType, taskTitle, taskDesc, taskDue, taskPriority, taskTags, taskItems) {
         // data
+        const objType = 'task';
         let id = taskID;
-        let _projectID = projectID;
+        let projID = projectID;
         let type = taskType;
         let title = taskTitle;
         let desc = taskDesc;
@@ -100,7 +102,7 @@ const library = (() => {
 
         // getters
         function getData() {
-            let infoArray = [_id, _projectID, _type, title, desc, dueDate, priority, tags];
+            let infoArray = [objType, id, projID, type, title, desc, dueDate, priority, tags, items];
             return infoArray;
         }
         function getID() {
@@ -153,6 +155,28 @@ const library = (() => {
     function getTaskLib() {
         return taskLib;
     }
+    function getItem(cardID) {
+        let libRef = cardID.slice(0, (cardID.length - 1));
+        let itemRef = cardID.slice(-1);
+
+        console.log(libRef);
+        console.log(itemRef);
+
+        if (libRef == 'proj') {
+            for (let p in projLib) {
+                if (projLib[p].getID() == itemRef) {
+                    return projLib[p].getData();
+                };
+            };
+        } else if (libRef == 'task') {
+            for (let t in taskLib) {
+                console.log(taskLib[t]);
+                if (taskLib[t].getID() == itemRef) {
+                    return taskLib[t].getData();
+                };
+            };
+        };
+    }
 
     // methods
     function createProject(attributeArray) {
@@ -182,6 +206,7 @@ const library = (() => {
     return {
         getProjLib,     // genDefault.js (_genDefDisplay())
         getTaskLib,     // genDefault.js (_genDefDisplay())
+        getItem,        // forms.js (_queryLibrary())
         createProject,  // genDefault.js (_createDefaultProjs())
         createTask,     // genDefault.js (_createDefaultTasks())
         deleteProject,  // ...
