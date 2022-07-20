@@ -102,7 +102,6 @@ const library = (() => {
 
         // getters
         function getData() {
-            let projName = _getProjName(projID);
             let infoArray = [objType, id, type, title, desc, dueDate, priority, projID, tags, items];
             return infoArray;
         }
