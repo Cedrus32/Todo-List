@@ -73,6 +73,12 @@ const create = (() => {
         element.name = String(id);
         return element;
     }
+    const option = function(value, title) {
+        element = document.createElement('option');
+        element.value = value;
+        element.textContent = title;
+        return element;
+    }
     const label = function(content, id, ...args) {
         _attributes = [...args];
         element = document.createElement('label');
@@ -104,7 +110,8 @@ const create = (() => {
         ul,
         li,
         input,
-        label
+        option,
+        label,
     }
 
 })();
