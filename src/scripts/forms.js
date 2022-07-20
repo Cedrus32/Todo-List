@@ -32,12 +32,10 @@ const forms = (() => {
         _showForm(event.target.classList[0]);
     }
     function openModify(event) {
-        // * query library: get card id -> scrub for object ID -> get object form library
-        //// let _dataArray = _queryLibrary();
-        //// _fillValues(_dataArray);
-        // ? _dataArray = [];
-        
-        // * populate fields
+        console.log('enter openModify()...');
+        console.log(event);
+        let _dataArray = _queryLibrary(event);
+        _fillValues(_dataArray);
         _showForm(event.target.classList[0]);
     }
     function _confirmInput() {
@@ -64,15 +62,25 @@ const forms = (() => {
     function _hideForm() {
         _currForm.classList.add('hide');
     }
-    function _queryLibrary() {
-        // * get relevant card
-        // * scrub card id for library reference
-        // * call library functions to get object
-        // * populate into array (like in display.js)
-        // * return array
+    function _queryLibrary(event) {
+        console.log('enter _queryLibrary()...');
+        let cardID = event.target.closest('div.card').id;
+        console.log(cardID);
+        let libItems = library.getItem(cardID);
+        return libItems;
     }
-    function _fillValues() {
-        // * conditional to populate correct form
+    function _fillValues(array) {
+        console.log(array);
+
+        if (array[0] === 'proj') {
+            for (let i = 0; i < (projInputs.length); i++) {
+                projInputs[i].value = array[i + 2];
+            };
+        } else if (array[0] === 'task') {
+            for (let i = 0; i < (taskInputs.length); i++) {
+                taskInputs[i].value = array[i + 4];
+            };
+        };
     }
     function _clearValues() {
         if (_currForm === projForm) {
