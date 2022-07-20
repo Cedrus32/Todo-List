@@ -5,6 +5,8 @@ import './styles/shaping.css';
 import './styles/colors.css';
 
 import display from './scripts/display';
+import forms from './scripts/forms';
+import genDyn from './scripts/genDynamic';
 
 // manager function here
 
@@ -17,3 +19,5 @@ title.addEventListener('click', () => {
 
 // actions
 display.initDefault();
+genDyn.genProjOptions();
+// genDyn.genViewPrefs();
