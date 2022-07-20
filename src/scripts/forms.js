@@ -5,7 +5,6 @@ import library from './library';
 const forms = (() => {
     // data
     let _currForm;
-    let _dataArray = [];
 
     // cache DOM
     let projForm = document.getElementById('proj-form');
@@ -25,7 +24,10 @@ const forms = (() => {
         _cancelInput();
     }));
 
-    // factories
+    // getters
+    function getProjDropdown() {
+        return taskInputs[4];
+    }
 
     // manager methods
     function openCreate(event) {
@@ -56,6 +58,8 @@ const forms = (() => {
             projForm.classList.remove('hide');
         } else if (formType === 'task') {
             _currForm = taskForm;
+            // * populate project options
+
             taskForm.classList.remove('hide');
         };
     }
@@ -79,8 +83,8 @@ const forms = (() => {
         } else if (array[0] === 'task') {
             for (let i = 0; i < (taskInputs.length); i++) {
                 console.log(taskInputs[i]);
-                console.log(array[i + 4]);
-                taskInputs[i].value = array[i + 4];
+                console.log(array[i + 3]);
+                taskInputs[i].value = array[i + 3];
             };
         };
     }
@@ -94,8 +98,9 @@ const forms = (() => {
     }
 
     return {
-        openCreate, // domDisplay.js (addEvent())
-        openModify, // domDisplay.js (addEvent())
+        openCreate,         // domDisplay.js (addEvent())
+        openModify,         // domDisplay.js (addEvent())
+        getProjDropdown,    // genDynamic.js (genProjOptions())
     }
 
 })();
