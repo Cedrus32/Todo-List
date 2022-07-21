@@ -1,13 +1,5 @@
 // import create from './domBase';
 import { default as div, h1, h2, ul, li, span, input, label} from './elements';
-// import div from './create';
-// import h1 from './create';
-// import h2 from './create';
-// import ul from './create';
-// import li from './create';
-// import span from './create';
-// import input from './create';
-// import label from './create';
 import forms from './forms';
 
 // * factory class for display DOM groupings
@@ -197,6 +189,7 @@ const domDisplay = (() => {
         }));
     };
     // function clear {
+    //  // ! unsubscript from onEmit
     //     while (projContainer.lastChild) {
     //         projContainer.remove(projContainer.lastChild);
     //     };
