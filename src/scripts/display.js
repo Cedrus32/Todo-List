@@ -1,4 +1,5 @@
-import library from './library';
+// import library from './library';
+import events from '../events.js';
 import domDisplay from './domDisplay';
 
 // * manages interface between display DOM & library arrays
@@ -26,15 +27,17 @@ const display = (() => {
     // helpers
     function _createProj(project) {
         for (let p in project) {
-            library.createProject(project[p])
+            events.publish('createProject', project[p]);
         };
     }
     function _createTasks(tasks) {
         for (let t in tasks) {
-            library.createTask(tasks[t]);
+            events.publish('createTask', tasks[t]);
         };
     }
-    function _genDisplay() {
+    function _genDisplay(projectID) {
+        // send notice to library for query by projectID
+        // send
         let projectLib = library.getProjLib();
         domDisplay.genProj(projectLib[0]);
 

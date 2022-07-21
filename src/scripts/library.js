@@ -1,3 +1,5 @@
+import events from '../events.js';
+
 // * 'backend' manager class containing project/task states, factories, & methods
 
 const library = (() => {
@@ -10,6 +12,8 @@ const library = (() => {
     //// cache DOM
 
     // bind events
+    events.subscribe('createProject', createProject);
+    events.subscribe('createTask', createTask);
 
     // factories
     const _project = function(projID, projTitle, projDesc) {
@@ -199,15 +203,14 @@ const library = (() => {
         let _id = _projectCounter;
         let _newProject = _project(_id, ...attributeArray);
         projLib.push(_newProject);
+        console.log(_newProject);
         _projectCounter++;
     }
     function createTask(attributeArray) {
         let id = _taskCounter;
         let newTask = _task(id, ...attributeArray);
-        //// console.log('createTask() check');
-        //// newTask.viewInfo();
-        //// console.log('');
         taskLib.push(newTask);
+        console.log(newTask);
         _taskCounter++;
     }
     function deleteProject() {
