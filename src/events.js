@@ -27,9 +27,9 @@ const events = (() => {
     }
 
     return {
-        on,
-        off,
-        emit,
+        subscribe,
+        unsubscribe,
+        publish,
     }
 
 })();
