@@ -1,6 +1,6 @@
 import forms from './forms';
 import library from './library';
-import create from './domBase';
+import option from './elements';
 
 const genDyn = (() => {
 
@@ -8,7 +8,9 @@ const genDyn = (() => {
         let _projectDropdown = forms.getProjDropdown();
         let projData = [...library.getProjOptionData()];
         for (let d in projData) {
-            let _optionProj = create.option(projData[d][0], projData[d][1]);
+            console.log(projData[d][0]);
+            console.log(projData[d][1]);
+            let _optionProj = option(projData[d][0], projData[d][1]);
             _projectDropdown.appendChild(_optionProj);
         };
     };

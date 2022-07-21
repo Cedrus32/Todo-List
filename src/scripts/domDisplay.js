@@ -1,4 +1,13 @@
-import create from './domBase';
+// import create from './domBase';
+import { default as div, h1, h2, ul, li, span, input, label} from './elements';
+// import div from './create';
+// import h1 from './create';
+// import h2 from './create';
+// import ul from './create';
+// import li from './create';
+// import span from './create';
+// import input from './create';
+// import label from './create';
 import forms from './forms';
 
 // * factory class for display DOM groupings
@@ -13,10 +22,10 @@ const domDisplay = (() => {
         //// console.log(project.getData());
         //// console.log(project.getDesc());
         let cardID = '#proj' + project.getID();
-        let card = create.div('', '.card', '.project', cardID);
+        let card = div('', '.card', '.project', cardID);
 
         let header = projHeader(project.getTitle());
-        let description = create.div(project.getDesc(), '.description');
+        let description = div(project.getDesc(), '.description');
 
         card.appendChild(header);
         card.appendChild(description);
@@ -26,11 +35,11 @@ const domDisplay = (() => {
 
     // project helper factories
     const projHeader = function(title) {
-        let divHeader = create.div('', '.header');
+        let divHeader = div('', '.header');
 
-        let h1Title = create.h1(title, '.title');
-        let spanModify = create.span('...', '.proj', '.modify');
-        let spanDelete = create.span('X', '.delete');
+        let h1Title = h1(title, '.title');
+        let spanModify = span('...', '.proj', '.modify');
+        let spanDelete = span('X', '.delete');
 
         divHeader.appendChild(h1Title);
         divHeader.appendChild(spanModify);
@@ -58,11 +67,11 @@ const domDisplay = (() => {
 
     // task helper factories
     const taskControls = function(num) {
-        let divControls = create.div('', '.task-controls');
+        let divControls = div('', '.task-controls');
 
         let tallyContent = 'Tasks (' + num + ')';
-        let divTally = create.div(tallyContent, '.tally');
-        let divCreate = create.div('+', '.task', '.create');
+        let divTally = div(tallyContent, '.tally');
+        let divCreate = div('+', '.task', '.create');
 
         divControls.appendChild(divTally);
         divControls.appendChild(divCreate);
@@ -71,9 +80,9 @@ const domDisplay = (() => {
     }
     const singleton = function(task) {
         let cardID = '#task' + task.getID();
-        let divCard = create.div('', '.card', '.singleton', cardID);
+        let divCard = div('', '.card', '.singleton', cardID);
 
-        let inputElem = create.input(task.getID());
+        let inputElem = input(task.getID());
         let cardContent = singletonContent(task.getID(), task.getTitle(), task.getDue(), task.getDesc(), task.getPriority(), task.getTags());
 
         divCard.appendChild(inputElem);
@@ -82,10 +91,10 @@ const domDisplay = (() => {
         return divCard;
     }
     const singletonContent = function(id, title, dueDate, desc, priority, tags) {
-        let divContent = create.div('', '.content');
+        let divContent = div('', '.content');
 
         let header = singletonHeader(id, title, dueDate);
-        let description = create.div(desc, '.description');
+        let description = div(desc, '.description');
         let details = taskDetails(priority, tags);
 
         divContent.appendChild(header);
@@ -95,15 +104,15 @@ const domDisplay = (() => {
         return divContent;
     }
     const singletonHeader = function(id, title, dueDate) {
-        let divHeader = create.div('', '.header');
+        let divHeader = div('', '.header');
 
-        let h2Title = create.h2(title, '');
-        let labelTitle =create.label('', id, '.title');
+        let h2Title = h2(title, '');
+        let labelTitle = label('', id, '.title');
         labelTitle.appendChild(h2Title);
 
-        let spanDate = create.span(dueDate, '.date');
-        let spanModify = create.span('...', '.task', '.modify');
-        let spanDelete = create.span('X', '.delete');
+        let spanDate = span(dueDate, '.date');
+        let spanModify = span('...', '.task', '.modify');
+        let spanDelete = span('X', '.delete');
 
         divHeader.appendChild(labelTitle);
         divHeader.appendChild(spanDate);
@@ -114,10 +123,10 @@ const domDisplay = (() => {
     }
     const checklist = function(task) {
         let cardID = '#task' + task.getID();
-        let divCard = create.div('', '.card', '.checklist', cardID);
+        let divCard = div('', '.card', '.checklist', cardID);
 
         let header = checklistHeader(task.getTitle(), task.getDue());
-        let description = create.div(task.getDesc(), '.description');
+        let description = div(task.getDesc(), '.description');
         let checks = checklistContent(task.getItems());
         let details = taskDetails(task.getPriority(), task.getTags());
 
@@ -129,12 +138,12 @@ const domDisplay = (() => {
         return divCard;
     }
     const checklistHeader = function(title, dueDate) {
-        let divHeader = create.div('', '.header');
+        let divHeader = div('', '.header');
 
-        let h2Title = create.h2(title, '.title');
-        let spanDate = create.span(dueDate, '.date');
-        let spanModify = create.span('...', '.task', '.modify');
-        let spanDelete = create.span('X', '.delete');
+        let h2Title = h2(title, '.title');
+        let spanDate = span(dueDate, '.date');
+        let spanModify = span('...', '.task', '.modify');
+        let spanDelete = span('X', '.delete');
 
         divHeader.appendChild(h2Title);
         divHeader.appendChild(spanDate);
@@ -145,30 +154,30 @@ const domDisplay = (() => {
     }
     const checklistContent = function(items) {
         let itemCount = 1;
-        let divChecks = create.div('', '.checks');
+        let divChecks = div('', '.checks');
 
-        let ul = create.ul('', '');
+        let ulItem = ul('', '');
         for (let i in items) {
-            let liItem = create.li('', '');
+            let liItem = li('', '');
 
-            let checkbox = create.input(itemCount);
-            let label = create.label(items[i], itemCount, '');
+            let checkbox = input(itemCount);
+            let labelItem = label(items[i], itemCount, '');
             itemCount++;
 
             liItem.appendChild(checkbox);
-            liItem.appendChild(label);
+            liItem.appendChild(labelItem);
 
-            ul.appendChild(liItem);
+            ulItem.appendChild(liItem);
         }
-        divChecks.appendChild(ul);
+        divChecks.appendChild(ulItem);
         
         return divChecks;
     }
     const taskDetails = function(priority, tags) {
-        let divDetails = create.div('', '.details');
+        let divDetails = div('', '.details');
 
-        let divPriority = create.div(priority, '.priority');
-        let divTags = create.div(tags, '.tags');
+        let divPriority = div(priority, '.priority');
+        let divTags = div(tags, '.tags');
 
         divDetails.appendChild(divPriority);
         divDetails.appendChild(divTags);
