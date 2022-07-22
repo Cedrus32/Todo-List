@@ -4,161 +4,98 @@ import events from '../events.js';
 
 const library = (() => {
     // dynamic data
-    let taskLib = [];
-    let projLib = [];
+    let _projLib = [];
+    let _taskLib = [];
     let _taskCounter = 0;
     let _projectCounter = 0;
 
     //// cache DOM
 
     // bind events
-    events.subscribe('createProject', createProject);
-    events.subscribe('createTask', createTask);
+    events.subscribe('createProject', _createProject);
+    events.subscribe('createTask', _createTask);
 
     // factories
-    const _project = function(projID, projTitle, projDesc) {
-        // data
-        const objType = 'proj';
-        let id = projID;
-        let title = projTitle;
-        let desc = projDesc;
-
-        // setters
-        function setTitle(value) {
-            if (value !== title) {
-                title = value;
-            };
-        }
-        function setDesc(value) {
-            if (value !== desc) {
-                desc = value;
-            };
+    class Project {
+        // attributes
+        constructor(projectID, projectTitle, projectDescription) {
+            this.type = 'project';
+            this.id = projectID;
+            this.title = projectTitle;
+            this.description = projectDescription;
         }
 
-        // getters
-        function getData() {
-            let dataArray = [objType, id, title, desc];
-            return dataArray;
-        }
-        function getID() {
-            return id;
-        }
-        function getTitle() {
-            return title;
-        }
-        function getDesc() {
-            return desc;
-        }
+        // // getters
+        // get attributeArray() {
+        //     let attributeArray = [this.type, this.id, this.title, this.description];
+        //     return attributeArray;
+        // }
 
-        // methods
-
-        return {
-            setTitle,   // ...
-            setDesc,    // ...
-            getData,    // dom.js (projHeader() -- qc)
-            getID,      // ...
-            getTitle,   // ...
-            getDesc,    // dom.js (projJeader())
-        }
+        // // setters
+        // set title(value) {
+        //     if (value !== this.title) {
+        //         this.title = value;
+        //     };
+        // }
+        // set description(value) {
+        //     if (value !== this.description) {
+        //         this.description = value;
+        //     };
+        // }
     }
-    const _task = function(taskID, projectID, taskType, taskTitle, taskDesc, taskDue, taskPriority, taskTags, taskItems) {
-        // data
-        const objType = 'task';
-        let id = taskID;
-        let projID = projectID;
-        let type = taskType;
-        let title = taskTitle;
-        let desc = taskDesc;
-        let dueDate = taskDue;
-        let priority = taskPriority;
-        let tags = taskTags;
-        let items = [];
-        if (type === 'checklist') {
-            items = taskItems;
-        }
 
-        // setters
-        function setTitle(value) {
-            if (value !== title) {
-                title = value;
-            };
-        }
-        function setDesc(value) {
-            if (value !== desc) {
-                desc = value;
-            };
-        }
-        function setDue(value) {
-            if (value !== dueDate) {
-                dueDate = value;
-            };
-        }
-        function setPriority(value) {
-            if (value !== priority) {
-                priority = value;
-            };
-        }
-        function setTags(value) {
-            if (value !== tags) {
-                tags = value;
+    class Task {
+        // attributes
+        constructor(taskID, projectID, taskType, taskTitle, taskDescription, taskDue, taskPriority, taskTags, taskItems) {
+            this.id = taskID;
+            this.projectID = projectID;
+            this.type = taskType;
+            this.title = taskTitle;
+            this.description = taskDescription;
+            this.dueDate = taskDue;
+            this.priority = taskPriority;
+            this.tags = taskTags;
+            this.items = [];
+            if (this.type === 'checklist') {
+                this.items = taskItems;
             };
         }
 
-        // getters
-        function getData() {
-            let infoArray = [objType, id, type, title, desc, dueDate, priority, projID, tags, items];
-            return infoArray;
-        }
-        function getID() {
-            return id;
-        }
-        function getType() {
-            return type;
-        }
-        function getTitle() {
-            return title;
-        }
-        function getDesc() {
-            return desc;
-        }
-        function getDue() {
-            return dueDate;
-        }
-        function getPriority() {
-            return priority;
-        }
-        function getTags() {
-            return tags;
-        }
-        function getItems() {
-            return items;
-        }
+        // // getters
+        // get attributeArray() {
+        //     let attributeArray = [this._type, this._id, this.projectID, this.title, this.description, this.dueDate, this.priority, this.tags, this.items];
+        //     return attributeArray;
+        // }
 
-        return {
-            setTitle,       // ...
-            setDesc,        // ...
-            setDue,         // ...
-            setPriority,    // ...
-            setTags,        // ...
-            getData,        // dom.js (taskCard() -- qc)
-            getID,          // ...
-            getType,        // ...
-            getTitle,       // ...
-            getDesc,        // dom.js (taskCard())
-            getDue,         // ...
-            getPriority,    // ...
-            getTags,        // ...
-            getItems,       // ...
-        }
+        // // setters
+        // set title(value) {
+        //     if (value !== this.title) {
+        //         this.title = value;
+        //     };
+        // }
+        // set description(value) {
+        //     if (value !== this.description) {
+        //         this.description = value;
+        //     };
+        // }
+        // set dueDate(value) {
+        //     if (value !== this.dueDate) {
+        //         this.dueDate = value;
+        //     };
+        // }
+        // set priority(value) {
+        //     if (value !== this.priority) {
+        //         this.priority = value;
+        //     };
+        // }
+        // set tags(valueArray) {
+        //     if (valueArray !== this.tags) {
+        //         this.tags = valueArray;
+        //     };
+        // }
     }
 
     // getters
-    function getProjLib() {
-        return projLib;
-    }
-    function getTaskLib() {
-        return taskLib;
-    }
     function getItem(cardID) {
         let libRef = cardID.slice(0, (cardID.length - 1));
         let itemRef = cardID.slice(-1);
@@ -166,24 +103,24 @@ const library = (() => {
         console.log(itemRef);
 
         if (libRef == 'proj') {
-            for (let p in projLib) {
-                if (projLib[p].getID() == itemRef) {
-                    return projLib[p].getData();
+            for (let p in _projLib) {
+                if (_projLib[p].getID() == itemRef) {
+                    return _projLib[p].getData();
                 };
             };
         } else if (libRef == 'task') {
-            for (let t in taskLib) {
-                console.log(taskLib[t]);
-                if (taskLib[t].getID() == itemRef) {
-                    return taskLib[t].getData();
+            for (let t in _taskLib) {
+                console.log(_taskLib[t]);
+                if (_taskLib[t].getID() == itemRef) {
+                    return _taskLib[t].getData();
                 };
             };
         };
     }
     function getProjOptionData() {
         let dataArray = [];
-        for (let p in projLib) {
-            dataArray.push([projLib[p].getID(), projLib[p].getTitle()]);
+        for (let p in _projLib) {
+            dataArray.push([_projLib[p].getID(), _projLib[p].getTitle()]);
         }
         console.log('******* DATA ARRAY *******')
         console.log(dataArray);
@@ -191,28 +128,28 @@ const library = (() => {
         return dataArray;
     }
     function _getProjName(projRef) {
-        for (let p in projLib) {
-            if (projLib[p].getID() === projRef) {
-                return projLib[p].getTitle();
+        for (let p in _projLib) {
+            if (_projLib[p].getID() === projRef) {
+                return _projLib[p].getTitle();
             };
         };
     }
 
     // methods
-    function createProject(attributeArray) {
+    function _createProject(attributeArray) {
         let _id = _projectCounter;
-        let _newProject = _project(_id, ...attributeArray);
-        projLib.push(_newProject);
-        console.log(_newProject);
-        events.publish('libraryChange', _newProject);
+        let _newProject = new Project(_id, ...attributeArray);
+        // console.log(_newProject);
+        _projLib.push(_newProject);
+        events.publish('newProject', _newProject);
         _projectCounter++;
     }
-    function createTask(attributeArray) {
-        let id = _taskCounter;
-        let newTask = _task(id, ...attributeArray);
-        taskLib.push(newTask);
-        console.log(newTask);
-        events.publish('libraryChange', newTask);
+    function _createTask(attributeArray) {
+        let _id = _taskCounter;
+        let _newTask = new Task(_id, ...attributeArray);
+        // console.log(_newTask);
+        _taskLib.push(_newTask);
+        events.publish('newTask', _newTask);
         _taskCounter++;
     }
     function deleteProject() {
@@ -225,12 +162,8 @@ const library = (() => {
 
     // make public
     return {
-        getProjLib,         // genDefault.js (_genDefDisplay())
-        getTaskLib,         // genDefault.js (_genDefDisplay())
         getItem,            // forms.js (_queryLibrary())
         getProjOptionData,  // index.js -> forms.js (genProjOptions())
-        createProject,      // genDefault.js (_createDefaultProjs())
-        createTask,         // genDefault.js (_createDefaultTasks())
         deleteProject,      // ...
         deleteTask,         // ...
     };

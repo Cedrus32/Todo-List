@@ -10,14 +10,14 @@ const domDisplay = (() => {
     let taskContainer = document.getElementById('task-container');
 
     // project manager factory
-    const genProj = function(project) {
+    const renderProject = function(project) {
         //// console.log(project.getData());
         //// console.log(project.getDesc());
-        let cardID = '#proj' + project.getID();
+        let cardID = '#proj' + project.id;
         let card = div('', '.card', '.project', cardID);
 
-        let header = projHeader(project.getTitle());
-        let description = div(project.getDesc(), '.description');
+        let header = projHeader(project.title);
+        let description = div(project.description, '.description');
 
         card.appendChild(header);
         card.appendChild(description);
@@ -41,20 +41,23 @@ const domDisplay = (() => {
     }
 
     // task manager factories
-    const genTasks = function(tasks) {
-        let taskNum = tasks.length;
-        let controls = taskControls(taskNum);
-        taskContainer.appendChild(controls);
+    const renderTask = function(task) {
+        // ! implement outside getTasks
+        // let taskNum = tasks.length;
+        // let controls = taskControls(taskNum);
+        // taskContainer.appendChild(controls);
 
-        for (let t in tasks) {
-            let card;
-            if (tasks[t].getType() === 'singleton') {
-                card = singleton(tasks[t]);
-            } else if (tasks[t].getType() === 'checklist') {
-                card = checklist(tasks[t]);
-            };
-            taskContainer.appendChild(card);
-        };
+        console.log('enter renderTask');
+        console.log(task);
+        let card;
+        if (task.type === 'singleton') {
+            console.log('confirmed: type singleton');
+            card = singleton(task);
+        } else if (task.type === 'checklist') {
+            console.log('confirmed: type checklist');
+            card = checklist(task);
+        }
+        taskContainer.appendChild(card);
     }
 
     // task helper factories
@@ -71,11 +74,12 @@ const domDisplay = (() => {
         return divControls;
     }
     const singleton = function(task) {
-        let cardID = '#task' + task.getID();
+        console.log('enter singletion()');
+        let cardID = '#task' + task.id;
         let divCard = div('', '.card', '.singleton', cardID);
 
-        let inputElem = input(task.getID());
-        let cardContent = singletonContent(task.getID(), task.getTitle(), task.getDue(), task.getDesc(), task.getPriority(), task.getTags());
+        let inputElem = input(task.id);
+        let cardContent = singletonContent(task.id, task.title, task.dueDate, task.description, task.priority, task.tags);
 
         divCard.appendChild(inputElem);
         divCard.appendChild(cardContent);
@@ -114,13 +118,13 @@ const domDisplay = (() => {
         return divHeader;
     }
     const checklist = function(task) {
-        let cardID = '#task' + task.getID();
+        let cardID = '#task' + task.id;
         let divCard = div('', '.card', '.checklist', cardID);
 
-        let header = checklistHeader(task.getTitle(), task.getDue());
-        let description = div(task.getDesc(), '.description');
-        let checks = checklistContent(task.getItems());
-        let details = taskDetails(task.getPriority(), task.getTags());
+        let header = checklistHeader(task.title, task.dueDate);
+        let description = div(task.description, '.description');
+        let checks = checklistContent(task.items);
+        let details = taskDetails(task.priority, task.tags);
 
         divCard.appendChild(header);
         divCard.appendChild(description);
@@ -200,8 +204,8 @@ const domDisplay = (() => {
     // }
 
     return {
-        genProj,        // genDefault.js (initDefault())
-        genTasks,       // genDefault.js (initDefault())
+        renderProject,  // genDefault.js (initDefault())
+        renderTask,     // genDefault.js (initDefault())
         assignEvents,   // display.js (initDefault())
         // clear,          // ...
     }

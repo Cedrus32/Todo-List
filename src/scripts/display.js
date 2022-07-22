@@ -1,4 +1,3 @@
-import library from './library';
 import events from '../events.js';
 import domDisplay from './domDisplay';
 
@@ -9,52 +8,49 @@ import domDisplay from './domDisplay';
 
 const display = (() => {
     // data
-    let _project = [['Unsorted', "This is your tasks' default location. Any tasks without a project live here."],
-                    ];
-    let _tasks = [[0, 'singleton', 'Task 1', 'this is a sample task', '2001-01-01', 3, '#tag'],
-                  [0, 'singleton', 'Task 2', 'this is #2', '2002-02-02', 2, ''],
-                  [0, 'checklist', 'Task 3', 'this is a checklist', '2003-03-03', 1, '#tig #tog', ['item 1', 'item 2', 'item 3']],
-                 ];
+    let _sampleProjectValues = [['Unsorted', "This is your tasks' default location. Any tasks without a project live here."],
+                               ];
+    let _sampleTaskValues = [[0, 'singleton', 'Task 1', 'this is a sample task', '2001-01-01', 3, '#tag'],
+                             [0, 'singleton', 'Task 2', 'this is #2', '2002-02-02', 2, ''],
+                             [0, 'checklist', 'Task 3', 'this is a checklist', '2003-03-03', 1, '#tig #tog', ['item 1', 'item 2', 'item 3']],
+                            ];
+    let _currentProject = 0;
 
     // bind events
-    events.subscribe('libraryChange', _genDisplay);
+    events.subscribe('newProject', _renderDisplay);
+    events.subscribe('newTask', _renderDisplay);
 
     // managers
     function initDefault() {
-        _createProj(_project);
-        _createTasks(_tasks);
-        // _genDisplay(0);
-        domDisplay.assignEvents();
+        _createProject(_sampleProjectValues[0]);
+        for (let t in _sampleTaskValues) {
+            _createTask(_sampleTaskValues[t]);
+        }
+
+        // domDisplay.assignEvents(); // ! not working
     }
 
     // helpers
-    function _createProj(project) {
-        for (let p in project) {
-            events.publish('createProject', project[p]);
-        };
+    function _createProject(projectValues) {
+        events.publish('createProject', projectValues);
     }
-    function _createTasks(tasks) {
-        for (let t in tasks) {
-            events.publish('createTask', tasks[t]);
-        };
+    function _createTask(taskValues) {
+        events.publish('createTask', taskValues);
     }
-    function _genDisplay(object) {
-        // objectType conditional
-        console.log(object);
-        domDisplay.genProj(object);
-        // if (object.getType() === 'proj') {
-        //     domDisplay.genProj(object);
-        // };
-        // if (object.getType() === 'task') {
-        //     domDisplay.genTasks(object);
-        // };
-
-
-        // let projectLib = library.getProjLib();
-        // domDisplay.genProj(projectLib[0]);
-
+    function _renderDisplay(object) {
+        if (object.type === 'project') {
+            console.log('confirmed: type project');
+            domDisplay.renderProject(object);
+        };
+        if (object.type === 'singleton' || object.type === 'checklist') {
+            console.log('confirmed: type singleton || checklist')
+            domDisplay.renderTask(object);
+        }
         // let taskLib = library.getTaskLib();
         // domDisplay.genTasks(taskLib);
+    }
+    function _modifyDisplay() {
+        // index into DOM for specific itemID, set new content
     }
 
     return {
