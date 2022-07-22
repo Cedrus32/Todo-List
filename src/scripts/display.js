@@ -1,4 +1,4 @@
-// import library from './library';
+import library from './library';
 import events from '../events.js';
 import domDisplay from './domDisplay';
 
@@ -11,16 +11,19 @@ const display = (() => {
     // data
     let _project = [['Unsorted', "This is your tasks' default location. Any tasks without a project live here."],
                     ];
-    let _tasks = [[1, 'singleton', 'Task 1', 'this is a sample task', '2001-01-01', 3, '#tag'],
-                  [1, 'singleton', 'Task 2', 'this is #2', '2002-02-02', 2, ''],
-                  [1, 'checklist', 'Task 3', 'this is a checklist', '2003-03-03', 1, '#tig #tog', ['item 1', 'item 2', 'item 3']],
+    let _tasks = [[0, 'singleton', 'Task 1', 'this is a sample task', '2001-01-01', 3, '#tag'],
+                  [0, 'singleton', 'Task 2', 'this is #2', '2002-02-02', 2, ''],
+                  [0, 'checklist', 'Task 3', 'this is a checklist', '2003-03-03', 1, '#tig #tog', ['item 1', 'item 2', 'item 3']],
                  ];
 
-    // manager
+    // bind events
+    events.subscribe('libraryChange', _genDisplay);
+
+    // managers
     function initDefault() {
         _createProj(_project);
         _createTasks(_tasks);
-        _genDisplay();
+        // _genDisplay(0);
         domDisplay.assignEvents();
     }
 
@@ -35,14 +38,23 @@ const display = (() => {
             events.publish('createTask', tasks[t]);
         };
     }
-    function _genDisplay(projectID) {
-        // send notice to library for query by projectID
-        // send
-        let projectLib = library.getProjLib();
-        domDisplay.genProj(projectLib[0]);
+    function _genDisplay(object) {
+        // objectType conditional
+        console.log(object);
+        domDisplay.genProj(object);
+        // if (object.getType() === 'proj') {
+        //     domDisplay.genProj(object);
+        // };
+        // if (object.getType() === 'task') {
+        //     domDisplay.genTasks(object);
+        // };
 
-        let taskLib = library.getTaskLib();
-        domDisplay.genTasks(taskLib);
+
+        // let projectLib = library.getProjLib();
+        // domDisplay.genProj(projectLib[0]);
+
+        // let taskLib = library.getTaskLib();
+        // domDisplay.genTasks(taskLib);
     }
 
     return {

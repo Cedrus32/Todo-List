@@ -6,8 +6,8 @@ const library = (() => {
     // dynamic data
     let taskLib = [];
     let projLib = [];
-    let _taskCounter = 1;
-    let _projectCounter = 1;
+    let _taskCounter = 0;
+    let _projectCounter = 0;
 
     //// cache DOM
 
@@ -204,6 +204,7 @@ const library = (() => {
         let _newProject = _project(_id, ...attributeArray);
         projLib.push(_newProject);
         console.log(_newProject);
+        events.publish('libraryChange', _newProject);
         _projectCounter++;
     }
     function createTask(attributeArray) {
@@ -211,6 +212,7 @@ const library = (() => {
         let newTask = _task(id, ...attributeArray);
         taskLib.push(newTask);
         console.log(newTask);
+        events.publish('libraryChange', newTask);
         _taskCounter++;
     }
     function deleteProject() {
