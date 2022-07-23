@@ -1,9 +1,8 @@
 // import create from './domBase';
 import { default as div, h1, h2, ul, li, span, input, label} from './elements';
 import events from '../events';
-// import forms from './forms';
 
-// * factory class for display DOM groupings
+// * factory module for display DOM groupings
 
 const domDisplay = (() => {
     // data
@@ -198,16 +197,6 @@ const domDisplay = (() => {
     }
 
     // methods
-    function _assignEvents() {
-        let modBtns = document.querySelectorAll('span.modify');
-        modBtns.forEach(btn => btn.addEventListener('click', (e) => {
-            forms.openModify(e);
-        }));
-        let createBtns = document.querySelectorAll('div.create');
-        createBtns.forEach(btn => btn.addEventListener('click', (e) => {
-            forms.openCreate(e);
-        }));
-    };
     function _renderTaskCounterContent() {
         taskCountSpan.textContent = _taskCounter;
         _taskCounter++;
