@@ -3,9 +3,6 @@ import domDisplay from './domDisplay';
 
 // * manages interface between display DOM & library arrays
 
-// ! add conditional that receives a notification from viewPrefs OR forms to update display (handled in index.js?)
-// ! create additional file viewPrefs.js
-
 const display = (() => {
     // data
     let _sampleProjectValues = [['Unsorted', "This is your tasks' default location. Any tasks without a project live here."],
@@ -15,10 +12,6 @@ const display = (() => {
                              [0, 'checklist', 'Task 3', 'this is a checklist', '2003-03-03', 1, '#tig #tog', ['item 1', 'item 2', 'item 3']],
                             ];
     let _currentProject = 0;
-
-    // bind events
-    events.subscribe('newProject', _renderDisplay);
-    events.subscribe('newTask', _renderDisplay);
 
     // managers
     function initDefault() {
@@ -40,18 +33,20 @@ const display = (() => {
     function _renderDisplay(object) {
         if (object.type === 'project') {
             console.log('confirmed: type project');
-            domDisplay.renderProject(object);
+            events.publish('renderProject', object);
         };
         if (object.type === 'singleton' || object.type === 'checklist') {
             console.log('confirmed: type singleton || checklist')
-            domDisplay.renderTask(object);
+            events.publish('renderTask', object);
         }
-        // let taskLib = library.getTaskLib();
-        // domDisplay.genTasks(taskLib);
     }
     function _modifyDisplay() {
         // index into DOM for specific itemID, set new content
     }
+
+    // bind events
+    events.subscribe('newProject', _renderDisplay);
+    events.subscribe('newTask', _renderDisplay);
 
     return {
         initDefault,   // used by index.js
