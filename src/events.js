@@ -17,12 +17,12 @@ const events = (() => {
     }
 
     // publish event with data
-    function publish(eventName, data) {
+    function publish(eventName, ...data) {
         if (!Array.isArray(_events[eventName])){
             return;
         }
         _events[eventName].forEach(callback => {
-            callback(data);
+            callback(...data);
         });
     }
 
