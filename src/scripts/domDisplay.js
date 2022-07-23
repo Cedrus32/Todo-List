@@ -1,47 +1,33 @@
 // import create from './domBase';
 import { default as div, h1, h2, ul, li, span, input, label} from './elements';
-import forms from './forms';
+import events from '../events';
+// import forms from './forms';
 
 // * factory class for display DOM groupings
 
 const domDisplay = (() => {
     // cache DOM
-    let projContainer = document.getElementById('proj-container');
+    let projectContainer = document.getElementById('proj-container');
     let taskContainer = document.getElementById('task-container');
 
     // project manager factory
-    const renderProject = function(project) {
+    const _renderProject = function(project) {
         //// console.log(project.getData());
         //// console.log(project.getDesc());
-        let cardID = '#proj' + project.id;
-        let card = div('', '.card', '.project', cardID);
+        let cardID = '#project' + project.id;
+        let projectCard = div('', '.card', '.project', cardID);
 
-        let header = projHeader(project.title);
-        let description = div(project.description, '.description');
+        let projectHeader = _renderProjectHeader(project.title);
+        let projectDescription = div(project.description, '.description');
 
-        card.appendChild(header);
-        card.appendChild(description);
+        projectCard.appendChild(projectHeader);
+        projectCard.appendChild(projectDescription);
 
-        projContainer.appendChild(card);
-    }
-
-    // project helper factories
-    const projHeader = function(title) {
-        let divHeader = div('', '.header');
-
-        let h1Title = h1(title, '.title');
-        let spanModify = span('...', '.proj', '.modify');
-        let spanDelete = span('X', '.delete');
-
-        divHeader.appendChild(h1Title);
-        divHeader.appendChild(spanModify);
-        divHeader.appendChild(spanDelete);
-
-        return divHeader;
+        projectContainer.appendChild(projectCard);
     }
 
     // task manager factories
-    const renderTask = function(task) {
+    const _renderTask = function(task) {
         // ! implement outside getTasks
         // let taskNum = tasks.length;
         // let controls = taskControls(taskNum);
@@ -49,15 +35,44 @@ const domDisplay = (() => {
 
         console.log('enter renderTask');
         console.log(task);
-        let card;
+        let taskCard;
         if (task.type === 'singleton') {
             console.log('confirmed: type singleton');
-            card = singleton(task);
+            taskCard = _renderSingleton(task);
         } else if (task.type === 'checklist') {
             console.log('confirmed: type checklist');
-            card = checklist(task);
+            taskCard = _renderChecklist(task);
         }
-        taskContainer.appendChild(card);
+        taskContainer.appendChild(taskCard);
+    }
+    const _renderSingleton = function(task) {
+        console.log('enter singletion()');
+        let cardID = '#task' + task.id;
+        let divCard = div('', '.card', '.singleton', cardID);
+
+        let singletonCheckmark = input(task.id);
+        let taskCardContent = _renderSingletonContent(task.id, task.title, task.dueDate, task.description, task.priority, task.tags);
+
+        divCard.appendChild(singletonCheckmark);
+        divCard.appendChild(taskCardContent);
+
+        return divCard;
+    }
+    const _renderChecklist = function(task) {
+        let cardID = '#task' + task.id;
+        let divCard = div('', '.card', '.checklist', cardID);
+
+        let checklistHeader = _renderChecklistHeader(task.title, task.dueDate);
+        let checklistDescription = div(task.description, '.description');
+        let checklistContent = _renderChecklistContent(task.items);
+        let checklistDetails = _renderTaskDetails(task.priority, task.tags);
+
+        divCard.appendChild(checklistHeader);
+        divCard.appendChild(checklistDescription);
+        divCard.appendChild(checklistContent);
+        divCard.appendChild(checklistDetails);
+
+        return divCard;
     }
 
     // task helper factories
@@ -73,82 +88,20 @@ const domDisplay = (() => {
 
         return divControls;
     }
-    const singleton = function(task) {
-        console.log('enter singletion()');
-        let cardID = '#task' + task.id;
-        let divCard = div('', '.card', '.singleton', cardID);
-
-        let inputElem = input(task.id);
-        let cardContent = singletonContent(task.id, task.title, task.dueDate, task.description, task.priority, task.tags);
-
-        divCard.appendChild(inputElem);
-        divCard.appendChild(cardContent);
-
-        return divCard;
-    }
-    const singletonContent = function(id, title, dueDate, desc, priority, tags) {
+    const _renderSingletonContent = function(id, title, dueDate, description, priority, tags) {
         let divContent = div('', '.content');
 
-        let header = singletonHeader(id, title, dueDate);
-        let description = div(desc, '.description');
-        let details = taskDetails(priority, tags);
+        let taskHeader = _renderSingletonHeader(id, title, dueDate);
+        let taskDescription = div(description, '.description');
+        let taskDetails = _renderTaskDetails(priority, tags);
 
-        divContent.appendChild(header);
-        divContent.appendChild(description);
-        divContent.appendChild(details);
+        divContent.appendChild(taskHeader);
+        divContent.appendChild(taskDescription);
+        divContent.appendChild(taskDetails);
 
         return divContent;
     }
-    const singletonHeader = function(id, title, dueDate) {
-        let divHeader = div('', '.header');
-
-        let h2Title = h2(title, '');
-        let labelTitle = label('', id, '.title');
-        labelTitle.appendChild(h2Title);
-
-        let spanDate = span(dueDate, '.date');
-        let spanModify = span('...', '.task', '.modify');
-        let spanDelete = span('X', '.delete');
-
-        divHeader.appendChild(labelTitle);
-        divHeader.appendChild(spanDate);
-        divHeader.appendChild(spanModify);
-        divHeader.appendChild(spanDelete);
-
-        return divHeader;
-    }
-    const checklist = function(task) {
-        let cardID = '#task' + task.id;
-        let divCard = div('', '.card', '.checklist', cardID);
-
-        let header = checklistHeader(task.title, task.dueDate);
-        let description = div(task.description, '.description');
-        let checks = checklistContent(task.items);
-        let details = taskDetails(task.priority, task.tags);
-
-        divCard.appendChild(header);
-        divCard.appendChild(description);
-        divCard.appendChild(checks);
-        divCard.appendChild(details);
-
-        return divCard;
-    }
-    const checklistHeader = function(title, dueDate) {
-        let divHeader = div('', '.header');
-
-        let h2Title = h2(title, '.title');
-        let spanDate = span(dueDate, '.date');
-        let spanModify = span('...', '.task', '.modify');
-        let spanDelete = span('X', '.delete');
-
-        divHeader.appendChild(h2Title);
-        divHeader.appendChild(spanDate);
-        divHeader.appendChild(spanModify);
-        divHeader.appendChild(spanDelete);
-
-        return divHeader;
-    }
-    const checklistContent = function(items) {
+    const _renderChecklistContent = function(items) {
         let itemCount = 1;
         let divChecks = div('', '.checks');
 
@@ -169,7 +122,53 @@ const domDisplay = (() => {
         
         return divChecks;
     }
-    const taskDetails = function(priority, tags) {
+    const _renderProjectHeader = function(title) {
+        let divHeader = div('', '.header');
+
+        let h1Title = h1(title, '.title');
+        let spanModify = span('...', '.proj', '.modify');
+        let spanDelete = span('X', '.delete');
+
+        divHeader.appendChild(h1Title);
+        divHeader.appendChild(spanModify);
+        divHeader.appendChild(spanDelete);
+
+        return divHeader;
+    }
+    const _renderSingletonHeader = function(id, title, dueDate) {
+        let divHeader = div('', '.header');
+
+        let h2TitleContent = h2(title, '');
+        let labelCheckmarkTitle = label('', id, '.title');
+        labelCheckmarkTitle.appendChild(h2TitleContent);
+
+        let spanDate = span(dueDate, '.date');
+        let spanModify = span('...', '.task', '.modify');
+        let spanDelete = span('X', '.delete');
+
+        divHeader.appendChild(labelCheckmarkTitle);
+        divHeader.appendChild(spanDate);
+        divHeader.appendChild(spanModify);
+        divHeader.appendChild(spanDelete);
+
+        return divHeader;
+    }
+    const _renderChecklistHeader = function(title, dueDate) {
+        let divHeader = div('', '.header');
+
+        let h2Title = h2(title, '.title');
+        let spanDate = span(dueDate, '.date');
+        let spanModify = span('...', '.task', '.modify');
+        let spanDelete = span('X', '.delete');
+
+        divHeader.appendChild(h2Title);
+        divHeader.appendChild(spanDate);
+        divHeader.appendChild(spanModify);
+        divHeader.appendChild(spanDelete);
+
+        return divHeader;
+    }
+    const _renderTaskDetails = function(priority, tags) {
         let divDetails = div('', '.details');
 
         let divPriority = div(priority, '.priority');
@@ -203,13 +202,8 @@ const domDisplay = (() => {
     //     };
     // }
 
-    return {
-        renderProject,  // genDefault.js (initDefault())
-        renderTask,     // genDefault.js (initDefault())
-        assignEvents,   // display.js (initDefault())
-        // clear,          // ...
-    }
+    // bind events
+    events.subscribe('renderProject', _renderProject)
+    events.subscribe('renderTask', _renderTask);
 
 })();
-
-export default domDisplay;
