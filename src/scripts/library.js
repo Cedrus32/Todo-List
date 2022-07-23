@@ -107,9 +107,15 @@ const library = (() => {
             };
         } else if (libraryReference === 'task') {
             for (let t in _taskLibrary) {
+                let projectTitle;
+                for (let p in _projectLibrary) {
+                    if (_projectLibrary[p].id === _taskLibrary[t].projectID) {
+                        projectTitle = _projectLibrary[p].title;
+                    };
+                };
                 if (_taskLibrary[t].id == itemReference) {
                     let item = _taskLibrary[t];
-                    let itemValueArray = [item.title, item.description, item.dueDate, item.priority, item.tags];
+                    let itemValueArray = [item.title, item.description, item.dueDate, item.priority, projectTitle, item.tags];
                     events.publish('closeModifyQuery', libraryReference, itemValueArray);
                     return;
                 };
@@ -141,6 +147,7 @@ const library = (() => {
         // console.log(_newProject);
         _projectLibrary.push(_newProject);
         events.publish('newProject', _newProject);
+        console.log(_projectLibrary);
         _projectCounter++;
     }
     function _createTask(attributeArray) {
