@@ -13,8 +13,9 @@ const domDisplay = (() => {
     let projectContainer = document.getElementById('proj-container');
     let taskContainer = document.getElementById('task-container');
     let taskCountSpan = document.querySelector('div.tally span');
+    let createTaskButton = document.querySelector('div.task-controls div.create');
 
-    // project manager factory
+    // project manager
     const _renderProject = function(project) {
         //// console.log(project.getData());
         //// console.log(project.getDesc());
@@ -32,7 +33,7 @@ const domDisplay = (() => {
         _renderTaskCounterContent();
     }
 
-    // task manager factories
+    // task manager
     const _renderTask = function(task) {
         // ! implement outside getTasks
         // let taskNum = tasks.length;
@@ -82,7 +83,7 @@ const domDisplay = (() => {
         return divCard;
     }
 
-    // task helper factories
+    // helper factories
     const _renderSingletonContent = function(id, title, dueDate, description, priority, tags) {
         let divContent = div('', '.content');
 
@@ -124,6 +125,13 @@ const domDisplay = (() => {
         let spanModify = span('...', '.proj', '.modify');
         let spanDelete = span('X', '.delete');
 
+        spanModify.addEventListener('click', () => {
+            console.log('publish event data');
+        });
+        spanDelete.addEventListener('click', () => {
+            console.log('publish event data');
+        });
+
         divHeader.appendChild(h1Title);
         divHeader.appendChild(spanModify);
         divHeader.appendChild(spanDelete);
@@ -141,6 +149,13 @@ const domDisplay = (() => {
         let spanModify = span('...', '.task', '.modify');
         let spanDelete = span('X', '.delete');
 
+        spanModify.addEventListener('click', () => {
+            console.log('publish event data');
+        });
+        spanDelete.addEventListener('click', () => {
+            console.log('publish event data');
+        });
+
         divHeader.appendChild(labelCheckmarkTitle);
         divHeader.appendChild(spanDate);
         divHeader.appendChild(spanModify);
@@ -155,6 +170,13 @@ const domDisplay = (() => {
         let spanDate = span(dueDate, '.date');
         let spanModify = span('...', '.task', '.modify');
         let spanDelete = span('X', '.delete');
+
+        spanModify.addEventListener('click', () => {
+            console.log('publish event data');
+        });
+        spanDelete.addEventListener('click', () => {
+            console.log('publish event data');
+        });
 
         divHeader.appendChild(h2Title);
         divHeader.appendChild(spanDate);
@@ -176,7 +198,7 @@ const domDisplay = (() => {
     }
 
     // methods
-    function assignEvents() {
+    function _assignEvents() {
         let modBtns = document.querySelectorAll('span.modify');
         modBtns.forEach(btn => btn.addEventListener('click', (e) => {
             forms.openModify(e);
@@ -190,19 +212,26 @@ const domDisplay = (() => {
         taskCountSpan.textContent = _taskCounter;
         _taskCounter++;
     }
-    // function clear {
-    //  // ! unsubscript from onEmit
-    //     while (projContainer.lastChild) {
-    //         projContainer.remove(projContainer.lastChild);
-    //     };
+    function _clearDisplay() {
+        // while (projContainer.lastChild) {
+        //     // * remove any eventListeners from objects
+        //     projContainer.remove(projContainer.lastChild);
+        // };
 
-    //     while (taskContainer.lastChild) {
-    //         taskContainer.remove(taskContainer.lastChild);
-    //     };
-    //     // * adjust taskCounter, call renderTaskCounterContent
-    // }
+        // // * change criteria -- KEEP LAST CHILD (task controls)
+        // while (taskContainer.lastChild) {
+        //     taskContainer.remove(taskContainer.lastChild);
+        // };
+        // // * adjust taskCounter, call renderTaskCounterContent
+        // // * unsubscribe from onEmit
+    }
 
     // bind events
+    // * modify & delete click events in _renderHeader()'s ^^^
+    createTaskButton.addEventListener('click', () => {
+        // publish 'create', 'task' data to pubsub (subscribed by forms.js)
+        console.log('publish event data');
+    });
     events.subscribe('renderProject', _renderProject)
     events.subscribe('renderTask', _renderTask);
 
