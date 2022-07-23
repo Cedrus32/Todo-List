@@ -1,4 +1,4 @@
-import events from '../events.js';
+import events from '../events';
 
 // * 'backend' manager class containing project/task states, factories, & methods
 
@@ -10,10 +10,6 @@ const library = (() => {
     let _projectCounter = 0;
 
     //// cache DOM
-
-    // bind events
-    events.subscribe('createProject', _createProject);
-    events.subscribe('createTask', _createTask);
 
     // factories
     class Project {
@@ -96,7 +92,7 @@ const library = (() => {
     }
 
     // getters
-    function getItem(cardID) {
+    function getItem(cardID) {  // ! delete later?
         let libRef = cardID.slice(0, (cardID.length - 1));
         let itemRef = cardID.slice(-1);
         console.log(libRef);
@@ -117,7 +113,7 @@ const library = (() => {
             };
         };
     }
-    function getProjOptionData() {
+    function getProjOptionData() {  // ! delete later?
         let dataArray = [];
         for (let p in _projLib) {
             dataArray.push([_projLib[p].getID(), _projLib[p].getTitle()]);
@@ -127,7 +123,7 @@ const library = (() => {
         console.log('******* DATA ARRAY *******')
         return dataArray;
     }
-    function _getProjName(projRef) {
+    function _getProjName(projRef) {  // ! delete later?
         for (let p in _projLib) {
             if (_projLib[p].getID() === projRef) {
                 return _projLib[p].getTitle();
@@ -152,22 +148,22 @@ const library = (() => {
         events.publish('newTask', _newTask);
         _taskCounter++;
     }
-    function deleteProject() {
+    function _deleteProject() {
         // * index into projArray, delete project
         // * send notification to update sidebar
     }
-    function deleteTask() {
+    function _deleteTask() {
         // * index into libArray, delete task
     }
+
+    // bind events
+    events.subscribe('createProject', _createProject);
+    events.subscribe('createTask', _createTask);
 
     // make public
     return {
         getItem,            // forms.js (_queryLibrary())
         getProjOptionData,  // index.js -> forms.js (genProjOptions())
-        deleteProject,      // ...
-        deleteTask,         // ...
     };
 
 })();
-
-export default library;
