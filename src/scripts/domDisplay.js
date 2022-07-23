@@ -114,8 +114,8 @@ const domDisplay = (() => {
         let spanModify = span('...', '.proj', '.modify');
         let spanDelete = span('X', '.delete');
 
-        spanModify.addEventListener('click', () => {
-            console.log('publish event data');
+        spanModify.addEventListener('click', (e) => {
+            events.publish('clickModifyItem', e);   // subscribed by forms.js
         });
         spanDelete.addEventListener('click', () => {
             console.log('publish event data');
@@ -138,8 +138,8 @@ const domDisplay = (() => {
         let spanModify = span('...', '.task', '.modify');
         let spanDelete = span('X', '.delete');
 
-        spanModify.addEventListener('click', () => {
-            console.log('publish event data');
+        spanModify.addEventListener('click', (e) => {
+            events.publish('clickModifyItem', e);   // subscribed by forms.js
         });
         spanDelete.addEventListener('click', () => {
             console.log('publish event data');
@@ -160,8 +160,8 @@ const domDisplay = (() => {
         let spanModify = span('...', '.task', '.modify');
         let spanDelete = span('X', '.delete');
 
-        spanModify.addEventListener('click', () => {
-            console.log('publish event data');
+        spanModify.addEventListener('click', (e) => {
+            events.publish('clickModifyItem', e);   // subscribed by forms.js
         });
         spanDelete.addEventListener('click', () => {
             console.log('publish event data');
@@ -207,11 +207,10 @@ const domDisplay = (() => {
 
     // bind events
     // * modify & delete click events in _renderHeader()'s ^^^
-    createTaskButton.addEventListener('click', (e) => {
-        // publish 'create', 'task' data to pubsub (subscribed by forms.js)
-        events.publish('clickCreateTask', 'task');
+    createTaskButton.addEventListener('click', () => {
+        events.publish('clickCreateItem', 'task');      // subscribed by forms.js
     });
-    events.subscribe('renderProject', _renderProject)
-    events.subscribe('renderTask', _renderTask);
+    events.subscribe('renderProject', _renderProject)   // published from display.js (_renderDisplay())
+    events.subscribe('renderTask', _renderTask);        // published from display.js (_renderDisplay())
 
 })();

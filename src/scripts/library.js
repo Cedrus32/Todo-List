@@ -4,8 +4,8 @@ import events from '../events';
 
 const library = (() => {
     // dynamic data
-    let _projLib = [];
-    let _taskLib = [];
+    let _projectLibrary = [];
+    let _taskLibrary = [];
     let _taskCounter = 0;
     let _projectCounter = 0;
 
@@ -92,31 +92,34 @@ const library = (() => {
     }
 
     // getters
-    function getItem(cardID) {  // ! delete later?
-        let libRef = cardID.slice(0, (cardID.length - 1));
-        let itemRef = cardID.slice(-1);
-        console.log(libRef);
-        console.log(itemRef);
+    function _queryItem(cardID) {
+        let libraryReference = cardID.slice(0, (cardID.length - 1));
+        let itemReference = cardID.slice(-1);
 
-        if (libRef == 'proj') {
-            for (let p in _projLib) {
-                if (_projLib[p].getID() == itemRef) {
-                    return _projLib[p].getData();
+        if (libraryReference === 'project') {
+            for (let p in _projectLibrary) {
+                if (_projectLibrary[p].id == itemReference) {
+                    let item = _projectLibrary[p];
+                    let itemValueArray = [item.title, item.description];
+                    events.publish('closeModifyQuery', libraryReference, itemValueArray);
+                    return;
                 };
             };
-        } else if (libRef == 'task') {
-            for (let t in _taskLib) {
-                console.log(_taskLib[t]);
-                if (_taskLib[t].getID() == itemRef) {
-                    return _taskLib[t].getData();
+        } else if (libraryReference === 'task') {
+            for (let t in _taskLibrary) {
+                if (_taskLibrary[t].id == itemReference) {
+                    let item = _taskLibrary[t];
+                    let itemValueArray = [item.title, item.description, item.dueDate, item.priority, item.tags];
+                    events.publish('closeModifyQuery', libraryReference, itemValueArray);
+                    return;
                 };
             };
         };
     }
     function getProjOptionData() {  // ! delete later?
         let dataArray = [];
-        for (let p in _projLib) {
-            dataArray.push([_projLib[p].getID(), _projLib[p].getTitle()]);
+        for (let p in _projectLibrary) {
+            dataArray.push([_projectLibrary[p].getID(), _projectLibrary[p].getTitle()]);
         }
         console.log('******* DATA ARRAY *******')
         console.log(dataArray);
@@ -124,9 +127,9 @@ const library = (() => {
         return dataArray;
     }
     function _getProjName(projRef) {  // ! delete later?
-        for (let p in _projLib) {
-            if (_projLib[p].getID() === projRef) {
-                return _projLib[p].getTitle();
+        for (let p in _projectLibrary) {
+            if (_projectLibrary[p].getID() === projRef) {
+                return _projectLibrary[p].getTitle();
             };
         };
     }
@@ -136,7 +139,7 @@ const library = (() => {
         let _id = _projectCounter;
         let _newProject = new Project(_id, ...attributeArray);
         // console.log(_newProject);
-        _projLib.push(_newProject);
+        _projectLibrary.push(_newProject);
         events.publish('newProject', _newProject);
         _projectCounter++;
     }
@@ -144,7 +147,7 @@ const library = (() => {
         let _id = _taskCounter;
         let _newTask = new Task(_id, ...attributeArray);
         // console.log(_newTask);
-        _taskLib.push(_newTask);
+        _taskLibrary.push(_newTask);
         events.publish('newTask', _newTask);
         _taskCounter++;
     }
@@ -157,12 +160,12 @@ const library = (() => {
     }
 
     // bind events
-    events.subscribe('createProject', _createProject);
-    events.subscribe('createTask', _createTask);
+    events.subscribe('createProject', _createProject);  // published from display.js (initDefault())
+    events.subscribe('createTask', _createTask);        // published from display.js (initDefault())
+    events.subscribe('openModifyQuery', _queryItem);    // published from forms.js (_openModifyQuery())
 
     // make public
     return {
-        getItem,            // forms.js (_queryLibrary())
         getProjOptionData,  // index.js -> forms.js (genProjOptions())
     };
 

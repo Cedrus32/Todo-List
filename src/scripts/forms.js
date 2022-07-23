@@ -23,15 +23,16 @@ const forms = (() => {
     }
 
     // manager methods
-    function _openCreate(formType) {
+    function _openCreateForm(formType) {
         _showForm(formType);
     }
-    function openModify(event) {
-        console.log('enter openModify()...');
-        console.log(event);
-        let _dataArray = _queryLibrary(event);
-        _fillValues(_dataArray);
-        _showForm(event.target.classList[0]);
+    function _openModifyQuery(event) {
+        let cardID = event.target.closest('div.card').id;
+        events.publish('openModifyQuery', cardID);  // subscribed by library.js
+    }
+    function _openModifyForm(formType, itemValues) {
+        _fillFormValues(formType, itemValues);
+        _showForm(formType);
     }
     function _confirmInput() {
         _hideForm();
@@ -59,25 +60,15 @@ const forms = (() => {
     function _hideForm() {
         _currentForm.classList.add('hide');
     }
-    function _queryLibrary(event) {
-        console.log('enter _queryLibrary()...');
-        let cardID = event.target.closest('div.card').id;
-        console.log(cardID);
-        let libItems = library.getItem(cardID);
-        return libItems;
-    }
-    function _fillValues(array) {
-        console.log(array);
-
-        if (array[0] === 'proj') {
+    function _fillFormValues(formType, values) {
+        console.log(values);
+        if (formType === 'project') {
             for (let i = 0; i < (projectInputs.length); i++) {
-                projectInputs[i].value = array[i + 2];
+                projectInputs[i].value = values[i];
             };
-        } else if (array[0] === 'task') {
+        } else if (formType === 'task') {
             for (let i = 0; i < (taskInputs.length); i++) {
-                console.log(taskInputs[i]);
-                console.log(array[i + 3]);
-                taskInputs[i].value = array[i + 3];
+                taskInputs[i].value = values[i];
             };
         };
     }
@@ -91,13 +82,15 @@ const forms = (() => {
     }
 
     // bind events
-    events.subscribe('clickCreateTask', _openCreate);
     confirmButtons.forEach(btn => btn.addEventListener('click', () => {
         _confirmInput();
     }));
     cancelButtons.forEach(btn => btn.addEventListener('click', () => {
         _cancelInput();
     }));
+    events.subscribe('clickCreateItem', _openCreateForm);   // publishing from domDisplay.js (createTaskButton clickEvent)
+    events.subscribe('clickModifyItem', _openModifyQuery);  // publishing from domDisplay.js (_renderHeaders())
+    events.subscribe('closeModifyQuery', _openModifyForm);  // publishing from library.js (_queryItem());
 
     return {
         getProjDropdown,    // genDynamic.js (genProjOptions())
