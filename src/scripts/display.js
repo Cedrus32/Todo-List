@@ -32,11 +32,9 @@ const display = (() => {
     }
     function _renderDisplay(object) {
         if (object.type === 'project') {
-            console.log('confirmed: type project');
             events.publish('renderProject', object);
         };
         if (object.type === 'singleton' || object.type === 'checklist') {
-            console.log('confirmed: type singleton || checklist')
             events.publish('renderTask', object);
         }
     }
