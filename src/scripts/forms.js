@@ -1,28 +1,21 @@
+import events from '../events';
 import library from './library';
 
 // * manages interface between form DOM & library arrays
 
 const forms = (() => {
     // data
-    let _currForm;
+    let _currentForm;
 
     // cache DOM
-    let projForm = document.getElementById('proj-form');
+    let projectForm = document.getElementById('proj-form');
     let taskForm = document.getElementById('task-form');
 
-    let projInputs = projForm.querySelectorAll('input');
+    let projectInputs = projectForm.querySelectorAll('input');
     let taskInputs = taskForm.querySelectorAll('.input');
 
-    let confirmBtns = document.querySelectorAll('button.confirm');
-    let cancelBtns = document.querySelectorAll('button.cancel');
-
-    // bind events
-    confirmBtns.forEach(btn => btn.addEventListener('click', () => {
-        _confirmInput();
-    }));
-    cancelBtns.forEach(btn => btn.addEventListener('click', () => {
-        _cancelInput();
-    }));
+    let confirmButtons = document.querySelectorAll('button.confirm');
+    let cancelButtons = document.querySelectorAll('button.cancel');
 
     // getters
     function getProjDropdown() {
@@ -30,8 +23,8 @@ const forms = (() => {
     }
 
     // manager methods
-    function openCreate(event) {
-        _showForm(event.target.classList[0]);
+    function _openCreate(formType) {
+        _showForm(formType);
     }
     function openModify(event) {
         console.log('enter openModify()...');
@@ -53,18 +46,18 @@ const forms = (() => {
 
     // helper methods
     function _showForm(formType) {
-        if (formType === 'proj') {
-            _currForm = projForm;
-            projForm.classList.remove('hide');
+        if (formType === 'project') {
+            _currentForm = projectForm;
+            projectForm.classList.remove('hide');
         } else if (formType === 'task') {
-            _currForm = taskForm;
+            _currentForm = taskForm;
             // * populate project options
 
             taskForm.classList.remove('hide');
         };
     }
     function _hideForm() {
-        _currForm.classList.add('hide');
+        _currentForm.classList.add('hide');
     }
     function _queryLibrary(event) {
         console.log('enter _queryLibrary()...');
@@ -77,8 +70,8 @@ const forms = (() => {
         console.log(array);
 
         if (array[0] === 'proj') {
-            for (let i = 0; i < (projInputs.length); i++) {
-                projInputs[i].value = array[i + 2];
+            for (let i = 0; i < (projectInputs.length); i++) {
+                projectInputs[i].value = array[i + 2];
             };
         } else if (array[0] === 'task') {
             for (let i = 0; i < (taskInputs.length); i++) {
@@ -89,17 +82,24 @@ const forms = (() => {
         };
     }
     function _clearValues() {
-        if (_currForm === projForm) {
-            projInputs.forEach(input => input.value = '');
-        } else if (_currForm === taskForm) {
+        if (_currentForm === projectForm) {
+            projectInputs.forEach(input => input.value = '');
+        } else if (_currentForm === taskForm) {
             taskInputs.forEach(input => input.value = '');
         };
-        _currForm = '';
+        _currentForm = '';
     }
 
+    // bind events
+    events.subscribe('clickCreateTask', _openCreate);
+    confirmButtons.forEach(btn => btn.addEventListener('click', () => {
+        _confirmInput();
+    }));
+    cancelButtons.forEach(btn => btn.addEventListener('click', () => {
+        _cancelInput();
+    }));
+
     return {
-        openCreate,         // domDisplay.js (addEvent())
-        openModify,         // domDisplay.js (addEvent())
         getProjDropdown,    // genDynamic.js (genProjOptions())
     }
 

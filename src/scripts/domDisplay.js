@@ -34,26 +34,16 @@ const domDisplay = (() => {
 
     // task manager
     const _renderTask = function(task) {
-        // ! implement outside getTasks
-        // let taskNum = tasks.length;
-        // let controls = taskControls(taskNum);
-        // taskContainer.appendChild(controls);
-
-        console.log('enter renderTask');
-        console.log(task);
         let taskCard;
         if (task.type === 'singleton') {
-            console.log('confirmed: type singleton');
             taskCard = _renderSingleton(task);
         } else if (task.type === 'checklist') {
-            console.log('confirmed: type checklist');
             taskCard = _renderChecklist(task);
         }
         taskContainer.appendChild(taskCard);
         _renderTaskCounterContent();
     }
     const _renderSingleton = function(task) {
-        console.log('enter singletion()');
         let cardID = '#task' + task.id;
         let divCard = div('', '.card', '.singleton', cardID);
 
@@ -217,9 +207,9 @@ const domDisplay = (() => {
 
     // bind events
     // * modify & delete click events in _renderHeader()'s ^^^
-    createTaskButton.addEventListener('click', () => {
+    createTaskButton.addEventListener('click', (e) => {
         // publish 'create', 'task' data to pubsub (subscribed by forms.js)
-        console.log('publish event data');
+        events.publish('clickCreateTask', 'task');
     });
     events.subscribe('renderProject', _renderProject)
     events.subscribe('renderTask', _renderTask);
