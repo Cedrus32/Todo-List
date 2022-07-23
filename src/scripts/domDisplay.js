@@ -6,9 +6,13 @@ import events from '../events';
 // * factory class for display DOM groupings
 
 const domDisplay = (() => {
+    // data
+    let _taskCounter = 0;
+
     // cache DOM
     let projectContainer = document.getElementById('proj-container');
     let taskContainer = document.getElementById('task-container');
+    let taskCountSpan = document.querySelector('div.tally span');
 
     // project manager factory
     const _renderProject = function(project) {
@@ -24,6 +28,8 @@ const domDisplay = (() => {
         projectCard.appendChild(projectDescription);
 
         projectContainer.appendChild(projectCard);
+
+        _renderTaskCounterContent();
     }
 
     // task manager factories
@@ -44,6 +50,7 @@ const domDisplay = (() => {
             taskCard = _renderChecklist(task);
         }
         taskContainer.appendChild(taskCard);
+        _renderTaskCounterContent();
     }
     const _renderSingleton = function(task) {
         console.log('enter singletion()');
@@ -76,18 +83,6 @@ const domDisplay = (() => {
     }
 
     // task helper factories
-    const taskControls = function(num) {
-        let divControls = div('', '.task-controls');
-
-        let tallyContent = 'Tasks (' + num + ')';
-        let divTally = div(tallyContent, '.tally');
-        let divCreate = div('+', '.task', '.create');
-
-        divControls.appendChild(divTally);
-        divControls.appendChild(divCreate);
-
-        return divControls;
-    }
     const _renderSingletonContent = function(id, title, dueDate, description, priority, tags) {
         let divContent = div('', '.content');
 
@@ -191,6 +186,10 @@ const domDisplay = (() => {
             forms.openCreate(e);
         }));
     };
+    function _renderTaskCounterContent() {
+        taskCountSpan.textContent = _taskCounter;
+        _taskCounter++;
+    }
     // function clear {
     //  // ! unsubscript from onEmit
     //     while (projContainer.lastChild) {
@@ -200,6 +199,7 @@ const domDisplay = (() => {
     //     while (taskContainer.lastChild) {
     //         taskContainer.remove(taskContainer.lastChild);
     //     };
+    //     // * adjust taskCounter, call renderTaskCounterContent
     // }
 
     // bind events
