@@ -1,6 +1,5 @@
-// import create from './domBase';
-import { default as div, h1, h2, ul, li, span, input, label} from './elements';
 import events from '../events';
+import { default as div, h1, h2, ul, li, span, input, label} from './elements';
 
 // * factory module for display DOM groupings
 

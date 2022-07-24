@@ -1,5 +1,6 @@
+import domDisplay from './domDisplay'; // ! unused & not exported from source file...
+                                       // ! but if removed, DOM does not render
 import events from '../events.js';
-import domDisplay from './domDisplay';
 
 // * manages interface between display DOM & library arrays
 
@@ -18,9 +19,7 @@ const display = (() => {
         _createProject(_sampleProjectValues[0]);
         for (let t in _sampleTaskValues) {
             _createTask(_sampleTaskValues[t]);
-        }
-
-        // domDisplay.assignEvents(); // ! not working
+        };
     }
 
     // helpers

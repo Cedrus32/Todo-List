@@ -5,8 +5,8 @@ import './styles/shaping.css';
 import './styles/colors.css';
 
 import display from './scripts/display';
-import forms from './scripts/forms';
-import genDyn from './scripts/genDynamic';
+import forms from './scripts/forms';    // ! also unused, but can be safely removed
+import genDyn from './scripts/genDynamic';  // ! unused, but if removed, dom does not render
 
 // manager function here
 
@@ -19,5 +19,3 @@ title.addEventListener('click', () => {
 
 // actions
 display.initDefault();
-genDyn.genProjOptions();
-// genDyn.genViewPrefs();
