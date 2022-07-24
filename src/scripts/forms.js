@@ -1,5 +1,5 @@
 import events from '../events';
-import library from './library';
+import { option } from './elements';
 
 // * manages interface between form DOM & library arrays
 
@@ -17,11 +17,6 @@ const forms = (() => {
     let confirmButtons = document.querySelectorAll('button.confirm');
     let cancelButtons = document.querySelectorAll('button.cancel');
 
-    // getters
-    function getProjDropdown() {
-        return taskInputs[4];
-    }
-
     // manager methods
     function _openCreateForm(formType) {
         _showForm(formType);
@@ -36,7 +31,7 @@ const forms = (() => {
     }
     function _confirmInput() {
         _hideForm();
-        // * push new to library OR modify library item
+        // ! ...push new to library OR modify library item...
         _clearValues();
 
     }
@@ -45,14 +40,14 @@ const forms = (() => {
         _clearValues();
     }
 
-    // helper methods
+    // helper methods  
     function _showForm(formType) {
         if (formType === 'project') {
             _currentForm = projectForm;
             projectForm.classList.remove('hide');
         } else if (formType === 'task') {
             _currentForm = taskForm;
-            // * populate project options
+            // ! ...populate project options...
 
             taskForm.classList.remove('hide');
         };
@@ -70,6 +65,16 @@ const forms = (() => {
             for (let i = 0; i < (taskInputs.length); i++) {
                 taskInputs[i].value = values[i];
             };
+            events.publish('openProjectOptionsQuery', '');  // subscribed by library.js
+        };
+    }
+    function _renderProjectOptions(array) {
+        let projectDropdown = taskInputs[4];
+        for (let i in array) {
+            console.log(array[i][0]);
+            console.log(array[i][1]);
+            let optionProject = option(array[i][1], array[i][0]);
+            projectDropdown.appendChild(optionProject);
         };
     }
     function _clearValues() {
@@ -91,10 +96,7 @@ const forms = (() => {
     events.subscribe('clickCreateItem', _openCreateForm);   // publishing from domDisplay.js (createTaskButton clickEvent)
     events.subscribe('clickModifyItem', _openModifyQuery);  // publishing from domDisplay.js (_renderHeaders())
     events.subscribe('closeModifyQuery', _openModifyForm);  // publishing from library.js (_queryItem());
-
-    return {
-        getProjDropdown,    // genDynamic.js (genProjOptions())
-    }
+    events.subscribe('closeProjectOptionsQuery', _renderProjectOptions);  // publishing from library.js (_queryProjectNameID())
 
 })();
 
