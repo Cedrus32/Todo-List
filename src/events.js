@@ -7,7 +7,7 @@ const events = (() => {
             _events[eventName] = [];
         };
         _events[eventName].push(callback);
-        console.log(`SUBSCRIBING to ${eventName}`);
+        // console.log(`SUBSCRIBING to ${eventName}`);
     }
 
     // unsubscribe event to list
@@ -24,7 +24,7 @@ const events = (() => {
         }
         _events[eventName].forEach(callback => {
             callback(...data);
-            console.log(`PUBLISHING to ${eventName}`);
+            // console.log(`PUBLISHING to ${eventName}`);
         });
     }
 

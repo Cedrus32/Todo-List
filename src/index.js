@@ -5,9 +5,12 @@ import './styles/shaping.css';
 import './styles/colors.css';
 
 import display from './scripts/display';
+import domDisplay from './scripts/domDisplay';
+import forms from './scripts/forms';
+// import sidebar from './scripts/sidebar';
+// import domSidebar from '.scripts/domSidebar';
+import library from './scripts/library';
 import events from './events';
-import forms from './scripts/forms';    // ! also unused, but can be safely removed
-import genDyn from './scripts/genDynamic';  // ! unused, but if removed, dom does not render
 
 // manager function here
 

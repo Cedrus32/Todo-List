@@ -1,5 +1,3 @@
-import domDisplay from './domDisplay'; // ! unused & not exported from source file...
-                                       // ! but if removed, DOM does not render
 import events from '../events.js';
 
 // * manages interface between display DOM & library arrays
