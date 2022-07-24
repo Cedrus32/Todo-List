@@ -5,6 +5,7 @@ import './styles/shaping.css';
 import './styles/colors.css';
 
 import display from './scripts/display';
+import events from './events';
 import forms from './scripts/forms';    // ! also unused, but can be safely removed
 import genDyn from './scripts/genDynamic';  // ! unused, but if removed, dom does not render
 
@@ -19,3 +20,4 @@ title.addEventListener('click', () => {
 
 // actions
 display.initDefault();
+events.viewEvents();

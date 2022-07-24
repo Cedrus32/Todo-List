@@ -23,13 +23,20 @@ const events = (() => {
         }
         _events[eventName].forEach(callback => {
             callback(...data);
+            console.log(`publishing to ${eventName}`);
         });
+    }
+
+    // debug
+    function viewEvents() {
+        console.log(_events);
     }
 
     return {
         subscribe,
         unsubscribe,
         publish,
+        viewEvents,
     }
 
 })();
