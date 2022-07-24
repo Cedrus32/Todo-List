@@ -8,7 +8,7 @@ const forms = (() => {
     let _currentForm;
 
     // cache DOM
-    let projectForm = document.getElementById('proj-form');
+    let projectForm = document.getElementById('project-form');
     let taskForm = document.getElementById('task-form');
 
     let projectInputs = projectForm.querySelectorAll('input');
@@ -32,6 +32,7 @@ const forms = (() => {
     function _confirmInput() {
         _hideForm();
         // ! ...push new to library OR modify library item...
+        let formValues = _bundleFormValues();
         _clearValues();
 
     }
@@ -85,10 +86,13 @@ const forms = (() => {
         };
         _currentForm = '';
     }
+    function _bundleFormValues() {
+        console.log(_currentForm);
+    }
 
     // bind events
-    confirmButtons.forEach(btn => btn.addEventListener('click', () => {
-        _confirmInput();
+    confirmButtons.forEach(btn => btn.addEventListener('click', (e) => {
+        _confirmInput(e);
     }));
     cancelButtons.forEach(btn => btn.addEventListener('click', () => {
         _cancelInput();
