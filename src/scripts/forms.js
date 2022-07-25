@@ -40,21 +40,10 @@ const forms = (() => {
         _hideForm();
         _clearValues();
     }
-    function _alertDeleteProjectConfirmation(event) {
-        console.log('enter _alertDeleteProjectConfirmation()');
-        console.log('');
-
+    function _alertDeleteProjectConfirmation(cardID) {
         // * display project delete confirmation
         // * if confirmation === true...
-            _openDeleteQuery(event);
-    }
-    function _openDeleteQuery(event) {
-        console.log('enter _openDeleteQuery()');
-
-        let cardID = event.target.closest('div.card').id;
-        console.log(`cardID: ${cardID}`);
-        console.log('');
-        events.publish('deleteProject', cardID); // subscribed by library.js
+            events.publish('deleteProject', cardID); // subscribed by library.js
     }
 
     // helper methods  
