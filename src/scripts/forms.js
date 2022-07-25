@@ -54,7 +54,7 @@ const forms = (() => {
         let cardID = event.target.closest('div.card').id;
         console.log(`cardID: ${cardID}`);
         console.log('');
-        events.publish('openDeleteQuery', cardID); // subscribed by library.js
+        events.publish('deleteProject', cardID); // subscribed by library.js
     }
 
     // helper methods  
