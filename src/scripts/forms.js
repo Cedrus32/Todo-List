@@ -29,10 +29,10 @@ const forms = (() => {
         _fillFormValues(formType, itemValues);
         _showForm(formType);
     }
-    function _confirmInput() {
+    function _confirmModify() {
         _hideForm();
-        // ! ...push new to library OR modify library item...
         let formValues = _bundleFormValues();
+        events.publish('modifyConfirm', formValues);    // subscribed by library.js
         _clearValues();
 
     }
@@ -53,8 +53,6 @@ const forms = (() => {
             projectForm.classList.remove('hide');
         } else if (formType === 'task') {
             _currentForm = taskForm;
-            // ! ...populate project options...
-
             taskForm.classList.remove('hide');
         };
     }
@@ -62,13 +60,18 @@ const forms = (() => {
         _currentForm.classList.add('hide');
     }
     function _fillFormValues(formType, values) {
-        console.log(values);
         if (formType === 'project') {
-            for (let i = 0; i < (projectInputs.length); i++) {
+            projectInputs[0].value = values[0];
+            console.log(projectInputs[0]);
+            console.log(projectInputs[0].value);
+            for (let i = 1; i < (projectInputs.length); i++) {
                 projectInputs[i].value = values[i];
             };
         } else if (formType === 'task') {
-            for (let i = 0; i < (taskInputs.length); i++) {
+            taskInputs[0].value = values[0];
+            console.log(taskInputs[0]);
+            console.log(taskInputs[0].value);
+            for (let i = 1; i < (taskInputs.length); i++) {
                 taskInputs[i].value = values[i];
             };
             events.publish('openProjectOptionsQuery', '');  // subscribed by library.js
@@ -92,12 +95,24 @@ const forms = (() => {
         _currentForm = '';
     }
     function _bundleFormValues() {
-        console.log(_currentForm);
+        let formValues = [];
+        if (_currentForm === projectForm) {
+            formValues.push('project');
+            for (let i = 0; i < (projectInputs.length); i++) {  // ! nodelist contains invisible iterables, must specify length
+                formValues.push(projectInputs[i].value);
+            };
+        } else if (_currentForm === taskForm) {
+            formValues.push('task');
+            for (let i = 0; i < (taskInputs.length); i++) {  // ! nodelist contains invisible iterables, must specify length
+                formValues.push(taskInputs[i].value);
+            };
+        };
+        return formValues;
     }
 
     // bind events
     confirmButtons.forEach(btn => btn.addEventListener('click', (e) => {
-        _confirmInput(e);
+        _confirmModify(e);
     }));
     cancelButtons.forEach(btn => btn.addEventListener('click', () => {
         _cancelInput();
