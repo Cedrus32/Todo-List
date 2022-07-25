@@ -14,25 +14,25 @@ const display = (() => {
 
     // managers
     function initDefault() {
-        _createProject(_sampleProjectValues[0]);
+        _publishCreateProjectEvent(_sampleProjectValues[0]);
         for (let t in _sampleTaskValues) {
-            _createTask(_sampleTaskValues[t]);
+            _publishCreateTaskEvent(_sampleTaskValues[t]);
         };
     }
 
     // helpers
-    function _createProject(projectValues) {
-        events.publish('createProject', projectValues);
+    function _publishCreateProjectEvent(projectValues) {
+        events.publish('createProject', projectValues); // subscribed by library.js
     }
-    function _createTask(taskValues) {
-        events.publish('createTask', taskValues);
+    function _publishCreateTaskEvent(taskValues) {
+        events.publish('createTask', taskValues);   // subscribed by library.js
     }
-    function _renderDisplay(object) {
+    function _publishRenderDisplayEvents(object) {
         if (object.type === 'project') {
-            events.publish('renderProject', object);
+            events.publish('renderProject', object);    // subscribed by domDisplay.js
         };
         if (object.type === 'singleton' || object.type === 'checklist') {
-            events.publish('renderTask', object);
+            events.publish('renderTask', object);   // subscribed by domDisplay.js
         }
     }
     function _modifyDisplay() {
@@ -40,8 +40,8 @@ const display = (() => {
     }
 
     // bind events
-    events.subscribe('newProject', _renderDisplay);
-    events.subscribe('newTask', _renderDisplay);
+    events.subscribe('projectCreated', _publishRenderDisplayEvents); // published from library.js (_createProject())
+    events.subscribe('taskCreated', _publishRenderDisplayEvents);    // published from library.js (_createTask())
 
     return {
         initDefault,   // used by index.js
