@@ -21,23 +21,17 @@ const library = (() => {
             this.description = projectDescription;
         }
 
-        // // getters
-        // get attributeArray() {
-        //     let attributeArray = [this.type, this.id, this.title, this.description];
-        //     return attributeArray;
-        // }
-
-        // // setters
-        // set title(value) {
-        //     if (value !== this.title) {
-        //         this.title = value;
-        //     };
-        // }
-        // set description(value) {
-        //     if (value !== this.description) {
-        //         this.description = value;
-        //     };
-        // }
+        // setters
+        set setTitle(value) {
+            if (value !== this.title) {
+                this.title = value;
+            };
+        }
+        set setDescription(value) {
+            if (value !== this.description) {
+                this.description = value;
+            };
+        }
     }
 
     class Task {
@@ -57,38 +51,37 @@ const library = (() => {
             };
         }
 
-        // // getters
-        // get attributeArray() {
-        //     let attributeArray = [this._type, this._id, this.projectID, this.title, this.description, this.dueDate, this.priority, this.tags, this.items];
-        //     return attributeArray;
-        // }
-
-        // // setters
-        // set title(value) {
-        //     if (value !== this.title) {
-        //         this.title = value;
-        //     };
-        // }
-        // set description(value) {
-        //     if (value !== this.description) {
-        //         this.description = value;
-        //     };
-        // }
-        // set dueDate(value) {
-        //     if (value !== this.dueDate) {
-        //         this.dueDate = value;
-        //     };
-        // }
-        // set priority(value) {
-        //     if (value !== this.priority) {
-        //         this.priority = value;
-        //     };
-        // }
-        // set tags(valueArray) {
-        //     if (valueArray !== this.tags) {
-        //         this.tags = valueArray;
-        //     };
-        // }
+        // setters
+        set setTitle(value) {
+            if (value !== this.title) {
+                this.title = value;
+            };
+        }
+        set setDescription(value) {
+            if (value !== this.description) {
+                this.description = value;
+            };
+        }
+        set setDueDate(value) {
+            if (value !== this.dueDate) {
+                this.dueDate = value;
+            };
+        }
+        set setPriority(value) {
+            if (value !== this.priority) {
+                this.priority = value;
+            };
+        }
+        set setProjectID(value) {
+            if (value !== this.projectID) {
+                this.projectID = value;
+            };
+        }
+        set setTags(valueArray) {
+            if (valueArray !== this.tags) {
+                this.tags = valueArray;
+            };
+        }
     }
 
     // getters
@@ -101,7 +94,7 @@ const library = (() => {
                 if (_projectLibrary[p].id == itemReference) {
                     let item = _projectLibrary[p];
                     let itemValueArray = [item.id, item.title, item.description];
-                    events.publish('closeModifyQuery', libraryReference, itemValueArray);
+                    events.publish('closeModifyQuery', libraryReference, itemValueArray);   // subscribed by forms.js
                     return;
                 };
             };
@@ -116,7 +109,7 @@ const library = (() => {
                 if (_taskLibrary[t].id == itemReference) {
                     let item = _taskLibrary[t];
                     let itemValueArray = [item.id, item.title, item.description, item.dueDate, item.priority, projectTitle, item.tags];
-                    events.publish('closeModifyQuery', libraryReference, itemValueArray);
+                    events.publish('closeModifyQuery', libraryReference, itemValueArray);   // subscribed by forms.js
                     return;
                 };
             };
@@ -130,7 +123,7 @@ const library = (() => {
 
         console.log(nameIDArray);
 
-        events.publish ('closeProjectOptionsQuery', nameIDArray)
+        events.publish ('closeProjectOptionsQuery', nameIDArray) // subscribed by forms.js
     }
 
     // methods
@@ -150,15 +143,53 @@ const library = (() => {
         events.publish('taskCreated', _newTask);    // subscribed by display.js
         _taskCounter++;
     }
-    function _modifyItem(values) {
-        console.log(values);
-        if (values[0] === 'project') {
-            // let projectReference = //...
-            // index _projectLibrary by projectReference
-        } else if (values[0] === 'task') {
-            // let taskReference = //...
-            // index _taskLibrary by taskReference
-        }
+    function _modifyItem(formValues) {
+        console.log(formValues);
+        let libraryReference = formValues[0];
+        let itemReference = formValues[1];
+        formValues.splice(0, 2);
+        
+        if (libraryReference === 'project') {
+            let projectInstance = _projectLibrary[itemReference];
+            console.log(projectInstance);
+            for (let v in formValues) {
+                console.log(v);
+                switch(v) {
+                    case '0':
+                        projectInstance.setTitle = formValues[0];
+                        break;
+                    case '1':
+                        projectInstance.setDescription = formValues[1];
+                };
+            };
+            console.log(projectInstance);
+        } else if (libraryReference === 'task') {
+            let taskInstance = _taskLibrary[itemReference];
+            console.log(taskInstance);
+            for (let v in formValues) {
+                console.log(v);
+                switch(v) {
+                    case '0':
+                        taskInstance.setTitle = formValues[0];
+                        break;
+                    case '1':
+                        taskInstance.description = formValues[1];
+                        break;
+                    case '2':
+                        taskInstance.setDueDate = formValues[2];
+                        break;
+                    case '3':
+                        taskInstance.setPriority = formValues[3];
+                        break;
+                    case '4':
+                        taskInstance.setProjectID = formValues[4];
+                        break;
+                    case '5':
+                        taskInstance.setTags = formValues[5];
+                };
+            };
+            console.log(taskInstance);
+        };
     }
     function _deleteProject(cardID) {
         let projectReference = cardID.slice(-1);
@@ -181,7 +212,6 @@ const library = (() => {
     }
     function _deleteTask(cardID) {
         let taskReference = cardID.slice(-1);
-        let projectReference;
         for (let t in _taskLibrary) {
             if (_taskLibrary[t].id == taskReference) {
                 projectReference = _taskLibrary[t].projectID;
