@@ -83,7 +83,7 @@ fieldset {
             width: 50%;
         }
 
-#proj-buttons,
+#project-buttons,
 #task-buttons {
     display: flex;
     justify-content: center;
