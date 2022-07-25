@@ -159,17 +159,20 @@ const library = (() => {
 
         let libraryReference = cardID.slice(0, (cardID.length - 1));
         let itemReference = cardID.slice(-1);
-        console.log(`libraryReference: ${libraryReference}`);
-        console.log(`itemReference: ${itemReference}`);
-        console.log('');
         if (libraryReference === 'project') {
-            for (let p in _projectLibrary) {
+            let projectLoopStart = _projectLibrary.length -1;
+            for (let p = projectLoopStart; p > -1; p--) {
                 if (_projectLibrary[p].id == itemReference) {
                     _projectLibrary.splice(_projectLibrary[p], 1);
-                    console.log(_projectLibrary);
                 };
             };
-        }
+            let taskLoopStart = _taskLibrary.length - 1;
+            for (let t = taskLoopStart; t > -1; t--) {
+                if (_taskLibrary[t].projectID == itemReference) {
+                    _taskLibrary.splice(_taskLibrary[t], 1);
+                };
+            };
+        };
     }
     function _deleteTask() {
         // * index into libArray, delete task
