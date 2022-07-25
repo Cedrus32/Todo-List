@@ -139,7 +139,7 @@ const library = (() => {
         let _newProject = new Project(_id, ...attributeArray);
         // console.log(_newProject);
         _projectLibrary.push(_newProject);
-        events.publish('newProject', _newProject);
+        events.publish('projectCreated', _newProject);  // subscribed by display.js
         _projectCounter++;
     }
     function _createTask(attributeArray) {
@@ -147,35 +147,39 @@ const library = (() => {
         let _newTask = new Task(_id, ...attributeArray);
         // console.log(_newTask);
         _taskLibrary.push(_newTask);
-        events.publish('newTask', _newTask);
+        events.publish('taskCreated', _newTask);    // subscribed by display.js
         _taskCounter++;
     }
     function _deleteProject(cardID) {
-        console.log('enter _deleteProject()');
-
         //// index into projArray, delete project
-        // * send notification to update sidebar
-        // * send notification to update display
-
-        let libraryReference = cardID.slice(0, (cardID.length - 1));
-        let itemReference = cardID.slice(-1);
-        if (libraryReference === 'project') {
-            let projectLoopStart = _projectLibrary.length -1;
-            for (let p = projectLoopStart; p > -1; p--) {
-                if (_projectLibrary[p].id == itemReference) {
-                    _projectLibrary.splice(_projectLibrary[p], 1);
-                };
-            };
-            let taskLoopStart = _taskLibrary.length - 1;
-            for (let t = taskLoopStart; t > -1; t--) {
-                if (_taskLibrary[t].projectID == itemReference) {
-                    _taskLibrary.splice(_taskLibrary[t], 1);
-                };
+        let projectReference = cardID.slice(-1);
+        let projectLoopStart = _projectLibrary.length -1;
+        for (let p = projectLoopStart; p > -1; p--) {
+            if (_projectLibrary[p].id == projectReference) {
+                _projectLibrary.splice(_projectLibrary[p], 1);
             };
         };
+        let taskLoopStart = _taskLibrary.length - 1;
+        for (let t = taskLoopStart; t > -1; t--) {
+            if (_taskLibrary[t].projectID == projectReference) {
+                _taskLibrary.splice(_taskLibrary[t], 1);
+            };
+        };
+        // * send notification to update sidebar (remove deleted project, select new project view)
+        // * ---> will in turn notify display to refresh
     }
     function _deleteTask() {
+        console.log('enter _deleteTask()');
+        console.log(_taskLibrary);
         // * index into libArray, delete task
+        let taskReference = cardID.slice(-1);
+        for (let t = taskLoopStart; t > -1; t--) {
+            if (_taskLibrary[t].id == taskReference) {
+                _taskLibrary.splice(_taskLibrary[t], 1);
+            };
+        };
+        console.log(_taskLibrary);
+        // * send notification to display to refresh
     }
 
     // bind events
@@ -183,6 +187,6 @@ const library = (() => {
     events.subscribe('createTask', _createTask);    // published from display.js (initDefault())
     events.subscribe('openModifyQuery', _queryItem);    // published from forms.js (_openModifyQuery())
     events.subscribe('openProjectOptionsQuery', _queryProjectNamesIDs)  // published from forms.js (_fillFormValues())
-    events.subscribe('openDeleteQuery', _deleteProject);    // published from forms.js (_openDeleteQuery())
+    events.subscribe('deleteProject', _deleteProject);    // published from forms.js (_openDeleteQuery())
 
 })();
