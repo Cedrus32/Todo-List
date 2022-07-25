@@ -118,7 +118,9 @@ const domDisplay = (() => {
             events.publish('clickModifyItem', e);   // subscribed by forms.js
         });
         spanDelete.addEventListener('click', (e) => {
-            events.publish('clickDeleteProject', e);   // subscribed by forms.js
+            let cardID = e.target.closest('div.card').id;
+            console.log(cardID);
+            events.publish('clickDeleteProject', cardID);   // subscribed by forms.js
         });
 
         divHeader.appendChild(h1Title);
@@ -142,8 +144,9 @@ const domDisplay = (() => {
         spanModify.addEventListener('click', (e) => {
             events.publish('clickModifyItem', e);   // subscribed by forms.js
         });
-        spanDelete.addEventListener('click', () => {    // subscribed by library.js
-            console.log('publish event data');
+        spanDelete.addEventListener('click', (e) => {    // subscribed by library.js
+            let cardID = e.target.closest('div.card').id;
+            events.publish('deleteTask', cardID);   // subscribed by library.js
         });
 
         divHeader.appendChild(labelCheckmarkTitle);
@@ -165,8 +168,9 @@ const domDisplay = (() => {
         spanModify.addEventListener('click', (e) => {
             events.publish('clickModifyItem', e);   // subscribed by forms.js
         });
-        spanDelete.addEventListener('click', () => {    // subscribed by library.js
-            console.log('publish event data');
+        spanDelete.addEventListener('click', (e) => {    // subscribed by library.js
+            let cardID = e.target.closest('div.card').id;
+            events.publish('deleteTask', cardID);   // subscribed by library.js
         });
 
         divHeader.appendChild(h2Title);
