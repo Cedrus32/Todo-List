@@ -62,15 +62,11 @@ const forms = (() => {
     function _fillFormValues(formType, values) {
         if (formType === 'project') {
             projectInputs[0].value = values[0];
-            console.log(projectInputs[0]);
-            console.log(projectInputs[0].value);
             for (let i = 1; i < (projectInputs.length); i++) {
                 projectInputs[i].value = values[i];
             };
         } else if (formType === 'task') {
             taskInputs[0].value = values[0];
-            console.log(taskInputs[0]);
-            console.log(taskInputs[0].value);
             for (let i = 1; i < (taskInputs.length); i++) {
                 taskInputs[i].value = values[i];
             };

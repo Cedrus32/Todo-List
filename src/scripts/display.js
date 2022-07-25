@@ -33,7 +33,7 @@ const display = (() => {
         };
         if (object.type === 'singleton' || object.type === 'checklist') {
             events.publish('renderTask', object);   // subscribed by domDisplay.js
-        }
+        };
     }
     function _modifyDisplay() {
         // index into DOM for specific itemID, set new content
