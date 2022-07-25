@@ -100,7 +100,7 @@ const library = (() => {
             for (let p in _projectLibrary) {
                 if (_projectLibrary[p].id == itemReference) {
                     let item = _projectLibrary[p];
-                    let itemValueArray = [item.title, item.description];
+                    let itemValueArray = [item.id, item.title, item.description];
                     events.publish('closeModifyQuery', libraryReference, itemValueArray);
                     return;
                 };
@@ -115,7 +115,7 @@ const library = (() => {
                 };
                 if (_taskLibrary[t].id == itemReference) {
                     let item = _taskLibrary[t];
-                    let itemValueArray = [item.title, item.description, item.dueDate, item.priority, projectTitle, item.tags];
+                    let itemValueArray = [item.id, item.title, item.description, item.dueDate, item.priority, projectTitle, item.tags];
                     events.publish('closeModifyQuery', libraryReference, itemValueArray);
                     return;
                 };
@@ -149,6 +149,16 @@ const library = (() => {
         _taskLibrary.push(_newTask);
         events.publish('taskCreated', _newTask);    // subscribed by display.js
         _taskCounter++;
+    }
+    function _modifyItem(values) {
+        console.log(values);
+        if (values[0] === 'project') {
+            // let projectReference = //...
+            // index _projectLibrary by projectReference
+        } else if (values[0] === 'task') {
+            // let taskReference = //...
+            // index _taskLibrary by taskReference
+        }
     }
     function _deleteProject(cardID) {
         let projectReference = cardID.slice(-1);
@@ -188,6 +198,7 @@ const library = (() => {
     events.subscribe('openModifyQuery', _queryItem);    // published from forms.js (_openModifyQuery())
     events.subscribe('openProjectOptionsQuery', _queryProjectNamesIDs)  // published from forms.js (_fillFormValues())
     events.subscribe('deleteProject', _deleteProject);    // published from forms.js (_openDeleteQuery())
-    events.subscribe('deleteTask', _deleteTask);    // pubslished from domDisplay.js (_renderItemHeaders())
+    events.subscribe('deleteTask', _deleteTask);    // published from domDisplay.js (_renderItemHeaders())
+    events.subscribe('modifyConfirm', _modifyItem); //published from forms.js (_confirmModify())
 
 })();
