@@ -151,34 +151,34 @@ const library = (() => {
         _taskCounter++;
     }
     function _deleteProject(cardID) {
-        //// index into projArray, delete project
         let projectReference = cardID.slice(-1);
-        let projectLoopStart = _projectLibrary.length -1;
+        let projectLoopStart = _projectLibrary.length - 1;
         for (let p = projectLoopStart; p > -1; p--) {
             if (_projectLibrary[p].id == projectReference) {
-                _projectLibrary.splice(_projectLibrary[p], 1);
+                _projectLibrary.splice(p, 1);
             };
         };
         let taskLoopStart = _taskLibrary.length - 1;
         for (let t = taskLoopStart; t > -1; t--) {
             if (_taskLibrary[t].projectID == projectReference) {
-                _taskLibrary.splice(_taskLibrary[t], 1);
+                _taskLibrary.splice(t, 1);
             };
         };
+        //// console.log(_projectLibrary);
+        //// console.log(_taskLibrary);
         // * send notification to update sidebar (remove deleted project, select new project view)
         // * ---> will in turn notify display to refresh
     }
-    function _deleteTask() {
-        console.log('enter _deleteTask()');
-        console.log(_taskLibrary);
-        // * index into libArray, delete task
+    function _deleteTask(cardID) {
         let taskReference = cardID.slice(-1);
-        for (let t = taskLoopStart; t > -1; t--) {
+        let projectReference;
+        for (let t in _taskLibrary) {
             if (_taskLibrary[t].id == taskReference) {
-                _taskLibrary.splice(_taskLibrary[t], 1);
+                projectReference = _taskLibrary[t].projectID;
+                _taskLibrary.splice(t, 1);
             };
         };
-        console.log(_taskLibrary);
+        //// console.log(_taskLibrary);
         // * send notification to display to refresh
     }
 
@@ -188,5 +188,6 @@ const library = (() => {
     events.subscribe('openModifyQuery', _queryItem);    // published from forms.js (_openModifyQuery())
     events.subscribe('openProjectOptionsQuery', _queryProjectNamesIDs)  // published from forms.js (_fillFormValues())
     events.subscribe('deleteProject', _deleteProject);    // published from forms.js (_openDeleteQuery())
+    events.subscribe('deleteTask', _deleteTask);    // pubslished from domDisplay.js (_renderItemHeaders())
 
 })();
