@@ -113,11 +113,12 @@ const domDisplay = (() => {
         let spanModify = span('...', '.proj', '.modify');
         let spanDelete = span('X', '.delete');
 
+        // * project modify/delete events
         spanModify.addEventListener('click', (e) => {
             events.publish('clickModifyItem', e);   // subscribed by forms.js
         });
-        spanDelete.addEventListener('click', () => {
-            console.log('publish event data');
+        spanDelete.addEventListener('click', (e) => {
+            events.publish('clickDeleteProject', e);   // subscribed by forms.js
         });
 
         divHeader.appendChild(h1Title);
@@ -137,10 +138,11 @@ const domDisplay = (() => {
         let spanModify = span('...', '.task', '.modify');
         let spanDelete = span('X', '.delete');
 
+        // * singleton modify/delete events
         spanModify.addEventListener('click', (e) => {
             events.publish('clickModifyItem', e);   // subscribed by forms.js
         });
-        spanDelete.addEventListener('click', () => {
+        spanDelete.addEventListener('click', () => {    // subscribed by library.js
             console.log('publish event data');
         });
 
@@ -159,10 +161,11 @@ const domDisplay = (() => {
         let spanModify = span('...', '.task', '.modify');
         let spanDelete = span('X', '.delete');
 
+        // * checklist modify/delete events
         spanModify.addEventListener('click', (e) => {
             events.publish('clickModifyItem', e);   // subscribed by forms.js
         });
-        spanDelete.addEventListener('click', () => {
+        spanDelete.addEventListener('click', () => {    // subscribed by library.js
             console.log('publish event data');
         });
 
@@ -191,6 +194,7 @@ const domDisplay = (() => {
         _taskCounter++;
     }
     function _clearDisplay() {
+        // ! also unsubscribe events when clearing DOM
         // while (projContainer.lastChild) {
         //     // * remove any eventListeners from objects
         //     projContainer.remove(projContainer.lastChild);

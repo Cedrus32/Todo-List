@@ -40,6 +40,22 @@ const forms = (() => {
         _hideForm();
         _clearValues();
     }
+    function _alertDeleteProjectConfirmation(event) {
+        console.log('enter _alertDeleteProjectConfirmation()');
+        console.log('');
+
+        // * display project delete confirmation
+        // * if confirmation === true...
+            _openDeleteQuery(event);
+    }
+    function _openDeleteQuery(event) {
+        console.log('enter _openDeleteQuery()');
+
+        let cardID = event.target.closest('div.card').id;
+        console.log(`cardID: ${cardID}`);
+        console.log('');
+        events.publish('openDeleteQuery', cardID); // subscribed by library.js
+    }
 
     // helper methods  
     function _showForm(formType) {
@@ -101,6 +117,7 @@ const forms = (() => {
     events.subscribe('clickModifyItem', _openModifyQuery);  // publishing from domDisplay.js (_renderHeaders())
     events.subscribe('closeModifyQuery', _openModifyForm);  // publishing from library.js (_queryItem());
     events.subscribe('closeProjectOptionsQuery', _renderProjectOptions);  // publishing from library.js (_queryProjectNameID())
+    events.subscribe('clickDeleteProject', _alertDeleteProjectConfirmation);    // publishing from domDisplay.js (_renderProjectHeader())
 
 })();
 
