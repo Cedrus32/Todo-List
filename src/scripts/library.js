@@ -121,9 +121,7 @@ const library = (() => {
             nameIDArray.push([_projectLibrary[p].title, _projectLibrary[p].id]);
         };
 
-        console.log(nameIDArray);
-
-        events.publish ('closeProjectOptionsQuery', nameIDArray) // subscribed by forms.js
+        events.publish('closeProjectOptionsQuery', nameIDArray) // subscribed by forms.js
     }
 
     // methods
