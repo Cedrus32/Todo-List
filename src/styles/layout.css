@@ -144,10 +144,9 @@ fieldset {
                     .title {
                         margin-right: auto;
                     }
-
-                .task-controls,
-                .singleton,
-                .checklist {
+                
+                .card,
+                .task-controls {
                     padding: var(--med-pad);
                 }
                 
