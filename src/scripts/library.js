@@ -23,11 +23,13 @@ const library = (() => {
 
         // setters
         set setTitle(value) {
+             console.log('enter setTitle');
             if (value !== this.title) {
                 this.title = value;
             };
         }
         set setDescription(value) {
+            console.log('enter setDescription');
             if (value !== this.description) {
                 this.description = value;
             };
@@ -85,7 +87,7 @@ const library = (() => {
     }
 
     // getters
-    function _queryItem(cardID) { // ! reduce repetition
+    function _queryItem(cardID) {   // TODO reduce repetition
         let libraryReference = cardID.slice(0, (cardID.length - 1));
         let itemReference = cardID.slice(-1);
 
@@ -99,18 +101,13 @@ const library = (() => {
                 };
             };
         } else if (libraryReference === 'task') {
+            console.log('querying task');
             for (let t = 0; t < (_taskLibrary.length); t++) {
-                let projectTitle;
-                for (let p = 0; p < (_projectLibrary.length); p++) {
-                    if (_projectLibrary[p].id === _taskLibrary[t].projectID) {
-                        projectTitle = _projectLibrary[p].title;
-                    };
-                };
                 if (_taskLibrary[t].id == itemReference) {
                     let item = _taskLibrary[t];
-                    let itemValueArray = [item.id, item.title, item.description, item.dueDate, item.priority, projectTitle, item.tags];
+                    let itemValueArray = [item.id, item.type, item.title, item.description, item.dueDate, item.priority, item.projectID, item.tags];
+                    console.log(itemValueArray);
                     events.publish('closeModifyQuery', itemValueArray);   // subscribed by forms.js
-                    return;
                 };
             };
         };
@@ -125,10 +122,40 @@ const library = (() => {
     }
 
     // methods
+    function _setItemValues(formValues) {
+        let libraryReference = formValues[0];
+        let itemReference = formValues[1];
+        formValues.splice(0, 2);
+
+        console.log(libraryReference);
+        console.log(itemReference);
+        console.log(formValues);
+        
+        if (libraryReference === 'project') {
+            // check if project instance exists
+            if (!_projectLibrary[itemReference]) {
+                console.log('project does not exist -- create new project');
+                _createProject(formValues);
+            } else {
+                _modifyProject(itemReference, formValues);
+            };
+
+        } else if (libraryReference === 'task') {
+            // check if task instance exists
+            if (!_taskLibrary[itemReference]) {
+                console.log('task does not exist -- create new task');
+                //                    projectID                type           title          description    dueDate        priority                 tags           items
+                let formValuesReordered = [parseInt(formValues[5]), formValues[0], formValues[1], formValues[2], formValues[3], parseInt(formValues[4]), formValues[6], formValues[7]]
+                _createTask(formValuesReordered);
+            } else {
+                _modifyTask(itemReference, formValues);
+            };
+        };
+    }
     function _createProject(attributeArray) {
         let _id = _projectCounter;
         let _newProject = new Project(_id, ...attributeArray);
-        // console.log(_newProject);
+        console.log(_newProject);
         _projectLibrary.push(_newProject);
         events.publish('projectCreated', _newProject);  // subscribed by display.js
         _projectCounter++;
@@ -136,58 +163,51 @@ const library = (() => {
     function _createTask(attributeArray) {
         let _id = _taskCounter;
         let _newTask = new Task(_id, ...attributeArray);
-        // console.log(_newTask);
+        console.log(_newTask);
         _taskLibrary.push(_newTask);
         events.publish('taskCreated', _newTask);    // subscribed by display.js
         _taskCounter++;
     }
-    function _modifyItem(formValues) {
-        console.log(formValues);
-        let libraryReference = formValues[0];
-        let itemReference = formValues[1];
-        formValues.splice(0, 2);
-        
-        if (libraryReference === 'project') {
-            let projectInstance = _projectLibrary[itemReference];
-            console.log(projectInstance);
-            for (let v = 0; v < (formValues.length); v++) {
-                console.log(v);
-                switch(v) {
-                    case 0:
-                        projectInstance.setTitle = formValues[0];
-                        break;
-                    case 0:
-                        projectInstance.setDescription = formValues[1];
-                };
+    function _modifyProject(targetItemID, attributeArray) {
+        let projectInstance = _projectLibrary[targetItemID];
+        console.log(projectInstance);
+        for (let a = 0; a < (attributeArray.length); a++) {
+            switch(a) {
+                case 0:
+                    projectInstance.setTitle = attributeArray[0];
+                    break;
+                case 1:
+                    projectInstance.setDescription = attributeArray[1];
             };
-            console.log(projectInstance);
-        } else if (libraryReference === 'task') {
-            let taskInstance = _taskLibrary[itemReference];
-            console.log(taskInstance);
-            for (let v = 0; v < (formValues.length); v++) {
-                console.log(v);
-                switch(v) {
-                    case 0:
-                        taskInstance.setTitle = formValues[0];
-                        break;
-                    case 1:
-                        taskInstance.description = formValues[1];
-                        break;
-                    case 2:
-                        taskInstance.setDueDate = formValues[2];
-                        break;
-                    case 3:
-                        taskInstance.setPriority = formValues[3];
-                        break;
-                    case 4:
-                        taskInstance.setProjectID = formValues[4];
-                        break;
-                    case 5:
-                        taskInstance.setTags = formValues[5];
-                };
-            };
-            console.log(taskInstance);
         };
+        console.log(projectInstance);
+    }
+    function _modifyTask(targetItemID, attributeArray) {
+        console.log(attributeArray);
+        let taskInstance = _taskLibrary[targetItemID];
+        console.log(taskInstance);
+        for (let a = 0; a < (attributeArray.length); a++) {
+            switch(a) {
+                case 0:
+                    taskInstance.setTitle = attributeArray[0];
+                    break;
+                case 1:
+                    taskInstance.description = attributeArray[1];
+                    break;
+                case 2:
+                    taskInstance.setDueDate = attributeArray[2];
+                    break;
+                case 3:
+                    taskInstance.setPriority = parseInt(attributeArray[3]);
+                    break;
+                case 4:
+                    taskInstance.setProjectID = parseInt(attributeArray[4]);
+                    break;
+                case 5:
+                    taskInstance.setTags = attributeArray[5];
+            };
+        };
+        console.log(taskInstance);
     }
     function _deleteProject(cardID) {
         let projectReference = cardID.slice(-1);
@@ -227,6 +247,6 @@ const library = (() => {
     events.subscribe('openProjectOptionsQuery', _queryProjectNamesIDs)  // published from forms.js (_showForm())
     events.subscribe('deleteProject', _deleteProject);    // published from forms.js (_openDeleteQuery())
     events.subscribe('deleteTask', _deleteTask);    // published from domDisplay.js (_renderItemHeaders())
-    events.subscribe('modifyConfirm', _modifyItem); //published from forms.js (_confirmModify())
+    events.subscribe('confirmInput', _setItemValues); //published from forms.js (_confirmInput())
 
 })();

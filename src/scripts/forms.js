@@ -32,13 +32,13 @@ const forms = (() => {
         _fillFormValues(itemValues);
         _showForm();
     }
-    function _confirmModify() {
+    function _confirmInput() {
         _hideForm();
         let formValues = _bundleFormValues();
         _clearValues();
         _removeProjectOptions();
 
-        events.publish('modifyConfirm', formValues);    // subscribed by library.js
+        events.publish('confirmInput', formValues);    // subscribed by library.js
     }
     function _cancelInput() {
         _hideForm();
@@ -70,19 +70,17 @@ const forms = (() => {
     }
     function _fillFormValues(values) {
         if (_currentFormType === 'project') {
-            projectInputs[0].value = values[0];
-            for (let i = 1; i < (projectInputs.length); i++) {
+            for (let i = 0; i < (projectInputs.length); i++) {
                 projectInputs[i].value = values[i];
             };
         } else if (_currentFormType === 'task') {
-            taskInputs[0].value = values[0];
-            for (let i = 1; i < (taskInputs.length); i++) {
+            for (let i = 0; i < (taskInputs.length); i++) {
                 taskInputs[i].value = values[i];
             };
         };
     }
     function _renderProjectOptions(array) {
-        let projectDropdown = taskInputs[5];
+        let projectDropdown = taskInputs[6];
         for (let i = 0; i < (array.length); i++) {
             let projectName = array[i][0];
             let projectID = array[i][1]
@@ -91,11 +89,9 @@ const forms = (() => {
         };
     }
     function _removeProjectOptions() {
-        console.log(taskInputs[5]);
-        while (taskInputs[5].firstChild) {
-            taskInputs[5].removeChild(taskInputs[5].lastChild);
+        while (taskInputs[6].firstChild) {
+            taskInputs[6].removeChild(taskInputs[6].lastChild);
         };
-        console.log(taskInputs[5]);
     }
     function _clearValues() {
         if (_currentForm === projectForm) {
@@ -113,18 +109,32 @@ const forms = (() => {
             for (let i = 0; i < (projectInputs.length); i++) {
                 formValues.push(projectInputs[i].value);
             };
+            console.log(`project formValues: [${formValues}]`);
         } else if (_currentForm === taskForm) {
             formValues.push('task');
             for (let i = 0; i < (taskInputs.length); i++) {
                 formValues.push(taskInputs[i].value);
             };
+            if (formValues[2] === 'checklist') {
+                let labelContentArray = _captureChecklistLabelContent(formValues[1]);
+                formValues.push(labelContentArray);
+            };
+            console.log(`task formValues: [${formValues}]`);
         };
         return formValues;
+    }
+    function _captureChecklistLabelContent(targetID) {
+        let contentArray = [];
+        let checklistLabels = document.querySelectorAll(`div#task${targetID} div.checks ul li label`);
+        for (let i = 0; i < (checklistLabels.length); i++) {
+            contentArray.push(checklistLabels[i].textContent);
+        };
+        return contentArray;
     }
 
     // bind events
     confirmButtons.forEach(btn => btn.addEventListener('click', (e) => {
-        _confirmModify(e);
+        _confirmInput(e);
     }));
     cancelButtons.forEach(btn => btn.addEventListener('click', () => {
         _cancelInput();
