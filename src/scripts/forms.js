@@ -76,9 +76,9 @@ const forms = (() => {
     function _renderProjectOptions(array) {
         let projectDropdown = taskInputs[5];
         for (let i = 0; i < (array.length); i++) {
-            console.log(array[i][0]);
-            console.log(array[i][1]);
-            let optionProject = option(array[i][1], array[i][0]);
+            let projectName = array[i][0];
+            let projectID = array[i][1]
+            let optionProject = option(projectID, projectName);
             projectDropdown.appendChild(optionProject);
         };
     }
@@ -94,12 +94,12 @@ const forms = (() => {
         let formValues = [];
         if (_currentForm === projectForm) {
             formValues.push('project');
-            for (let i = 0; i < (projectInputs.length); i++) {  // ! nodelist contains invisible iterables, must specify length
+            for (let i = 0; i < (projectInputs.length); i++) {
                 formValues.push(projectInputs[i].value);
             };
         } else if (_currentForm === taskForm) {
             formValues.push('task');
-            for (let i = 0; i < (taskInputs.length); i++) {  // ! nodelist contains invisible iterables, must specify length
+            for (let i = 0; i < (taskInputs.length); i++) {
                 formValues.push(taskInputs[i].value);
             };
         };
