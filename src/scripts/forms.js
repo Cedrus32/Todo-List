@@ -30,14 +30,13 @@ const forms = (() => {
     }
     function _openModifyForm(itemValues) {
         _fillFormValues(itemValues);
-        _showForm(_currentForm);
+        _showForm();
     }
     function _confirmModify() {
         _hideForm();
         let formValues = _bundleFormValues();
         _clearValues();
         _removeProjectOptions();
-        _currentForm = '';
 
         events.publish('modifyConfirm', formValues);    // subscribed by library.js
     }
@@ -45,7 +44,6 @@ const forms = (() => {
         _hideForm();
         _clearValues();
         _removeProjectOptions();
-        _currentForm = '';
     }
     function _alertDeleteProjectConfirmation(cardID) {
         // * display project delete confirmation
@@ -106,6 +104,7 @@ const forms = (() => {
             taskInputs.forEach(input => input.value = '');
         };
         _currentForm = '';
+        _currentFormType = '';
     }
     function _bundleFormValues() {
         let formValues = [];
