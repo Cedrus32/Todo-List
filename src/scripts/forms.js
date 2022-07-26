@@ -32,9 +32,8 @@ const forms = (() => {
     function _confirmModify() {
         _hideForm();
         let formValues = _bundleFormValues();
-        events.publish('modifyConfirm', formValues);    // subscribed by library.js
         _clearValues();
-
+        events.publish('modifyConfirm', formValues);    // subscribed by library.js
     }
     function _cancelInput() {
         _hideForm();
