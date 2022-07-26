@@ -72,10 +72,10 @@ const input = function(id) {
     element.name = String(id);
     return element;
 }
-const option = function(value, title) {
+const option = function(value, content) {
     element = document.createElement('option');
     element.value = value;
-    element.textContent = title;
+    element.textContent = content;
     return element;
 }
 const label = function(content, id, ...args) {
