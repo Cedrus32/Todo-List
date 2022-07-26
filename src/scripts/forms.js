@@ -6,6 +6,7 @@ import { option } from './elements';
 const forms = (() => {
     // data
     let _currentForm;
+    let _currentFormType;
 
     // cache DOM
     let projectForm = document.getElementById('project-form');
@@ -18,26 +19,33 @@ const forms = (() => {
     let cancelButtons = document.querySelectorAll('button.cancel');
 
     // manager methods
-    function _openCreateForm(formType) {
-        _showForm(formType);
+    function _openCreateForm(formReference) {
+        _setFormReferences(formReference);
+        _showForm();
     }
     function _openModifyQuery(event) {
         let cardID = event.target.closest('div.card').id;
+        _setFormReferences(cardID.slice(0, (cardID.length - 1)));
         events.publish('openModifyQuery', cardID);  // subscribed by library.js
     }
-    function _openModifyForm(formType, itemValues) {
-        _fillFormValues(formType, itemValues);
-        _showForm(formType);
+    function _openModifyForm(itemValues) {
+        _fillFormValues(itemValues);
+        _showForm(_currentForm);
     }
     function _confirmModify() {
         _hideForm();
         let formValues = _bundleFormValues();
         _clearValues();
+        _removeProjectOptions();
+        _currentForm = '';
+
         events.publish('modifyConfirm', formValues);    // subscribed by library.js
     }
     function _cancelInput() {
         _hideForm();
         _clearValues();
+        _removeProjectOptions();
+        _currentForm = '';
     }
     function _alertDeleteProjectConfirmation(cardID) {
         // * display project delete confirmation
@@ -46,30 +54,33 @@ const forms = (() => {
     }
 
     // helper methods  
-    function _showForm(formType) {
-        if (formType === 'project') {
+    function _setFormReferences(formReference) {
+        if (formReference === 'project') {
             _currentForm = projectForm;
-            projectForm.classList.remove('hide');
-        } else if (formType === 'task') {
+            _currentFormType = 'project';
+        } else if (formReference === 'task') {
             _currentForm = taskForm;
-            taskForm.classList.remove('hide');
+            _currentFormType = 'task';
         };
+    }
+    function _showForm() {
+        _currentForm.classList.remove('hide');
+        events.publish('openProjectOptionsQuery', '');  // subscribed by library.js
     }
     function _hideForm() {
         _currentForm.classList.add('hide');
     }
-    function _fillFormValues(formType, values) {
-        if (formType === 'project') {
+    function _fillFormValues(values) {
+        if (_currentFormType === 'project') {
             projectInputs[0].value = values[0];
             for (let i = 1; i < (projectInputs.length); i++) {
                 projectInputs[i].value = values[i];
             };
-        } else if (formType === 'task') {
+        } else if (_currentFormType === 'task') {
             taskInputs[0].value = values[0];
             for (let i = 1; i < (taskInputs.length); i++) {
                 taskInputs[i].value = values[i];
             };
-            events.publish('openProjectOptionsQuery', '');  // subscribed by library.js
         };
     }
     function _renderProjectOptions(array) {
@@ -80,6 +91,13 @@ const forms = (() => {
             let optionProject = option(projectID, projectName);
             projectDropdown.appendChild(optionProject);
         };
+    }
+    function _removeProjectOptions() {
+        console.log(taskInputs[5]);
+        while (taskInputs[5].firstChild) {
+            taskInputs[5].removeChild(taskInputs[5].lastChild);
+        };
+        console.log(taskInputs[5]);
     }
     function _clearValues() {
         if (_currentForm === projectForm) {
