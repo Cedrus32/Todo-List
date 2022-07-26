@@ -15,7 +15,7 @@ const display = (() => {
     // managers
     function initDefault() {
         _publishCreateProjectEvent(_sampleProjectValues[0]);
-        for (let t in _sampleTaskValues) {
+        for (let t = 0; t < (_sampleTaskValues.length); t++) {
             _publishCreateTaskEvent(_sampleTaskValues[t]);
         };
     }

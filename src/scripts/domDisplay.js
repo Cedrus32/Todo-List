@@ -90,7 +90,7 @@ const domDisplay = (() => {
         let divChecks = div('', '.checks');
 
         let ulItem = ul('', '');
-        for (let i in items) {
+        for (let i = 0; i < (items.length); i++) {
             let liItem = li('', '');
 
             let checkbox = input(itemCount);

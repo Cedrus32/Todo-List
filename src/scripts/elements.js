@@ -92,7 +92,7 @@ const label = function(content, id, ...args) {
 
 // helpers
 function _setAttributes(element, attributes) {
-    for (let i in attributes) {
+    for (let i = 0; i < (attributes.length); i++) {
         if (attributes[i][0] === '.') {
             element.classList.add(attributes[i].substring(1, attributes[i].length));
         } else if (attributes[i][0] === '#') {

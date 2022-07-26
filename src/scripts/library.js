@@ -90,7 +90,7 @@ const library = (() => {
         let itemReference = cardID.slice(-1);
 
         if (libraryReference === 'project') {
-            for (let p in _projectLibrary) {
+            for (let p = 0; p < (_projectLibrary.length); p++) {
                 if (_projectLibrary[p].id == itemReference) {
                     let item = _projectLibrary[p];
                     let itemValueArray = [item.id, item.title, item.description];
@@ -99,9 +99,9 @@ const library = (() => {
                 };
             };
         } else if (libraryReference === 'task') {
-            for (let t in _taskLibrary) {
+            for (let t = 0; t < (_taskLibrary.length); t++) {
                 let projectTitle;
-                for (let p in _projectLibrary) {
+                for (let p = 0; p < (_projectLibrary.length); p++) {
                     if (_projectLibrary[p].id === _taskLibrary[t].projectID) {
                         projectTitle = _projectLibrary[p].title;
                     };
@@ -117,7 +117,7 @@ const library = (() => {
     }
     function _queryProjectNamesIDs() {
         let nameIDArray = [];
-        for (let p in _projectLibrary) {
+        for (let p = 0; p < (_projectLibrary.length); p++) {
             nameIDArray.push([_projectLibrary[p].title, _projectLibrary[p].id]);
         };
 
@@ -152,13 +152,13 @@ const library = (() => {
         if (libraryReference === 'project') {
             let projectInstance = _projectLibrary[itemReference];
             console.log(projectInstance);
-            for (let v in formValues) {
+            for (let v = 0; v < (formValues.length); v++) {
                 console.log(v);
                 switch(v) {
-                    case '0':
+                    case 0:
                         projectInstance.setTitle = formValues[0];
                         break;
-                    case '1':
+                    case 0:
                         projectInstance.setDescription = formValues[1];
                 };
             };
@@ -166,25 +166,25 @@ const library = (() => {
         } else if (libraryReference === 'task') {
             let taskInstance = _taskLibrary[itemReference];
             console.log(taskInstance);
-            for (let v in formValues) {
+            for (let v = 0; v < (formValues.length); v++) {
                 console.log(v);
                 switch(v) {
-                    case '0':
+                    case 0:
                         taskInstance.setTitle = formValues[0];
                         break;
-                    case '1':
+                    case 1:
                         taskInstance.description = formValues[1];
                         break;
-                    case '2':
+                    case 2:
                         taskInstance.setDueDate = formValues[2];
                         break;
-                    case '3':
+                    case 3:
                         taskInstance.setPriority = formValues[3];
                         break;
-                    case '4':
+                    case 4:
                         taskInstance.setProjectID = formValues[4];
                         break;
-                    case '5':
+                    case 5:
                         taskInstance.setTags = formValues[5];
                 };
             };
@@ -212,7 +212,7 @@ const library = (() => {
     }
     function _deleteTask(cardID) {
         let taskReference = cardID.slice(-1);
-        for (let t in _taskLibrary) {
+        for (let t = 0; t < (_taskLibrary.length); t++) {
             if (_taskLibrary[t].id == taskReference) {
                 projectReference = _taskLibrary[t].projectID;
                 _taskLibrary.splice(t, 1);
