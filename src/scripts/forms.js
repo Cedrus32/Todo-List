@@ -74,7 +74,7 @@ const forms = (() => {
         };
     }
     function _renderProjectOptions(array) {
-        let projectDropdown = taskInputs[4];
+        let projectDropdown = taskInputs[5];
         for (let i = 0; i < (array.length); i++) {
             console.log(array[i][0]);
             console.log(array[i][1]);
