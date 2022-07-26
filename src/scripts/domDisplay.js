@@ -8,7 +8,7 @@ const domDisplay = (() => {
     let _taskCounter = 0;
 
     // cache DOM
-    let projectContainer = document.getElementById('proj-container');
+    let projectContainer = document.getElementById('project-container');
     let taskContainer = document.getElementById('task-container');
     let taskCountSpan = document.querySelector('div.tally span');
     let createTaskButton = document.querySelector('div.task-controls div.create');
@@ -110,7 +110,7 @@ const domDisplay = (() => {
         let divHeader = div('', '.header');
 
         let h1Title = h1(title, '.title');
-        let spanModify = span('...', '.proj', '.modify');
+        let spanModify = span('...', '.project', '.modify');
         let spanDelete = span('X', '.delete');
 
         // * project modify/delete events
