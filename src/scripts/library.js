@@ -1,6 +1,6 @@
 import events from '../events';
 
-// * 'backend' manager class containing project/task states, factories, & methods
+// * 'backend' manager module containing project/task states, factories, & methods
 
 const library = (() => {
     // dynamic data
@@ -85,7 +85,7 @@ const library = (() => {
     }
 
     // getters
-    function _queryItem(cardID) {
+    function _queryItem(cardID) { // ! reduce repetition
         let libraryReference = cardID.slice(0, (cardID.length - 1));
         let itemReference = cardID.slice(-1);
 
@@ -94,7 +94,7 @@ const library = (() => {
                 if (_projectLibrary[p].id == itemReference) {
                     let item = _projectLibrary[p];
                     let itemValueArray = [item.id, item.title, item.description];
-                    events.publish('closeModifyQuery', libraryReference, itemValueArray);   // subscribed by forms.js
+                    events.publish('closeModifyQuery', itemValueArray);   // subscribed by forms.js
                     return;
                 };
             };
@@ -109,7 +109,7 @@ const library = (() => {
                 if (_taskLibrary[t].id == itemReference) {
                     let item = _taskLibrary[t];
                     let itemValueArray = [item.id, item.title, item.description, item.dueDate, item.priority, projectTitle, item.tags];
-                    events.publish('closeModifyQuery', libraryReference, itemValueArray);   // subscribed by forms.js
+                    events.publish('closeModifyQuery', itemValueArray);   // subscribed by forms.js
                     return;
                 };
             };
@@ -224,7 +224,7 @@ const library = (() => {
     events.subscribe('createProject', _createProject);  // published from display.js (initDefault())
     events.subscribe('createTask', _createTask);    // published from display.js (initDefault())
     events.subscribe('openModifyQuery', _queryItem);    // published from forms.js (_openModifyQuery())
-    events.subscribe('openProjectOptionsQuery', _queryProjectNamesIDs)  // published from forms.js (_fillFormValues())
+    events.subscribe('openProjectOptionsQuery', _queryProjectNamesIDs)  // published from forms.js (_showForm())
     events.subscribe('deleteProject', _deleteProject);    // published from forms.js (_openDeleteQuery())
     events.subscribe('deleteTask', _deleteTask);    // published from domDisplay.js (_renderItemHeaders())
     events.subscribe('modifyConfirm', _modifyItem); //published from forms.js (_confirmModify())
