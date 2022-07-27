@@ -152,16 +152,18 @@ const library = (() => {
         let _newProject = new Project(_id, ...attributeArray);
         console.log(_newProject);
         _projectLibrary.push(_newProject);
-        events.publish('projectCreated', _newProject);  // subscribed by display.js
         _projectCounter++;
+
+        events.publish('projectCreated', _newProject);  // subscribed by display.js
     }
     function _createTask(attributeArray) {
         let _id = _taskCounter;
         let _newTask = new Task(_id, ...attributeArray);
         console.log(_newTask);
         _taskLibrary.push(_newTask);
-        events.publish('taskCreated', _newTask);    // subscribed by display.js
         _taskCounter++;
+
+        events.publish('taskCreated', _newTask);    // subscribed by display.js
     }
     function _modifyProject(targetItemID, attributeArray) {
         //// console.log(attributeArray)
@@ -177,6 +179,9 @@ const library = (() => {
             };
         };
         //// console.log(projectInstance);
+
+        // let cardID = `${targetItemCardType}_${targetItemID}`
+        events.publish('itemModified', projectInstance);  // subscribed by domDisplay.js
     }
     function _modifyTask(targetItemID, attributeArray) {
         //// console.log(attributeArray);
@@ -204,6 +209,9 @@ const library = (() => {
             };
         };
         //// console.log(taskInstance);
+
+        // let cardID = `${targetItemCardType}_${targetItemID}`
+        events.publish('itemModified', taskInstance);  // subscribed by domDisplay.js
     }
 
     // delete methods

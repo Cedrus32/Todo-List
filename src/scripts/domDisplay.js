@@ -26,7 +26,7 @@ const domDisplay = (() => {
 
         projectContainer.appendChild(projectCard);
 
-        _fillTaskCounter('');
+        // _fillTaskCounter('');
     }
 
     // task manager
@@ -77,10 +77,27 @@ const domDisplay = (() => {
             _fillTaskCounter('-');
         };
     }
+    function _deleteProject(id) {
+        let targetProject = document.getElementById(id);
+        projectContainer.removeChild(targetProject);
+    }
     function _deleteTask(id) {
         let targetTask = document.getElementById(id);
         taskContainer.removeChild(targetTask)
         _fillTaskCounter('-');
+    }
+    function _updateItem(itemInstance) {
+        // delete item
+        // redraw item
+        if (itemInstance.type === 'project') {
+            let cardID = `project_${itemInstance.id}`;
+            _deleteProject(cardID);
+            _renderProject(itemInstance);
+        } else if (itemInstance.type === 'singleton' || itemInstance.type === 'checklist') {
+            let cardID = `project_${itemInstance.id}`;
+            _deleteTask(cardID);
+            _renderTask(itemInstance);
+        };
     }
 
     // helper factories
@@ -255,5 +272,5 @@ const domDisplay = (() => {
     events.subscribe('renderTask', _renderTask);    // published from display.js (_renderDisplay())
     events.subscribe('removeTaskFromDisplay', _deleteTask); // published from library.js (_deleteTask())
     events.subscribe('removeProjectFromDisplay', _clearDisplay) // published from library.js (_deleteProject())
-
+    events.subscribe('itemModified', _updateItem);    // published from library.js (_modifyItems())
 })();
