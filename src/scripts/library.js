@@ -233,12 +233,12 @@ const library = (() => {
         let taskReference = cardID.slice(-1);
         for (let t = 0; t < (_taskLibrary.length); t++) {
             if (_taskLibrary[t].id == taskReference) {
-                projectReference = _taskLibrary[t].projectID;
+                // projectReference = _taskLibrary[t].projectID;
                 _taskLibrary.splice(t, 1);
             };
         };
         //// console.log(_taskLibrary);
-        // * send notification to display to refresh
+        events.publish('removeTaskFromDisplay', cardID);    // subscribed by domDisplay.js
     }
 
     // bind events

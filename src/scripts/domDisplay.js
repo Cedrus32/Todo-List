@@ -243,13 +243,19 @@ const domDisplay = (() => {
         // // * adjust taskCounter, call renderTaskCounterContent
         // // * unsubscribe from onEmit
     }
+    function _deleteTask(id) {
+        console.log(id);
+        let targetTask = document.getElementById(id);
+        taskContainer.removeChild(targetTask)
+    }
 
     // bind events
     // * modify & delete click events in _renderHeader()'s ^^^
     createTaskButton.addEventListener('click', () => {
-        events.publish('clickCreateItem', 'task');      // subscribed by forms.js
+        events.publish('clickCreateItem', 'task');  // subscribed by forms.js
     });
     events.subscribe('renderProject', _renderProject)   // published from display.js (_renderDisplay())
-    events.subscribe('renderTask', _renderTask);        // published from display.js (_renderDisplay())
+    events.subscribe('renderTask', _renderTask);    // published from display.js (_renderDisplay())
+    events.subscribe('removeTaskFromDisplay', _deleteTask); // published from library.js (_deleteTask())
 
 })();
