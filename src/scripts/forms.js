@@ -18,9 +18,6 @@ const forms = (() => {
 
     let confirmDeleteButton = document.querySelector('button.delete-confirm');
     let cancelDeleteButton = document.querySelector('button.delete-cancel');
-    console.log(confirmDeleteButton);
-    console.log(cancelDeleteButton);
-
     let confirmButtons = document.querySelectorAll('button.confirm');
     let cancelButtons = document.querySelectorAll('button.cancel');
 
@@ -51,12 +48,8 @@ const forms = (() => {
         _clearFormValues();
         _removeProjectOptions();
     }
-    function _alertDeleteProjectConfirmation(cardID) {
-        // * display project delete confirmation
+    function _showDeleteProjectConfirmation(cardID) {
         deleteConfirmAlert.classList.remove('hide');
-        
-        // * if confirmation === true...
-            // events.publish('deleteProject', cardID); // subscribed by library.js
     }
 
     // helper methods  
@@ -151,6 +144,11 @@ const forms = (() => {
     }
 
     // bind events
+    confirmDeleteButton.addEventListener('click', () => {
+        deleteConfirmAlert.classList.add('hide');
+        let projectCardID = document.querySelector('div.project.card').id;
+        events.publish('deleteProject', projectCardID); // subscribed by library.js
+    })
     cancelDeleteButton.addEventListener('click', () => {
         deleteConfirmAlert.classList.add('hide');
     });
@@ -164,7 +162,7 @@ const forms = (() => {
     events.subscribe('clickModifyItem', _openModifyQuery);  // publishing from domDisplay.js (_renderHeaders())
     events.subscribe('closeModifyQuery', _openModifyForm);  // publishing from library.js (_queryItem());
     events.subscribe('closeProjectOptionsQuery', _renderProjectOptions);  // publishing from library.js (_queryProjectNameID())
-    events.subscribe('clickDeleteProject', _alertDeleteProjectConfirmation);    // publishing from domDisplay.js (_renderProjectHeader())
+    events.subscribe('clickDeleteProject', _showDeleteProjectConfirmation);    // publishing from domDisplay.js (_renderProjectHeader())
 
 })();
 
