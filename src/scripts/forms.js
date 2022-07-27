@@ -10,10 +10,16 @@ const forms = (() => {
 
     // cache DOM
     let projectForm = document.getElementById('project-form');
+    let deleteConfirmAlert = document.getElementById('delete-confirm');
     let taskForm = document.getElementById('task-form');
 
     let projectInputs = projectForm.querySelectorAll('input');
     let taskInputs = taskForm.querySelectorAll('.input');
+
+    let confirmDeleteButton = document.querySelector('button.delete-confirm');
+    let cancelDeleteButton = document.querySelector('button.delete-cancel');
+    console.log(confirmDeleteButton);
+    console.log(cancelDeleteButton);
 
     let confirmButtons = document.querySelectorAll('button.confirm');
     let cancelButtons = document.querySelectorAll('button.cancel');
@@ -47,8 +53,10 @@ const forms = (() => {
     }
     function _alertDeleteProjectConfirmation(cardID) {
         // * display project delete confirmation
+        deleteConfirmAlert.classList.remove('hide');
+        
         // * if confirmation === true...
-            events.publish('deleteProject', cardID); // subscribed by library.js
+            // events.publish('deleteProject', cardID); // subscribed by library.js
     }
 
     // helper methods  
@@ -143,6 +151,9 @@ const forms = (() => {
     }
 
     // bind events
+    cancelDeleteButton.addEventListener('click', () => {
+        deleteConfirmAlert.classList.add('hide');
+    });
     confirmButtons.forEach(btn => btn.addEventListener('click', (e) => {
         _confirmInput(e);
     }));
