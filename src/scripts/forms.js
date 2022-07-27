@@ -69,13 +69,24 @@ const forms = (() => {
         _currentForm.classList.add('hide');
     }
     function _fillFormValues(values) {
+        console.log(values);
         if (_currentFormType === 'project') {
-            for (let i = 0; i < (projectInputs.length); i++) {
+            for (let i = 0; i < (values.length); i++) {
                 projectInputs[i].value = values[i];
             };
         } else if (_currentFormType === 'task') {
-            for (let i = 0; i < (taskInputs.length); i++) {
-                taskInputs[i].value = values[i];
+            for (let i = 0; i < (values.length); i++) {
+                if (i === 1) {
+                    console.log(values[i]);
+                    if (values[1] === 'singleton') {
+                        taskInputs[1].checked = true;
+                    } else if (values[1] === 'checklist') {
+                        taskInputs[2].checked = true;
+                    };
+                } else {
+                    console.log(values[i]);
+                    taskInputs[i + 1].value = values[i];
+                };
             };
         };
     }
