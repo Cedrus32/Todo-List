@@ -90,22 +90,32 @@ const domDisplay = (() => {
         let divChecks = div('', '.checks');
 
         let ulItem = ul('', '');
-        // todo create blank checklist if var items is empty
-        for (let i = 0; i < (items.length); i++) {
-            let liItem = li('', '');
-
-            let checkbox = input(itemCount);
-            let labelItem = label(items[i], itemCount, '');
-            itemCount++;
-
-            liItem.appendChild(checkbox);
-            liItem.appendChild(labelItem);
-
-            ulItem.appendChild(liItem);
-        }
+        if (items === undefined) {
+            console.log('create blank checklist');
+            let checklistItem = _renderChecklistItem('', itemCount);    // todo: consider how to make checkmark id's unique
+                                                                        // ? pass taskID -> convert to taskID_input_itemCount && taskID_check_itemCount
+            ulItem.appendChild(checklistItem);
+        } else {
+            for (let i = 0; i < (items.length); i++) {
+                let checklistItem = _renderChecklistItem(items[i], itemCount);  // todo: consider how to make checkmark id's unique
+                ulItem.appendChild(checklistItem);                              // ? pass taskID -> convert to taskID_input_itemCount && taskID_check_itemCount
+                itemCount++;
+            };
+        };
         divChecks.appendChild(ulItem);
         
         return divChecks;
+    }
+    const _renderChecklistItem = function(content, count) {
+        let liItem = li('', '');
+    
+        let checkbox = input(count);    // todo: see above
+        let labelItem = label(content, count, '');  // todo: see above
+
+        liItem.appendChild(checkbox);
+        liItem.appendChild(labelItem);
+
+        return liItem;
     }
     const _renderProjectHeader = function(title) {
         let divHeader = div('', '.header');
