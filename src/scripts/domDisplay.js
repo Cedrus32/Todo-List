@@ -230,18 +230,17 @@ const domDisplay = (() => {
         _taskCounter++;
     }
     function _clearDisplay() {
-        // ! also unsubscribe events when clearing DOM
-        // while (projContainer.lastChild) {
-        //     // * remove any eventListeners from objects
-        //     projContainer.remove(projContainer.lastChild);
-        // };
+        while (projectContainer.children.length > 0) {
+            // * remove any eventListeners from objects
+            projectContainer.removeChild(projectContainer.lastChild);
+        };
 
-        // // * change criteria -- KEEP LAST CHILD (task controls)
-        // while (taskContainer.lastChild) {
-        //     taskContainer.remove(taskContainer.lastChild);
-        // };
-        // // * adjust taskCounter, call renderTaskCounterContent
-        // // * unsubscribe from onEmit
+        // * change criteria -- KEEP LAST CHILD (task controls)
+        while (taskContainer.children.length > 1) {
+            taskContainer.removeChild(taskContainer.lastChild);
+        };
+        // * adjust taskCounter, call renderTaskCounterContent
+        // * unsubscribe from onEmit
     }
     function _deleteTask(id) {
         console.log(id);
@@ -257,5 +256,6 @@ const domDisplay = (() => {
     events.subscribe('renderProject', _renderProject)   // published from display.js (_renderDisplay())
     events.subscribe('renderTask', _renderTask);    // published from display.js (_renderDisplay())
     events.subscribe('removeTaskFromDisplay', _deleteTask); // published from library.js (_deleteTask())
+    events.subscribe('removeProjectFromDisplay', _clearDisplay) // published from library.js (_deleteProject())
 
 })();

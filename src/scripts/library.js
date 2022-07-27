@@ -228,6 +228,7 @@ const library = (() => {
         //// console.log(_taskLibrary);
         // * send notification to update sidebar (remove deleted project, select new project view)
         // * ---> will in turn notify display to refresh
+        events.publish('removeProjectFromDisplay', cardID);    // subscribed by domDisplay.js
     }
     function _deleteTask(cardID) {
         let taskReference = cardID.slice(-1);
