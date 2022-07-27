@@ -52,9 +52,15 @@
         <section id='task-form' class='form-container hide'>
             <form>
                 <input class='target-task-id input hide'></input>
-                <input class='target-task-type input hide'></input>
                 <fieldset>
                     <legend>Task</legend>
+                    <label>Task Type</label>
+                    <div class='type-options'>
+                        <input type='radio' class='input' id='singleton' name='type' value='singleton' checked>
+                        <label for='singleton'>Single Task</label>
+                        <input type='radio' class='input' id='checklist' name='type' value='checklist'>
+                        <label for='checklist'>Task List</label>
+                    </div>
                     <label for='task-title'>Task Name</label>
                     <input type='text' id='task-title' class='input' name='task-title' placeholder='name'
                            required aria-required='true'>
