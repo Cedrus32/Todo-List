@@ -45,7 +45,6 @@ const library = (() => {
             this.dueDate = taskDue;
             this.priority = taskPriority;
             this.tags = taskTags;
-            this.items = [];
             if (this.type === 'checklist') {    // ? is this necessary if taskItems are pushed individually ?
                 this.items = taskItems;         // ? as they are created ?
             };
@@ -119,7 +118,7 @@ const library = (() => {
         events.publish('closeProjectOptionsQuery', nameIDArray) // subscribed by forms.js
     }
 
-    // methods
+    // setter manager
     function _setItemValues(formValues) {
         let libraryReference = formValues[0];
         let itemReference = formValues[1];
@@ -150,6 +149,8 @@ const library = (() => {
             };
         };
     }
+
+    // setter helper methods
     function _createProject(attributeArray) {
         let _id = _projectCounter;
         let _newProject = new Project(_id, ...attributeArray);
@@ -207,6 +208,8 @@ const library = (() => {
         };
         console.log(taskInstance);
     }
+
+    // delete methods
     function _deleteProject(cardID) {
         let projectReference = cardID.slice(-1);
         let projectLoopStart = _projectLibrary.length - 1;

@@ -35,14 +35,14 @@ const forms = (() => {
     function _confirmInput() {
         _hideForm();
         let formValues = _bundleFormValues();
-        _clearValues();
+        _clearFormValues();
         _removeProjectOptions();
 
         events.publish('confirmInput', formValues);    // subscribed by library.js
     }
     function _cancelInput() {
         _hideForm();
-        _clearValues();
+        _clearFormValues();
         _removeProjectOptions();
     }
     function _alertDeleteProjectConfirmation(cardID) {
@@ -79,29 +79,6 @@ const forms = (() => {
             };
         };
     }
-    function _renderProjectOptions(array) {
-        let projectDropdown = taskInputs[6];
-        for (let i = 0; i < (array.length); i++) {
-            let projectName = array[i][0];
-            let projectID = array[i][1]
-            let optionProject = option(projectID, projectName);
-            projectDropdown.appendChild(optionProject);
-        };
-    }
-    function _removeProjectOptions() {
-        while (taskInputs[6].firstChild) {
-            taskInputs[6].removeChild(taskInputs[6].lastChild);
-        };
-    }
-    function _clearValues() {
-        if (_currentForm === projectForm) {
-            projectInputs.forEach(input => input.value = '');
-        } else if (_currentForm === taskForm) {
-            taskInputs.forEach(input => input.value = '');
-        };
-        _currentForm = '';
-        _currentFormType = '';
-    }
     function _bundleFormValues() {
         let formValues = [];
         if (_currentForm === projectForm) {
@@ -113,24 +90,47 @@ const forms = (() => {
         } else if (_currentForm === taskForm) {
             formValues.push('task');
             for (let i = 0; i < (taskInputs.length); i++) {
-                formValues.push(taskInputs[i].value);
+                if (i === 0 || i > 2) {
+                    formValues.push(taskInputs[i].value);
+                };
+                if (i === 1 || i === 2) {
+                    if (taskInputs[i].checked === true) {
+                        formValues.push(taskInputs[i].value);
+                    };
+                };
             };
-            // if (formValues[2] === 'checklist') {
-            //     let labelContentArray = _captureChecklistLabelContent(formValues[1]);
-            //     formValues.push(labelContentArray);
-            // };
+            console.log(taskInputs);
             console.log(`task formValues: [${formValues}]`);
         };
         return formValues;
     }
-    // function _captureChecklistLabelContent(targetID) {
-    //     let contentArray = [];
-    //     let checklistLabels = document.querySelectorAll(`div#task${targetID} div.checks ul li label`);
-    //     for (let i = 0; i < (checklistLabels.length); i++) {
-    //         contentArray.push(checklistLabels[i].textContent);
-    //     };
-    //     return contentArray;
-    // }
+    function _clearFormValues() {
+        if (_currentForm === projectForm) {
+            projectInputs.forEach(input => input.value = '');
+        } else if (_currentForm === taskForm) {
+            for (let i = 0; i < (taskInputs.length); i++) {
+                if (((i > 2) && (i < 6)) || (i > 6)) {
+                    taskInputs[i].value = '';
+                };
+            };
+        };
+        _currentForm = '';
+        _currentFormType = '';
+    }
+    function _renderProjectOptions(array) {
+        let projectDropdown = taskInputs[7];
+        for (let i = 0; i < (array.length); i++) {
+            let projectName = array[i][0];
+            let projectID = array[i][1]
+            let optionProject = option(projectID, projectName);
+            projectDropdown.appendChild(optionProject);
+        };
+    }
+    function _removeProjectOptions() {
+        while (taskInputs[7].firstChild) {
+            taskInputs[7].removeChild(taskInputs[7].lastChild);
+        };
+    }
 
     // bind events
     confirmButtons.forEach(btn => btn.addEventListener('click', (e) => {
