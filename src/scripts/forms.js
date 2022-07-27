@@ -27,9 +27,9 @@ const forms = (() => {
         _showForm();
     }
     function _openModifyQuery(event) {
-        let cardID = event.target.closest('div.card').id;
-        _setFormReferences(cardID.slice(0, (cardID.length - 1)));
-        events.publish('openModifyQuery', cardID);  // subscribed by library.js
+        let cardReferences = event.target.closest('div.card').id.split('_');
+        _setFormReferences(cardReferences[0]);
+        events.publish('openModifyQuery', cardReferences);  // subscribed by library.js
     }
     function _openModifyForm(itemValues) {
         _fillFormValues(itemValues);

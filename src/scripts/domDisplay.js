@@ -15,7 +15,7 @@ const domDisplay = (() => {
 
     // project manager
     const _renderProject = function(project) {
-        let cardID = '#project' + project.id;
+        let cardID = '#project_' + project.id;
         let projectCard = div('', '.card', '.project', cardID);
 
         let projectHeader = _renderProjectHeader(project.title);
@@ -41,7 +41,7 @@ const domDisplay = (() => {
         _fillTaskCounter('+');
     }
     const _renderSingleton = function(task) {
-        let cardID = '#task' + task.id;
+        let cardID = '#task_' + task.id;
         let divCard = div('', '.card', '.singleton', cardID);
 
         let singletonCheckmark = input(task.id);
@@ -53,7 +53,7 @@ const domDisplay = (() => {
         return divCard;
     }
     const _renderChecklist = function(task) {
-        let cardID = '#task' + task.id;
+        let cardID = '#task_' + task.id;
         let divCard = div('', '.card', '.checklist', cardID);
 
         let checklistHeader = _renderChecklistHeader(task.title, task.dueDate);
@@ -123,8 +123,8 @@ const domDisplay = (() => {
             events.publish('clickModifyItem', e);   // subscribed by forms.js
         });
         spanDelete.addEventListener('click', (e) => {    // subscribed by library.js
-            let cardID = e.target.closest('div.card').id;
-            events.publish('deleteTask', cardID);   // subscribed by library.js
+            let taskCardID = e.target.closest('div.card').id;
+            events.publish('deleteTask', taskCardID);   // subscribed by library.js
         });
 
         divHeader.appendChild(labelCheckmarkTitle);

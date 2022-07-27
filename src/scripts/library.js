@@ -84,9 +84,9 @@ const library = (() => {
     }
 
     // getters
-    function _queryItem(cardID) {   // TODO reduce repetition
-        let libraryReference = cardID.slice(0, (cardID.length - 1));
-        let itemReference = cardID.slice(-1);
+    function _queryItem(cardReferences) {   // TODO reduce repetition
+        let libraryReference = cardReferences[0];
+        let itemReference = cardReferences[1];
 
         if (libraryReference === 'project') {
             for (let p = 0; p < (_projectLibrary.length); p++) {
@@ -208,7 +208,8 @@ const library = (() => {
 
     // delete methods
     function _deleteProject(cardID) {
-        let projectReference = cardID.slice(-1);
+        let cardReferences = cardID.split('_');
+        let projectReference = cardReferences[1];
         let projectLoopStart = _projectLibrary.length - 1;
         for (let p = projectLoopStart; p > -1; p--) {
             if (_projectLibrary[p].id == projectReference) {
@@ -228,7 +229,8 @@ const library = (() => {
         events.publish('removeProjectFromDisplay', cardID);    // subscribed by domDisplay.js
     }
     function _deleteTask(cardID) {
-        let taskReference = cardID.slice(-1);
+        let cardReferences = cardID.split('_');
+        let taskReference = cardReferences[1];
         for (let t = 0; t < (_taskLibrary.length); t++) {
             if (_taskLibrary[t].id == taskReference) {
                 // projectReference = _taskLibrary[t].projectID;
@@ -244,7 +246,7 @@ const library = (() => {
     events.subscribe('createTask', _createTask);    // published from display.js (initDefault())
     events.subscribe('openModifyQuery', _queryItem);    // published from forms.js (_openModifyQuery())
     events.subscribe('openProjectOptionsQuery', _queryProjectNamesIDs)  // published from forms.js (_showForm())
-    events.subscribe('deleteProject', _deleteProject);    // published from forms.js (_openDeleteQuery())
+    events.subscribe('deleteProject', _deleteProject);    // published from forms.js (confirmDeleteButton eventListener)
     events.subscribe('deleteTask', _deleteTask);    // published from domDisplay.js (_renderItemHeaders())
     events.subscribe('confirmInput', _setItemValues); //published from forms.js (_confirmInput())
 
