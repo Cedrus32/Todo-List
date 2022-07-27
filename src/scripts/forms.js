@@ -76,7 +76,10 @@ const forms = (() => {
             };
         } else if (_currentFormType === 'task') {
             for (let i = 0; i < (values.length); i++) {
-                if (i === 1) {
+                if (i === 0) {
+                    console.log(values[i]);
+                    taskInputs[i].value = values[i];
+                } else if (i === 1) {
                     console.log(values[i]);
                     if (values[1] === 'singleton') {
                         taskInputs[1].checked = true;
@@ -105,6 +108,7 @@ const forms = (() => {
                     formValues.push(taskInputs[i].value);
                 };
                 if (i === 1 || i === 2) {
+                    console.log(taskInputs[i]);
                     if (taskInputs[i].checked === true) {
                         formValues.push(taskInputs[i].value);
                     };
