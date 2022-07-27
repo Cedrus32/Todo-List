@@ -15,8 +15,6 @@ const domDisplay = (() => {
 
     // project manager
     const _renderProject = function(project) {
-        //// console.log(project.getData());
-        //// console.log(project.getDesc());
         let cardID = '#project' + project.id;
         let projectCard = div('', '.card', '.project', cardID);
 
@@ -28,7 +26,7 @@ const domDisplay = (() => {
 
         projectContainer.appendChild(projectCard);
 
-        _fillTaskCounterContent();
+        _fillTaskCounter('');
     }
 
     // task manager
@@ -40,7 +38,7 @@ const domDisplay = (() => {
             taskCard = _renderChecklist(task);
         }
         taskContainer.appendChild(taskCard);
-        _fillTaskCounterContent();
+        _fillTaskCounter('+');
     }
     const _renderSingleton = function(task) {
         let cardID = '#task' + task.id;
@@ -69,6 +67,20 @@ const domDisplay = (() => {
         divCard.appendChild(checklistDetails);
 
         return divCard;
+    }
+    function _clearDisplay() {
+        while (projectContainer.children.length > 0) {
+            projectContainer.removeChild(projectContainer.lastChild);
+        };
+        while (taskContainer.children.length > 1) {
+            taskContainer.removeChild(taskContainer.lastChild);
+            _fillTaskCounter('-');
+        };
+    }
+    function _deleteTask(id) {
+        let targetTask = document.getElementById(id);
+        taskContainer.removeChild(targetTask)
+        _fillTaskCounter('-');
     }
 
     // helper factories
@@ -224,28 +236,14 @@ const domDisplay = (() => {
         return divDetails;
     }
 
-    // methods
-    function _fillTaskCounterContent() {
+    // other methods
+    function _fillTaskCounter(operator) {
+        if (operator === '+') {
+            _taskCounter++;
+        } else if (operator === '-') {
+            _taskCounter--;
+        }
         taskCountSpan.textContent = _taskCounter;
-        _taskCounter++;
-    }
-    function _clearDisplay() {
-        while (projectContainer.children.length > 0) {
-            // * remove any eventListeners from objects
-            projectContainer.removeChild(projectContainer.lastChild);
-        };
-
-        // * change criteria -- KEEP LAST CHILD (task controls)
-        while (taskContainer.children.length > 1) {
-            taskContainer.removeChild(taskContainer.lastChild);
-        };
-        // * adjust taskCounter, call renderTaskCounterContent
-        // * unsubscribe from onEmit
-    }
-    function _deleteTask(id) {
-        console.log(id);
-        let targetTask = document.getElementById(id);
-        taskContainer.removeChild(targetTask)
     }
 
     // bind events

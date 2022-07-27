@@ -93,17 +93,17 @@ const library = (() => {
                 if (_projectLibrary[p].id == itemReference) {
                     let item = _projectLibrary[p];
                     let itemValueArray = [item.id, item.title, item.description];
+                    //// console.log(itemValueArray)
                     events.publish('closeModifyQuery', itemValueArray);   // subscribed by forms.js
                     return;
                 };
             };
         } else if (libraryReference === 'task') {
-            console.log('querying task');
             for (let t = 0; t < (_taskLibrary.length); t++) {
                 if (_taskLibrary[t].id == itemReference) {
                     let item = _taskLibrary[t];
                     let itemValueArray = [item.id, item.type, item.title, item.description, item.dueDate, item.priority, item.projectID, item.tags];
-                    console.log(itemValueArray);
+                    //// console.log(itemValueArray);
                     events.publish('closeModifyQuery', itemValueArray);   // subscribed by forms.js
                 };
             };
@@ -129,18 +129,14 @@ const library = (() => {
         console.log(formValues);
         
         if (libraryReference === 'project') {
-            // check if project instance exists
             if (!_projectLibrary[itemReference]) {
-                console.log('project does not exist -- create new project');
                 _createProject(formValues);
             } else {
                 _modifyProject(itemReference, formValues);
             };
 
         } else if (libraryReference === 'task') {
-            // check if task instance exists
             if (!_taskLibrary[itemReference]) {
-                console.log('task does not exist -- create new task');
                 //                         projectID                type           title          description    dueDate        priority                 tags
                 let formValuesReordered = [parseInt(formValues[5]), formValues[0], formValues[1], formValues[2], formValues[3], parseInt(formValues[4]), formValues[6]]
                 _createTask(formValuesReordered);
@@ -168,8 +164,9 @@ const library = (() => {
         _taskCounter++;
     }
     function _modifyProject(targetItemID, attributeArray) {
+        //// console.log(attributeArray)
         let projectInstance = _projectLibrary[targetItemID];
-        console.log(projectInstance);
+        //// console.log(projectInstance);
         for (let a = 0; a < (attributeArray.length); a++) {
             switch(a) {
                 case 0:
@@ -179,12 +176,12 @@ const library = (() => {
                     projectInstance.setDescription = attributeArray[1];
             };
         };
-        console.log(projectInstance);
+        //// console.log(projectInstance);
     }
     function _modifyTask(targetItemID, attributeArray) {
-        console.log(attributeArray);
+        //// console.log(attributeArray);
         let taskInstance = _taskLibrary[targetItemID];
-        console.log(taskInstance);
+        //// console.log(taskInstance);
         for (let a = 0; a < (attributeArray.length); a++) {
             switch(a) {
                 case 0:
@@ -206,7 +203,7 @@ const library = (() => {
                     taskInstance.setTags = attributeArray[6];
             };
         };
-        console.log(taskInstance);
+        //// console.log(taskInstance);
     }
 
     // delete methods
@@ -224,8 +221,8 @@ const library = (() => {
                 _taskLibrary.splice(t, 1);
             };
         };
-        //// console.log(_projectLibrary);
-        //// console.log(_taskLibrary);
+        console.log(_projectLibrary);
+        console.log(_taskLibrary);
         // * send notification to update sidebar (remove deleted project, select new project view)
         // * ---> will in turn notify display to refresh
         events.publish('removeProjectFromDisplay', cardID);    // subscribed by domDisplay.js
@@ -238,7 +235,7 @@ const library = (() => {
                 _taskLibrary.splice(t, 1);
             };
         };
-        //// console.log(_taskLibrary);
+        console.log(_taskLibrary);
         events.publish('removeTaskFromDisplay', cardID);    // subscribed by domDisplay.js
     }
 

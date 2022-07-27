@@ -69,7 +69,7 @@ const forms = (() => {
         _currentForm.classList.add('hide');
     }
     function _fillFormValues(values) {
-        console.log(values);
+        //// console.log(values);
         if (_currentFormType === 'project') {
             for (let i = 0; i < (values.length); i++) {
                 projectInputs[i].value = values[i];
@@ -77,17 +77,14 @@ const forms = (() => {
         } else if (_currentFormType === 'task') {
             for (let i = 0; i < (values.length); i++) {
                 if (i === 0) {
-                    console.log(values[i]);
                     taskInputs[i].value = values[i];
                 } else if (i === 1) {
-                    console.log(values[i]);
                     if (values[1] === 'singleton') {
                         taskInputs[1].checked = true;
                     } else if (values[1] === 'checklist') {
                         taskInputs[2].checked = true;
                     };
                 } else {
-                    console.log(values[i]);
                     taskInputs[i + 1].value = values[i];
                 };
             };
@@ -100,7 +97,7 @@ const forms = (() => {
             for (let i = 0; i < (projectInputs.length); i++) {
                 formValues.push(projectInputs[i].value);
             };
-            console.log(`project formValues: [${formValues}]`);
+            //// console.log(`project formValues: [${formValues}]`);
         } else if (_currentForm === taskForm) {
             formValues.push('task');
             for (let i = 0; i < (taskInputs.length); i++) {
@@ -108,14 +105,12 @@ const forms = (() => {
                     formValues.push(taskInputs[i].value);
                 };
                 if (i === 1 || i === 2) {
-                    console.log(taskInputs[i]);
                     if (taskInputs[i].checked === true) {
                         formValues.push(taskInputs[i].value);
                     };
                 };
             };
-            console.log(taskInputs);
-            console.log(`task formValues: [${formValues}]`);
+            //// console.log(`task formValues: [${formValues}]`);
         };
         return formValues;
     }
