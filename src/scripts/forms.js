@@ -115,22 +115,22 @@ const forms = (() => {
             for (let i = 0; i < (taskInputs.length); i++) {
                 formValues.push(taskInputs[i].value);
             };
-            if (formValues[2] === 'checklist') {
-                let labelContentArray = _captureChecklistLabelContent(formValues[1]);
-                formValues.push(labelContentArray);
-            };
+            // if (formValues[2] === 'checklist') {
+            //     let labelContentArray = _captureChecklistLabelContent(formValues[1]);
+            //     formValues.push(labelContentArray);
+            // };
             console.log(`task formValues: [${formValues}]`);
         };
         return formValues;
     }
-    function _captureChecklistLabelContent(targetID) {
-        let contentArray = [];
-        let checklistLabels = document.querySelectorAll(`div#task${targetID} div.checks ul li label`);
-        for (let i = 0; i < (checklistLabels.length); i++) {
-            contentArray.push(checklistLabels[i].textContent);
-        };
-        return contentArray;
-    }
+    // function _captureChecklistLabelContent(targetID) {
+    //     let contentArray = [];
+    //     let checklistLabels = document.querySelectorAll(`div#task${targetID} div.checks ul li label`);
+    //     for (let i = 0; i < (checklistLabels.length); i++) {
+    //         contentArray.push(checklistLabels[i].textContent);
+    //     };
+    //     return contentArray;
+    // }
 
     // bind events
     confirmButtons.forEach(btn => btn.addEventListener('click', (e) => {
