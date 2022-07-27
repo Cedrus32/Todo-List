@@ -83,18 +83,19 @@ const domDisplay = (() => {
     }
     function _deleteTask(id) {
         let targetTask = document.getElementById(id);
+        console.log(targetTask);
         taskContainer.removeChild(targetTask)
         _fillTaskCounter('-');
     }
     function _updateItem(itemInstance) {
-        // delete item
-        // redraw item
+        console.log(itemInstance);
         if (itemInstance.type === 'project') {
             let cardID = `project_${itemInstance.id}`;
             _deleteProject(cardID);
             _renderProject(itemInstance);
         } else if (itemInstance.type === 'singleton' || itemInstance.type === 'checklist') {
-            let cardID = `project_${itemInstance.id}`;
+            let cardID = `task_${itemInstance.id}`;
+            console.log(cardID);
             _deleteTask(cardID);
             _renderTask(itemInstance);
         };
