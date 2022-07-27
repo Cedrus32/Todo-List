@@ -90,6 +90,7 @@ const domDisplay = (() => {
         let divChecks = div('', '.checks');
 
         let ulItem = ul('', '');
+        // todo create blank checklist if var items is empty
         for (let i = 0; i < (items.length); i++) {
             let liItem = li('', '');
 
