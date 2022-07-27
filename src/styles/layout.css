@@ -195,3 +195,7 @@ fieldset {
                         display: flex;
                         align-items: center;
                     }
+
+                        .checklist ul li label {
+                            margin-right: auto;
+                        }

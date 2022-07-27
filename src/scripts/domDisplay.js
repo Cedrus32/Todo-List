@@ -28,7 +28,7 @@ const domDisplay = (() => {
 
         projectContainer.appendChild(projectCard);
 
-        _renderTaskCounterContent();
+        _fillTaskCounterContent();
     }
 
     // task manager
@@ -40,7 +40,7 @@ const domDisplay = (() => {
             taskCard = _renderChecklist(task);
         }
         taskContainer.appendChild(taskCard);
-        _renderTaskCounterContent();
+        _fillTaskCounterContent();
     }
     const _renderSingleton = function(task) {
         let cardID = '#task' + task.id;
@@ -72,51 +72,6 @@ const domDisplay = (() => {
     }
 
     // helper factories
-    const _renderSingletonContent = function(id, title, dueDate, description, priority, tags) {
-        let divContent = div('', '.content');
-
-        let taskHeader = _renderSingletonHeader(id, title, dueDate);
-        let taskDescription = div(description, '.description');
-        let taskDetails = _renderTaskDetails(priority, tags);
-
-        divContent.appendChild(taskHeader);
-        divContent.appendChild(taskDescription);
-        divContent.appendChild(taskDetails);
-
-        return divContent;
-    }
-    const _renderChecklistContent = function(items) {
-        let itemCount = 1;
-        let divChecks = div('', '.checks');
-
-        let ulItem = ul('', '');
-        if (items === undefined) {
-            console.log('create blank checklist');
-            let checklistItem = _renderChecklistItem('', itemCount);    // todo: consider how to make checkmark id's unique
-                                                                        // ? pass taskID -> convert to taskID_input_itemCount && taskID_check_itemCount
-            ulItem.appendChild(checklistItem);
-        } else {
-            for (let i = 0; i < (items.length); i++) {
-                let checklistItem = _renderChecklistItem(items[i], itemCount);  // todo: consider how to make checkmark id's unique
-                ulItem.appendChild(checklistItem);                              // ? pass taskID -> convert to taskID_input_itemCount && taskID_check_itemCount
-                itemCount++;
-            };
-        };
-        divChecks.appendChild(ulItem);
-        
-        return divChecks;
-    }
-    const _renderChecklistItem = function(content, count) {
-        let liItem = li('', '');
-    
-        let checkbox = input(count);    // todo: see above
-        let labelItem = label(content, count, '');  // todo: see above
-
-        liItem.appendChild(checkbox);
-        liItem.appendChild(labelItem);
-
-        return liItem;
-    }
     const _renderProjectHeader = function(title) {
         let divHeader = div('', '.header');
 
@@ -191,6 +146,72 @@ const domDisplay = (() => {
 
         return divHeader;
     }
+    const _renderSingletonContent = function(id, title, dueDate, description, priority, tags) {
+        let divContent = div('', '.content');
+
+        let taskHeader = _renderSingletonHeader(id, title, dueDate);
+        let taskDescription = div(description, '.description');
+        let taskDetails = _renderTaskDetails(priority, tags);
+
+        divContent.appendChild(taskHeader);
+        divContent.appendChild(taskDescription);
+        divContent.appendChild(taskDetails);
+
+        return divContent;
+    }
+    const _renderChecklistContent = function(items) {
+        let itemCount = 1;
+        let divChecks = div('', '.checks');
+
+        let ulItem = ul('', '');
+        if (items === undefined) {
+            console.log('create blank checklist');
+            let checklistItem = _renderChecklistItem('', itemCount);    // todo: consider how to make checkmark id's unique
+                                                                        // ? pass taskID -> convert to taskID_input_itemCount && taskID_check_itemCount
+            ulItem.appendChild(checklistItem);
+        } else {
+            for (let i = 0; i < (items.length); i++) {
+                let checklistItem = _renderChecklistItem(items[i], itemCount);  // todo: consider how to make checkmark id's unique
+                ulItem.appendChild(checklistItem);                              // ? pass taskID -> convert to taskID_input_itemCount && taskID_check_itemCount
+                itemCount++;
+            };
+        };
+        divChecks.appendChild(ulItem);
+        
+        return divChecks;
+    }
+    const _renderChecklistItem = function(content, count) {
+        let liItem = li('', '');
+    
+        let checkbox = input(count);    // todo: see above
+        let labelItem = label(content, count, '');  // todo: see above
+        // let itemControls = _renderChecklistItemControls();
+
+        liItem.appendChild(checkbox);
+        liItem.appendChild(labelItem);
+        // liItem.appendChild(itemControls);
+
+        return liItem;
+    }
+    // const _renderChecklistItemControls = function() {
+    //     let divControls = div('', '.checklist-item-controls');
+
+    //     let spanModify = span('...', '.task', '.modify');
+    //     let spanDelete = span('X', '.delete');
+
+    //     // * checklist item modify/delete events
+    //     spanModify.addEventListener('click', (e) => {
+    //         console.log('call alert() to modify');
+    //     });
+    //     spanDelete.addEventListener('click', (e) => {
+    //         // ? get position in ul nodelist, push with event to library, index into items using the same index
+    //         let liID = e.target.closest('li').id;
+    //         events.publish('deleteTask', liID);
+    //     });
+
+    //     divControls.appendChild(spanModify);
+    //     divControls.appendChild(spanDelete);
+    // }
     const _renderTaskDetails = function(priority, tags) {
         let divDetails = div('', '.details');
 
@@ -204,7 +225,7 @@ const domDisplay = (() => {
     }
 
     // methods
-    function _renderTaskCounterContent() {
+    function _fillTaskCounterContent() {
         taskCountSpan.textContent = _taskCounter;
         _taskCounter++;
     }
