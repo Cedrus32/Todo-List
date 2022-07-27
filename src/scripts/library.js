@@ -23,13 +23,11 @@ const library = (() => {
 
         // setters
         set setTitle(value) {
-             console.log('enter setTitle');
             if (value !== this.title) {
                 this.title = value;
             };
         }
         set setDescription(value) {
-            console.log('enter setDescription');
             if (value !== this.description) {
                 this.description = value;
             };
@@ -48,8 +46,8 @@ const library = (() => {
             this.priority = taskPriority;
             this.tags = taskTags;
             this.items = [];
-            if (this.type === 'checklist') {
-                this.items = taskItems;
+            if (this.type === 'checklist') {    // ? is this necessary if taskItems are pushed individually ?
+                this.items = taskItems;         // ? as they are created ?
             };
         }
 
@@ -125,8 +123,8 @@ const library = (() => {
     function _setItemValues(formValues) {
         let libraryReference = formValues[0];
         let itemReference = formValues[1];
-        formValues.splice(0, 2);
-
+        formValues.splice(0, 2);    // [title, description]
+                                    // [type, title, description, dueDate, 'priority', 'projectID', [tags]]
         console.log(libraryReference);
         console.log(itemReference);
         console.log(formValues);
@@ -144,8 +142,8 @@ const library = (() => {
             // check if task instance exists
             if (!_taskLibrary[itemReference]) {
                 console.log('task does not exist -- create new task');
-                //                    projectID                type           title          description    dueDate        priority                 tags           items
-                let formValuesReordered = [parseInt(formValues[5]), formValues[0], formValues[1], formValues[2], formValues[3], parseInt(formValues[4]), formValues[6], formValues[7]]
+                //                         projectID                type           title          description    dueDate        priority                 tags
+                let formValuesReordered = [parseInt(formValues[5]), formValues[0], formValues[1], formValues[2], formValues[3], parseInt(formValues[4]), formValues[6]]
                 _createTask(formValuesReordered);
             } else {
                 _modifyTask(itemReference, formValues);
@@ -189,22 +187,22 @@ const library = (() => {
         for (let a = 0; a < (attributeArray.length); a++) {
             switch(a) {
                 case 0:
-                    taskInstance.setTitle = attributeArray[0];
+                    taskInstance.setTitle = attributeArray[1];
                     break;
                 case 1:
-                    taskInstance.description = attributeArray[1];
+                    taskInstance.description = attributeArray[2];
                     break;
                 case 2:
-                    taskInstance.setDueDate = attributeArray[2];
+                    taskInstance.setDueDate = attributeArray[3];
                     break;
                 case 3:
-                    taskInstance.setPriority = parseInt(attributeArray[3]);
+                    taskInstance.setPriority = parseInt(attributeArray[4]);
                     break;
                 case 4:
-                    taskInstance.setProjectID = parseInt(attributeArray[4]);
+                    taskInstance.setProjectID = parseInt(attributeArray[5]);
                     break;
                 case 5:
-                    taskInstance.setTags = attributeArray[5];
+                    taskInstance.setTags = attributeArray[6];
             };
         };
         console.log(taskInstance);
