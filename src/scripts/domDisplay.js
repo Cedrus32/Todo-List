@@ -18,87 +18,52 @@ const domDisplay = (() => {
         let cardID = '#project_' + project.id;
         let projectCard = div('', '.card', '.project', cardID);
 
-        let projectHeader = _renderProjectHeader(project.title);
-        let projectDescription = div(project.description, '.description');
-
-        projectCard.appendChild(projectHeader);
-        projectCard.appendChild(projectDescription);
+        _renderProjectCardContents(projectCard, project);
 
         projectContainer.appendChild(projectCard);
 
         // _fillTaskCounter('');
     }
+    const _renderProjectCardContents = function(targetCard, item) {
+        let projectHeader = _renderProjectHeader(item.title);
+        let projectDescription = div(item.description, '.description');
 
-    // task manager
+        targetCard.appendChild(projectHeader);
+        targetCard.appendChild(projectDescription);
+    }
+
+    // task managers
     const _renderTask = function(task) {
+        let cardID = '#task_' + task.id;
         let taskCard;
         if (task.type === 'singleton') {
-            taskCard = _renderSingleton(task);
+            taskCard = div('', '.card', '.singleton', cardID)
+            _renderSingletonCardContents(taskCard, task);
         } else if (task.type === 'checklist') {
-            taskCard = _renderChecklist(task);
-        }
+            taskCard = div('', '.card', '.checklist', cardID);
+            _renderChecklistCardContents(taskCard, task);
+        };
         taskContainer.appendChild(taskCard);
-        _fillTaskCounter('+');
-    }
-    const _renderSingleton = function(task) {
-        let cardID = '#task_' + task.id;
-        let divCard = div('', '.card', '.singleton', cardID);
 
-        let singletonCheckmark = input(task.id);
-        let taskCardContent = _renderSingletonContent(task.id, task.title, task.dueDate, task.description, task.priority, task.tags);
-
-        divCard.appendChild(singletonCheckmark);
-        divCard.appendChild(taskCardContent);
-
-        return divCard;
+        // _fillTaskCounter('+');
     }
-    const _renderChecklist = function(task) {
-        let cardID = '#task_' + task.id;
-        let divCard = div('', '.card', '.checklist', cardID);
+    const _renderSingletonCardContents = function(targetCard, item) {
+        let singletonCheckmark = input(item.id);
+        let taskCardContent = _renderSingletonInfo(item.id, item.title, item.dueDate, item.description, item.priority, item.tags);
 
-        let checklistHeader = _renderChecklistHeader(task.title, task.dueDate);
-        let checklistDescription = div(task.description, '.description');
-        let checklistContent = _renderChecklistContent(task.items);
-        let checklistDetails = _renderTaskDetails(task.priority, task.tags);
+        targetCard.appendChild(singletonCheckmark);
+        targetCard.appendChild(taskCardContent);
+    }
+    const _renderChecklistCardContents = function(targetCard, item) {
+        let checklistHeader = _renderChecklistHeader(item.title, item.dueDate);
+        let checklistDescription = div(item.description, '.description');
+        let checklistContent = _renderChecklistContent(item.items);
+        let checklistDetails = _renderTaskDetails(item.priority, item.tags);
 
-        divCard.appendChild(checklistHeader);
-        divCard.appendChild(checklistDescription);
-        divCard.appendChild(checklistContent);
-        divCard.appendChild(checklistDetails);
-
-        return divCard;
-    }
-    function _clearDisplay() {
-        while (projectContainer.children.length > 0) {
-            projectContainer.removeChild(projectContainer.lastChild);
-        };
-        while (taskContainer.children.length > 1) {
-            taskContainer.removeChild(taskContainer.lastChild);
-            _fillTaskCounter('-');
-        };
-    }
-    function _deleteProject(id) {
-        let targetProject = document.getElementById(id);
-        projectContainer.removeChild(targetProject);
-    }
-    function _deleteTask(id) {
-        let targetTask = document.getElementById(id);
-        console.log(targetTask);
-        taskContainer.removeChild(targetTask)
-        _fillTaskCounter('-');
-    }
-    function _updateItem(itemInstance) {
-        console.log(itemInstance);
-        if (itemInstance.type === 'project') {
-            let cardID = `project_${itemInstance.id}`;
-            _deleteProject(cardID);
-            _renderProject(itemInstance);
-        } else if (itemInstance.type === 'singleton' || itemInstance.type === 'checklist') {
-            let cardID = `task_${itemInstance.id}`;
-            console.log(cardID);
-            _deleteTask(cardID);
-            _renderTask(itemInstance);
-        };
+        targetCard.appendChild(checklistHeader);
+        targetCard.appendChild(checklistDescription);
+        targetCard.appendChild(checklistContent);
+        targetCard.appendChild(checklistDetails);
     }
 
     // helper factories
@@ -176,7 +141,7 @@ const domDisplay = (() => {
 
         return divHeader;
     }
-    const _renderSingletonContent = function(id, title, dueDate, description, priority, tags) {
+    const _renderSingletonInfo = function(id, title, dueDate, description, priority, tags) {
         let divContent = div('', '.content');
 
         let taskHeader = _renderSingletonHeader(id, title, dueDate);
@@ -255,6 +220,48 @@ const domDisplay = (() => {
     }
 
     // other methods
+    function _updateItem(itemInstance) {
+        console.log(itemInstance);
+        if (itemInstance.type === 'project') {
+            let cardID = `project_${itemInstance.id}`;
+            let cardElement = document.getElementById(cardID);
+            _deleteItemContent(cardID);
+            _renderProjectCardContents(cardElement, itemInstance);
+        } else if (itemInstance.type === 'singleton' || itemInstance.type === 'checklist') {
+            let cardID = `task_${itemInstance.id}`;
+            let cardElement = document.getElementById(cardID);
+            _deleteItemContent(cardID);
+            if (itemInstance.type === 'singleton') {
+                _renderSingletonCardContents(cardElement, itemInstance);
+            } else if (itemInstance.type === 'checklist') {
+                _renderChecklistCardContents(cardElement, itemInstance);
+            };
+        };
+    }
+    function _clearDisplay() {
+        while (projectContainer.children.length > 0) {
+            projectContainer.removeChild(projectContainer.lastChild);
+        };
+        while (taskContainer.children.length > 1) {
+            taskContainer.removeChild(taskContainer.lastChild);
+            _fillTaskCounter('-');
+        };
+    }
+    function _deleteProjectCard(id) {
+        let targetProject = document.getElementById(id);
+        projectContainer.removeChild(targetProject);
+    }
+    function _deleteTaskCard(id) {
+        let targetTask = document.getElementById(id);
+        taskContainer.removeChild(targetTask)
+        _fillTaskCounter('-');
+    }
+    function _deleteItemContent(id) {
+        let targetProject = document.getElementById(id);
+        while (targetProject.children.length > 0) {
+            targetProject.removeChild(targetProject.lastChild);
+        };
+    }
     function _fillTaskCounter(operator) {
         if (operator === '+') {
             _taskCounter++;
@@ -271,7 +278,7 @@ const domDisplay = (() => {
     });
     events.subscribe('renderProject', _renderProject)   // published from display.js (_renderDisplay())
     events.subscribe('renderTask', _renderTask);    // published from display.js (_renderDisplay())
-    events.subscribe('removeTaskFromDisplay', _deleteTask); // published from library.js (_deleteTask())
+    events.subscribe('removeTaskFromDisplay', _deleteTaskCard); // published from library.js (_deleteTask())
     events.subscribe('removeProjectFromDisplay', _clearDisplay) // published from library.js (_deleteProject())
     events.subscribe('itemModified', _updateItem);    // published from library.js (_modifyItems())
 })();
