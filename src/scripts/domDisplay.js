@@ -154,31 +154,27 @@ const domDisplay = (() => {
         return divContent;
     }
     const _renderChecklistContent = function(parentID, items) {
-        let divChecks = div('', '.checks');
+        // let divChecks = div('', '.checks'); // ? remove and just use ul ? //
 
-        let ulItem = ul('', '');
-        if (items === undefined) {
-            let checklistItem = _renderChecklistItem('', parentID, itemCount);
+        let ulItem = ul('', '.checks');
+        for (let i = 0; i < (items.length); i++) {
+            let checklistItem = _renderChecklistItem(parentID, items[i]);
             ulItem.appendChild(checklistItem);
-        } else {
-            let itemCount = 0;
-            for (let i = 0; i < (items.length); i++) {
-                let checklistItem = _renderChecklistItem(items[i], parentID, itemCount);
-                ulItem.appendChild(checklistItem);
-                itemCount++;
-            };
         };
-        divChecks.appendChild(ulItem);
+        // divChecks.appendChild(ulItem);
         
-        return divChecks;
+        return ulItem;
     }
-    const _renderChecklistItem = function(content, taskReference, count) {
-        let liItemID = `#${taskReference}__li_${count}`;
+    const _renderChecklistItem = function(taskReference, checkInfo) {
+        let checkID = checkInfo[0];
+        let checkContent = checkInfo[1];
+
+        let liItemID = `#${taskReference}__li_${checkID}`;
         let liItem = li('', liItemID);
-    
-        let checklistItemID = `${taskReference}__checkbox_${count}`; // # not needed vvv
+
+        let checklistItemID = `${taskReference}__checkbox_${checkID}`;  // # not needed vv
         let checkbox = input(checklistItemID);  // sets ID directly via default object prototype methods
-        let labelItem = label(content, checklistItemID, '');
+        let labelItem = label(checkContent, checklistItemID, '');
         let checklistItemControls = _renderChecklistItemControls(checklistItemID);
 
         // * checklist item modify/delete events
