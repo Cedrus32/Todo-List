@@ -22,7 +22,7 @@ const domDisplay = (() => {
 
         projectContainer.appendChild(projectCard);
 
-        // _fillTaskCounter('');
+        _fillTaskCounter('');
     }
     const _renderProjectCardContents = function(targetCard, item) {
         let projectHeader = _renderProjectHeader(item.title);
@@ -45,7 +45,7 @@ const domDisplay = (() => {
         };
         taskContainer.appendChild(taskCard);
 
-        // _fillTaskCounter('+');
+        _fillTaskCounter('+');
     }
     const _renderSingletonCardContents = function(targetCard, item) {
         let singletonCheckmark = input(item.id);
@@ -80,7 +80,6 @@ const domDisplay = (() => {
         });
         spanDelete.addEventListener('click', (e) => {
             let cardID = e.target.closest('div.card').id;
-            console.log(cardID);
             events.publish('clickDeleteProject', cardID);   // subscribed by forms.js
         });
 
@@ -160,7 +159,6 @@ const domDisplay = (() => {
 
         let ulItem = ul('', '');
         if (items === undefined) {
-            console.log('create blank checklist');
             let checklistItem = _renderChecklistItem('', itemCount);    // todo: consider how to make checkmark id's unique
                                                                         // ? pass taskID -> convert to taskID_input_itemCount && taskID_check_itemCount
             ulItem.appendChild(checklistItem);
@@ -188,25 +186,6 @@ const domDisplay = (() => {
 
         return liItem;
     }
-    // const _renderChecklistItemControls = function() {
-    //     let divControls = div('', '.checklist-item-controls');
-
-    //     let spanModify = span('...', '.task', '.modify');
-    //     let spanDelete = span('X', '.delete');
-
-    //     // * checklist item modify/delete events
-    //     spanModify.addEventListener('click', (e) => {
-    //         console.log('call alert() to modify');
-    //     });
-    //     spanDelete.addEventListener('click', (e) => {
-    //         // ? get position in ul nodelist, push with event to library, index into items using the same index
-    //         let liID = e.target.closest('li').id;
-    //         events.publish('deleteTask', liID);
-    //     });
-
-    //     divControls.appendChild(spanModify);
-    //     divControls.appendChild(spanDelete);
-    // }
     const _renderTaskDetails = function(priority, tags) {
         let divDetails = div('', '.details');
 
@@ -221,7 +200,7 @@ const domDisplay = (() => {
 
     // other methods
     function _updateItem(itemInstance) {
-        console.log(itemInstance);
+        //// console.log(itemInstance);
         if (itemInstance.type === 'project') {
             let cardID = `project_${itemInstance.id}`;
             let cardElement = document.getElementById(cardID);
@@ -246,10 +225,6 @@ const domDisplay = (() => {
             taskContainer.removeChild(taskContainer.lastChild);
             _fillTaskCounter('-');
         };
-    }
-    function _deleteProjectCard(id) {
-        let targetProject = document.getElementById(id);
-        projectContainer.removeChild(targetProject);
     }
     function _deleteTaskCard(id) {
         let targetTask = document.getElementById(id);

@@ -9,8 +9,6 @@ const library = (() => {
     let _taskCounter = 0;
     let _projectCounter = 0;
 
-    //// cache DOM
-
     // factories
     class Project {
         // attributes
@@ -124,19 +122,19 @@ const library = (() => {
         let itemReference = formValues[1];
         formValues.splice(0, 2);    // [title, description]
                                     // [type, title, description, dueDate, 'priority', 'projectID', [tags]]
-        console.log(libraryReference);
-        console.log(itemReference);
-        console.log(formValues);
+        //// console.log(libraryReference);
+        //// console.log(itemReference);
+        //// console.log(formValues);
         
         if (libraryReference === 'project') {
-            if (!_projectLibrary[itemReference]) {
+            if (!_projectLibrary.some(item => item.id == itemReference)) { // ! untested, written to match task conditional below vvv
                 _createProject(formValues);
             } else {
                 _modifyProject(itemReference, formValues);
             };
 
         } else if (libraryReference === 'task') {
-            if (!_taskLibrary[itemReference]) {
+            if(!_taskLibrary.some(item => item.id == itemReference)) {
                 //                         projectID                type           title          description    dueDate        priority                 tags
                 let formValuesReordered = [parseInt(formValues[5]), formValues[0], formValues[1], formValues[2], formValues[3], parseInt(formValues[4]), formValues[6]]
                 _createTask(formValuesReordered);
@@ -150,7 +148,7 @@ const library = (() => {
     function _createProject(attributeArray) {
         let _id = _projectCounter;
         let _newProject = new Project(_id, ...attributeArray);
-        console.log(_newProject);
+        //// console.log(_newProject);
         _projectLibrary.push(_newProject);
         _projectCounter++;
 
@@ -159,7 +157,7 @@ const library = (() => {
     function _createTask(attributeArray) {
         let _id = _taskCounter;
         let _newTask = new Task(_id, ...attributeArray);
-        console.log(_newTask);
+        //// console.log(_newTask);
         _taskLibrary.push(_newTask);
         _taskCounter++;
 
@@ -167,8 +165,13 @@ const library = (() => {
     }
     function _modifyProject(targetItemID, attributeArray) {
         //// console.log(attributeArray)
-        let projectInstance = _projectLibrary[targetItemID];
-        //// console.log(projectInstance);
+        let projectInstance;
+        for (let p = 0; p < (_projectLibrary.length); p++) {
+            if (_projectLibrary[p].id == targetItemID) {
+                projectInstance = _projectLibrary[p];
+            };
+        };
+        //// console.log(projectInstance)
         for (let a = 0; a < (attributeArray.length); a++) {
             switch(a) {
                 case 0:
@@ -178,39 +181,45 @@ const library = (() => {
                     projectInstance.setDescription = attributeArray[1];
             };
         };
+        //// console.log('modify project');
         //// console.log(projectInstance);
 
-        // let cardID = `${targetItemCardType}_${targetItemID}`
         events.publish('itemModified', projectInstance);  // subscribed by domDisplay.js
     }
     function _modifyTask(targetItemID, attributeArray) {
         //// console.log(attributeArray);
-        let taskInstance = _taskLibrary[targetItemID];
-        //// console.log(taskInstance);
-        for (let a = 0; a < (attributeArray.length); a++) {
-            switch(a) {
-                case 0:
-                    taskInstance.setTitle = attributeArray[1];
-                    break;
-                case 1:
-                    taskInstance.description = attributeArray[2];
-                    break;
-                case 2:
-                    taskInstance.setDueDate = attributeArray[3];
-                    break;
-                case 3:
-                    taskInstance.setPriority = parseInt(attributeArray[4]);
-                    break;
-                case 4:
-                    taskInstance.setProjectID = parseInt(attributeArray[5]);
-                    break;
-                case 5:
-                    taskInstance.setTags = attributeArray[6];
+        let taskInstance;
+        for (let t = 0; t < (_taskLibrary.length); t++) {
+            if (_taskLibrary[t].id == targetItemID) {
+                taskInstance = _taskLibrary[t];
             };
         };
         //// console.log(taskInstance);
+        for (let a = 1; a < (attributeArray.length - 1); a++) {
+            // [type, title, description, dueDate, 'priority', 'projectID', [tags]]
+            switch(a) {
+                case 1:
+                    taskInstance.setTitle = attributeArray[1];
+                    break;
+                case 2:
+                    taskInstance.description = attributeArray[2];
+                    break;
+                case 3:
+                    taskInstance.setDueDate = attributeArray[3];
+                    break;
+                case 4:
+                    taskInstance.setPriority = parseInt(attributeArray[4]);
+                    break;
+                case 5:
+                    taskInstance.setProjectID = parseInt(attributeArray[5]);
+                    break;
+                case 6:
+                    taskInstance.setTags = attributeArray[6];
+            };
+        };
+        //// console.log('modify task');
+        //// console.log(taskInstance);
 
-        // let cardID = `${targetItemCardType}_${targetItemID}`
         events.publish('itemModified', taskInstance);  // subscribed by domDisplay.js
     }
 
@@ -230,8 +239,9 @@ const library = (() => {
                 _taskLibrary.splice(t, 1);
             };
         };
-        console.log(_projectLibrary);
-        console.log(_taskLibrary);
+        //// console.log(_projectLibrary);
+        //// console.log(_taskLibrary);
+
         // * send notification to update sidebar (remove deleted project, select new project view)
         // * ---> will in turn notify display to refresh
         events.publish('removeProjectFromDisplay', cardID);    // subscribed by domDisplay.js
@@ -245,7 +255,7 @@ const library = (() => {
                 _taskLibrary.splice(t, 1);
             };
         };
-        console.log(_taskLibrary);
+        //// console.log(_taskLibrary);
         events.publish('removeTaskFromDisplay', cardID);    // subscribed by domDisplay.js
     }
 
