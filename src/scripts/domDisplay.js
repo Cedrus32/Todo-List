@@ -57,7 +57,7 @@ const domDisplay = (() => {
     const _renderChecklistCardContents = function(targetCard, item) {
         let checklistHeader = _renderChecklistHeader(item.title, item.dueDate);
         let checklistDescription = div(item.description, '.description');
-        let checklistContent = _renderChecklistContent(item.items);
+        let checklistContent = _renderChecklistContent(targetCard.id, item.items); // ! MODIFY TO INCLUDE UNIQUE ID
         let checklistDetails = _renderTaskDetails(item.priority, item.tags);
 
         targetCard.appendChild(checklistHeader);
@@ -153,19 +153,18 @@ const domDisplay = (() => {
 
         return divContent;
     }
-    const _renderChecklistContent = function(items) {
-        let itemCount = 1;
+    const _renderChecklistContent = function(parentID, items) {
         let divChecks = div('', '.checks');
 
         let ulItem = ul('', '');
         if (items === undefined) {
-            let checklistItem = _renderChecklistItem('', itemCount);    // todo: consider how to make checkmark id's unique
-                                                                        // ? pass taskID -> convert to taskID_input_itemCount && taskID_check_itemCount
+            let checklistItem = _renderChecklistItem('', parentID, itemCount);
             ulItem.appendChild(checklistItem);
         } else {
+            let itemCount = 1;
             for (let i = 0; i < (items.length); i++) {
-                let checklistItem = _renderChecklistItem(items[i], itemCount);  // todo: consider how to make checkmark id's unique
-                ulItem.appendChild(checklistItem);                              // ? pass taskID -> convert to taskID_input_itemCount && taskID_check_itemCount
+                let checklistItem = _renderChecklistItem(items[i], parentID, itemCount);
+                ulItem.appendChild(checklistItem);
                 itemCount++;
             };
         };
@@ -173,16 +172,16 @@ const domDisplay = (() => {
         
         return divChecks;
     }
-    const _renderChecklistItem = function(content, count) {
+    const _renderChecklistItem = function(content, taskReference, count) {
         let liItem = li('', '');
     
-        let checkbox = input(count);    // todo: see above
-        let labelItem = label(content, count, '');  // todo: see above
-        // let itemControls = _renderChecklistItemControls();
+        let checklistItemID = `${taskReference}_checkbox_${count}`;
+        console.log(checklistItemID);
+        let checkbox = input(checklistItemID);
+        let labelItem = label(content, checklistItemID, '');
 
         liItem.appendChild(checkbox);
         liItem.appendChild(labelItem);
-        // liItem.appendChild(itemControls);
 
         return liItem;
     }
