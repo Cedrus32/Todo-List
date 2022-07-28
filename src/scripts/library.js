@@ -35,6 +35,8 @@ const library = (() => {
     class Task {
         // attributes
         constructor(taskID, projectID, taskType, taskTitle, taskDescription, taskDue, taskPriority, taskTags, taskItems) {
+            let itemCount = 0;
+
             this.id = taskID;
             this.projectID = projectID;
             this.type = taskType;
@@ -43,8 +45,17 @@ const library = (() => {
             this.dueDate = taskDue;
             this.priority = taskPriority;
             this.tags = taskTags;
-            if (this.type === 'checklist') {    // ? is this necessary if taskItems are pushed individually ?
-                this.items = [taskItems];         // ? as they are created ?
+            if (this.type === 'checklist') {
+                this.items = [];
+                if (taskItems.length === 0) {
+                    this.items.push([0, '']);
+                } else {
+                    for (let i = 0; i < (taskItems.length); i++) {
+                        let itemBundle = [itemCount, taskItems[i]];
+                        this.items.push(itemBundle);
+                        itemCount++;
+                    };
+                };
             };
         }
 
