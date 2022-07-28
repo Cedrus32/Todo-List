@@ -78,13 +78,13 @@ const option = function(value, content) {
     element.textContent = content;
     return element;
 }
-const label = function(content, id, ...args) {
+const label = function(content, forReference, ...args) {
     _attributes = [...args];
     element = document.createElement('label');
     if (_attributes.length > 0) {
         _setAttributes(element, _attributes);
     };
-    element.for = String(id);
+    element.for = String(forReference);
     element.textContent = content;
     _attributes = [];
     return element;

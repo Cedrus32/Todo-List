@@ -44,7 +44,7 @@ const library = (() => {
             this.priority = taskPriority;
             this.tags = taskTags;
             if (this.type === 'checklist') {    // ? is this necessary if taskItems are pushed individually ?
-                this.items = taskItems;         // ? as they are created ?
+                this.items = [taskItems];         // ? as they are created ?
             };
         }
 
@@ -258,6 +258,19 @@ const library = (() => {
         //// console.log(_taskLibrary);
         events.publish('removeTaskFromDisplay', cardID);    // subscribed by domDisplay.js
     }
+    function _deleteChecklistItem(checkID) {
+        let taskReference = checkID.split('__')[0].split('_')[1];
+        let checkReference = checkID.split('__')[1].split('_')[1];
+        for (let t = 0; t < (_taskLibrary.length); t++) {
+            if (_taskLibrary[t].id == taskReference) {
+                console.log(_taskLibrary[t].items);
+                _taskLibrary[t].items.splice(checkReference, 1);
+                console.log(_taskLibrary[t].items);
+            };
+        };
+
+        events.publish('removeChecklistItemFromDisplay', checkID);  // subscribed by domDisplay.js
+    }
 
     // bind events
     events.subscribe('createProject', _createProject);  // published from display.js (initDefault())
@@ -267,5 +280,6 @@ const library = (() => {
     events.subscribe('deleteProject', _deleteProject);    // published from forms.js (confirmDeleteButton eventListener)
     events.subscribe('deleteTask', _deleteTask);    // published from domDisplay.js (_renderItemHeaders())
     events.subscribe('confirmInput', _setItemValues); //published from forms.js (_confirmInput())
+    events.subscribe('clickDeleteChecklistItem', _deleteChecklistItem)  // published from domDisplay.js (_renderChecklistItemControls())
 
 })();

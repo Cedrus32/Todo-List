@@ -57,7 +57,7 @@ const domDisplay = (() => {
     const _renderChecklistCardContents = function(targetCard, item) {
         let checklistHeader = _renderChecklistHeader(item.title, item.dueDate);
         let checklistDescription = div(item.description, '.description');
-        let checklistContent = _renderChecklistContent(targetCard.id, item.items); // ! MODIFY TO INCLUDE UNIQUE ID
+        let checklistContent = _renderChecklistContent(targetCard.id, item.items);
         let checklistDetails = _renderTaskDetails(item.priority, item.tags);
 
         targetCard.appendChild(checklistHeader);
@@ -161,7 +161,7 @@ const domDisplay = (() => {
             let checklistItem = _renderChecklistItem('', parentID, itemCount);
             ulItem.appendChild(checklistItem);
         } else {
-            let itemCount = 1;
+            let itemCount = 0;
             for (let i = 0; i < (items.length); i++) {
                 let checklistItem = _renderChecklistItem(items[i], parentID, itemCount);
                 ulItem.appendChild(checklistItem);
@@ -173,17 +173,45 @@ const domDisplay = (() => {
         return divChecks;
     }
     const _renderChecklistItem = function(content, taskReference, count) {
-        let liItem = li('', '');
+        let liItemID = `#${taskReference}__li_${count}`;
+        let liItem = li('', liItemID);
     
-        let checklistItemID = `${taskReference}_checkbox_${count}`;
-        console.log(checklistItemID);
-        let checkbox = input(checklistItemID);
+        let checklistItemID = `${taskReference}__checkbox_${count}`; // # not needed vvv
+        let checkbox = input(checklistItemID);  // sets ID directly via default object prototype methods
         let labelItem = label(content, checklistItemID, '');
+        let checklistItemControls = _renderChecklistItemControls(checklistItemID);
+
+        // * checklist item modify/delete events
 
         liItem.appendChild(checkbox);
         liItem.appendChild(labelItem);
+        liItem.appendChild(checklistItemControls);
 
         return liItem;
+    }
+    const _renderChecklistItemControls = function(checkID) {
+        let divControls = div('', '.checklist-item-controls');
+
+        let spanModify = span('...', '.task', '.modify');
+        let spanDelete = span('X', '.delete');
+
+        // * checklist item modify/delete events
+        spanModify.addEventListener('click', (e) => {
+            console.log('call alert() to modify');
+        });
+        spanDelete.addEventListener('click', (e) => {
+            // * publish event with data to library...
+            // * in library, index into task items and delete...                    NEED: task id, checklist position
+            // * from library, publish event to domDisplay.js...
+            // * in domDisplay.js, call method to remove checklistItem from dom     NEED: li id
+            console.log('delete checklistItem');
+            events.publish('clickDeleteChecklistItem', checkID);    // subscribed by library.js
+        });
+
+        divControls.appendChild(spanModify);
+        divControls.appendChild(spanDelete);
+
+        return divControls;
     }
     const _renderTaskDetails = function(priority, tags) {
         let divDetails = div('', '.details');
@@ -236,6 +264,11 @@ const domDisplay = (() => {
             targetProject.removeChild(targetProject.lastChild);
         };
     }
+    function _deleteChecklistItem(id) {
+        let liContainer = document.querySelector(`input#${id}`).parentElement;
+        let ulContainer = liContainer.parentElement
+        ulContainer.removeChild(liContainer);
+    }
     function _fillTaskCounter(operator) {
         if (operator === '+') {
             _taskCounter++;
@@ -255,4 +288,5 @@ const domDisplay = (() => {
     events.subscribe('removeTaskFromDisplay', _deleteTaskCard); // published from library.js (_deleteTask())
     events.subscribe('removeProjectFromDisplay', _clearDisplay) // published from library.js (_deleteProject())
     events.subscribe('itemModified', _updateItem);    // published from library.js (_modifyItems())
+    events.subscribe('removeChecklistItemFromDisplay', _deleteChecklistItem)    // published from library.js (_deleteChecklistItem())
 })();
