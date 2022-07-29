@@ -65,6 +65,11 @@ const domDisplay = (() => {
         targetCard.appendChild(checklistContent);
         targetCard.appendChild(checklistDetails);
     }
+    const _renderCheckboxLabel = function(targetContainerID, content, targetCheckboxID) {
+        let liContainer = document.getElementById(targetContainerID);
+        let checkboxLabel = label(content, targetCheckboxID, '');
+        liContainer.insertBefore(checkboxLabel, liContainer.lastChild);
+    }
 
     // helper factories
     const _renderProjectHeader = function(title) {
@@ -177,8 +182,6 @@ const domDisplay = (() => {
         let labelItem = label(checkContent, checklistItemID, '');
         let checklistItemControls = _renderChecklistItemControls(checklistItemID);
 
-        // * checklist item modify/delete events
-
         liItem.appendChild(checkbox);
         liItem.appendChild(labelItem);
         liItem.appendChild(checklistItemControls);
@@ -234,7 +237,16 @@ const domDisplay = (() => {
             } else if (itemInstance.type === 'checklist') {
                 _renderChecklistCardContents(cardElement, itemInstance);
             };
-        };
+        } else if (itemInstance[0] === 'checkbox') {
+            let taskReference = itemInstance[1];
+            let checkboxReference = itemInstance[2];
+            let checkboxContent = itemInstance[3];
+            let liID = `task_${taskReference}__li_${checkboxReference}`;
+            let checkboxID = `task_${taskReference}__checkbox_${checkboxReference}`;
+
+            _deleteItemContent(liID);
+            _renderCheckboxLabel(liID, checkboxContent, checkboxID);
+        }
     }
     function _clearDisplay() {
         while (projectContainer.children.length > 0) {
@@ -251,9 +263,13 @@ const domDisplay = (() => {
         _fillTaskCounter('-');
     }
     function _deleteItemContent(id) {
-        let targetProject = document.getElementById(id);
-        while (targetProject.children.length > 0) {
-            targetProject.removeChild(targetProject.lastChild);
+        let targetItem = document.getElementById(id);
+        if (id.includes('__')) {
+            targetItem.removeChild(targetItem.children[1]);
+        } else {
+            while (targetItem.children.length > 0) {
+                targetItem.removeChild(targetItem.lastChild);
+            };
         };
     }
     function _deleteChecklistItem(id) {

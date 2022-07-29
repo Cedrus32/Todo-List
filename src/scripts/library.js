@@ -279,15 +279,15 @@ const library = (() => {
                     if (targetChecklistItems[i][0] == targetItemID) {
                         let targetValueArray = [i, targetContent];
                         taskInstance.setCheckboxItem = targetValueArray;
-                        checkboxInstance = [targetTaskID, targetItemID, targetContent];
+                        checkboxInstance = ['checkbox', targetTaskID, targetItemID, targetContent];
                     };
                 };
             };
         };
-        console.log('modify checklistItem');
-        console.log(taskInstance.items[targetItemID]);
+        // console.log('modify checklistItem');
+        // console.log(taskInstance.items[targetItemID]);
 
-        // events.publish('checkboxModified', taskInstance);
+        events.publish('itemModified', checkboxInstance);
     }
 
     // delete methods
