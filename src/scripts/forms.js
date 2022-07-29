@@ -60,7 +60,7 @@ const forms = (() => {
             _removeProjectOptions();
         }
 
-        // events.publish('confirmInput', formValues);    // subscribed by library.js
+        events.publish('confirmInput', formValues);    // subscribed by library.js
     }
     function _cancelInput() {
         _hideForm();
@@ -80,24 +80,17 @@ const forms = (() => {
             _currentForm = checkboxForm;
             _currentFormType = 'checkbox';
         };
-        console.log(_currentForm);
-        console.log(_currentFormType);
     }
     function _showForm() {
-        console.log(_currentForm);
         _currentForm.classList.remove('hide');
-        console.log('should have removed hide');
         if (_currentForm === taskForm) {
             events.publish('openProjectOptionsQuery', '');  // subscribed by library.js
         };
     }
     function _hideForm() {
-        console.log(_currentForm);
         _currentForm.classList.add('hide');
     }
     function _fillFormValues(values) {
-        console.log(values);
-        console.log(_currentFormType);
         if (_currentFormType === 'project') {
             for (let i = 0; i < (values.length); i++) {
                 projectFormInputs[i].value = values[i];
@@ -157,7 +150,6 @@ const forms = (() => {
                 formValues.push(checkboxFormInputs[i].value);
             };
         };
-        console.log(formValues);
         return formValues;
     }
     function _clearFormValues() {

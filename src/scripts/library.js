@@ -90,15 +90,21 @@ const library = (() => {
                 this.tags = valueArray;
             };
         }
+        set setCheckboxItem(valueArray) {
+            let index = valueArray[0];
+            let content = valueArray[1];
+            if (content !== this.items[index]) {
+                this.items[index][1] = content;
+            };
+        }
     }
 
     // getters
     function _queryItemInstance(itemReferences) {
         let libraryReference = itemReferences[0];
         let itemReference = itemReferences[1];
-
-        console.log(libraryReference);
-        console.log(itemReference);
+        //// console.log(libraryReference);
+        //// console.log(itemReference);
 
         if (libraryReference === 'project') {
             for (let p = 0; p < (_projectLibrary.length); p++) {
@@ -128,7 +134,7 @@ const library = (() => {
                     for (let i = 0; i < (checklistItems.length); i++) {
                         if (checklistItems[i][0] == checkboxReference) {
                             let itemValueArray = [taskReference, checklistItems[i]]
-                            console.log(itemValueArray);
+                            //// console.log(itemValueArray);
                             events.publish('closeModifyQuery', itemValueArray);   // subscribed by forms.js
                         };
                     };
@@ -171,8 +177,15 @@ const library = (() => {
                 _modifyTask(itemReference, formValues);
             };
         } else if (libraryReference === 'checkbox') {
-            // if (!_taskLibrary)
-        }
+            let itemReferencesSplit = itemReference.split('_');
+            let taskReference = itemReferencesSplit[0];
+            let checkReference = itemReferencesSplit[1];
+            if (!_taskLibrary.some(item => item.id == taskReference)) {
+                // _createChecklistItem(itemReference, formValues);
+            } else {
+                _modifyCheckbox(taskReference, checkReference, formValues[0]); // formValues[0] needed to pass single value from formValues[]
+            };
+        };
     }
 
     // setter helper methods
@@ -252,6 +265,29 @@ const library = (() => {
         //// console.log(taskInstance);
 
         events.publish('itemModified', taskInstance);  // subscribed by domDisplay.js
+    }
+    function _modifyCheckbox(targetTaskID, targetItemID, targetContent) {
+        //// console.log(targetItemID, targetContent);
+        let taskInstance;
+        let checkboxInstance;
+        for (let t = 0; t < (_taskLibrary.length); t++) {
+            if (_taskLibrary[t].id == targetTaskID) {
+                taskInstance = _taskLibrary[t];
+                //// console.log(tastInstance);
+                let targetChecklistItems = _taskLibrary[t].items;
+                for (let i = 0; i < (targetChecklistItems.length); i++) {
+                    if (targetChecklistItems[i][0] == targetItemID) {
+                        let targetValueArray = [i, targetContent];
+                        taskInstance.setCheckboxItem = targetValueArray;
+                        checkboxInstance = [targetTaskID, targetItemID, targetContent];
+                    };
+                };
+            };
+        };
+        console.log('modify checklistItem');
+        console.log(taskInstance.items[targetItemID]);
+
+        // events.publish('checkboxModified', taskInstance);
     }
 
     // delete methods
