@@ -130,12 +130,12 @@ const library = (() => {
         console.log(itemReferences);
         let taskReference = itemReferences[0];
         let itemReference = itemReferences[1];
-        for (t = 0; t < (_taskLibrary.length); t++) {
+        for (let t = 0; t < (_taskLibrary.length); t++) {
             if (_taskLibrary[t].id == taskReference) {
                 let checklistItemsArray = _taskLibrary[t].items;
-                for (i = 0; i < (checklistItemsArray.length); i++) {
-                    if (checklistItemsArray[i][0] == checkReference) {
-                        events.publish('openModifyChecklistItemQuery', checklistItemsArray);    // subscribed by forms.js
+                for (let i = 0; i < (checklistItemsArray.length); i++) {
+                    if (checklistItemsArray[i][0] == itemReference) {
+                        events.publish('closeModifyChecklistItemQuery', checklistItemsArray[i]);    // subscribed by forms.js
                     };
                 };
             };
