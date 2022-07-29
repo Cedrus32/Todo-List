@@ -191,6 +191,14 @@ fieldset {
                     gap: var(--small-gap);
                 }
 
+                    .description-container {
+                        display: flex;
+                    }
+
+                        .description {
+                            margin-right: auto;
+                        }
+
                     .checklist ul li {
                         display: flex;
                         align-items: center;
