@@ -145,7 +145,7 @@ fieldset {
                         margin-right: auto;
                     }
                 
-                .card,
+                div.card,
                 .task-controls {
                     padding: var(--med-pad);
                 }
