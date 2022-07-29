@@ -170,7 +170,7 @@ const domDisplay = (() => {
         let checkContent = checkInfo[1];
 
         let liItemID = `#${taskReference}__li_${checkID}`;
-        let liItem = li('', liItemID);
+        let liItem = li('', '.card', liItemID);
 
         let checklistItemID = `${taskReference}__checkbox_${checkID}`;  // # not needed vv
         let checkbox = input(checklistItemID);  // sets ID directly via default object prototype methods
@@ -192,10 +192,11 @@ const domDisplay = (() => {
         let spanDelete = span('X', '.delete');
 
         // * checklist item modify/delete events
-        spanModify.addEventListener('click', () => {
-            events.publish('clickModifyChecklistItem', checkID);    // subscribed by forms.js
+        spanModify.addEventListener('click', (e) => {
+            events.publish('clickModifyItem', e);    // subscribed by forms.js
         });
         spanDelete.addEventListener('click', () => {
+            // ? look at other modify events ^^^, use e to catch ID ?
             events.publish('clickDeleteChecklistItem', checkID);    // subscribed by library.js
         });
 

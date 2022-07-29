@@ -25,23 +25,17 @@ const forms = (() => {
 
     // query methods
     function _openModifyFormQuery(event) {
-        let cardReferences = event.target.closest('div.card').id.split('_');
-        _setFormReferences(cardReferences[0]);
-        events.publish('openModifyFormQuery', cardReferences);  // subscribed by library.js
-    }
-    function _openModifyChecklistItemQuery(checkID) {   // ! create form in html, test chain from click (domDisplay.js) to form fill
-        console.log(checkID);
-        let formTypeReference = checkID.split('__')[1].split('_')[0];
-        let taskReference = checkID.split('__')[0].split('_')[1];
-        let checkReference = checkID.split('__')[1].split('_')[1];
-
-        console.log(formTypeReference);
-        // console.log(taskReference);
-        // console.log(checkReference);
-
-        _setFormReferences(formTypeReference);
-        let checklistItemReferences = [taskReference, checkReference];
-        events.publish('openModifyChecklistItemQuery', checklistItemReferences);    // subscribed by library.js
+        let targetItemReferences;
+        if (event.target.closest('li.card')) {
+            let formTypeReference = 'checkbox';
+            let taskReference = event.target.closest('li.card').id.split('__')[0].split('_')[1];
+            let checkReference = event.target.closest('li.card').id.split('__')[1].split('_')[1];
+            targetItemReferences = [formTypeReference, [taskReference, checkReference]];
+        } else {
+            targetItemReferences = event.target.closest('div.card').id.split('_');
+        };
+        _setFormReferences(targetItemReferences[0]);
+        events.publish('openModifyFormQuery', targetItemReferences);  // subscribed by library.js
     }
 
     // form managers
@@ -53,22 +47,20 @@ const forms = (() => {
         _fillFormValues(itemValues);
         _showForm();
     }
-    function _openModifyChecklistItemForm(itemValues) {
-        _fillFormValues(itemValues);
-        _showForm();
-    }
 
     // form actions
-    function _showDeleteProjectConfirmation(cardID) {
+    function _showDeleteProjectConfirmation() {
         deleteConfirmAlert.classList.remove('hide');
     }
     function _confirmInput() {
         _hideForm();
         let formValues = _bundleFormValues();
         _clearFormValues();
-        _removeProjectOptions();
+        if (_currentForm === taskForm) {
+            _removeProjectOptions();
+        }
 
-        events.publish('confirmInput', formValues);    // subscribed by library.js
+        // events.publish('confirmInput', formValues);    // subscribed by library.js
     }
     function _cancelInput() {
         _hideForm();
@@ -89,10 +81,12 @@ const forms = (() => {
             _currentFormType = 'checkbox';
         };
         console.log(_currentForm);
+        console.log(_currentFormType);
     }
     function _showForm() {
         console.log(_currentForm);
         _currentForm.classList.remove('hide');
+        console.log('should have removed hide');
         if (_currentForm === taskForm) {
             events.publish('openProjectOptionsQuery', '');  // subscribed by library.js
         };
@@ -103,6 +97,7 @@ const forms = (() => {
     }
     function _fillFormValues(values) {
         console.log(values);
+        console.log(_currentFormType);
         if (_currentFormType === 'project') {
             for (let i = 0; i < (values.length); i++) {
                 projectFormInputs[i].value = values[i];
@@ -123,7 +118,15 @@ const forms = (() => {
             };
         } else if (_currentFormType === 'checkbox') {                  // * checklist form
             for (let i = 0; i < (values.length); i++) {
-                checkboxFormInputs[i].value = values[i];
+                let taskID = values[0];
+                let checkboxID = values[1][0];
+                let checkboxDescription = values[1][1];
+                if (i === 0) {
+                    let targetElementIDs = `${taskID}_${checkboxID}`;
+                    checkboxFormInputs[i].value = targetElementIDs;
+                } else {
+                    checkboxFormInputs[i].value = checkboxDescription;
+                };
             };
         };
     }
@@ -154,6 +157,7 @@ const forms = (() => {
                 formValues.push(checkboxFormInputs[i].value);
             };
         };
+        console.log(formValues);
         return formValues;
     }
     function _clearFormValues() {
@@ -206,8 +210,6 @@ const forms = (() => {
     events.subscribe('closeModifyQuery', _openModifyForm);  // publishing from library.js (_queryItem());
     events.subscribe('closeProjectOptionsQuery', _renderProjectOptions);  // publishing from library.js (_queryProjectNameID())
     events.subscribe('clickDeleteProject', _showDeleteProjectConfirmation);    // publishing from domDisplay.js (_renderProjectHeader())
-    events.subscribe('clickModifyChecklistItem', _openModifyChecklistItemQuery);    // publishing from domDisplay.js(_renderChecklistItemControls())
-    events.subscribe('closeModifyChecklistItemQuery', _openModifyChecklistItemForm);    // publishing from library.js (_queryChecklistItem())
 
 })();
 

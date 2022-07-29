@@ -93,9 +93,12 @@ const library = (() => {
     }
 
     // getters
-    function _queryItemInstance(cardReferences) {   // TODO reduce repetition
-        let libraryReference = cardReferences[0];
-        let itemReference = cardReferences[1];
+    function _queryItemInstance(itemReferences) {
+        let libraryReference = itemReferences[0];
+        let itemReference = itemReferences[1];
+
+        console.log(libraryReference);
+        console.log(itemReference);
 
         if (libraryReference === 'project') {
             for (let p = 0; p < (_projectLibrary.length); p++) {
@@ -116,6 +119,21 @@ const library = (() => {
                     events.publish('closeModifyQuery', itemValueArray);   // subscribed by forms.js
                 };
             };
+        } else if (libraryReference === 'checkbox') {
+            let taskReference = itemReference[0];
+            let checkboxReference = itemReference[1];
+            for (let t = 0; t < (_taskLibrary.length); t++) {
+                if (_taskLibrary[t].id == taskReference) {
+                    let checklistItems = _taskLibrary[t].items;
+                    for (let i = 0; i < (checklistItems.length); i++) {
+                        if (checklistItems[i][0] == checkboxReference) {
+                            let itemValueArray = [taskReference, checklistItems[i]]
+                            console.log(itemValueArray);
+                            events.publish('closeModifyQuery', itemValueArray);   // subscribed by forms.js
+                        };
+                    };
+                };
+            };
         };
     }
     function _queryProjectNamesIDs() {
@@ -125,21 +143,6 @@ const library = (() => {
         };
 
         events.publish('closeProjectOptionsQuery', nameIDArray) // subscribed by forms.js
-    }
-    function _queryChecklistItem(itemReferences) {
-        console.log(itemReferences);
-        let taskReference = itemReferences[0];
-        let itemReference = itemReferences[1];
-        for (let t = 0; t < (_taskLibrary.length); t++) {
-            if (_taskLibrary[t].id == taskReference) {
-                let checklistItemsArray = _taskLibrary[t].items;
-                for (let i = 0; i < (checklistItemsArray.length); i++) {
-                    if (checklistItemsArray[i][0] == itemReference) {
-                        events.publish('closeModifyChecklistItemQuery', checklistItemsArray[i]);    // subscribed by forms.js
-                    };
-                };
-            };
-        };
     }
 
     // setter manager
@@ -167,7 +170,9 @@ const library = (() => {
             } else {
                 _modifyTask(itemReference, formValues);
             };
-        };
+        } else if (libraryReference === 'checkbox') {
+            // if (!_taskLibrary)
+        }
     }
 
     // setter helper methods
@@ -312,6 +317,5 @@ const library = (() => {
     events.subscribe('deleteTask', _deleteTask);    // published from domDisplay.js (_renderItemHeaders())
     events.subscribe('confirmInput', _setItemValues); //published from forms.js (_confirmInput())
     events.subscribe('clickDeleteChecklistItem', _deleteChecklistItem)  // published from domDisplay.js (_renderChecklistItemControls())
-    events.subscribe('openModifyChecklistItemQuery', _queryChecklistItem)   // published from forms.js (_openModifyChecklistItemQuery())
 
 })();
