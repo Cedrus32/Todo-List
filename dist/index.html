@@ -32,7 +32,7 @@
 
         <section id='project-form' class='form-container hide'>
             <form>
-                <input class='target-project-id hide'></input>
+                <input class='target-project-id hide'>
                 <fieldset>
                     <legend>Project</legend>
                     <label for='project-title'>Project Name</label>
@@ -48,19 +48,10 @@
                 <button class='cancel'>cancel</button>
             </div>
         </section>
-
-        <section id='delete-confirm' class='form-container hide'>
-            <p>Deleting a project will also delete all of its tasks.</p>
-            <p>Are you SURE you want to proceed?</p>
-            <div class='action-buttons'>
-                <button class='delete-confirm'>Yes</button>
-                <button class='delete-cancel'>No</button>
-            </div>
-        </section>
         
         <section id='task-form' class='form-container hide'>
             <form>
-                <input class='target-task-id input hide'></input>
+                <input class='target-task-id input hide'>
                 <fieldset>
                     <legend>Task</legend>
                     <label>Task Type</label>
@@ -104,6 +95,31 @@
             <div id='task-buttons'>
                 <button class='confirm'>confirm</button>
                 <button class='cancel'>cancel</button>
+            </div>
+        </section>
+
+        <section id='checkbox-form' class='form-container hide'>
+            <form>
+                <input class='target-checkbox-id hide'>
+                <fieldset>
+                    <legend>Checklist Item</legend>
+                    <label for='checkbox'>Description</label>
+                    <input type='text' id='checkbox' name='checkbox' placeholder='description'
+                           required aria-required='true'>
+                </fieldset>
+            </form>
+            <div id='checkbox-buttons'>
+                <button class='confirm'>confirm</button>
+                <button class='cancel'>cancel</button>
+            </div>
+        </section>
+
+        <section id='delete-confirm' class='form-container hide'>
+            <p>Deleting a project will also delete all of its tasks.</p>
+            <p>Are you SURE you want to proceed?</p>
+            <div class='action-buttons'>
+                <button class='delete-confirm'>Yes</button>
+                <button class='delete-cancel'>No</button>
             </div>
         </section>
 

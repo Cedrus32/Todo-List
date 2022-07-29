@@ -93,7 +93,7 @@ const library = (() => {
     }
 
     // getters
-    function _queryItem(cardReferences) {   // TODO reduce repetition
+    function _queryItemInstance(cardReferences) {   // TODO reduce repetition
         let libraryReference = cardReferences[0];
         let itemReference = cardReferences[1];
 
@@ -125,6 +125,21 @@ const library = (() => {
         };
 
         events.publish('closeProjectOptionsQuery', nameIDArray) // subscribed by forms.js
+    }
+    function _queryChecklistItem(itemReferences) {
+        console.log(itemReferences);
+        let taskReference = itemReferences[0];
+        let itemReference = itemReferences[1];
+        for (t = 0; t < (_taskLibrary.length); t++) {
+            if (_taskLibrary[t].id == taskReference) {
+                let checklistItemsArray = _taskLibrary[t].items;
+                for (i = 0; i < (checklistItemsArray.length); i++) {
+                    if (checklistItemsArray[i][0] == checkReference) {
+                        events.publish('openModifyChecklistItemQuery', checklistItemsArray);    // subscribed by forms.js
+                    };
+                };
+            };
+        };
     }
 
     // setter manager
@@ -277,7 +292,9 @@ const library = (() => {
                 let checklistItemsArray = _taskLibrary[t].items;
                 for (let i = 0; i < (checklistItemsArray.length); i++) {
                     if (checklistItemsArray[i][0] == checkReference) {
+                        //// console.log(checklistItemsArray);
                         checklistItemsArray.splice(i, 1);
+                        //// console.log(checklistItemsArray);
                     };
                 };
             };
@@ -289,11 +306,12 @@ const library = (() => {
     // bind events
     events.subscribe('createProject', _createProject);  // published from display.js (initDefault())
     events.subscribe('createTask', _createTask);    // published from display.js (initDefault())
-    events.subscribe('openModifyQuery', _queryItem);    // published from forms.js (_openModifyQuery())
+    events.subscribe('openModifyFormQuery', _queryItemInstance);    // published from forms.js (_openModifyQuery())
     events.subscribe('openProjectOptionsQuery', _queryProjectNamesIDs)  // published from forms.js (_showForm())
     events.subscribe('deleteProject', _deleteProject);    // published from forms.js (confirmDeleteButton eventListener)
     events.subscribe('deleteTask', _deleteTask);    // published from domDisplay.js (_renderItemHeaders())
     events.subscribe('confirmInput', _setItemValues); //published from forms.js (_confirmInput())
     events.subscribe('clickDeleteChecklistItem', _deleteChecklistItem)  // published from domDisplay.js (_renderChecklistItemControls())
+    events.subscribe('openModifyChecklistItemQuery', _queryChecklistItem)   // published from forms.js (_openModifyChecklistItemQuery())
 
 })();

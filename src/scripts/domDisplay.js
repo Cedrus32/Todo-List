@@ -128,7 +128,7 @@ const domDisplay = (() => {
         spanModify.addEventListener('click', (e) => {
             events.publish('clickModifyItem', e);   // subscribed by forms.js
         });
-        spanDelete.addEventListener('click', (e) => {    // subscribed by library.js
+        spanDelete.addEventListener('click', (e) => {
             let cardID = e.target.closest('div.card').id;
             events.publish('deleteTask', cardID);   // subscribed by library.js
         });
@@ -192,15 +192,10 @@ const domDisplay = (() => {
         let spanDelete = span('X', '.delete');
 
         // * checklist item modify/delete events
-        spanModify.addEventListener('click', (e) => {
-            console.log('call alert() to modify');
+        spanModify.addEventListener('click', () => {
+            events.publish('clickModifyChecklistItem', checkID);    // subscribed by forms.js
         });
-        spanDelete.addEventListener('click', (e) => {
-            // * publish event with data to library...
-            // * in library, index into task items and delete...                    NEED: task id, checklist position
-            // * from library, publish event to domDisplay.js...
-            // * in domDisplay.js, call method to remove checklistItem from dom     NEED: li id
-            console.log('delete checklistItem');
+        spanDelete.addEventListener('click', () => {
             events.publish('clickDeleteChecklistItem', checkID);    // subscribed by library.js
         });
 
@@ -262,7 +257,7 @@ const domDisplay = (() => {
     }
     function _deleteChecklistItem(id) {
         let liContainer = document.querySelector(`input#${id}`).parentElement;
-        let ulContainer = liContainer.parentElement
+        let ulContainer = liContainer.parentElement;
         ulContainer.removeChild(liContainer);
     }
     function _fillTaskCounter(operator) {
