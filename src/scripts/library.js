@@ -274,9 +274,12 @@ const library = (() => {
         let checkReference = checkID.split('__')[1].split('_')[1];
         for (let t = 0; t < (_taskLibrary.length); t++) {
             if (_taskLibrary[t].id == taskReference) {
-                console.log(_taskLibrary[t].items);
-                _taskLibrary[t].items.splice(checkReference, 1);
-                console.log(_taskLibrary[t].items);
+                let checklistItemsArray = _taskLibrary[t].items;
+                for (let i = 0; i < (checklistItemsArray.length); i++) {
+                    if (checklistItemsArray[i][0] == checkReference) {
+                        checklistItemsArray.splice(i, 1);
+                    };
+                };
             };
         };
 
