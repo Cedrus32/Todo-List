@@ -181,7 +181,7 @@ const library = (() => {
             let taskReference = itemReferencesSplit[0];
             let checkReference = itemReferencesSplit[1];
             if (!_taskLibrary.some(item => item.id == taskReference)) {
-                // _createChecklistItem(itemReference, formValues);
+                _createChecklistItem(taskReference, formValues);
             } else {
                 _modifyCheckbox(taskReference, checkReference, formValues[0]); // formValues[0] needed to pass single value from formValues[]
             };
@@ -206,6 +206,16 @@ const library = (() => {
         _taskCounter++;
 
         events.publish('taskCreated', _newTask);    // subscribed by display.js
+    }
+    function _createChecklistItem(taskID, itemValue) {
+        for (let t = 0; t < (_taskLibrary.length); t++) {
+            if (_taskLibrary[t].id == taskID) {
+                let newItemID = _taskLibrary[t].items.length;
+                let newChecklistItemArray = [newItemID, itemValue];
+                _taskLibrary[t].items.push(newChecklistItemArray);
+                console.log(_taskLibrary[t]);
+            };
+        };
     }
     function _modifyProject(targetItemID, attributeArray) {
         //// console.log(attributeArray)
@@ -284,8 +294,8 @@ const library = (() => {
                 };
             };
         };
-        // console.log('modify checklistItem');
-        // console.log(taskInstance.items[targetItemID]);
+        //// console.log('modify checklistItem');
+        //// console.log(taskInstance.items[targetItemID]);
 
         events.publish('itemModified', checkboxInstance);
     }

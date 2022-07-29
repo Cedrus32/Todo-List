@@ -56,7 +56,7 @@ const domDisplay = (() => {
     }
     const _renderChecklistCardContents = function(targetCard, item) {
         let checklistHeader = _renderChecklistHeader(item.title, item.dueDate);
-        let checklistDescription = div(item.description, '.description');
+        let checklistDescription = _renderChecklistDescriptionContainer(item.description);
         let checklistContent = _renderChecklistContent(targetCard.id, item.items);
         let checklistDetails = _renderTaskDetails(item.priority, item.tags);
 
@@ -158,15 +158,29 @@ const domDisplay = (() => {
 
         return divContent;
     }
-    const _renderChecklistContent = function(parentID, items) {
-        // let divChecks = div('', '.checks'); // ? remove and just use ul ? //
+    const _renderChecklistDescriptionContainer = function(description) {
+        let divContainer = div('', '.description-container');
+        
+        let divDescription = div(description, '.description');
+        let spanCreate = div('+', '.create');
 
+        spanCreate.addEventListener('click', (e) => {
+            let taskReference = e.target.closest('div.card').id.split('_')[1];
+            let formReferences = ['checkbox', taskReference];
+            events.publish('clickCreateItem', formReferences);   // subscribed by forms.js
+        });
+
+        divContainer.appendChild(divDescription);
+        divContainer.appendChild(spanCreate);
+
+        return divContainer;
+    }
+    const _renderChecklistContent = function(parentID, items) {
         let ulItem = ul('', '.checks');
         for (let i = 0; i < (items.length); i++) {
             let checklistItem = _renderChecklistItem(parentID, items[i]);
             ulItem.appendChild(checklistItem);
         };
-        // divChecks.appendChild(ulItem);
         
         return ulItem;
     }
