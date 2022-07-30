@@ -223,9 +223,12 @@ const library = (() => {
                 let itemListLength = taskInstance.items.length;
                 let lastItemID = taskInstance.items[itemListLength - 1][0];
                 let newItemID = lastItemID + 1;
+
                 itemValue[0] = newItemID;
                 _taskLibrary[t].items.push(itemValue);
-                console.log(_taskLibrary[t]);
+                _newCheckbox = ['checkbox', taskInstance.id, taskInstance.items[itemListLength][0], taskInstance.items[itemListLength][0]]
+
+                events.publish('checklistItemCreated', _newCheckbox);    // subscribed by display.js
             };
         };
     }
