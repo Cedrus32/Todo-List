@@ -83,9 +83,9 @@ const library = (() => {
                 this.projectID = value;
             };
         }
-        set setTags(valueArray) {
-            if (valueArray !== this.tags) {
-                this.tags = valueArray;
+        set setTags(value) {
+            if (value !== this.tags) {
+                this.tags = value;
             };
         }
         set setCheckboxItem(valueArray) {
@@ -263,7 +263,7 @@ const library = (() => {
         };
         console.log('original task instance:')
         console.log(taskInstance);
-        for (let a = 1; a < (attributeArray.length - 1); a++) {
+        for (let a = 1; a < (attributeArray.length); a++) {
             // [type, title, description, dueDate, 'priority', 'projectID', 'tags']
             switch(a) {
                 case 1:
