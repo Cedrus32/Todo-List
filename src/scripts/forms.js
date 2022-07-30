@@ -1,7 +1,7 @@
 import events from '../events';
 import { option } from './elements';
 
-// ~ manages interface between form DOM & library arrays
+// * manages interface between form DOM & library arrays
 
 const forms = (() => {
     // data
@@ -46,10 +46,12 @@ const forms = (() => {
         } else if ((typeof formReference) === 'string') {
             _setFormReferences(formReference);
         }
+        _enableTaskTypeSelection();
         _showForm();
     }
     function _openModifyForm(itemValues) {
         _fillFormValues(itemValues);
+        _disableTaskTypeSelection();
         _showForm();
     }
 
@@ -157,9 +159,12 @@ const forms = (() => {
                 if ((i === 0) || ((i > 2) && (i < 6)) || (i > 6)) {
                     taskFormInputs[i].value = '';
                 };
-                if ((i === 1) || (i === 2)) {
-                    taskFormInputs[i].checked = false;
+                if (i === 1) {
+                    taskFormInputs[i].checked = true;
                 };
+                if (i === 2) {
+                    taskFormInputs[i].checked = false;
+                }
                 if (i === 6) {
                     taskFormInputs[i].selectedIndex = 0;
                 };
@@ -183,6 +188,14 @@ const forms = (() => {
         while (taskFormInputs[7].firstChild) {
             taskFormInputs[7].removeChild(taskFormInputs[7].lastChild);
         };
+    }
+    function _enableTaskTypeSelection() {
+        taskFormInputs[1].disabled = false;
+        taskFormInputs[2].disabled = false;
+    }
+    function _disableTaskTypeSelection() {
+        taskFormInputs[1].disabled = true;
+        taskFormInputs[2].disabled = true;
     }
 
     // bind events
