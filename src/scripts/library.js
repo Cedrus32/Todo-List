@@ -216,8 +216,13 @@ const library = (() => {
             if (_taskLibrary[t].id == taskID) {
                 let taskInstance = _taskLibrary[t];
                 let itemListLength = taskInstance.items.length;
-                let lastItemID = taskInstance.items[itemListLength - 1][0];
-                let newItemID = lastItemID + 1;
+                let newItemID;
+                if (taskInstance.items.length === 0) {
+                    newItemID = 0;
+                } else {
+                    let lastItemID = taskInstance.items[itemListLength - 1][0];
+                    newItemID = lastItemID + 1;
+                }
 
                 itemValue[0] = newItemID;
                 _taskLibrary[t].items.push(itemValue);
