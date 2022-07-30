@@ -178,10 +178,21 @@ const library = (() => {
         } else if (libraryReference === 'checkbox') {
             let checklistItemReference = formValues[0];
             let checklistItemContent = formValues[1];
-            if (!_taskLibrary.some(item => item.id == instanceReference)) {
-                _createChecklistItem(taskReference, formValues);
-            } else {
-                _modifyCheckbox(instanceReference, checklistItemReference, checklistItemContent); // formValues[0] needed to pass single value from formValues[]
+            console.log(checklistItemReference);
+            console.log(checklistItemContent);
+            for (let t = 0; t < (_taskLibrary.length); t++) {
+                console.log(_taskLibrary[t].id);
+                if (_taskLibrary[t].id == instanceReference) {
+                    let instanceItemArray = _taskLibrary[t].items;
+                    console.log(instanceItemArray);
+                    console.log(instanceItemArray.some(item => item[0] == checklistItemReference));
+                    if (!instanceItemArray.some(item => item[0] == checklistItemReference)) {
+                        console.log('no item matches');
+                        _createChecklistItem(instanceReference, formValues);
+                    } else {
+                        _modifyCheckbox(instanceReference, checklistItemReference, checklistItemContent); // formValues[0] needed to pass single value from formValues[]
+                    };
+                };
             };
         };
     }
@@ -208,9 +219,12 @@ const library = (() => {
     function _createChecklistItem(taskID, itemValue) {
         for (let t = 0; t < (_taskLibrary.length); t++) {
             if (_taskLibrary[t].id == taskID) {
-                let newItemID = _taskLibrary[t].items.length;
-                let newChecklistItemArray = [newItemID, itemValue];
-                _taskLibrary[t].items.push(newChecklistItemArray);
+                let taskInstance = _taskLibrary[t];
+                let itemListLength = taskInstance.items.length;
+                let lastItemID = taskInstance.items[itemListLength - 1][0];
+                let newItemID = lastItemID + 1;
+                itemValue[0] = newItemID;
+                _taskLibrary[t].items.push(itemValue);
                 console.log(_taskLibrary[t]);
             };
         };
