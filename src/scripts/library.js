@@ -124,15 +124,15 @@ const library = (() => {
                 };
             };
         } else if (libraryReference === 'checkbox') {
-            let taskReference = instanceReference[0];
-            let checkboxReference = instanceReference[1];
+            let taskReference = instanceReference[0];       // * unbundled from domDisplay.js (_openModifyFormQuery())
+            let checkboxReference = instanceReference[1];   // * unbundled from domDisplay.js (_openModifyFormQuery())
             for (let t = 0; t < (_taskLibrary.length); t++) {
                 if (_taskLibrary[t].id == taskReference) {
                     let checklistItems = _taskLibrary[t].items;
                     for (let i = 0; i < (checklistItems.length); i++) {
                         if (checklistItems[i][0] == checkboxReference) {
-                            let itemValueArray = [taskReference, checklistItems[i][0], checklistItems[i][1]];
-                            //// console.log(itemValueArray);
+                            let itemValueArray = ['checkbox', taskReference, checklistItems[i][0], checklistItems[i][1]];
+                            console.log(itemValueArray);
                             events.publish('closeModifyQuery', itemValueArray);   // subscribed by forms.js
                         };
                     };
@@ -167,7 +167,6 @@ const library = (() => {
             };
 
         } else if (libraryReference === 'task') {
-            console.log(_taskLibrary);
             if(instanceReference === '') {
                 //                         projectID                type           title          description    dueDate        priority                 tags
                 let formValuesReordered = [parseInt(formValues[5]), formValues[0], formValues[1], formValues[2], formValues[3], parseInt(formValues[4]), formValues[6]]
@@ -178,16 +177,10 @@ const library = (() => {
         } else if (libraryReference === 'checkbox') {
             let checklistItemReference = formValues[0];
             let checklistItemContent = formValues[1];
-            console.log(checklistItemReference);
-            console.log(checklistItemContent);
             for (let t = 0; t < (_taskLibrary.length); t++) {
-                console.log(_taskLibrary[t].id);
                 if (_taskLibrary[t].id == instanceReference) {
                     let instanceItemArray = _taskLibrary[t].items;
-                    console.log(instanceItemArray);
-                    console.log(instanceItemArray.some(item => item[0] == checklistItemReference));
                     if (!instanceItemArray.some(item => item[0] == checklistItemReference)) {
-                        console.log('no item matches');
                         _createChecklistItem(instanceReference, formValues);
                     } else {
                         _modifyCheckbox(instanceReference, checklistItemReference, checklistItemContent); // formValues[0] needed to pass single value from formValues[]
@@ -201,7 +194,8 @@ const library = (() => {
     function _createProject(attributeArray) {
         let _id = _projectCounter;
         let _newProject = new Project(_id, ...attributeArray);
-        //// console.log(_newProject);
+        console.log('new project:')
+        console.log(_newProject);
         _projectLibrary.push(_newProject);
         _projectCounter++;
 
@@ -210,7 +204,8 @@ const library = (() => {
     function _createTask(attributeArray) {
         let _id = _taskCounter;
         let _newTask = new Task(_id, ...attributeArray);
-        //// console.log(_newTask);
+        console.log('new task:')
+        console.log(_newTask);
         _taskLibrary.push(_newTask);
         _taskCounter++;
 
@@ -226,7 +221,9 @@ const library = (() => {
 
                 itemValue[0] = newItemID;
                 _taskLibrary[t].items.push(itemValue);
-                _newCheckbox = ['checkbox', taskInstance.id, taskInstance.items[itemListLength][0], taskInstance.items[itemListLength][0]]
+                let _newCheckbox = ['checkbox', taskInstance.id, taskInstance.items[itemListLength][0], taskInstance.items[itemListLength][1]];
+                console.log('new checkbox:')
+                console.log(_taskLibrary[t].items);
 
                 events.publish('checklistItemCreated', _newCheckbox);    // subscribed by display.js
             };
@@ -240,7 +237,8 @@ const library = (() => {
                 projectInstance = _projectLibrary[p];
             };
         };
-        //// console.log(projectInstance)
+        console.log('original project instance:')
+        console.log(projectInstance);
         for (let a = 0; a < (attributeArray.length); a++) {
             switch(a) {
                 case 0:
@@ -250,8 +248,8 @@ const library = (() => {
                     projectInstance.setDescription = attributeArray[1];
             };
         };
-        //// console.log('modify project');
-        //// console.log(projectInstance);
+        console.log('modified project instance:')
+        console.log(projectInstance);
 
         events.publish('itemModified', projectInstance);  // subscribed by domDisplay.js
     }
@@ -263,9 +261,10 @@ const library = (() => {
                 taskInstance = _taskLibrary[t];
             };
         };
-        //// console.log(taskInstance);
+        console.log('original task instance:')
+        console.log(taskInstance);
         for (let a = 1; a < (attributeArray.length - 1); a++) {
-            // [type, title, description, dueDate, 'priority', 'projectID', [tags]]
+            // [type, title, description, dueDate, 'priority', 'projectID', 'tags']
             switch(a) {
                 case 1:
                     taskInstance.setTitle = attributeArray[1];
@@ -286,8 +285,8 @@ const library = (() => {
                     taskInstance.setTags = attributeArray[6];
             };
         };
-        //// console.log('modify task');
-        //// console.log(taskInstance);
+        console.log('modified task instance:')
+        console.log(taskInstance);
 
         events.publish('itemModified', taskInstance);  // subscribed by domDisplay.js
     }
@@ -298,7 +297,6 @@ const library = (() => {
         for (let t = 0; t < (_taskLibrary.length); t++) {
             if (_taskLibrary[t].id == targetTaskID) {
                 taskInstance = _taskLibrary[t];
-                //// console.log(tastInstance);
                 let targetChecklistItems = _taskLibrary[t].items;
                 for (let i = 0; i < (targetChecklistItems.length); i++) {
                     if (targetChecklistItems[i][0] == targetItemID) {
@@ -309,8 +307,10 @@ const library = (() => {
                 };
             };
         };
-        //// console.log('modified checklistItem');
-        //// console.log(taskInstance.items);
+        console.log('original task (checkbox) instance:')
+        console.log(taskInstance);
+        console.log('modified task (checkbox) instance:')
+        console.log(taskInstance.items);
 
         events.publish('itemModified', checkboxInstance);   // subscribed by domDisplay.js
     }
@@ -331,8 +331,9 @@ const library = (() => {
                 _taskLibrary.splice(t, 1);
             };
         };
-        //// console.log(_projectLibrary);
-        //// console.log(_taskLibrary);
+        console.log('project delete results:')
+        console.log(_projectLibrary);
+        console.log(_taskLibrary);
 
         // * send notification to update sidebar (remove deleted project, select new project view)
         // * ---> will in turn notify display to refresh
@@ -343,11 +344,12 @@ const library = (() => {
         let taskReference = cardReferences[1];
         for (let t = 0; t < (_taskLibrary.length); t++) {
             if (_taskLibrary[t].id == taskReference) {
-                // projectReference = _taskLibrary[t].projectID;
+                // projectReference = _taskLibrary[t].projectID;    // ? delete ?
                 _taskLibrary.splice(t, 1);
             };
         };
-        //// console.log(_taskLibrary);
+        console.log('task delete results:')
+        console.log(_taskLibrary);
         events.publish('removeTaskFromDisplay', cardID);    // subscribed by domDisplay.js
     }
     function _deleteChecklistItem(checkID) {
@@ -358,9 +360,9 @@ const library = (() => {
                 let checklistItemsArray = _taskLibrary[t].items;
                 for (let i = 0; i < (checklistItemsArray.length); i++) {
                     if (checklistItemsArray[i][0] == checkReference) {
-                        //// console.log(checklistItemsArray);
                         checklistItemsArray.splice(i, 1);
-                        //// console.log(checklistItemsArray);
+                        console.log('checklist item delete results:')
+                        console.log(checklistItemsArray);
                     };
                 };
             };

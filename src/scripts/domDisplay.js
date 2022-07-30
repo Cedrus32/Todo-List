@@ -67,6 +67,15 @@ const domDisplay = (() => {
         targetCard.appendChild(checklistContent);
         targetCard.appendChild(checklistDetails);
     }
+    const _renderNewChecklistItem = function(checklistInstance) {
+        let taskReference = `task_${checklistInstance[1]}`;
+        let checklistItemID = checklistInstance[2];
+        let checklistItemContent = checklistInstance[3];
+        let checklistItemInfo = [checklistItemID, checklistItemContent]
+        let ulTarget = document.querySelector(`div#${taskReference} ul`);
+
+        _renderChecklistItem(ulTarget, taskReference, checklistItemInfo);
+    }
     const _renderNewCheckboxLabel = function(containerID, checklistItemID, content) {
         let liContainer = document.getElementById(containerID);
         let checkboxLabel = label(content, checklistItemID, '');
@@ -169,6 +178,7 @@ const domDisplay = (() => {
         // * checklist item create event
         spanCreate.addEventListener('click', (e) => {
             let taskReference = e.target.closest('div.card').id.split('_')[1];
+            console.log(taskReference);
             let formReferences = ['checkbox', taskReference];
             events.publish('clickCreateItem', formReferences);   // subscribed by forms.js
         });
@@ -178,16 +188,15 @@ const domDisplay = (() => {
 
         return divContainer;
     }
-    const _renderChecklistContent = function(parentID, items) { // ! how to query correct checklist task to render new checklist item
+    const _renderChecklistContent = function(parentID, items) {
         let ulItem = ul('', '.checks');
         for (let i = 0; i < (items.length); i++) {
-            let checklistItem = _renderChecklistItem(parentID, items[i]);
-            ulItem.appendChild(checklistItem);
+            _renderChecklistItem(ulItem, parentID, items[i]);
         };
         
         return ulItem;
     }
-    const _renderChecklistItem = function(taskReference, checkInfo) {
+    const _renderChecklistItem = function(ulContainer, taskReference, checkInfo) {
         let checkID = checkInfo[0];
         let checkContent = checkInfo[1];
 
@@ -203,7 +212,7 @@ const domDisplay = (() => {
         liItem.appendChild(labelItem);
         liItem.appendChild(checklistItemControls);
 
-        return liItem;
+        ulContainer.appendChild(liItem);
     }
     const _renderChecklistItemControls = function(checkID) {
         let divControls = div('', '.checklist-item-controls');
@@ -314,5 +323,5 @@ const domDisplay = (() => {
     events.subscribe('removeProjectFromDisplay', _clearDisplay) // published from library.js (_deleteProject())
     events.subscribe('itemModified', _updateItem);    // published from library.js (_modifyItems())
     events.subscribe('removeChecklistItemFromDisplay', _deleteChecklistItem)    // published from library.js (_deleteChecklistItem())
-    events.subscribe('renderChecklistItem', _renderChecklistItem);  // published from display.js (_publishRenderDisplayEvents())
+    events.subscribe('renderChecklistItem', _renderNewChecklistItem);  // published from display.js (_publishRenderDisplayEvents())
 })();

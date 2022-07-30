@@ -26,11 +26,11 @@ const forms = (() => {
     // query methods
     function _openModifyFormQuery(event) {
         let targetItemReferences;
-        if (event.target.closest('li.card')) { // ! track taskCard, query to li from taskCard when needed
+        if (event.target.closest('li.card')) {
             let formTypeReference = 'checkbox';
             let taskReference = event.target.closest('div.card').id.split('_')[1];
             let checkboxReference = event.target.closest('li.card').id.split('__')[1].split('_')[1];
-            targetItemReferences = [formTypeReference, [taskReference, checkboxReference]]; // taskReference & checkboxReference must be bundled, split in library.js
+            targetItemReferences = [formTypeReference, [taskReference, checkboxReference]]; // * taskReference & checkboxReference must be bundled, split in library.js
         } else {
             targetItemReferences = event.target.closest('div.card').id.split('_');
         };
@@ -40,7 +40,12 @@ const forms = (() => {
 
     // form managers
     function _openCreateForm(formReference) {
-        _setFormReferences(formReference);
+        if ((typeof formReference) === 'object') { // ^ stores task reference when creating a new checklist item
+            checkboxFormInputs[0].value = formReference[1];
+            _setFormReferences(formReference[0]);
+        } else if ((typeof formReference) === 'string') {
+            _setFormReferences(formReference);
+        }
         _showForm();
     }
     function _openModifyForm(itemValues) {
@@ -76,10 +81,9 @@ const forms = (() => {
         } else if (formReference === 'task') {
             _currentForm = taskForm;
             _currentFormType = 'task';
-        } else if (formReference[0] === 'checkbox') {
+        } else if (formReference === 'checkbox') {
             _currentForm = checkboxForm;
             _currentFormType = 'checkbox';
-            checkboxFormInputs[0].value = formReference[1];
         };
     }
     function _showForm() {
@@ -111,19 +115,19 @@ const forms = (() => {
                 };
             };
         } else if (_currentFormType === 'checkbox') {
-            let instanceReferences = `${values[0]}_${values[1]}`;
+            let instanceReferences = `${values[1]}_${values[2]}`;
             checkboxFormInputs[0].value = instanceReferences;
-            checkboxFormInputs[1].value = values[2];
+            checkboxFormInputs[1].value = values[3];
         };
     }
     function _bundleFormValues() {
+        console.log(_currentForm);
         let formValues = [];
         if (_currentForm === projectForm) {
             formValues.push('project');
             for (let i = 0; i < (projectFormInputs.length); i++) {
                 formValues.push(projectFormInputs[i].value);
             };
-            //// console.log(`project formValues: [${formValues}]`);
         } else if (_currentForm === taskForm) {
             formValues.push('task');
             for (let i = 0; i < (taskFormInputs.length); i++) {
@@ -136,13 +140,13 @@ const forms = (() => {
                     };
                 };
             };
-            //// console.log(`task formValues: [${formValues}]`);
         } else if (_currentForm === checkboxForm) {
             formValues.push('checkbox');
             formValues.push(checkboxFormInputs[0].value.split('_')[0]);
             formValues.push(checkboxFormInputs[0].value.split('_')[1]);
             formValues.push(checkboxFormInputs[1].value);
         };
+        console.log(formValues);
         return formValues;
     }
     function _clearFormValues() {
@@ -150,8 +154,11 @@ const forms = (() => {
             projectFormInputs.forEach(input => input.value = '');
         } else if (_currentForm === taskForm) {
             for (let i = 0; i < (taskFormInputs.length); i++) {
-                if (((i > 2) && (i < 6)) || (i > 6)) {
+                if ((i === 0) || ((i > 2) && (i < 6)) || (i > 6)) {
                     taskFormInputs[i].value = '';
+                };
+                if ((i === 1) || (i === 2)) {
+                    taskFormInputs[i].checked = false;
                 };
                 if (i === 6) {
                     taskFormInputs[i].selectedIndex = 0;
