@@ -47,9 +47,7 @@ const library = (() => {
             this.tags = taskTags;
             if (this.type === 'checklist') {
                 this.items = [];
-                if (taskItems.length === 0) {
-                    this.items.push([0, '']);
-                } else {
+                if (taskItems !== undefined) {
                     for (let i = 0; i < (taskItems.length); i++) {
                         let itemBundle = [itemCount, taskItems[i]];
                         this.items.push(itemBundle);
@@ -157,9 +155,9 @@ const library = (() => {
         let instanceReference = formValues[1];
         formValues.splice(0, 2);    // [title, description]
                                     // [type, title, description, dueDate, 'priority', 'projectID', [tags]]
-        //// console.log(libraryReference);
-        //// console.log(instanceReference);
-        //// console.log(formValues);
+        console.log(libraryReference);
+        console.log(instanceReference);
+        console.log(formValues);
         
         if (libraryReference === 'project') {
             if (!_projectLibrary.some(item => item.id == instanceReference)) { // ! untested, written to match task conditional below vvv
@@ -169,7 +167,8 @@ const library = (() => {
             };
 
         } else if (libraryReference === 'task') {
-            if(!_taskLibrary.some(item => item.id == instanceReference)) {
+            console.log(_taskLibrary);
+            if(instanceReference === '') {
                 //                         projectID                type           title          description    dueDate        priority                 tags
                 let formValuesReordered = [parseInt(formValues[5]), formValues[0], formValues[1], formValues[2], formValues[3], parseInt(formValues[4]), formValues[6]]
                 _createTask(formValuesReordered);
