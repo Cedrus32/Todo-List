@@ -152,6 +152,9 @@ const forms = (() => {
                 if (((i > 2) && (i < 6)) || (i > 6)) {
                     taskFormInputs[i].value = '';
                 };
+                if (i === 6) {
+                    taskFormInputs[i].selectedIndex = 0;
+                };
             };
         } else if (_currentForm === checkboxForm) {
             checkboxFormInputs.forEach(input => input.value = '');
