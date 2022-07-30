@@ -1,7 +1,7 @@
 import events from '../events';
 import { option } from './elements';
 
-// * manages interface between form DOM & library arrays
+// ~ manages interface between form DOM & library arrays
 
 const forms = (() => {
     // data
@@ -26,11 +26,11 @@ const forms = (() => {
     // query methods
     function _openModifyFormQuery(event) {
         let targetItemReferences;
-        if (event.target.closest('li.card')) {
+        if (event.target.closest('li.card')) { // ! track taskCard, query to li from taskCard when needed
             let formTypeReference = 'checkbox';
-            let taskReference = event.target.closest('li.card').id.split('__')[0].split('_')[1];
-            let checkReference = event.target.closest('li.card').id.split('__')[1].split('_')[1];
-            targetItemReferences = [formTypeReference, [taskReference, checkReference]];
+            let taskReference = event.target.closest('div.card').id.split('_')[1];
+            let checkboxReference = event.target.closest('li.card').id.split('__')[1].split('_')[1];
+            targetItemReferences = [formTypeReference, [taskReference, checkboxReference]]; // taskReference & checkboxReference must be bundled, split in library.js
         } else {
             targetItemReferences = event.target.closest('div.card').id.split('_');
         };
@@ -58,7 +58,7 @@ const forms = (() => {
         _clearFormValues();
         if (_currentForm === taskForm) {
             _removeProjectOptions();
-        }
+        };
 
         events.publish('confirmInput', formValues);    // subscribed by library.js
     }
@@ -109,18 +109,10 @@ const forms = (() => {
                     taskFormInputs[i + 1].value = values[i];
                 };
             };
-        } else if (_currentFormType === 'checkbox') {                  // * checklist form
-            for (let i = 0; i < (values.length); i++) {
-                let taskID = values[0];
-                let checkboxID = values[1][0];
-                let checkboxDescription = values[1][1];
-                if (i === 0) {
-                    let targetElementIDs = `${taskID}_${checkboxID}`;
-                    checkboxFormInputs[i].value = targetElementIDs;
-                } else {
-                    checkboxFormInputs[i].value = checkboxDescription;
-                };
-            };
+        } else if (_currentFormType === 'checkbox') {
+            let instanceReferences = `${values[0]}_${values[1]}`;
+            checkboxFormInputs[0].value = instanceReferences;
+            checkboxFormInputs[1].value = values[2];
         };
     }
     function _bundleFormValues() {
@@ -144,11 +136,11 @@ const forms = (() => {
                 };
             };
             //// console.log(`task formValues: [${formValues}]`);
-        } else if (_currentForm === checkboxForm) {                // * checklist form
+        } else if (_currentForm === checkboxForm) {
             formValues.push('checkbox');
-            for (let i = 0; i < (checkboxFormInputs.length); i++) {
-                formValues.push(checkboxFormInputs[i].value);
-            };
+            formValues.push(checkboxFormInputs[0].value.split('_')[0]);
+            formValues.push(checkboxFormInputs[0].value.split('_')[1]);
+            formValues.push(checkboxFormInputs[1].value);
         };
         return formValues;
     }
@@ -161,7 +153,7 @@ const forms = (() => {
                     taskFormInputs[i].value = '';
                 };
             };
-        } else if (_currentForm === checkboxForm) {                    // * checklist form 
+        } else if (_currentForm === checkboxForm) {
             checkboxFormInputs.forEach(input => input.value = '');
         };
         _currentForm = '';

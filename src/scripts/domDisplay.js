@@ -65,9 +65,9 @@ const domDisplay = (() => {
         targetCard.appendChild(checklistContent);
         targetCard.appendChild(checklistDetails);
     }
-    const _renderCheckboxLabel = function(targetContainerID, content, targetCheckboxID) {
-        let liContainer = document.getElementById(targetContainerID);
-        let checkboxLabel = label(content, targetCheckboxID, '');
+    const _renderNewCheckboxLabel = function(containerID, checklistItemID, content) {
+        let liContainer = document.getElementById(containerID);
+        let checkboxLabel = label(content, checklistItemID, '');
         liContainer.insertBefore(checkboxLabel, liContainer.lastChild);
     }
 
@@ -164,6 +164,7 @@ const domDisplay = (() => {
         let divDescription = div(description, '.description');
         let spanCreate = div('+', '.create');
 
+        // * checklist item create event
         spanCreate.addEventListener('click', (e) => {
             let taskReference = e.target.closest('div.card').id.split('_')[1];
             let formReferences = ['checkbox', taskReference];
@@ -213,7 +214,6 @@ const domDisplay = (() => {
             events.publish('clickModifyItem', e);    // subscribed by forms.js
         });
         spanDelete.addEventListener('click', () => {
-            // ? look at other modify events ^^^, use e to catch ID ?
             events.publish('clickDeleteChecklistItem', checkID);    // subscribed by library.js
         });
 
@@ -255,11 +255,11 @@ const domDisplay = (() => {
             let taskReference = itemInstance[1];
             let checkboxReference = itemInstance[2];
             let checkboxContent = itemInstance[3];
-            let liID = `task_${taskReference}__li_${checkboxReference}`;
-            let checkboxID = `task_${taskReference}__checkbox_${checkboxReference}`;
+            let liContainerID = `task_${taskReference}__li_${checkboxReference}`;   // used to getElementById, no # needed
+            let checkboxID = `task_${taskReference}__checkbox_${checkboxReference}`; // used as forReference, no # needed
 
-            _deleteItemContent(liID);
-            _renderCheckboxLabel(liID, checkboxContent, checkboxID);
+            _deleteItemContent(liContainerID);
+            _renderNewCheckboxLabel(liContainerID, checkboxID, checkboxContent);
         }
     }
     function _clearDisplay() {
@@ -302,6 +302,7 @@ const domDisplay = (() => {
 
     // bind events
     // * modify & delete click events in _renderHeader()'s ^^^
+    // * create checklist item event in _renderChecklistDescritionContainer() ^^^
     createTaskButton.addEventListener('click', () => {
         events.publish('clickCreateItem', 'task');  // subscribed by forms.js
     });

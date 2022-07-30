@@ -102,13 +102,13 @@ const library = (() => {
     // getters
     function _queryItemInstance(itemReferences) {
         let libraryReference = itemReferences[0];
-        let itemReference = itemReferences[1];
+        let instanceReference = itemReferences[1];
         //// console.log(libraryReference);
         //// console.log(itemReference);
 
         if (libraryReference === 'project') {
             for (let p = 0; p < (_projectLibrary.length); p++) {
-                if (_projectLibrary[p].id == itemReference) {
+                if (_projectLibrary[p].id == instanceReference) {
                     let item = _projectLibrary[p];
                     let itemValueArray = [item.id, item.title, item.description];
                     //// console.log(itemValueArray)
@@ -118,7 +118,7 @@ const library = (() => {
             };
         } else if (libraryReference === 'task') {
             for (let t = 0; t < (_taskLibrary.length); t++) {
-                if (_taskLibrary[t].id == itemReference) {
+                if (_taskLibrary[t].id == instanceReference) {
                     let item = _taskLibrary[t];
                     let itemValueArray = [item.id, item.type, item.title, item.description, item.dueDate, item.priority, item.projectID, item.tags];
                     //// console.log(itemValueArray);
@@ -126,14 +126,14 @@ const library = (() => {
                 };
             };
         } else if (libraryReference === 'checkbox') {
-            let taskReference = itemReference[0];
-            let checkboxReference = itemReference[1];
+            let taskReference = instanceReference[0];
+            let checkboxReference = instanceReference[1];
             for (let t = 0; t < (_taskLibrary.length); t++) {
                 if (_taskLibrary[t].id == taskReference) {
                     let checklistItems = _taskLibrary[t].items;
                     for (let i = 0; i < (checklistItems.length); i++) {
                         if (checklistItems[i][0] == checkboxReference) {
-                            let itemValueArray = [taskReference, checklistItems[i]]
+                            let itemValueArray = [taskReference, checklistItems[i][0], checklistItems[i][1]];
                             //// console.log(itemValueArray);
                             events.publish('closeModifyQuery', itemValueArray);   // subscribed by forms.js
                         };
@@ -154,36 +154,35 @@ const library = (() => {
     // setter manager
     function _setItemValues(formValues) {
         let libraryReference = formValues[0];
-        let itemReference = formValues[1];
+        let instanceReference = formValues[1];
         formValues.splice(0, 2);    // [title, description]
                                     // [type, title, description, dueDate, 'priority', 'projectID', [tags]]
         //// console.log(libraryReference);
-        //// console.log(itemReference);
+        //// console.log(instanceReference);
         //// console.log(formValues);
         
         if (libraryReference === 'project') {
-            if (!_projectLibrary.some(item => item.id == itemReference)) { // ! untested, written to match task conditional below vvv
+            if (!_projectLibrary.some(item => item.id == instanceReference)) { // ! untested, written to match task conditional below vvv
                 _createProject(formValues);
             } else {
-                _modifyProject(itemReference, formValues);
+                _modifyProject(instanceReference, formValues);
             };
 
         } else if (libraryReference === 'task') {
-            if(!_taskLibrary.some(item => item.id == itemReference)) {
+            if(!_taskLibrary.some(item => item.id == instanceReference)) {
                 //                         projectID                type           title          description    dueDate        priority                 tags
                 let formValuesReordered = [parseInt(formValues[5]), formValues[0], formValues[1], formValues[2], formValues[3], parseInt(formValues[4]), formValues[6]]
                 _createTask(formValuesReordered);
             } else {
-                _modifyTask(itemReference, formValues);
+                _modifyTask(instanceReference, formValues);
             };
         } else if (libraryReference === 'checkbox') {
-            let itemReferencesSplit = itemReference.split('_');
-            let taskReference = itemReferencesSplit[0];
-            let checkReference = itemReferencesSplit[1];
-            if (!_taskLibrary.some(item => item.id == taskReference)) {
+            let checklistItemReference = formValues[0];
+            let checklistItemContent = formValues[1];
+            if (!_taskLibrary.some(item => item.id == instanceReference)) {
                 _createChecklistItem(taskReference, formValues);
             } else {
-                _modifyCheckbox(taskReference, checkReference, formValues[0]); // formValues[0] needed to pass single value from formValues[]
+                _modifyCheckbox(instanceReference, checklistItemReference, checklistItemContent); // formValues[0] needed to pass single value from formValues[]
             };
         };
     }
@@ -287,17 +286,17 @@ const library = (() => {
                 let targetChecklistItems = _taskLibrary[t].items;
                 for (let i = 0; i < (targetChecklistItems.length); i++) {
                     if (targetChecklistItems[i][0] == targetItemID) {
-                        let targetValueArray = [i, targetContent];
+                        let targetValueArray = [targetItemID, targetContent];
                         taskInstance.setCheckboxItem = targetValueArray;
                         checkboxInstance = ['checkbox', targetTaskID, targetItemID, targetContent];
                     };
                 };
             };
         };
-        //// console.log('modify checklistItem');
-        //// console.log(taskInstance.items[targetItemID]);
+        //// console.log('modified checklistItem');
+        //// console.log(taskInstance.items);
 
-        events.publish('itemModified', checkboxInstance);
+        events.publish('itemModified', checkboxInstance);   // subscribed by domDisplay.js
     }
 
     // delete methods
