@@ -17,3 +17,8 @@ header,
 .card {
     border: 1px solid orangered;
 }
+
+section.form-container:not(.hide) ~ .show-filter {
+    background-color: white;
+    filter: opacity(0.5);
+}
