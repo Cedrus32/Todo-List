@@ -59,7 +59,7 @@ const domDisplay = (() => {
     const _renderChecklistCardContents = function(targetCard, item) {
         let checklistHeader = _renderChecklistHeader(item.title, item.dueDate);
         let checklistDescription = _renderChecklistDescriptionContainer(item.description);
-        let checklistContent = _renderChecklistContent(targetCard.id, item.items);
+        let checklistContent = _renderChecklistContent(targetCard.id, item.items);  // ? treat as div.card/cardContent -- pass ul container into method, attach content inside method ?
         let checklistDetails = _renderTaskDetails(item.priority, item.tags);
 
         targetCard.appendChild(checklistHeader);
@@ -178,7 +178,7 @@ const domDisplay = (() => {
 
         return divContainer;
     }
-    const _renderChecklistContent = function(parentID, items) {
+    const _renderChecklistContent = function(parentID, items) { // ! how to query correct checklist task to render new checklist item
         let ulItem = ul('', '.checks');
         for (let i = 0; i < (items.length); i++) {
             let checklistItem = _renderChecklistItem(parentID, items[i]);
@@ -308,10 +308,11 @@ const domDisplay = (() => {
     createTaskButton.addEventListener('click', () => {
         events.publish('clickCreateItem', 'task');  // subscribed by forms.js
     });
-    events.subscribe('renderProject', _renderProject)   // published from display.js (_renderDisplay())
-    events.subscribe('renderTask', _renderTask);    // published from display.js (_renderDisplay())
+    events.subscribe('renderProject', _renderProject)   // published from display.js (_publishRenderDisplayEvents())
+    events.subscribe('renderTask', _renderTask);    // published from display.js (_publishRenderDisplayEvents())
     events.subscribe('removeTaskFromDisplay', _deleteTaskCard); // published from library.js (_deleteTask())
     events.subscribe('removeProjectFromDisplay', _clearDisplay) // published from library.js (_deleteProject())
     events.subscribe('itemModified', _updateItem);    // published from library.js (_modifyItems())
     events.subscribe('removeChecklistItemFromDisplay', _deleteChecklistItem)    // published from library.js (_deleteChecklistItem())
+    events.subscribe('renderChecklistItem', _renderChecklistItem);  // published from display.js (_publishRenderDisplayEvents())
 })();
