@@ -76,9 +76,10 @@ const forms = (() => {
         } else if (formReference === 'task') {
             _currentForm = taskForm;
             _currentFormType = 'task';
-        } else if (formReference === 'checkbox') {
+        } else if (formReference[0] === 'checkbox') {
             _currentForm = checkboxForm;
             _currentFormType = 'checkbox';
+            checkboxFormInputs[0].value = formReference[1];
         };
     }
     function _showForm() {
