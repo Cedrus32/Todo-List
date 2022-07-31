@@ -61,19 +61,71 @@ const forms = (() => {
     }
     function _confirmInput() {
         _hideForm();
-        let formValues = _bundleFormValues();
-        _clearFormValues();
-        if (_currentForm === taskForm) {
-            _removeProjectOptions();
-        };
 
-        events.publish('confirmInput', formValues);    // subscribed by library.js
+        let isValid = _validateForm(_currentForm);
+
+        if (isValid === true) {
+            let formValues = _bundleFormValues();
+            // _clearCustomErrors();
+            _clearFormValues();
+            if (_currentForm === taskForm) {
+                _removeProjectOptions();
+            };
+            events.publish('confirmInput', formValues);    // subscribed by library.js
+        } else if (isValid === false) {
+            console.log('throw errors');
+            _throwErrors(_currentForm);
+        };
     }
     function _cancelInput() {
         _hideForm();
         _clearFormValues();
         _removeProjectOptions();
     }
+    function _validateForm(form) {
+        console.log('form valid?')
+        // console.log(form);
+        console.log(form.querySelector('form').checkValidity());
+        return form.querySelector('form').checkValidity();
+    }
+    function _throwErrors(form) {
+        if (form === projectForm) {
+            projectFormInputs.forEach(input => {
+                if (input.validity === false) {
+                    _addCustomError(input);
+                };
+            });
+        } else if (form === taskForm) {
+            console.log('confirm taskForm');
+            taskFormInputs.forEach(input => {
+                if (input.validity.valid === false) {
+                    _addCustomError(input);
+                };
+            });
+        } else if (form === checkboxForm) {
+            checkboxForm.forEach(input => {
+                if (input.validity === false) {
+                    _addCustomError(input);
+                };
+            });
+        };
+    }
+    function _addCustomError(input) {
+        console.log('input valid?')
+        // console.log(input.validity);
+        // console.log(input.validity.valueMissing);
+        // console.log(input.validity.patternMismatch);
+
+        if (input.validity.valueMissing) {
+            console.log('valueMissing (required failed)');
+            input.setCustomValidity('Please enter a title');
+            console.log(input.validationMessage);
+        } else if (input.validity.patternMismatch) {
+            console.log('patternMismatch (regex failed)');
+            input.setCustomValidity(`Tags must start with a #, and be separated by a ' ' (space)`);
+            console.log(input.validationMessage);
+        }
+    };
 
     // helper methods  
     function _setFormReferences(formReference) {
