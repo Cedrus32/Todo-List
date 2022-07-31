@@ -37,7 +37,7 @@
                     <legend>Project</legend>
                     <label for='project-title'>Project Name</label>
                     <input type='text' id='project-title' name='project-title' placeholder='name'
-                           required aria-required='true'>
+                           aria-required='true' required>
                     <label for='desc'>Project Description</label>
                     <input type='text' id='project-description' name='desc' placeholder='description'
                            aria-required='false'>
@@ -63,13 +63,13 @@
                     </div>
                     <label for='task-title'>Task Name</label>
                     <input type='text' id='task-title' class='input' name='task-title' placeholder='name'
-                           required aria-required='true'>
+                           aria-required='true' required>
                     <label for='desc'>Task Description</label>
                     <input type='text' id='task-description' class='input' name='desc' placeholder='description'
                            aria-required='false'>
                     <label for='date'>Due Date</label>
                     <input type='date' id='due-date' class='input' name='date'
-                            aria-required='false'>
+                           aria-required='false'>
                     <div class='dropdowns'>
                         <div>
                             <label for='priority'>Priority</label>
@@ -83,13 +83,13 @@
                         <div>
                             <label for='project'>Project</label>
                             <select id='project' class='input' name='project'>
-                                <!-- generate options list from library -->
                             </select>
                         </div>
                     </div>
                     <label for='tags'>Tags</label>
                     <input type='text' id='tags' class='input' name='tags'
-                            aria-required='false'>
+                           pattern='/(^|\B)#(?![0-9_]+\b)([a-zA-Z0-9_]{1,30})(\b|\r)/g'
+                           aria-required='false'>
                 </fieldset>
             </form>
             <div id='task-buttons'>
@@ -105,7 +105,7 @@
                     <legend>Checklist Item</legend>
                     <label for='checkbox'>Description</label>
                     <input type='text' id='checkbox' name='checkbox' placeholder='description'
-                           required aria-required='true'>
+                           aria-required='true' required>
                 </fieldset>
             </form>
             <div id='checkbox-buttons'>
