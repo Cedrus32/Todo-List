@@ -59,8 +59,8 @@ const domDisplay = (() => {
     const _renderChecklistCardContents = function(targetCard, item) {
         let checklistHeader = _renderChecklistHeader(item.title, item.dueDate);
         let checklistDescription = _renderChecklistDescriptionContainer(item.description);
-        let checklistContent = _renderChecklistContent(targetCard.id, item.items);  // ? treat as div.card/cardContent -- pass ul container into method, attach content inside method ?
-        let checklistDetails = _renderTaskDetails(item.priority, item.tags);
+        let checklistContent = _renderChecklistContent(targetCard.id, item.items);
+        let checklistDetails = _renderTaskDetails(item.priority, item.tags, item.id);
 
         targetCard.appendChild(checklistHeader);
         targetCard.appendChild(checklistDescription);
@@ -161,7 +161,7 @@ const domDisplay = (() => {
 
         let taskHeader = _renderSingletonHeader(id, title, dueDate);
         let taskDescription = div(description, '.description');
-        let taskDetails = _renderTaskDetails(priority, tags);
+        let taskDetails = _renderTaskDetails(priority, tags, id);
 
         divContent.appendChild(taskHeader);
         divContent.appendChild(taskDescription);
@@ -233,16 +233,36 @@ const domDisplay = (() => {
 
         return divControls;
     }
-    const _renderTaskDetails = function(priority, tags) {
+    const _renderTaskDetails = function(priority, tags, id) {
         let divDetails = div('', '.details');
 
         let divPriority = div(priority, '.priority');
-        let divTags = div(tags, '.tags');
+        let divTags = _renderTags(tags, id);
 
         divDetails.appendChild(divPriority);
         divDetails.appendChild(divTags);
 
         return divDetails;
+    }
+    const _renderTags = function(tagsArray, taskID) {
+        let divContainer = div('', '.tags');
+
+        if (tagsArray.length === 0) {
+            return divContainer;
+        } else {
+            for (let t = 0; t < (tagsArray.length); t++) {
+                let tagID = `#task_${taskID}__tag_${tagsArray[t]}`;
+                let anchorTag = span(tagsArray[t], tagID);
+
+                anchorTag.addEventListener('click', (e) => {
+                    console.log(e.target.id);
+                });
+
+                divContainer.appendChild(anchorTag);
+            };
+
+            return divContainer;
+        };
     }
 
     // other methods
