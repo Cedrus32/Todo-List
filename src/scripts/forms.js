@@ -98,6 +98,8 @@ const forms = (() => {
         _currentForm.classList.add('hide');
     }
     function _fillFormValues(values) {
+        console.log(values);
+        console.log(taskFormInputs.length);
         if (_currentFormType === 'project') {
             for (let i = 0; i < (values.length); i++) {
                 projectFormInputs[i].value = values[i];
@@ -112,6 +114,11 @@ const forms = (() => {
                     } else if (values[1] === 'checklist') {
                         taskFormInputs[2].checked = true;
                     };
+                } else if (i === 7) {
+                    console.log(values[7]);
+                    let tagsStringified = values[7].join(' ');
+                    console.log(tagsStringified);
+                    taskFormInputs[i + 1].value = tagsStringified;
                 } else {
                     taskFormInputs[i + 1].value = values[i];
                 };
@@ -215,7 +222,7 @@ const forms = (() => {
     }));
     events.subscribe('clickCreateItem', _openCreateForm);   // publishing from domDisplay.js (createTaskButton clickEvent)
     events.subscribe('clickModifyItem', _openModifyFormQuery);  // publishing from domDisplay.js (_renderHeaders())
-    events.subscribe('closeModifyQuery', _openModifyForm);  // publishing from library.js (_queryItem());
+    events.subscribe('closeModifyQuery', _openModifyForm);  // publishing from library.js (_queryItemInstance());
     events.subscribe('closeProjectOptionsQuery', _renderProjectOptions);  // publishing from library.js (_queryProjectNameID())
     events.subscribe('clickDeleteProject', _showDeleteProjectConfirmation);    // publishing from domDisplay.js (_renderProjectHeader())
 
