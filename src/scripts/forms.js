@@ -98,8 +98,6 @@ const forms = (() => {
         _currentForm.classList.add('hide');
     }
     function _fillFormValues(values) {
-        console.log(values);
-        console.log(taskFormInputs.length);
         if (_currentFormType === 'project') {
             for (let i = 0; i < (values.length); i++) {
                 projectFormInputs[i].value = values[i];
@@ -138,15 +136,20 @@ const forms = (() => {
                 formValues.push(projectFormInputs[i].value);
             };
         } else if (_currentForm === taskForm) {
+            console.log(taskFormInputs);
             formValues.push('task');
             for (let i = 0; i < (taskFormInputs.length); i++) {
-                if (i === 0 || i > 2) {
+                if (i === 0 || ((i > 2) && (i < 8))) {
                     formValues.push(taskFormInputs[i].value);
                 };
                 if (i === 1 || i === 2) {
                     if (taskFormInputs[i].checked === true) {
                         formValues.push(taskFormInputs[i].value);
                     };
+                };
+                if (i === 8) {
+                    let tagsArrayed = taskFormInputs[i].value.split(' ');
+                    formValues.push(tagsArrayed);
                 };
             };
         } else if (_currentForm === checkboxForm) {
