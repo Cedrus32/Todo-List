@@ -60,21 +60,17 @@ const forms = (() => {
         deleteConfirmAlert.classList.remove('hide');
     }
     function _confirmInput() {
-        _hideForm();
-
         let isValid = _validateForm(_currentForm);
-
         if (isValid === true) {
+            _hideForm();
             let formValues = _bundleFormValues();
-            // _clearCustomErrors();
             _clearFormValues();
             if (_currentForm === taskForm) {
                 _removeProjectOptions();
             };
             events.publish('confirmInput', formValues);    // subscribed by library.js
         } else if (isValid === false) {
-            console.log('throw errors');
-            _throwErrors(_currentForm);
+            _findErrors(_currentForm);
         };
     }
     function _cancelInput() {
@@ -83,48 +79,32 @@ const forms = (() => {
         _removeProjectOptions();
     }
     function _validateForm(form) {
-        console.log('form valid?')
-        // console.log(form);
+        console.log('form isValid?')
         console.log(form.querySelector('form').checkValidity());
         return form.querySelector('form').checkValidity();
     }
-    function _throwErrors(form) {
+    function _findErrors(form) {
+        let inputs;
         if (form === projectForm) {
-            projectFormInputs.forEach(input => {
-                if (input.validity === false) {
-                    _addCustomError(input);
-                };
-            });
+            inputs = projectFormInputs;
         } else if (form === taskForm) {
-            console.log('confirm taskForm');
-            taskFormInputs.forEach(input => {
-                if (input.validity.valid === false) {
-                    _addCustomError(input);
-                };
-            });
+            inputs = taskFormInputs;
         } else if (form === checkboxForm) {
-            checkboxForm.forEach(input => {
-                if (input.validity === false) {
-                    _addCustomError(input);
-                };
-            });
+            inputs = checkboxFormInputs;
         };
-    }
-    function _addCustomError(input) {
-        console.log('input valid?')
-        // console.log(input.validity);
-        // console.log(input.validity.valueMissing);
-        // console.log(input.validity.patternMismatch);
 
-        if (input.validity.valueMissing) {
-            console.log('valueMissing (required failed)');
-            input.setCustomValidity('Please enter a title');
-            console.log(input.validationMessage);
-        } else if (input.validity.patternMismatch) {
-            console.log('patternMismatch (regex failed)');
-            input.setCustomValidity(`Tags must start with a #, and be separated by a ' ' (space)`);
-            console.log(input.validationMessage);
-        }
+        inputs.forEach(input => {
+            if (input.validity.valueMissing === true) {
+                _showErrorMessage(input);
+            } else if (input.checkValidity() === false) {
+                console.log('other error');
+                console.log(input.previousElementSibling);
+            };
+        });
+    }
+    function _showErrorMessage(input) {
+        let label = input.previousElementSibling;
+        label.lastChild.classList.remove('hide');
     };
 
     // helper methods  
@@ -165,9 +145,7 @@ const forms = (() => {
                         taskFormInputs[2].checked = true;
                     };
                 } else if (i === 7) {
-                    console.log(values[7]);
                     let tagsStringified = values[7].join(' ');
-                    console.log(tagsStringified);
                     taskFormInputs[i + 1].value = tagsStringified;
                 } else {
                     taskFormInputs[i + 1].value = values[i];
