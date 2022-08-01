@@ -1,5 +1,5 @@
 import events from '../events';
-import { option } from './elements';
+import { label, option } from './elements';
 
 // * manages interface between form DOM & library arrays
 
@@ -60,17 +60,18 @@ const forms = (() => {
         deleteConfirmAlert.classList.remove('hide');
     }
     function _confirmInput() {
-        let isValid = _validateForm(_currentForm);
+        let isValid = _validateForm();
         if (isValid === true) {
             _hideForm();
             let formValues = _bundleFormValues();
+            _findErrors('hide');
             _clearFormValues();
             if (_currentForm === taskForm) {
                 _removeProjectOptions();
             };
             events.publish('confirmInput', formValues);    // subscribed by library.js
         } else if (isValid === false) {
-            _findErrors(_currentForm);
+            _findErrors('show');
         };
     }
     function _cancelInput() {
@@ -78,34 +79,42 @@ const forms = (() => {
         _clearFormValues();
         _removeProjectOptions();
     }
-    function _validateForm(form) {
+    function _validateForm() {
         console.log('form isValid?')
-        console.log(form.querySelector('form').checkValidity());
-        return form.querySelector('form').checkValidity();
+        console.log(_currentForm.querySelector('form').checkValidity());
+        return _currentForm.querySelector('form').checkValidity();
     }
-    function _findErrors(form) {
+    function _findErrors(process) {
         let inputs;
-        if (form === projectForm) {
+        if (_currentForm === projectForm) {
             inputs = projectFormInputs;
-        } else if (form === taskForm) {
+        } else if (_currentForm === taskForm) {
             inputs = taskFormInputs;
-        } else if (form === checkboxForm) {
+        } else if (_currentForm === checkboxForm) {
             inputs = checkboxFormInputs;
         };
 
+        let titleInput;
         inputs.forEach(input => {
-            if (input.validity.valueMissing === true) {
-                _showErrorMessage(input);
-            } else if (input.checkValidity() === false) {
-                console.log('other error');
-                console.log(input.previousElementSibling);
+            if (input.id.split('-')[1] === 'title') {
+                titleInput = input;
             };
         });
+
+        if (process === 'show') {
+            _showErrorMessage(titleInput);
+        } else if (process === 'hide') {
+            _hideErrorMessage(titleInput);
+        };
     }
     function _showErrorMessage(input) {
         let label = input.previousElementSibling;
         label.lastChild.classList.remove('hide');
-    };
+    }
+    function _hideErrorMessage(input) {
+        let label = input.previousElementSibling;
+        label.lastChild.classList.add('hide');
+    }
 
     // helper methods  
     function _setFormReferences(formReference) {
