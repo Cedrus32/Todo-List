@@ -80,8 +80,6 @@ const forms = (() => {
         _removeProjectOptions();
     }
     function _validateForm() {
-        console.log('form isValid?')
-        console.log(_currentForm.querySelector('form').checkValidity());
         return _currentForm.querySelector('form').checkValidity();
     }
     function _findErrors(process) {
