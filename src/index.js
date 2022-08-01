@@ -7,7 +7,7 @@ import './styles/colors.css';
 import display from './scripts/display';
 import domDisplay from './scripts/domDisplay';
 import forms from './scripts/forms';
-// import sidebar from './scripts/sidebar';
+import sidebar from './scripts/sidebar';
 // import domSidebar from '.scripts/domSidebar';
 import library from './scripts/library';
 import events from './events';
