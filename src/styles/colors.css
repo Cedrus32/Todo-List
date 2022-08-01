@@ -22,3 +22,17 @@ section.form-container:not(.hide) ~ .show-filter {
     background-color: white;
     filter: opacity(0.5);
 }
+
+input,
+select {
+    border: 1px solid black;
+}
+
+input:invalid {
+    border: 1px solid red;
+}
+
+.required-badge,
+.error-message {
+    color: red;
+}
