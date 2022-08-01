@@ -44,6 +44,9 @@ body {
 /* --- VIEW PREFS */
 
 #view-prefs {
+    display: flex;
+    flex-flow: column;
+    gap: var(--main-gap);
     position: absolute;
     top: calc(calc(var(--main-pad) * 2) + 1.65em); left: 0em;
 }
