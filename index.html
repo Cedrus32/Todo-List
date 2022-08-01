@@ -35,7 +35,7 @@
                 <input class='target-project-id hide'>
                 <fieldset>
                     <legend>Project</legend>
-                    <label for='project-title'>Project Name</label>
+                    <label for='project-title'>Project Name <span class='required-badge'>*</span> <span class='error-message hide'>please include a title</span></label>
                     <input type='text' id='project-title' name='project-title' placeholder='name'
                            aria-required='true' required>
                     <label for='desc'>Project Description</label>
@@ -44,7 +44,7 @@
                 </fieldset>
             </form>
             <div id='project-buttons'>
-                <button class='confirm'>confirm</button>
+                <button type='submit' class='confirm'>confirm</button>
                 <button class='cancel'>cancel</button>
             </div>
         </section>
@@ -61,7 +61,7 @@
                         <input type='radio' class='input' id='checklist' name='type' value='checklist'>
                         <label for='checklist'>Task List</label>
                     </div>
-                    <label for='task-title'>Task Name</label>
+                    <label for='task-title'>Task Name <span class='required-badge'>*</span> <span class='error-message hide'>please include a title</span></label>
                     <input type='text' id='task-title' class='input' name='task-title' placeholder='name'
                            aria-required='true' required>
                     <label for='desc'>Task Description</label>
@@ -86,14 +86,13 @@
                             </select>
                         </div>
                     </div>
-                    <label for='tags'>Tags</label>
+                    <label for='tags'>Tags (separate tags with spaces)</label>
                     <input type='text' id='tags' class='input' name='tags'
-                           pattern='/(^|\B)#(?![0-9_]+\b)([a-zA-Z0-9_]{1,30})(\b|\r)/g'
                            aria-required='false'>
                 </fieldset>
             </form>
             <div id='task-buttons'>
-                <button class='confirm'>confirm</button>
+                <button type='submit' class='confirm'>confirm</button>
                 <button class='cancel'>cancel</button>
             </div>
         </section>
@@ -103,13 +102,13 @@
                 <input class='target-task-checkbox-ids hide'>
                 <fieldset>
                     <legend>Checklist Item</legend>
-                    <label for='checkbox'>Description</label>
-                    <input type='text' id='checkbox' name='checkbox' placeholder='description'
+                    <label for='checkbox'>Checkbox Name <span class='required-badge'>*</span> <span class='error-message hide'>please include a title</span></label>
+                    <input type='text' id='checkbox' name='checkbox' placeholder='name'
                            aria-required='true' required>
                 </fieldset>
             </form>
             <div id='checkbox-buttons'>
-                <button class='confirm'>confirm</button>
+                <button type='submit' class='confirm'>confirm</button>
                 <button class='cancel'>cancel</button>
             </div>
         </section>
@@ -118,7 +117,7 @@
             <p>Deleting a project will also delete all of its tasks.</p>
             <p>Are you SURE you want to proceed?</p>
             <div class='action-buttons'>
-                <button class='delete-confirm'>Yes</button>
+                <button type='submit' class='delete-confirm'>Yes</button>
                 <button class='delete-cancel'>No</button>
             </div>
         </section>
