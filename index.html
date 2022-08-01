@@ -9,24 +9,21 @@
     </head>
     <body>
 
-        <section id='view-prefs' class='hide'>
-            <ul>
-                <li>all</li>
-                <li>today</li>
-                <li>upcoming</li>
-                <li>anytime</li>
-                <li>trash</li>
-                <li class='view-spacer'></li>
-                <li class='view-section'>
-                    <h4>tags</h4>
-                    <!-- generate tags -->
-                </li>
-                <li class='view-spacer'></li>
-                <li>unsorted</li>
-                <li class='view-section'>
-                    <h4>projects</h4>
-                    <!-- generate projects -->
-                </li>
+        <section id='view-prefs' class=''>
+            <ul id='static-views'>
+                <li class='view-all'>all</li>
+                <li class='view-today'>today</li>
+                <li class='view-upcoming'>upcoming</li>
+                <li class='view-anytime'>anytime</li>
+                <li id='view-project_0'>unsorted</li>
+            </ul>
+            <ul class='dynamic-tag-views'>
+                <h4>tags</h4>
+                <!-- generate li -->
+            </ul>
+            <ul class='dynamic-project-views'>
+                <h4>projects</h4>
+                <!-- generate projects -->
             </ul>
         </section>
 
