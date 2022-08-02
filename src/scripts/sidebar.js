@@ -11,7 +11,7 @@ const sidebar = (() => {
 
     // managers
     function _publishRenderSidebarEvents(object) {
-        if (object.type === 'project') {
+        if (object.type === 'project' && object.id !== 0) {
             console.log('render project link');
             events.publish('renderProjectLink', object.id, object.title);   // subscribed by domSidebar.js
         } else if (object.type === 'singleton' || object.type === 'checklist') {
@@ -26,8 +26,8 @@ const sidebar = (() => {
     title.addEventListener('click', () => {
         viewPrefs.classList.toggle('hide');
     });
-    events.subscribe('projectCreated', _publishRenderSidebarEvents);
-    events.subscribe('taskCreated', _publishRenderSidebarEvents);
+    events.subscribe('projectCreated', _publishRenderSidebarEvents);    // published by library.js
+    events.subscribe('taskCreated', _publishRenderSidebarEvents);   // published by library.js
 
 })();
 
