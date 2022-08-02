@@ -16,6 +16,7 @@ const sidebar = (() => {
             events.publish('renderProjectLink', object.id, object.title);   // subscribed by domSidebar.js
         } else if (object.type === 'singleton' || object.type === 'checklist') {
             console.log('render tag links');
+            events.publish('renderTagLink', object);
         };
     }
 

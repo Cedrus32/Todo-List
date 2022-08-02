@@ -180,7 +180,7 @@ const library = (() => {
             for (let t = 0; t < (_taskLibrary.length); t++) {
                 if (_taskLibrary[t].id == instanceReference) {
                     let instanceItemArray = _taskLibrary[t].items;
-                    if (!instanceItemArray.some(item => item[0] == checklistItemReference)) { // ! change to match task ^^^
+                    if (!instanceItemArray.some(item => item[0] == checklistItemReference)) {
                         _createChecklistItem(instanceReference, formValues);
                     } else {
                         _modifyCheckbox(instanceReference, checklistItemReference, checklistItemContent); // formValues[0] needed to pass single value from formValues[]
@@ -293,7 +293,7 @@ const library = (() => {
         console.log('modified task instance:')
         console.log(taskInstance);
 
-        events.publish('itemModified', taskInstance);  // subscribed by domDisplay.js
+        events.publish('itemModified', taskInstance);  // subscribed by domDisplay.js, domSidebar.js
     }
     function _modifyCheckbox(targetTaskID, targetItemID, targetContent) {
         //// console.log(targetItemID, targetContent);
