@@ -201,7 +201,14 @@ fieldset {
                         .details {
                             display: flex;
                             gap: var(--small-gap);
+                            align-content: flex-start;
                         }
+
+                            .tags {
+                                display: flex;
+                                gap: var(--small-gap);
+                                flex-wrap: wrap;
+                            }
 
                 .checklist {
                     display: flex;
