@@ -7,15 +7,14 @@ const domSidebar = (() => {
     // data
 
     // cache dom
-    let staticList = document.getElementById('static-views');
+    let viewAllButton = document.getElementById('view-all');
+    let viewTodayButton = document.getElementById('view-today');
+    let viewUpcomingButton = document.getElementById('view-upcoming');
+    let viewAnytimeButton = document.getElementById('view-anytime');
+    let viewUnsortedButton = document.getElementById('view-project_0');
     let tagsList = document.getElementById('dynamic-views-tags');
     let projectsList = document.getElementById('dynamic-views-projects');
     let createProjectButton = document.querySelector('div.view-prefs-container span.create');
-
-    console.log(staticList);
-    console.log(tagsList);
-    console.log(projectsList);
-    console.log(createProjectButton);
 
     // managers
     const _renderProjectLink = function(id, title) {
@@ -32,9 +31,6 @@ const domSidebar = (() => {
     const _renderTagLink = function(task) {
         let tagsArray = task.tags;
         let numberTagLinks = tagsList.children.length
-        console.log(tagsList.children);
-        console.log(numberTagLinks);
-
         for (let i = 0; i < (tagsArray.length); i++) {
             let tagName = tagsArray[i];
             let liID = `view-tag_${tagName}`;
@@ -43,19 +39,13 @@ const domSidebar = (() => {
             for (let n = 0; n < (numberTagLinks); n++) {
                 tagElementList.push(tagsList.children[n].id);
             };
-            console.log(liID);
-            console.log(tagElementList);
 
             if (!tagElementList.some(id => id === liID)) {
-                console.log('tag unique, create li');
                 let liTagLink = li(tagName, `#${liID}`);
                     liTagLink.addEventListener('click', (e) => {
                         console.log('view tag in display');
                         console.log(e.target.id);
                     });
-
-                    console.log(liTagLink);
-                    
                     tagsList.appendChild(liTagLink);
             };
         };
@@ -64,9 +54,22 @@ const domSidebar = (() => {
     // helpers
 
     // bind events
+    viewAllButton.addEventListener('click', () => {
+        console.log('view all tasks');
+    });
+    viewTodayButton.addEventListener('click', () => {
+        console.log('view tasks due today');
+    });
+    viewUpcomingButton.addEventListener('click', () => {
+        console.log('view tasking due this week');
+    });
+    viewAnytimeButton.addEventListener('click', () => {
+        console.log('view tasks with no due dates');
+    });
+    viewUnsortedButton.addEventListener('click', () => {
+        console.log('view tasks in unsorted project');
+    });
     createProjectButton.addEventListener('click', () => {
-        console.log('show blank project form');
-        // ^ show blank project form on click
         events.publish('clickCreateProject', 'project');
     });
     events.subscribe('renderProjectLink', _renderProjectLink); // published by sidebar.js
