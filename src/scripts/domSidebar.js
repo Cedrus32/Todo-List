@@ -50,8 +50,14 @@ const domSidebar = (() => {
 
     // helpers
     function _openViewPreferenceQuery(event) {
-        let targetReference = event.target.id.split('_')[1];
-        console.log(targetReference);
+        let splitID = event.target.id.split('_');
+        let targetReference = '';
+        if (splitID.length > 2) {
+            splitID.splice(0, 1);
+            targetReference = splitID.join('_');
+        } else {
+            targetReference = splitID[1];
+        };
         events.publish('queryUnsorted', 'unsorted', targetReference); // subscribed by library.js
     }
 
