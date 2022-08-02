@@ -199,7 +199,7 @@ const library = (() => {
         _projectLibrary.push(_newProject);
         _projectCounter++;
 
-        events.publish('projectCreated', _newProject);  // subscribed by display.js
+        events.publish('projectCreated', _newProject);  // subscribed by display.js, sidebar.js
     }
     function _createTask(attributeArray) {
         let _id = _taskCounter;
@@ -209,7 +209,7 @@ const library = (() => {
         _taskLibrary.push(_newTask);
         _taskCounter++;
 
-        events.publish('taskCreated', _newTask);    // subscribed by display.js
+        events.publish('taskCreated', _newTask);    // subscribed by display.js, sidebar.js
     }
     function _createChecklistItem(taskID, itemValue) {
         for (let t = 0; t < (_taskLibrary.length); t++) {

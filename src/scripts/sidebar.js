@@ -10,6 +10,14 @@ const sidebar = (() => {
     let title = document.getElementById('title');
 
     // managers
+    function _publishRenderSidebarEvents(object) {
+        if (object.type === 'project') {
+            console.log('render project link');
+            events.publish('renderProjectLink', object.id, object.title);   // subscribed by domSidebar.js
+        } else if (object.type === 'singleton' || object.type === 'checklist') {
+            console.log('render tag links');
+        };
+    }
 
     //helpers
 
@@ -17,6 +25,8 @@ const sidebar = (() => {
     title.addEventListener('click', () => {
         viewPrefs.classList.toggle('hide');
     });
+    events.subscribe('projectCreated', _publishRenderSidebarEvents);
+    events.subscribe('taskCreated', _publishRenderSidebarEvents);
 
 })();
 
