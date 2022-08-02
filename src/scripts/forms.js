@@ -40,13 +40,16 @@ const forms = (() => {
 
     // form managers
     function _openCreateForm(formReference) {
-        if ((typeof formReference) === 'object') { // ^ stores task reference when creating a new checklist item
+        console.log(formReference);
+        if ((typeof formReference) === 'object') { // * stores task reference when creating a new checklist item
             checkboxFormInputs[0].value = formReference[1];
             _setFormReferences(formReference[0]);
         } else if ((typeof formReference) === 'string') {
             _setFormReferences(formReference);
-        }
-        _enableTaskTypeSelection();
+            if (formReference === 'task') {
+                _enableTaskTypeSelection();
+            };
+        };
         _showForm();
     }
     function _openModifyForm(itemValues) {
@@ -261,6 +264,7 @@ const forms = (() => {
         _cancelInput();
     }));
     events.subscribe('clickCreateItem', _openCreateForm);   // publishing from domDisplay.js (createTaskButton clickEvent)
+    events.subscribe('clickCreateProject', _openCreateForm);    // publishing from domSidebar.js (createProjectButton clickEvent)
     events.subscribe('clickModifyItem', _openModifyFormQuery);  // publishing from domDisplay.js (_renderHeaders())
     events.subscribe('closeModifyQuery', _openModifyForm);  // publishing from library.js (_queryItemInstance());
     events.subscribe('closeProjectOptionsQuery', _renderProjectOptions);  // publishing from library.js (_queryProjectNameID())

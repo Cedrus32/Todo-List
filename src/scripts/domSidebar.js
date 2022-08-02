@@ -10,12 +10,12 @@ const domSidebar = (() => {
     let staticList = document.getElementById('static-views');
     let tagsList = document.getElementById('dynamic-views-tags');
     let projectsList = document.getElementById('dynamic-views-projects');
-    let projectCreateButton = document.querySelector('div.view-prefs-container span.create');
+    let createProjectButton = document.querySelector('div.view-prefs-container span.create');
 
     console.log(staticList);
     console.log(tagsList);
     console.log(projectsList);
-    console.log(projectCreateButton);
+    console.log(createProjectButton);
 
     // managers
     const _renderProjectLink = function(id, title) {
@@ -33,8 +33,10 @@ const domSidebar = (() => {
     // helpers
 
     // bind events
-    projectCreateButton.addEventListener('click', () => {
+    createProjectButton.addEventListener('click', () => {
         console.log('show blank project form');
+        // ^ show blank project form on click
+        events.publish('clickCreateProject', 'project');
     })
     events.subscribe('renderProjectLink', _renderProjectLink); // published by sidebar.js
 

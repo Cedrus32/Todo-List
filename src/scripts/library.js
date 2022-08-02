@@ -160,7 +160,7 @@ const library = (() => {
         console.log(formValues);
         
         if (libraryReference === 'project') {
-            if (!_projectLibrary.some(item => item.id == instanceReference)) { // ! untested, written to match task conditional below vvv
+            if (instanceReference === '') {
                 _createProject(formValues);
             } else {
                 _modifyProject(instanceReference, formValues);
@@ -180,7 +180,7 @@ const library = (() => {
             for (let t = 0; t < (_taskLibrary.length); t++) {
                 if (_taskLibrary[t].id == instanceReference) {
                     let instanceItemArray = _taskLibrary[t].items;
-                    if (!instanceItemArray.some(item => item[0] == checklistItemReference)) {
+                    if (!instanceItemArray.some(item => item[0] == checklistItemReference)) { // ! change to match task ^^^
                         _createChecklistItem(instanceReference, formValues);
                     } else {
                         _modifyCheckbox(instanceReference, checklistItemReference, checklistItemContent); // formValues[0] needed to pass single value from formValues[]

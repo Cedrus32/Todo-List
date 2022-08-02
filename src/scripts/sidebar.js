@@ -22,6 +22,7 @@ const sidebar = (() => {
     //helpers
 
     // bind events
+    // ? hide sidebar when not focused ?
     title.addEventListener('click', () => {
         viewPrefs.classList.toggle('hide');
     });
