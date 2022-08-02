@@ -9,18 +9,25 @@
     </head>
     <body>
 
-        <section id='view-prefs' class='hide'>
-            <ul>
-                <li class='view-all'>all</li>
-                <li class='view-today'>today</li>
-                <li class='view-upcoming'>upcoming</li>
-                <li class='view-anytime'>anytime</li>
-                <li id='view-project_0'>unsorted</li>
-                <h4>tags</h4>
-                <!-- generate li -->
-                <h4>projects</h4>
-                <!-- generate projects -->
-            </ul>
+        <section id='view-prefs' class=''>
+            <div class='view-prefs-container'>
+                <ul id='static-views'>
+                    <li id='view-all'>all</li>
+                    <li id='view-today'>today</li>
+                    <li id='view-upcoming'>upcoming</li>
+                    <li id='view-anytime'>anytime</li>
+                    <li id='view-project_0'>unsorted</li>
+                </ul>
+                <ul id='dynamic-views-tags'>
+                    <h4>tags</h4>
+                    <!-- #view-tag_'tag name' -->
+                </ul>
+                <ul id='dynamic-views-projects'>
+                    <h4>projects</h4>
+                    <!-- #view-project_'project.id' -->
+                </ul>
+                <span>+</span>
+            </div>
         </section>
 
         <section id='project-form' class='form-container hide'>
@@ -123,7 +130,6 @@
             </header>
 
             <section id='display'>
-                <!-- generate display -->
                 <div id='project-container' class='display-container'></div>
                 <div id='task-container' class='display-container'>
                     <div class='task-controls'>

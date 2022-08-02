@@ -51,11 +51,17 @@ body {
     top: calc(calc(var(--main-pad) * 2) + 1.65em); left: 0em;
 }
 
-    #view-prefs ul {
+    .view-prefs-container {
         display: flex;
         flex-flow: column;
         gap: var(--main-gap);
     }
+
+        #view-prefs ul {
+            display: flex;
+            flex-flow: column;
+            gap: var(--main-gap);
+        }
 
 /* --- FORMS */
 /* --- FORMS */
