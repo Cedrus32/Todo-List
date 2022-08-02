@@ -14,8 +14,27 @@ const domDisplay = (() => {
     let createTaskButton = document.querySelector('div.task-controls div.create');
 
     // project manager
+    function _updateDisplayView(instanceBundle) {
+        let bundledBy = instanceBundle[0];
+        console.log(bundledBy);
+
+        if (bundledBy === 'project') {
+            for (let i = 1; i < (instanceBundle.length); i++) {
+                console.log(i);
+                if (i === 1) {
+                    console.log('rendering project');
+                    _renderProject(instanceBundle[i]);
+                } else {
+                    console.log('rendering task');
+                    _renderTask(instanceBundle[i]);
+                };
+            };
+        };
+    }
     const _renderProject = function(project) {
+        console.log('enter _renderProject in DOM');
         if (projectContainer.children) {
+            console.log('clearing display...');
             _clearDisplay();
         };
         let cardID = '#project_' + project.id;
@@ -345,4 +364,5 @@ const domDisplay = (() => {
     events.subscribe('itemModified', _updateItem);    // published from library.js (_modifyItems())
     events.subscribe('removeChecklistItemFromDisplay', _deleteChecklistItem)    // published from library.js (_deleteChecklistItem())
     events.subscribe('renderChecklistItem', _renderNewChecklistItem);  // published from display.js (_publishRenderDisplayEvents())
+    events.subscribe('updateDisplayView', _updateDisplayView);  // published from library.js (_bundleInstances())
 })();

@@ -4,12 +4,10 @@ import events from '../events.js';
 
 const display = (() => {
     // data
-    let _currentProject;
 
     // methods
     function _publishRenderDisplayEvents(object) {
         if (object.type === 'project') {
-            _currentProject = object.id;
             events.publish('renderProject', object);    // subscribed by domDisplay.js
         };
         if (object.type === 'singleton' || object.type === 'checklist') {

@@ -22,10 +22,8 @@ const domSidebar = (() => {
         let liProjectLink = li(title, liID);
 
         liProjectLink.addEventListener('click', (e) => {
-            console.log('view project in display');
-            console.log(e.target.id);
+            _openViewPreferenceQuery(e);
         });
-
         projectsList.appendChild(liProjectLink);
     }
     const _renderTagLink = function(task) {
@@ -43,8 +41,7 @@ const domSidebar = (() => {
             if (!tagElementList.some(id => id === liID)) {
                 let liTagLink = li(tagName, `#${liID}`);
                     liTagLink.addEventListener('click', (e) => {
-                        console.log('view tag in display');
-                        console.log(e.target.id);
+                        _openViewPreferenceQuery(e);
                     });
                     tagsList.appendChild(liTagLink);
             };
@@ -52,25 +49,30 @@ const domSidebar = (() => {
     }
 
     // helpers
+    function _openViewPreferenceQuery(event) {
+        let targetReference = event.target.id.split('_')[1];
+        console.log(targetReference);
+        events.publish('queryUnsorted', 'unsorted', targetReference); // subscribed by library.js
+    }
 
     // bind events
-    viewAllButton.addEventListener('click', () => {
-        console.log('view all tasks');
-    });
-    viewTodayButton.addEventListener('click', () => {
-        console.log('view tasks due today');
-    });
-    viewUpcomingButton.addEventListener('click', () => {
-        console.log('view tasking due this week');
-    });
-    viewAnytimeButton.addEventListener('click', () => {
-        console.log('view tasks with no due dates');
-    });
-    viewUnsortedButton.addEventListener('click', () => {
-        console.log('view tasks in unsorted project');
+    // viewAllButton.addEventListener('click', () => {
+    //     console.log('view all tasks');
+    // });
+    // viewTodayButton.addEventListener('click', () => {
+    //     console.log('view tasks due today');
+    // });
+    // viewUpcomingButton.addEventListener('click', () => {
+    //     console.log('view tasking due this week');
+    // });
+    // viewAnytimeButton.addEventListener('click', () => {
+    //     console.log('view tasks with no due dates');
+    // });
+    viewUnsortedButton.addEventListener('click', (e) => {
+        _openViewPreferenceQuery(e);
     });
     createProjectButton.addEventListener('click', () => {
-        events.publish('clickCreateProject', 'project');
+        events.publish('clickCreateProject', 'project');    // subscribed by forms.js
     });
     events.subscribe('renderProjectLink', _renderProjectLink); // published by sidebar.js
     events.subscribe('renderTagLink', _renderTagLink);  // published by sidebar.js
