@@ -3,8 +3,6 @@ import { default as div, h1, h2, ul, li, span, input, label} from './elements';
 
 // * factory module for display DOM groupings
 
-// TODO: make create checklist item functional
-
 const domDisplay = (() => {
     // data
     let _taskCounter = 0;
@@ -17,6 +15,9 @@ const domDisplay = (() => {
 
     // project manager
     const _renderProject = function(project) {
+        if (projectContainer.children) {
+            _clearDisplay();
+        };
         let cardID = '#project_' + project.id;
         let projectCard = div('', '.card', '.project', cardID);
 
