@@ -22,7 +22,7 @@ const domSidebar = (() => {
         let liProjectLink = li(title, liID);
 
         liProjectLink.addEventListener('click', (e) => {
-            _openViewPreferenceQuery(e);
+            _openViewPreferenceQuery('project', e);
         });
         projectsList.appendChild(liProjectLink);
     }
@@ -41,7 +41,7 @@ const domSidebar = (() => {
             if (!tagElementList.some(id => id === liID)) {
                 let liTagLink = li(tagName, `#${liID}`);
                     liTagLink.addEventListener('click', (e) => {
-                        _openViewPreferenceQuery(e);
+                        _openViewPreferenceQuery('tag', e);
                     });
                     tagsList.appendChild(liTagLink);
             };
@@ -49,7 +49,7 @@ const domSidebar = (() => {
     }
 
     // helpers
-    function _openViewPreferenceQuery(event) {
+    function _openViewPreferenceQuery(viewPreferenceType, event) {
         let splitID = event.target.id.split('_');
         let targetReference = '';
         if (splitID.length > 2) {
@@ -58,7 +58,7 @@ const domSidebar = (() => {
         } else {
             targetReference = splitID[1];
         };
-        events.publish('queryUnsorted', 'unsorted', targetReference); // subscribed by library.js
+        events.publish('openViewPreferenceQuery', viewPreferenceType, targetReference); // subscribed by library.js
     }
 
     // bind events
@@ -75,7 +75,7 @@ const domSidebar = (() => {
     //     console.log('view tasks with no due dates');
     // });
     viewUnsortedButton.addEventListener('click', (e) => {
-        _openViewPreferenceQuery(e);
+        _openViewPreferenceQuery('project', e);
     });
     createProjectButton.addEventListener('click', () => {
         events.publish('clickCreateProject', 'project');    // subscribed by forms.js

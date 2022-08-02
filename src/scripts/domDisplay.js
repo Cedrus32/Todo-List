@@ -18,18 +18,22 @@ const domDisplay = (() => {
         let bundledBy = instanceBundle[0];
         console.log(bundledBy);
 
+        _clearDisplay()
         if (bundledBy === 'project') {
             for (let i = 1; i < (instanceBundle.length); i++) {
-                console.log(i);
                 if (i === 1) {
-                    console.log('rendering project');
                     _renderProject(instanceBundle[i]);
                 } else {
-                    console.log('rendering task');
                     _renderTask(instanceBundle[i]);
                 };
             };
-        };
+        } else if (bundledBy === 'tag') {
+            let tagHeader = h1(instanceBundle[1], '');
+            projectContainer.appendChild(tagHeader);
+            for (let i = 2; i < (instanceBundle.length); i++) {
+                _renderTask(instanceBundle[i]);
+            };
+        }
     }
     const _renderProject = function(project) {
         console.log('enter _renderProject in DOM');

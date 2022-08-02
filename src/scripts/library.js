@@ -148,36 +148,48 @@ const library = (() => {
 
         events.publish('closeProjectOptionsQuery', nameIDArray) // subscribed by forms.js
     }
-    function _bundleInstances(viewPreference, queryReference) {
+    function _bundleInstances(viewType, queryReference) {
         let instanceBundle = [];
-        let bundledBy;
 
         let queryProjects = false;
         let queryTasks = false;
         let queryTags = false;
-        let queryKey = queryReference;
         
-        switch (viewPreference) {
-            case 'unsorted':
+        switch (viewType) {
+            case 'project':
                 queryProjects = true;
-                bundledBy = 'project'
+                break;
+            case 'tag':
+                queryTags = true;
         };
 
+        instanceBundle.push(viewType);
         if (queryProjects === true) {
-            instanceBundle.push(bundledBy);
             for (let p = 0; p < (_projectLibrary.length); p++) {
-                if (_projectLibrary[p].id == queryKey) {
+                if (_projectLibrary[p].id == queryReference) {
                     instanceBundle.push(_projectLibrary[p]);
                 };
             };
             for (let t = 0; t < (_taskLibrary.length); t++) {
-                if (_taskLibrary[t].projectID == queryKey) {
+                if (_taskLibrary[t].projectID == queryReference) {
                     instanceBundle.push(_taskLibrary[t]);
                 };
             };
-            console.log(instanceBundle);
-            events.publish('updateDisplayView', instanceBundle);    // subscribed by domDisplay.js
-        };
+        } else if (queryTags === true) {
+            instanceBundle.push(queryReference);
+            for (let t = 0; t < (_taskLibrary.length); t++) {
+                let tagsArray = _taskLibrary[t].tags;
+                for (let i = 0; i < (tagsArray.length); i++) {
+                    if (tagsArray[i] === queryReference) {
+                        instanceBundle.push(_taskLibrary[t]);
+                        // break; // ? will this break out of the whole loop or just the nearest loop
+                    };
+                };
+            };
+        }
+
+        console.log(instanceBundle);
+        events.publish('updateDisplayView', instanceBundle);    // subscribed by domDisplay.js
     }
 
     // setter manager
@@ -416,6 +428,6 @@ const library = (() => {
     events.subscribe('deleteTask', _deleteTask);    // published from domDisplay.js (_renderItemHeaders())
     events.subscribe('confirmInput', _setItemValues); //published from forms.js (_confirmInput())
     events.subscribe('clickDeleteChecklistItem', _deleteChecklistItem)  // published from domDisplay.js (_renderChecklistItemControls())
-    events.subscribe('queryUnsorted', _bundleInstances) // published from domDisplay.js (_openViewQuery)
+    events.subscribe('openViewPreferenceQuery', _bundleInstances) // published from domDisplay.js (_openViewQuery)
 
 })();
