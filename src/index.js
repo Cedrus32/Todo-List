@@ -13,15 +13,6 @@ import sidebar from './scripts/sidebar';
 import library from './scripts/library';
 import events from './events';
 
-// manager function here
-
-// ! move vvv into domDisplay
-let viewPrefs = document.getElementById('view-prefs');
-let title = document.getElementById('title');
-title.addEventListener('click', () => {
-    viewPrefs.classList.toggle('hide');
-});
-
 // actions
 defaultState.init();
 events.viewEvents();
