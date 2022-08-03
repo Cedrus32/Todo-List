@@ -156,12 +156,19 @@ const library = (() => {
         let queryTags = false;
         
         switch (viewType) {
+            case 'all':
+                queryTasks = true;
+                break;
             case 'project':
                 queryProjects = true;
                 break;
             case 'tag':
                 queryTags = true;
         };
+
+        console.log(`queryProjects: ${queryProjects}`);
+        console.log(`queryTasks: ${queryTasks}`);
+        console.log(`queryTags: ${queryTags}`);
 
         instanceBundle.push(viewType);
         if (queryProjects === true) {
@@ -175,6 +182,12 @@ const library = (() => {
                     instanceBundle.push(_taskLibrary[t]);
                 };
             };
+        } else if (queryTasks === true) {
+            if (viewType === 'all') {
+                for (let t = 0; t < (_taskLibrary.length); t++) {
+                    instanceBundle.push(_taskLibrary[t]);
+                };
+            };
         } else if (queryTags === true) {
             instanceBundle.push(queryReference);
             for (let t = 0; t < (_taskLibrary.length); t++) {
@@ -182,11 +195,11 @@ const library = (() => {
                 for (let i = 0; i < (tagsArray.length); i++) {
                     if (tagsArray[i] === queryReference) {
                         instanceBundle.push(_taskLibrary[t]);
-                        // break; // ? will this break out of the whole loop or just the nearest loop
+                        break; // ? watch to see if this breaks out of whole loop
                     };
                 };
             };
-        }
+        };
 
         console.log(instanceBundle);
         events.publish('updateDisplayView', instanceBundle);    // subscribed by domDisplay.js

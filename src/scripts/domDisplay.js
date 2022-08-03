@@ -15,11 +15,19 @@ const domDisplay = (() => {
 
     // project manager
     function _updateDisplayView(instanceBundle) {
+        console.log(instanceBundle);
         let bundledBy = instanceBundle[0];
         console.log(bundledBy);
 
         _clearDisplay()
-        if (bundledBy === 'project') {
+        if (bundledBy === 'all') {
+            let taskHeader = h1(instanceBundle[0], '');
+            console.log(taskHeader);
+            projectContainer.appendChild(taskHeader);
+            for (let i = 1; i < (instanceBundle.length); i++) {
+                _renderTask(instanceBundle[i]);
+            };
+        } else if (bundledBy === 'project') {
             for (let i = 1; i < (instanceBundle.length); i++) {
                 if (i === 1) {
                     _renderProject(instanceBundle[i]);
@@ -33,12 +41,10 @@ const domDisplay = (() => {
             for (let i = 2; i < (instanceBundle.length); i++) {
                 _renderTask(instanceBundle[i]);
             };
-        }
+        };
     }
     const _renderProject = function(project) {
-        console.log('enter _renderProject in DOM');
         if (projectContainer.children) {
-            console.log('clearing display...');
             _clearDisplay();
         };
         let cardID = '#project_' + project.id;
