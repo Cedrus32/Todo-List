@@ -13,7 +13,7 @@ const domDisplay = (() => {
     let taskCountSpan = document.querySelector('div.tally span');
     let createTaskButton = document.querySelector('div.task-controls div.create');
 
-    // project manager
+    // display manager
     function _updateDisplayView(instanceBundle) {
         console.log(instanceBundle);
         let bundledBy = instanceBundle[0];
@@ -43,266 +43,24 @@ const domDisplay = (() => {
             };
         };
     }
-    const _renderProject = function(project) {
-        if (projectContainer.children) {
-            _clearDisplay();
-        };
-        let cardID = '#project_' + project.id;
-        let projectCard = div('', '.card', '.project', cardID);
 
-        _renderProjectCardContents(projectCard, project);
-
-        projectContainer.appendChild(projectCard);
-
-        _fillTaskCounter('');
-    }
-    const _renderProjectCardContents = function(targetCard, item) {
-        let projectHeader = _renderProjectHeader(item.title);
-        let projectDescription = div(item.description, '.description');
-
-        targetCard.appendChild(projectHeader);
-        targetCard.appendChild(projectDescription);
-    }
-
-    // task managers
-    const _renderTask = function(task) {
-        let cardID = '#task_' + task.id;
-        let taskCard;
-        if (task.type === 'singleton') {
-            taskCard = div('', '.card', '.singleton', cardID)
-            _renderSingletonCardContents(taskCard, task);
-        } else if (task.type === 'checklist') {
-            taskCard = div('', '.card', '.checklist', cardID);
-            _renderChecklistCardContents(taskCard, task);
-        };
-        taskContainer.appendChild(taskCard);
-
-        _fillTaskCounter('+');
-    }
-    const _renderSingletonCardContents = function(targetCard, item) {
-        let singletonCheckmark = input(item.id);
-        let taskCardContent = _renderSingletonInfo(item.id, item.title, item.dueDate, item.description, item.priority, item.tags);
-
-        targetCard.appendChild(singletonCheckmark);
-        targetCard.appendChild(taskCardContent);
-    }
-    const _renderChecklistCardContents = function(targetCard, item) {
-        let checklistHeader = _renderChecklistHeader(item.title, item.dueDate);
-        let checklistDescription = _renderChecklistDescriptionContainer(item.description);
-        let checklistContent = _renderChecklistContent(targetCard.id, item.items);
-        let checklistDetails = _renderTaskDetails(item.priority, item.tags, item.id);
-
-        targetCard.appendChild(checklistHeader);
-        targetCard.appendChild(checklistDescription);
-        targetCard.appendChild(checklistContent);
-        targetCard.appendChild(checklistDetails);
-    }
-    const _renderNewChecklistItem = function(checklistInstance) {
-        let taskReference = `task_${checklistInstance[1]}`;
-        let checklistItemID = checklistInstance[2];
-        let checklistItemContent = checklistInstance[3];
-        let checklistItemInfo = [checklistItemID, checklistItemContent]
-        let ulTarget = document.querySelector(`div#${taskReference} ul`);
-
-        _renderChecklistItem(ulTarget, taskReference, checklistItemInfo);
-    }
-    const _renderNewCheckboxLabel = function(containerID, checklistItemID, content) {
-        let liContainer = document.getElementById(containerID);
-        let checkboxLabel = label(content, checklistItemID, '');
-        liContainer.insertBefore(checkboxLabel, liContainer.lastChild);
-    }
-
-    // helper factories
-    const _renderProjectHeader = function(title) {
-        let divHeader = div('', '.header');
-
-        let h1Title = h1(title, '.title');
-        let spanModify = span('...', '.project', '.modify');
-        let spanDelete = span('X', '.delete');
-
-        // * project modify/delete events
-        spanModify.addEventListener('click', (e) => {
-            events.publish('clickModifyItem', e);   // subscribed by forms.js
-        });
-        spanDelete.addEventListener('click', (e) => {
-            let cardID = e.target.closest('div.card').id;
-            events.publish('clickDeleteProject', cardID);   // subscribed by forms.js
-        });
-
-        divHeader.appendChild(h1Title);
-        divHeader.appendChild(spanModify);
-        divHeader.appendChild(spanDelete);
-
-        return divHeader;
-    }
-    const _renderSingletonHeader = function(id, title, dueDate) {
-        let divHeader = div('', '.header');
-
-        let h2TitleContent = h2(title, '');
-        let labelCheckmarkTitle = label('', id, '.title');
-        labelCheckmarkTitle.appendChild(h2TitleContent);
-
-        let spanDate = span(dueDate, '.date');
-        let spanModify = span('...', '.task', '.modify');
-        let spanDelete = span('X', '.delete');
-
-        // * singleton modify/delete events
-        spanModify.addEventListener('click', (e) => {
-            events.publish('clickModifyItem', e);   // subscribed by forms.js
-        });
-        spanDelete.addEventListener('click', (e) => {    // subscribed by library.js
-            let taskCardID = e.target.closest('div.card').id;
-            events.publish('deleteTask', taskCardID);   // subscribed by library.js
-        });
-
-        divHeader.appendChild(labelCheckmarkTitle);
-        divHeader.appendChild(spanDate);
-        divHeader.appendChild(spanModify);
-        divHeader.appendChild(spanDelete);
-
-        return divHeader;
-    }
-    const _renderChecklistHeader = function(title, dueDate) {
-        let divHeader = div('', '.header');
-
-        let h2Title = h2(title, '.title');
-        let spanDate = span(dueDate, '.date');
-        let spanModify = span('...', '.task', '.modify');
-        let spanDelete = span('X', '.delete');
-
-        // * checklist modify/delete events
-        spanModify.addEventListener('click', (e) => {
-            events.publish('clickModifyItem', e);   // subscribed by forms.js
-        });
-        spanDelete.addEventListener('click', (e) => {
-            let cardID = e.target.closest('div.card').id;
-            events.publish('deleteTask', cardID);   // subscribed by library.js
-        });
-
-        divHeader.appendChild(h2Title);
-        divHeader.appendChild(spanDate);
-        divHeader.appendChild(spanModify);
-        divHeader.appendChild(spanDelete);
-
-        return divHeader;
-    }
-    const _renderSingletonInfo = function(id, title, dueDate, description, priority, tags) {
-        let divContent = div('', '.content');
-
-        let taskHeader = _renderSingletonHeader(id, title, dueDate);
-        let taskDescription = div(description, '.description');
-        let taskDetails = _renderTaskDetails(priority, tags, id);
-
-        divContent.appendChild(taskHeader);
-        divContent.appendChild(taskDescription);
-        divContent.appendChild(taskDetails);
-
-        return divContent;
-    }
-    const _renderChecklistDescriptionContainer = function(description) {
-        let divContainer = div('', '.description-container');
-        
-        let divDescription = div(description, '.description');
-        let spanCreate = div('+', '.create');
-
-        // * checklist item create event
-        spanCreate.addEventListener('click', (e) => {
-            let taskReference = e.target.closest('div.card').id.split('_')[1];
-            console.log(taskReference);
-            let formReferences = ['checkbox', taskReference];
-            events.publish('clickCreateItem', formReferences);   // subscribed by forms.js
-        });
-
-        divContainer.appendChild(divDescription);
-        divContainer.appendChild(spanCreate);
-
-        return divContainer;
-    }
-    const _renderChecklistContent = function(parentID, items) {
-        let ulItem = ul('', '.checks');
-        for (let i = 0; i < (items.length); i++) {
-            _renderChecklistItem(ulItem, parentID, items[i]);
-        };
-        
-        return ulItem;
-    }
-    const _renderChecklistItem = function(ulContainer, taskReference, checkInfo) {
-        let checkID = checkInfo[0];
-        let checkContent = checkInfo[1];
-
-        let liItemID = `#${taskReference}__li_${checkID}`;
-        let liItem = li('', '.card', liItemID);
-
-        let checklistItemID = `${taskReference}__checkbox_${checkID}`;  // # not needed vv
-        let checkbox = input(checklistItemID);  // sets ID directly via default object prototype methods
-        let labelItem = label(checkContent, checklistItemID, '');
-        let checklistItemControls = _renderChecklistItemControls(checklistItemID);
-
-        liItem.appendChild(checkbox);
-        liItem.appendChild(labelItem);
-        liItem.appendChild(checklistItemControls);
-
-        ulContainer.appendChild(liItem);
-    }
-    const _renderChecklistItemControls = function(checkID) {
-        let divControls = div('', '.checklist-item-controls');
-
-        let spanModify = span('...', '.task', '.modify');
-        let spanDelete = span('X', '.delete');
-
-        // * checklist item modify/delete events
-        spanModify.addEventListener('click', (e) => {
-            events.publish('clickModifyItem', e);    // subscribed by forms.js
-        });
-        spanDelete.addEventListener('click', () => {
-            events.publish('clickDeleteChecklistItem', checkID);    // subscribed by library.js
-        });
-
-        divControls.appendChild(spanModify);
-        divControls.appendChild(spanDelete);
-
-        return divControls;
-    }
-    const _renderTaskDetails = function(priority, tags, id) {
-        let divDetails = div('', '.details');
-
-        let divPriority = div(priority, '.priority');
-        let divTags = _renderTags(tags, id);
-
-        divDetails.appendChild(divPriority);
-        divDetails.appendChild(divTags);
-
-        return divDetails;
-    }
-    const _renderTags = function(tagsArray, taskID) {
-        let divContainer = div('', '.tags');
-
-        if (tagsArray.length === 0) {
-            return divContainer;
-        } else {
-            for (let t = 0; t < (tagsArray.length); t++) {
-                let tagID = `#task_${taskID}__tag_${tagsArray[t]}`;
-                let anchorTag = span(tagsArray[t], tagID);
-
-                anchorTag.addEventListener('click', (e) => {
-                    console.log(e.target.id);
-                });
-
-                divContainer.appendChild(anchorTag);
-            };
-
-            return divContainer;
-        };
-    }
-
-    // other methods
+    // display helpers
     function _updateItem(itemInstance) {
         //// console.log(itemInstance);
         if (itemInstance.type === 'project') {
             let cardID = `project_${itemInstance.id}`;
-            let cardElement = document.getElementById(cardID);
-            _deleteItemContent(cardID);
-            _renderProjectCardContents(cardElement, itemInstance);
+            let card = document.getElementById(cardID);
+            for (let i = 0; i < (card.children.length); i++) {
+                switch(i) {
+                    case 0:
+                        let title = card.querySelector('.title');
+                        title.textContent = itemInstance.title;
+                        break;
+                    case 1:
+                        let description = card.querySelector('.description');
+                        description.textContent = itemInstance.description;
+                };
+            };
         } else if (itemInstance.type === 'singleton' || itemInstance.type === 'checklist') {
             let cardID = `task_${itemInstance.id}`;
             let cardElement = document.getElementById(cardID);
@@ -359,6 +117,218 @@ const domDisplay = (() => {
             _taskCounter--;
         }
         taskCountSpan.textContent = _taskCounter;
+    }
+    
+    // project factories
+    const _renderProject = function(project) {
+        if (projectContainer.children) {
+            _clearDisplay();
+        };
+        let cardID = '#project_' + project.id;
+        let projectCard = div('', '.card', '.project', cardID);
+
+        let projectHeader = _renderProjectHeader(project.title);
+        let projectDescription = div(project.description, '.description');
+
+        projectCard.append(projectHeader, projectDescription);
+        projectContainer.appendChild(projectCard);
+
+        _fillTaskCounter('');
+    }
+    const _renderProjectHeader = function(title) {
+        let divHeader = div('', '.header');
+
+        let h1Title = h1(title, '.title');
+        let spanModify = span('...', '.project', '.modify');
+        let spanDelete = span('X', '.delete');
+
+        // * project modify/delete events
+        spanModify.addEventListener('click', (e) => {   // ! align to pass similar arguments?
+            events.publish('clickModifyItem', e);   // subscribed by forms.js
+        });
+        spanDelete.addEventListener('click', (e) => {
+            let cardID = e.target.closest('div.card').id;
+            events.publish('clickDeleteProject', cardID);   // subscribed by forms.js
+        });
+
+        divHeader.append(h1Title, spanModify, spanDelete);
+        return divHeader;
+    }
+
+    // task factories
+    const _renderTask = function(task) {
+        let cardID = '#task_' + task.id;
+        let taskCard;
+
+        if (task.type === 'singleton') {
+            taskCard = div('', '.card', '.singleton', cardID)
+            let singletonCheckmark = input(task.id);
+            let singletonCardContent = _renderSingletonContent(task.id, task.title, task.dueDate, task.description, task.priority);
+            taskCard.append(singletonCheckmark, singletonCardContent);
+        } else if (task.type === 'checklist') {
+            taskCard = div('', '.card', '.checklist', cardID);
+            let checklistCardContent = _renderChecklistCardContents(task.title, task.description, task.dueDate, task.priority);
+            let checklistItems = _renderChecklistItems(cardID, task.items);
+            taskCard.append(checklistCardContent, checklistItems);
+        };
+
+        taskContainer.appendChild(taskCard);
+
+        _fillTaskCounter('+');
+    }
+    const _renderSingletonContent = function(id, title, dueDate, description, priority) {
+        let divContent = div('', '.content');
+
+        let taskHeader = _renderSingletonHeader(id, title, dueDate, priority);
+        let taskDescription = div(description, '.description');
+
+        divContent.append(taskHeader, taskDescription);
+        return divContent;
+    }
+    const _renderSingletonHeader = function(id, title, dueDate, priority) {
+        let divHeader = div('', '.header');
+
+        let labelCheckmarkTitle = label('', id, '.title');
+        let h2TitleContent = h2(title, '');
+        labelCheckmarkTitle.appendChild(h2TitleContent);
+
+        let spanDate = span(dueDate, '.date');
+        let spanPriority = span(priority, '.priority');
+        let spanModify = span('...', '.task', '.modify');
+        let spanDelete = span('X', '.delete');
+
+        // * singleton modify/delete events
+        spanModify.addEventListener('click', (e) => {   // ! align to pass similar arguments?
+            events.publish('clickModifyItem', e);   // subscribed by forms.js
+        });
+        spanDelete.addEventListener('click', (e) => {    // subscribed by library.js
+            let taskCardID = e.target.closest('div.card').id;
+            events.publish('deleteTask', taskCardID);   // subscribed by library.js
+        });
+
+        divHeader.append(labelCheckmarkTitle, spanDate, spanPriority, spanModify, spanDelete);
+        return divHeader;
+    }
+    const _renderChecklistCardContents = function(title, description, dueDate, priority) {
+        let divContent = div('', '.content');
+        let checklistHeader = _renderChecklistHeader(title, dueDate, priority);
+        let checklistDescription = _renderChecklistSubheader(description);
+        
+        divContent.append(checklistHeader, checklistDescription);
+        return divContent;
+    }
+    const _renderChecklistHeader = function(title, dueDate, priority) {
+        let divHeader = div('', '.header');
+
+        let h2Title = h2(title, '.title');
+        let spanDate = span(dueDate, '.date');
+        let spanPriority = span(priority, '.priority');
+        let spanModify = span('...', '.task', '.modify');
+        let spanDelete = span('X', '.delete');
+
+        // * checklist modify/delete events
+        spanModify.addEventListener('click', (e) => {
+            events.publish('clickModifyItem', e);   // subscribed by forms.js
+        });
+        spanDelete.addEventListener('click', (e) => {
+            let cardID = e.target.closest('div.card').id;
+            events.publish('deleteTask', cardID);   // subscribed by library.js
+        });
+
+        divHeader.append(h2Title, spanDate, spanPriority, spanModify, spanDelete);
+        return divHeader;
+    }
+    const _renderChecklistSubheader = function(description) {
+        let divContainer = div('', '.description-container');
+        
+        let divDescription = div(description, '.description');
+        let spanCreate = div('+', '.create');
+
+        // * checklist item create event
+        spanCreate.addEventListener('click', (e) => {
+            let taskReference = e.target.closest('div.card').id.split('_')[1];
+            console.log(taskReference);
+            let formReferences = ['checkbox', taskReference];
+            events.publish('clickCreateItem', formReferences);   // subscribed by forms.js
+        });
+
+        divContainer.appendChild(divDescription);
+        divContainer.appendChild(spanCreate);
+
+        return divContainer;
+    }
+    const _renderChecklistItems = function(taskCardID, items) {
+        let ulItem = ul('', '.checkboxes');
+        for (let i = 0; i < (items.length); i++) {
+            let liCheckbox = _renderCheckbox(taskCardID, items[i]);
+            ulItem.appendChild(liCheckbox);
+        };
+        
+        return ulItem;
+    }
+    const _renderCheckbox = function(taskCardID, checkInfo) {
+        console.log(checkInfo);
+        let checkID = checkInfo[0];
+        let checkContent = checkInfo[1];
+
+        let liCardID = `#${taskCardID}__li_${checkID}`;
+        let liCard = li('', '.card', liCardID);
+
+        let checkboxID = `${taskCardID}__checkbox_${checkID}`;  // # not needed vv
+        let checkbox = input(checkboxID);  // sets ID directly via default object prototype methods
+        let labelCheckbox = label(checkContent, checkboxID, '');
+        let checkboxControls = _renderCheckboxControls(checkboxID);
+
+        liCard.append(checkbox, labelCheckbox, checkboxControls);
+        return liCard;
+    }
+    const _renderCheckboxControls = function(checkID) {
+        let divControls = div('', '.checklist-item-controls');
+
+        let spanModify = span('...', '.task', '.modify');
+        let spanDelete = span('X', '.delete');
+
+        // * checklist item modify/delete events
+        spanModify.addEventListener('click', (e) => {
+            events.publish('clickModifyItem', e);    // subscribed by forms.js
+        });
+        spanDelete.addEventListener('click', () => {
+            events.publish('clickDeleteChecklistItem', checkID);    // subscribed by library.js
+        });
+
+        divControls.appendChild(spanModify);
+        divControls.appendChild(spanDelete);
+
+        return divControls;
+    }
+
+
+
+
+
+    const _renderNewChecklistItem = function(checklistInstance) {
+        let taskReference = `task_${checklistInstance[1]}`;
+        let checklistItemID = checklistInstance[2];
+        let checklistItemContent = checklistInstance[3];
+        let checklistItemInfo = [checklistItemID, checklistItemContent]
+        let ulTarget = document.querySelector(`div#${taskReference} ul`);
+
+        _renderCheckbox(ulTarget, taskReference, checklistItemInfo);
+    }
+    const _renderNewCheckboxLabel = function(containerID, checklistItemID, content) {
+        let liContainer = document.getElementById(containerID);
+        let checkboxLabel = label(content, checklistItemID, '');
+        liContainer.insertBefore(checkboxLabel, liContainer.lastChild);
+    }
+
+
+    // PHASING OUT
+    const _renderSingletonCardContents = function(targetCard, item) {
+        let singletonCheckmark = input(item.id);
+        let taskCardContent = _renderSingletonContent(item.id, item.title, item.dueDate, item.description, item.priority, item.tags);
+
+        targetCard.appendChild(singletonCheckmark);
+        targetCard.appendChild(taskCardContent);
     }
 
     // bind events
