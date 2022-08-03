@@ -201,7 +201,8 @@ const library = (() => {
     }
 
     // setter manager
-    function _setItemValues(formValues) {
+    function _setInstanceValues(formValues) {
+        console.log(formValues);
         let libraryReference = formValues[0];
         let instanceReference = formValues[1];
         formValues.splice(0, 2);    // [title, description]
@@ -437,13 +438,11 @@ const library = (() => {
     }
 
     // bind events
-    events.subscribe('createProject', _createProject);  // published from display.js (initDefault())
-    events.subscribe('createTask', _createTask);    // published from display.js (initDefault())
+    events.subscribe('confirmInput', _setInstanceValues); //published from default.js (init()), forms.js (_confirmInput())
     events.subscribe('openModifyFormQuery', _queryItemInstance);    // published from forms.js (_openModifyQuery())
     events.subscribe('openProjectOptionsQuery', _queryProjectNamesIDs)  // published from forms.js (_showForm())
     events.subscribe('deleteProject', _deleteProject);    // published from forms.js (confirmDeleteButton eventListener)
     events.subscribe('deleteTask', _deleteTask);    // published from domDisplay.js (_renderItemHeaders())
-    events.subscribe('confirmInput', _setItemValues); //published from forms.js (_confirmInput())
     events.subscribe('clickDeleteChecklistItem', _deleteChecklistItem)  // published from domDisplay.js (_renderChecklistItemControls())
     events.subscribe('openViewPreferenceQuery', _bundleInstances) // published from domDisplay.js (_openViewQuery)
 

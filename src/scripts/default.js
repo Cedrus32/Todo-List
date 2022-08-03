@@ -4,11 +4,11 @@ import events from '../events.js'
 
 const defaultState = (() => {
     // data
-    let _sampleProjectValues = [['Unsorted', "This is your tasks' default location. Any tasks without a project live here."],
-                                ];
-    let _sampleTaskValues = [[0, 'singleton', 'Task 1', 'this is a sample task', '2001-01-01', 3],
-                                [0, 'singleton', 'Task 2', 'this is #2', '2002-02-02', 2],
-                                [0, 'checklist', 'Task 3', 'this is a checklist', '2003-03-03', 1, ['item 1', 'item 2', 'item 3']],
+    let _sampleProjectValues = [['project', '', 'Unsorted', "This is your tasks' default location. Any tasks without a project live here."],
+                               ];
+    let _sampleTaskValues = [['task', '', 'singleton', 'Task 1', 'this is a sample task', '2001-01-01', 3, 0],
+                             ['task', '', 'singleton', 'Task 2', 'this is #2', '2002-02-02', 2, 0],
+                             ['task', '', 'checklist', 'Task 3', 'this is a checklist', '2003-03-03', 1, 0, ['item 1', 'item 2', 'item 3']],
                             ];
 
     // methods
@@ -19,10 +19,10 @@ const defaultState = (() => {
         };
     }
     function _createDefaultProject(projectValues) {
-        events.publish('createProject', projectValues); // subscribed by library.js
+        events.publish('confirmInput', projectValues); // subscribed by library.js
     }
     function _createDefaultTask(taskValues) {
-        events.publish('createTask', taskValues);
+        events.publish('confirmInput', taskValues);
     }
 
     return {
