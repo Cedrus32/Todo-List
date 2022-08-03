@@ -1,11 +1,12 @@
 import events from '../events';
 
-// * 'backend' manager module containing project/task states, factories, & methods
+// * 'backend' manager module containing project/task states, classes, & methods
 
 const library = (() => {
     // dynamic data
     let _projectLibrary = [];
     let _taskLibrary = [];
+    let _tagLibrary = [];
     let _taskCounter = 0;
     let _projectCounter = 0;
 
@@ -265,6 +266,8 @@ const library = (() => {
         _taskLibrary.push(_newTask);
         _taskCounter++;
 
+        _updateTagLibrary([], _newTask.tags);
+
         events.publish('taskCreated', _newTask);    // subscribed by display.js, sidebar.js
     }
     function _createChecklistItem(taskID, itemValue) {
@@ -312,7 +315,7 @@ const library = (() => {
         console.log('modified project instance:')
         console.log(projectInstance);
 
-        events.publish('itemModified', projectInstance);  // subscribed by domDisplay.js
+        events.publish('itemModified', projectInstance);  // subscribed by domDisplay.js, domSidebar.js
     }
     function _modifyTask(targetItemID, attributeArray) {
         //// console.log(attributeArray);
@@ -375,6 +378,15 @@ const library = (() => {
 
         events.publish('itemModified', checkboxInstance);   // subscribed by domDisplay.js
     }
+    function _updateTagLibrary(oldTags, newTags) { // ! not complete, does not currently work
+        console.log(oldTags);
+        console.log(newTags);
+
+        // compare original & new tags
+
+        // for tags removed... find tag instance -> if tally === 1... delete, else... decrease by 1
+        // for tags added... find tag instance -> if exists... increase by 1, else... create new instance, set tally to 1
+    }
 
     // delete methods
     function _deleteProject(cardID) {
@@ -398,7 +410,8 @@ const library = (() => {
 
         // * send notification to update sidebar (remove deleted project, select new project view)
         // * ---> will in turn notify display to refresh
-        events.publish('removeProjectFromDisplay', cardID);    // subscribed by domDisplay.js
+        console.log(cardID);
+        events.publish('removeProjectFromSection', cardID);    // subscribed by domDisplay.js
     }
     function _deleteTask(cardID) {
         let cardReferences = cardID.split('_');

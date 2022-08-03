@@ -370,7 +370,7 @@ const domDisplay = (() => {
     events.subscribe('renderProject', _renderProject)   // published from display.js (_publishRenderDisplayEvents())
     events.subscribe('renderTask', _renderTask);    // published from display.js (_publishRenderDisplayEvents())
     events.subscribe('removeTaskFromDisplay', _deleteTaskCard); // published from library.js (_deleteTask())
-    events.subscribe('removeProjectFromDisplay', _clearDisplay) // published from library.js (_deleteProject())
+    events.subscribe('removeProjectFromSection', _clearDisplay) // published from library.js (_deleteProject())
     events.subscribe('itemModified', _updateItem);    // published from library.js (_modifyItems())
     events.subscribe('removeChecklistItemFromDisplay', _deleteChecklistItem)    // published from library.js (_deleteChecklistItem())
     events.subscribe('renderChecklistItem', _renderNewChecklistItem);  // published from display.js (_publishRenderDisplayEvents())

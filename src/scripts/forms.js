@@ -168,7 +168,7 @@ const forms = (() => {
         };
     }
     function _bundleFormValues() {
-        console.log(_currentForm);
+        //// console.log(_currentForm);
         let formValues = [];
         if (_currentForm === projectForm) {
             formValues.push('project');

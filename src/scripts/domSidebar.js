@@ -17,6 +17,18 @@ const domSidebar = (() => {
     let createProjectButton = document.querySelector('div.view-prefs-container span.create');
 
     // managers
+    function _updateViewPreferenceLink(itemInstance) {
+        if (itemInstance.type === 'project') {
+            let projectLink = document.getElementById(`view-project_${itemInstance.id}`);
+            projectLink.textContent = itemInstance.title;
+        } else if (itemInstance.type === 'singleton' || itemInstance.type === 'checklist') {
+            console.log('update tag link');
+            // delete any tags without tallies (set up tag tally library)
+            // loop through existing links, add any that do not exist // ? (use _renderTagLink())
+        };
+    }
+
+    // factories
     const _renderProjectLink = function(id, title) {
         let liID = `#view-project_${id}`;
         let liProjectLink = li(title, liID);
@@ -71,6 +83,12 @@ const domSidebar = (() => {
 
         events.publish('openViewPreferenceQuery', viewPreferenceType, targetReference); // subscribed by library.js
     }
+    function _removeProjectLink(linkReference) {
+        let liProject = document.getElementById(`view-${linkReference}`);
+        let ulContainer = liProject.parentElement;
+
+        ulContainer.removeChild(liProject);
+    }
 
     // bind events
     viewAllButton.addEventListener('click', (e) => {
@@ -93,7 +111,8 @@ const domSidebar = (() => {
     });
     events.subscribe('renderProjectLink', _renderProjectLink); // published by sidebar.js
     events.subscribe('renderTagLink', _renderTagLink);  // published by sidebar.js
-    events.subscribe('itemModified', _renderTagLink);   // published by library.js (_modifyTask())
+    events.subscribe('itemModified', _updateViewPreferenceLink);   // published by library.js (_modifyTask())
+    events.subscribe('removeProjectFromSection', _removeProjectLink);   // published by library.js (_deleteProject());
 
 })();
 
