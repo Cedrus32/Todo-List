@@ -168,7 +168,7 @@ const domDisplay = (() => {
         } else if (task.type === 'checklist') {
             taskCard = div('', '.card', '.checklist', cardID);
             let checklistCardContent = _renderChecklistCardContents(task.title, task.description, task.dueDate, task.priority);
-            let checklistItems = _renderChecklistItems(cardID, task.items);
+            let checklistItems = _renderChecklistContainer(cardID, task.items);
             taskCard.append(checklistCardContent, checklistItems);
         };
 
@@ -257,7 +257,7 @@ const domDisplay = (() => {
 
         return divContainer;
     }
-    const _renderChecklistItems = function(taskCardID, items) {
+    const _renderChecklistContainer = function(taskCardID, items) {
         let ulItem = ul('', '.checkboxes');
         for (let i = 0; i < (items.length); i++) {
             let liCheckbox = _renderCheckbox(taskCardID, items[i]);

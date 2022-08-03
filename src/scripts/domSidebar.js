@@ -12,8 +12,7 @@ const domSidebar = (() => {
     let viewUpcomingButton = document.getElementById('view-upcoming');
     let viewAnytimeButton = document.getElementById('view-anytime');
     let viewUnsortedButton = document.getElementById('view-project_0');
-    let tagsList = document.getElementById('dynamic-views-tags');
-    let projectsList = document.getElementById('dynamic-views-projects');
+    let projectsList = document.getElementById('dynamic-views');
     let createProjectButton = document.querySelector('div.view-prefs-container span.create');
 
     // managers
@@ -37,27 +36,6 @@ const domSidebar = (() => {
             _openViewPreferenceQuery('project', e);
         });
         projectsList.appendChild(liProjectLink);
-    }
-    const _renderTagLink = function(task) {
-        let tagsArray = task.tags;
-        let numberTagLinks = tagsList.children.length
-        for (let i = 0; i < (tagsArray.length); i++) {
-            let tagName = tagsArray[i];
-            let liID = `view-tag_${tagName}`;
-
-            let tagElementList = [];
-            for (let n = 0; n < (numberTagLinks); n++) {
-                tagElementList.push(tagsList.children[n].id);
-            };
-
-            if (!tagElementList.some(id => id === liID)) {
-                let liTagLink = li(tagName, `#${liID}`);
-                    liTagLink.addEventListener('click', (e) => {
-                        _openViewPreferenceQuery('tag', e);
-                    });
-                    tagsList.appendChild(liTagLink);
-            };
-        };
     }
 
     // helpers
@@ -110,7 +88,6 @@ const domSidebar = (() => {
         events.publish('clickCreateProject', 'project');    // subscribed by forms.js
     });
     events.subscribe('renderProjectLink', _renderProjectLink); // published by sidebar.js
-    events.subscribe('renderTagLink', _renderTagLink);  // published by sidebar.js
     events.subscribe('itemModified', _updateViewPreferenceLink);   // published by library.js (_modifyTask())
     events.subscribe('removeProjectFromSection', _removeProjectLink);   // published by library.js (_deleteProject());
 

@@ -35,7 +35,7 @@ const library = (() => {
 
     class Task {
         // attributes
-        constructor(taskID, projectID, taskType, taskTitle, taskDescription, taskDue, taskPriority, taskTags, taskItems) {
+        constructor(taskID, projectID, taskType, taskTitle, taskDescription, taskDue, taskPriority, taskItems) {
             let itemCount = 0;
 
             this.id = taskID;
@@ -45,7 +45,6 @@ const library = (() => {
             this.description = taskDescription;
             this.dueDate = taskDue;
             this.priority = taskPriority;
-            this.tags = taskTags;
             if (this.type === 'checklist') {
                 this.items = [];
                 if (taskItems !== undefined) {
@@ -82,11 +81,6 @@ const library = (() => {
         set setProjectID(value) {
             if (value !== this.projectID) {
                 this.projectID = value;
-            };
-        }
-        set setTags(value) {
-            if (value !== this.tags) {
-                this.tags = value;
             };
         }
         set setCheckboxItem(valueArray) {
@@ -225,8 +219,8 @@ const library = (() => {
 
         } else if (libraryReference === 'task') {
             if(instanceReference === '') {
-                //                         projectID                type           title          description    dueDate        priority                 tags
-                let formValuesReordered = [parseInt(formValues[5]), formValues[0], formValues[1], formValues[2], formValues[3], parseInt(formValues[4]), formValues[6]]
+                //                         projectID                type           title          description    dueDate        priority
+                let formValuesReordered = [parseInt(formValues[5]), formValues[0], formValues[1], formValues[2], formValues[3], parseInt(formValues[4])]
                 _createTask(formValuesReordered);
             } else {
                 _modifyTask(instanceReference, formValues);
@@ -328,7 +322,7 @@ const library = (() => {
         console.log('original task instance:')
         console.log(taskInstance);
         for (let a = 1; a < (attributeArray.length); a++) {
-            // [type, title, description, dueDate, 'priority', 'projectID', 'tags']
+            // [type, title, description, dueDate, 'priority', 'projectID']
             switch(a) {
                 case 1:
                     taskInstance.setTitle = attributeArray[1];
@@ -344,9 +338,6 @@ const library = (() => {
                     break;
                 case 5:
                     taskInstance.setProjectID = parseInt(attributeArray[5]);
-                    break;
-                case 6:
-                    taskInstance.setTags = attributeArray[6];
             };
         };
         console.log('modified task instance:')
