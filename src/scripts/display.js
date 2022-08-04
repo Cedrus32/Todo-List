@@ -3,8 +3,6 @@ import { default as div, h1, h2, ul, li, span, input, label} from './elements';
 
 // * factory module for display DOM groupings
 
-// ! MODIFY NOT WORKING (issue with forms)
-
 const display = (() => {
     // data
     let _taskCounter = 0;
@@ -77,11 +75,19 @@ const display = (() => {
                 cardID = `task_${itemInstance.id}`;
                 card = document.getElementById(cardID);
     
-                let taskValues = [taskInstance.title, taskInstance.description, taskInstance.dueDate, taskInstance.priority];
+                let taskValues = [itemInstance.title, itemInstance.description, itemInstance.dueDate, itemInstance.priority];
                 for (let i = 0; i < (taskValues.length); i++) {
                     switch(i) {
                         case 0:
-                            let title = card.querySelector('.title');
+                            let title;
+                            switch (itemInstance.type) {
+                                case 'singleton':
+                                    title = card.querySelector('.title h2');
+                                    break;
+                                case 'checklist':
+                                    title = card.querySelector('.title');
+                            };
+                            console.log(title);
                             title.textContent = taskValues[0];
                             break;
                         case 1:
@@ -294,7 +300,6 @@ const display = (() => {
         return ulItem;
     }
     const _renderCheckbox = function(checklistContainer, taskCardID, checkInfo) {
-        console.log(checkInfo);
         let checkID = checkInfo[0];
         let checkContent = checkInfo[1];
 
@@ -310,8 +315,6 @@ const display = (() => {
         checklistContainer.appendChild(liCard);
     }
     const _renderNewCheckbox = function(checklistInstance) {
-        console.log(checklistInstance);
-
         let taskReference = checklistInstance[1]
         let taskCardID = `task_${taskReference}`;
         let ulTarget = document.querySelector(`div#${taskCardID} ul`);
@@ -351,16 +354,11 @@ const display = (() => {
     events.subscribe('taskCreated', _renderTask);    // published from library.js (_createTask())
     events.subscribe('checkboxCreated', _renderNewCheckbox);   // published from library.js (_createCheckbox())
 
+    events.subscribe('itemModified', _updateItem);    // published from library.js (_modify...())
+
     events.subscribe('removeProjectFromSection', _clearDisplay) // published from library.js (_deleteProject())
     events.subscribe('removeTaskFromDisplay', _deleteTaskCard); // published from library.js (_deleteTask())
     events.subscribe('removeChecklistItemFromDisplay', _deleteChecklistItem)    // published from library.js (_deleteChecklistItem())
-
-
-
-    
-    
-    events.subscribe('itemModified', _updateItem);    // published from library.js (_modifyItems())
-    // events.subscribe('renderChecklistItem', _renderNewChecklistItem);  // published from display.js (_publishRenderDisplayEvents())
 })();
 
 export default display;

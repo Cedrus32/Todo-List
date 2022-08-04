@@ -68,32 +68,31 @@ const library = (() => {
             };
         }
         set setDueDate(value) {
-            if (value !== this.dueDate) {
+            if (value != this.dueDate) {
                 this.dueDate = value;
             };
         }
         set setPriority(value) {
-            if (value !== this.priority) {
+            if (value != this.priority) {
                 this.priority = value;
             };
         }
         set setProjectID(value) {
-            if (value !== this.projectID) {
+            if (value != this.projectID) {
                 this.projectID = value;
             };
         }
         set setCheckboxItem(valueArray) {
             let index = valueArray[0];
             let content = valueArray[1];
-            if (content !== this.items[index]) {
+            if (content !== this.items[index][1]) {
                 this.items[index][1] = content;
             };
         }
     }
 
-    // setter manager
+    // setter
     function _setInstanceValues(values) {
-        console.log(values);
         let libraryReference = values[0];
         let instanceReference = values[1];
         values.splice(0, 2);    // [title, description]
@@ -148,44 +147,44 @@ const library = (() => {
     function _queryItemInstance(itemReferences) {
         let libraryReference = itemReferences[0];
         let instanceReference = itemReferences[1];
-        //// console.log(libraryReference);
-        //// console.log(itemReference);
+        console.log(libraryReference);
+        console.log(instanceReference);
 
-        if (libraryReference === 'project') {
-            for (let p = 0; p < (_projectLibrary.length); p++) {
-                if (_projectLibrary[p].id == instanceReference) {
-                    let item = _projectLibrary[p];
-                    let itemValueArray = [item.id, item.title, item.description];
-                    //// console.log(itemValueArray)
-                    events.publish('closeModifyQuery', itemValueArray);   // subscribed by forms.js
-                    return;
+        let itemValueArray;
+        switch (libraryReference) {
+            case 'project':
+                for (let p = 0; p < (_projectLibrary.length); p++) {
+                    if (_projectLibrary[p].id == instanceReference) {
+                        let item = _projectLibrary[p];
+                        itemValueArray = [item.id, item.title, item.description];
+                    };
                 };
-            };
-        } else if (libraryReference === 'task') {
-            for (let t = 0; t < (_taskLibrary.length); t++) {
-                if (_taskLibrary[t].id == instanceReference) {
-                    let item = _taskLibrary[t];
-                    let itemValueArray = [item.id, item.type, item.title, item.description, item.dueDate, item.priority, item.projectID, item.tags];
-                    //// console.log(itemValueArray);
-                    events.publish('closeModifyQuery', itemValueArray);   // subscribed by forms.js
+                break;
+            case 'task':
+                for (let t = 0; t < (_taskLibrary.length); t++) {
+                    if (_taskLibrary[t].id == instanceReference) {
+                        let item = _taskLibrary[t];
+                        itemValueArray = [item.id, item.type, item.title, item.description, item.dueDate, item.priority, item.projectID, item.tags];
+                    };
                 };
-            };
-        } else if (libraryReference === 'checkbox') {
-            let taskReference = instanceReference[0];       // * unbundled from domDisplay.js (_openModifyFormQuery())
-            let checkboxReference = instanceReference[1];   // * unbundled from domDisplay.js (_openModifyFormQuery())
-            for (let t = 0; t < (_taskLibrary.length); t++) {
-                if (_taskLibrary[t].id == taskReference) {
-                    let checklistItems = _taskLibrary[t].items;
-                    for (let i = 0; i < (checklistItems.length); i++) {
-                        if (checklistItems[i][0] == checkboxReference) {
-                            let itemValueArray = ['checkbox', taskReference, checklistItems[i][0], checklistItems[i][1]];
-                            console.log(itemValueArray);
-                            events.publish('closeModifyQuery', itemValueArray);   // subscribed by forms.js
+                break;
+            case 'checkbox':
+                let taskReference = instanceReference[0];       // * unbundled from domDisplay.js (_openModifyFormQuery())
+                let checkboxReference = instanceReference[1];   // * unbundled from domDisplay.js (_openModifyFormQuery())
+                for (let t = 0; t < (_taskLibrary.length); t++) {
+                    if (_taskLibrary[t].id == taskReference) {
+                        let checklistItems = _taskLibrary[t].items;
+                        for (let i = 0; i < (checklistItems.length); i++) {
+                            if (checklistItems[i][0] == checkboxReference) {
+                                itemValueArray = ['checkbox', taskReference, checklistItems[i][0], checklistItems[i][1]];
+                            };
                         };
                     };
                 };
-            };
         };
+
+        console.log(itemValueArray);
+        events.publish('closeModifyInstanceQuery', itemValueArray);   // subscribed by forms.js
     }
     function _queryProjectNamesIDs() {
         let nameIDArray = [];
@@ -348,21 +347,15 @@ const library = (() => {
 
         events.publish('itemModified', taskInstance);  // subscribed by domDisplay.js, domSidebar.js
     }
-    function _modifyCheckbox(targetTaskID, targetItemID, targetContent) {
+    function _modifyCheckbox(taskInstance, targetItemID, targetContent) {
         //// console.log(targetItemID, targetContent);
-        let taskInstance;
         let checkboxInstance;
-        for (let t = 0; t < (_taskLibrary.length); t++) {
-            if (_taskLibrary[t].id == targetTaskID) {
-                taskInstance = _taskLibrary[t];
-                let targetChecklistItems = _taskLibrary[t].items;
-                for (let i = 0; i < (targetChecklistItems.length); i++) {
-                    if (targetChecklistItems[i][0] == targetItemID) {
-                        let targetValueArray = [targetItemID, targetContent];
-                        taskInstance.setCheckboxItem = targetValueArray;
-                        checkboxInstance = ['checkbox', targetTaskID, targetItemID, targetContent];
-                    };
-                };
+        let targetChecklistItems = taskInstance.items;
+        for (let i = 0; i < (targetChecklistItems.length); i++) {
+            if (targetChecklistItems[i][0] == targetItemID) {
+                let targetValueArray = [i, targetContent];  // * i represents item index
+                taskInstance.setCheckboxItem = targetValueArray;
+                checkboxInstance = ['checkbox', taskInstance.id, targetItemID, targetContent];
             };
         };
         console.log('original task (checkbox) instance:')
@@ -433,6 +426,7 @@ const library = (() => {
 
     events.subscribe('confirmInput', _setInstanceValues); //published from default.js (init()), forms.js (_confirmInput())
 
+    events.subscribe('openModifyInstanceQuery', _queryItemInstance);    // published from forms.js (_openModifyQuery())
     events.subscribe('openViewPreferenceQuery', _bundleInstances) // published from domSidebar.js (_clickViewPreferenceLink())
 
     events.subscribe('confirmDeleteProject', _deleteProject);    // published from forms.js (confirmDeleteButton eventListener)
@@ -446,8 +440,7 @@ const library = (() => {
 
 
 
-    
-    events.subscribe('openModifyFormQuery', _queryItemInstance);    // published from forms.js (_openModifyQuery())
+
     events.subscribe('openProjectOptionsQuery', _queryProjectNamesIDs)  // published from forms.js (_showForm())
 
 })();

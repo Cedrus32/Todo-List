@@ -56,18 +56,31 @@ const forms = (() => {
         };
         _showForm();
     }
-    function _openModifyFormQuery(event) {
+    function _openModifyInstanceQuery(event) {
         let targetItemReferences;
-        if (event.target.closest('li.card')) {
-            let formTypeReference = 'checkbox';
-            let taskReference = event.target.closest('div.card').id.split('_')[1];
-            let checkboxReference = event.target.closest('li.card').id.split('__')[1].split('_')[1];
-            targetItemReferences = [formTypeReference, [taskReference, checkboxReference]]; // * taskReference & checkboxReference must be bundled, split in library.js
-        } else {
-            targetItemReferences = event.target.closest('div.card').id.split('_');
+
+        let isCheckbox;
+        switch(true)  {
+            case (event.target.closest('li.card') === null):
+                isCheckbox = false;
+                break;
+            case (event.target.closest('li.card') !== null):
+                isCheckbox = true;
         };
-        _setFormReferences(targetItemReferences[0]);
-        events.publish('openModifyFormQuery', targetItemReferences);  // subscribed by library.js
+
+        switch (isCheckbox) {
+            case true:
+                let formTypeReference = 'checkbox';
+                let taskReference = event.target.closest('div.card').id.split('_')[1];
+                let checkboxReference = event.target.closest('li.card').id.split('__')[1].split('_')[1];
+                targetItemReferences = [formTypeReference, [taskReference, checkboxReference]]; // * taskReference & checkboxReference must be bundled, split in library.js
+                break;
+            case false:
+                targetItemReferences = event.target.closest('div.card').id.split('_');
+        };
+
+        _setFormReferences(targetItemReferences[0]);    // ? move to openModifyForm incase query fails?
+        events.publish('openModifyInstanceQuery', targetItemReferences);  // subscribed by library.js
     }
     function _openModifyForm(itemValues) {
         _fillFormValues(itemValues);
@@ -105,15 +118,18 @@ const forms = (() => {
 
     // helper methods  
     function _setFormReferences(formReference) {
-        if (formReference === 'project') {
-            _currentForm = projectForm;
-            _currentFormType = 'project';
-        } else if (formReference === 'task') {
-            _currentForm = taskForm;
-            _currentFormType = 'task';
-        } else if (formReference === 'checkbox') {
-            _currentForm = checkboxForm;
-            _currentFormType = 'checkbox';
+        switch (formReference) {
+            case 'project':
+                _currentForm = projectForm;
+                _currentFormType = 'project';
+                break;
+            case 'task':
+                _currentForm = taskForm;
+                _currentFormType = 'task';
+                break;
+            case 'checkbox':
+                _currentForm = checkboxForm;
+                _currentFormType = 'checkbox';
         };
     }
     function _showForm() {
@@ -126,31 +142,41 @@ const forms = (() => {
         _currentForm.classList.add('hide');
     }
     function _fillFormValues(values) {
-        if (_currentFormType === 'project') {
-            for (let i = 0; i < (values.length); i++) {
-                projectFormInputs[i].value = values[i];
-            };
-        } else if (_currentFormType === 'task') {
-            for (let i = 0; i < (values.length); i++) {
-                if (i === 0) {
-                    taskFormInputs[i].value = values[i];
-                } else if (i === 1) {
-                    if (values[1] === 'singleton') {
-                        taskFormInputs[1].checked = true;
-                    } else if (values[1] === 'checklist') {
-                        taskFormInputs[2].checked = true;
-                    };
-                } else if (i === 7) {
-                    let tagsStringified = values[7].join(' ');
-                    taskFormInputs[i + 1].value = tagsStringified;
-                } else {
-                    taskFormInputs[i + 1].value = values[i];
+        switch (_currentFormType) {
+            case 'project':
+                for (let i = 0; i < (values.length); i++) {
+                    projectFormInputs[i].value = values[i];
                 };
-            };
-        } else if (_currentFormType === 'checkbox') {
-            let instanceReferences = `${values[1]}_${values[2]}`;
-            checkboxFormInputs[0].value = instanceReferences;
-            checkboxFormInputs[1].value = values[3];
+                break;
+            case 'task':
+                if (values[7] === undefined) {
+                    values.splice(7, 1);
+                    console.log(values);
+                };
+    
+                for (let i = 0; i < (values.length); i++) {
+                    switch (i) {
+                        case 0:
+                            taskFormInputs[i].value = values[i];
+                            break;
+                        case 1:
+                            switch (values[1]) {
+                                case 'singleton':
+                                    taskFormInputs[1].checked = true;
+                                    break;
+                                case 'checklist':
+                                    taskFormInputs[2].checked = true;
+                            };
+                            break;
+                        default:
+                            taskFormInputs[i + 1].value = values[i];
+                    };
+                };
+                break;
+            case 'checkbox':
+                let instanceReferences = `${values[1]}_${values[2]}`;
+                checkboxFormInputs[0].value = instanceReferences;
+                checkboxFormInputs[1].value = values[3];
         };
     }
     function _renderProjectOptions(array) {
@@ -174,7 +200,7 @@ const forms = (() => {
                 };
                 break;
             case taskForm:
-                console.log(taskFormInputs);
+                //// console.log(taskFormInputs);
                 formValues.push('task');
                 for (let i = 0; i < (taskFormInputs.length); i++) {
                     if (i === 0 || ((i > 2) && (i < 8))) {
@@ -202,26 +228,31 @@ const forms = (() => {
         return formValues;
     }
     function _clearFormValues() {
-        if (_currentForm === projectForm) {
-            projectFormInputs.forEach(input => input.value = '');
-        } else if (_currentForm === taskForm) {
-            for (let i = 0; i < (taskFormInputs.length); i++) {
-                if ((i === 0) || ((i > 2) && (i < 6)) || (i > 6)) {
-                    taskFormInputs[i].value = '';
+        switch(_currentForm) {
+            case projectForm:
+                projectFormInputs.forEach(input => input.value = '');
+                break;
+            case taskForm:
+                for (let i = 0; i < (taskFormInputs.length); i++) {
+                    switch (true) {
+                        case ((1 === 0) || ((i > 2) && (i < 6)) || (i > 6)):
+                            taskFormInputs[i].value = '';
+                            break;
+                        case (i === 1):
+                            taskFormInputs[i].checked = true;
+                            break;
+                        case (i === 2):
+                            taskFormInputs[i].checked = false;
+                            break;
+                        case (i === 6):
+                            taskFormInputs[i].selectedIndex = 0;
+                    };
                 };
-                if (i === 1) {
-                    taskFormInputs[i].checked = true;
-                };
-                if (i === 2) {
-                    taskFormInputs[i].checked = false;
-                }
-                if (i === 6) {
-                    taskFormInputs[i].selectedIndex = 0;
-                };
-            };
-        } else if (_currentForm === checkboxForm) {
-            checkboxFormInputs.forEach(input => input.value = '');
+                break;
+            case checkboxForm:
+                checkboxFormInputs.forEach(input => input.value = '');
         };
+
         _currentForm = '';
         _currentFormType = '';
     }
@@ -243,12 +274,16 @@ const forms = (() => {
     }
     function _findErrors(process) {
         let inputs;
-        if (_currentForm === projectForm) {
-            inputs = projectFormInputs;
-        } else if (_currentForm === taskForm) {
-            inputs = taskFormInputs;
-        } else if (_currentForm === checkboxForm) {
-            inputs = checkboxFormInputs;
+
+        switch (_currentForm) {
+            case projectForm:
+                inputs = projectFormInputs;
+                break;
+            case taskForm:
+                inputs = taskFormInputs;
+                break;
+            case checkboxForm:
+                inputs = checkboxFormInputs;
         };
 
         let titleInput;
@@ -258,10 +293,12 @@ const forms = (() => {
             };
         });
 
-        if (process === 'show') {
-            _showErrorMessage(titleInput);
-        } else if (process === 'hide') {
-            _hideErrorMessage(titleInput);
+        switch (process) {
+            case 'show':
+                _showErrorMessage(titleInput);
+                break;
+            case 'hide':
+                _hideErrorMessage(titleInput);
         };
     }
     function _showErrorMessage(input) {
@@ -275,7 +312,10 @@ const forms = (() => {
 
     // event subscriptions
 
-    events.subscribe('clickCreateItem', _openCreateForm);   // published from domDisplay.js (createTaskButton clickEvent, _renderChecklistSubheader())
+    events.subscribe('clickCreateItem', _openCreateForm);   // published from domDisplay.js (createTaskButton clickEvent, _renderChecklistSubheader()), sidebar.js ()
+
+    events.subscribe('clickModifyItem', _openModifyInstanceQuery);  // publishing from domDisplay.js (_render...Header())
+    events.subscribe('closeModifyInstanceQuery', _openModifyForm);  // publishing from library.js (_queryItemInstance());
 
     events.subscribe('clickDeleteProject', _showDeleteProjectConfirmation);    // published from domDisplay.js (_renderProjectHeader())
 
@@ -283,8 +323,7 @@ const forms = (() => {
 
     
     events.subscribe('clickCreateProject', _openCreateForm);    // publishing from domSidebar.js (createProjectButton clickEvent)
-    events.subscribe('clickModifyItem', _openModifyFormQuery);  // publishing from domDisplay.js (_renderHeaders())
-    events.subscribe('closeModifyQuery', _openModifyForm);  // publishing from library.js (_queryItemInstance());
+    
     events.subscribe('closeProjectOptionsQuery', _renderProjectOptions);  // publishing from library.js (_queryProjectNameID())
     
 
