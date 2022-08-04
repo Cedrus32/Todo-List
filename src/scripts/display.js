@@ -38,10 +38,12 @@ const display = (() => {
                 break;
             case 'project':
                 for (let i = 1; i < (instanceBundle.length); i++) {
-                    if (i === 1) {
-                        _renderProject(instanceBundle[i]);
-                    } else {
-                        _renderTask(instanceBundle[i]);
+                    switch (i) {
+                        case 1:
+                            _renderProject(instanceBundle[i]);
+                            break;
+                        default:
+                            _renderTask(instanceBundle[i]);
                     };
                 };
         };
@@ -129,11 +131,14 @@ const display = (() => {
         ulContainer.removeChild(liContainer);
     }
     function _fillTaskCounter(operator) {
-        if (operator === '+') {
-            _taskCounter++;
-        } else if (operator === '-') {
-            _taskCounter--;
-        }
+        switch (operator) {
+            case '+':
+                _taskCounter++;
+                break;
+            case '-':
+                _taskCounter--;
+        };
+        
         taskCountSpan.textContent = _taskCounter;
     }
     
@@ -142,6 +147,7 @@ const display = (() => {
         if (projectContainer.children) {
             _clearDisplay();
         };
+        
         let cardID = '#project_' + project.id;
         let projectCard = div('', '.card', '.project', cardID);
 
