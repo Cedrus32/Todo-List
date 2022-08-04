@@ -3,6 +3,8 @@ import { default as div, h1, h2, ul, li, span, input, label} from './elements';
 
 // * factory module for display DOM groupings
 
+// ! MODIFY NOT WORKING (issue with forms)
+
 const display = (() => {
     // data
     let _taskCounter = 0;
@@ -147,7 +149,7 @@ const display = (() => {
         if (projectContainer.children) {
             _clearDisplay();
         };
-        
+
         let cardID = '#project_' + project.id;
         let projectCard = div('', '.card', '.project', cardID);
 

@@ -39,21 +39,6 @@ const forms = (() => {
         deleteConfirmAlert.classList.add('hide');
     });
 
-    // query methods
-    function _openModifyFormQuery(event) {
-        let targetItemReferences;
-        if (event.target.closest('li.card')) {
-            let formTypeReference = 'checkbox';
-            let taskReference = event.target.closest('div.card').id.split('_')[1];
-            let checkboxReference = event.target.closest('li.card').id.split('__')[1].split('_')[1];
-            targetItemReferences = [formTypeReference, [taskReference, checkboxReference]]; // * taskReference & checkboxReference must be bundled, split in library.js
-        } else {
-            targetItemReferences = event.target.closest('div.card').id.split('_');
-        };
-        _setFormReferences(targetItemReferences[0]);
-        events.publish('openModifyFormQuery', targetItemReferences);  // subscribed by library.js
-    }
-
     // form managers
     function _openCreateForm(formReference) {
         console.log(formReference);
@@ -71,6 +56,19 @@ const forms = (() => {
         };
         _showForm();
     }
+    function _openModifyFormQuery(event) {
+        let targetItemReferences;
+        if (event.target.closest('li.card')) {
+            let formTypeReference = 'checkbox';
+            let taskReference = event.target.closest('div.card').id.split('_')[1];
+            let checkboxReference = event.target.closest('li.card').id.split('__')[1].split('_')[1];
+            targetItemReferences = [formTypeReference, [taskReference, checkboxReference]]; // * taskReference & checkboxReference must be bundled, split in library.js
+        } else {
+            targetItemReferences = event.target.closest('div.card').id.split('_');
+        };
+        _setFormReferences(targetItemReferences[0]);
+        events.publish('openModifyFormQuery', targetItemReferences);  // subscribed by library.js
+    }
     function _openModifyForm(itemValues) {
         _fillFormValues(itemValues);
         _disableTaskTypeSelection();
@@ -78,9 +76,6 @@ const forms = (() => {
     }
 
     // form actions
-    function _showDeleteProjectConfirmation() {
-        deleteConfirmAlert.classList.remove('hide');
-    }
     function _confirmInput() {
         let isValid = _validateForm();
 
@@ -104,39 +99,8 @@ const forms = (() => {
         _clearFormValues();
         _removeProjectOptions();
     }
-    function _validateForm() {
-        return _currentForm.querySelector('form').checkValidity();
-    }
-    function _findErrors(process) {
-        let inputs;
-        if (_currentForm === projectForm) {
-            inputs = projectFormInputs;
-        } else if (_currentForm === taskForm) {
-            inputs = taskFormInputs;
-        } else if (_currentForm === checkboxForm) {
-            inputs = checkboxFormInputs;
-        };
-
-        let titleInput;
-        inputs.forEach(input => {
-            if (input.id.split('-')[1] === 'title') {
-                titleInput = input;
-            };
-        });
-
-        if (process === 'show') {
-            _showErrorMessage(titleInput);
-        } else if (process === 'hide') {
-            _hideErrorMessage(titleInput);
-        };
-    }
-    function _showErrorMessage(input) {
-        let label = input.previousElementSibling;
-        label.lastChild.classList.remove('hide');
-    }
-    function _hideErrorMessage(input) {
-        let label = input.previousElementSibling;
-        label.lastChild.classList.add('hide');
+    function _showDeleteProjectConfirmation() {
+        deleteConfirmAlert.classList.remove('hide');
     }
 
     // helper methods  
@@ -189,6 +153,15 @@ const forms = (() => {
             checkboxFormInputs[1].value = values[3];
         };
     }
+    function _renderProjectOptions(array) {
+        let projectDropdown = taskFormInputs[7];
+        for (let i = 0; i < (array.length); i++) {
+            let projectName = array[i][0];
+            let projectID = array[i][1]
+            let optionProject = option(projectID, projectName);
+            projectDropdown.appendChild(optionProject);
+        };
+    }
     function _bundleFormValues() {
         //// console.log(_currentForm);
         let formValues = [];
@@ -224,7 +197,7 @@ const forms = (() => {
                 formValues.push(checkboxFormInputs[0].value.split('_')[1]);
                 formValues.push(checkboxFormInputs[1].value);
         };
-        
+
         console.log(formValues);
         return formValues;
     }
@@ -252,15 +225,6 @@ const forms = (() => {
         _currentForm = '';
         _currentFormType = '';
     }
-    function _renderProjectOptions(array) {
-        let projectDropdown = taskFormInputs[7];
-        for (let i = 0; i < (array.length); i++) {
-            let projectName = array[i][0];
-            let projectID = array[i][1]
-            let optionProject = option(projectID, projectName);
-            projectDropdown.appendChild(optionProject);
-        };
-    }
     function _removeProjectOptions() {
         while (taskFormInputs[7].firstChild) {
             taskFormInputs[7].removeChild(taskFormInputs[7].lastChild);
@@ -273,6 +237,40 @@ const forms = (() => {
     function _disableTaskTypeSelection() {
         taskFormInputs[1].disabled = true;
         taskFormInputs[2].disabled = true;
+    }
+    function _validateForm() {
+        return _currentForm.querySelector('form').checkValidity();
+    }
+    function _findErrors(process) {
+        let inputs;
+        if (_currentForm === projectForm) {
+            inputs = projectFormInputs;
+        } else if (_currentForm === taskForm) {
+            inputs = taskFormInputs;
+        } else if (_currentForm === checkboxForm) {
+            inputs = checkboxFormInputs;
+        };
+
+        let titleInput;
+        inputs.forEach(input => {
+            if (input.id.split('-')[1] === 'title') {
+                titleInput = input;
+            };
+        });
+
+        if (process === 'show') {
+            _showErrorMessage(titleInput);
+        } else if (process === 'hide') {
+            _hideErrorMessage(titleInput);
+        };
+    }
+    function _showErrorMessage(input) {
+        let label = input.previousElementSibling;
+        label.lastChild.classList.remove('hide');
+    }
+    function _hideErrorMessage(input) {
+        let label = input.previousElementSibling;
+        label.lastChild.classList.add('hide');
     }
 
     // event subscriptions

@@ -442,6 +442,11 @@ const library = (() => {
 
 
 
+
+
+
+
+    
     events.subscribe('openModifyFormQuery', _queryItemInstance);    // published from forms.js (_openModifyQuery())
     events.subscribe('openProjectOptionsQuery', _queryProjectNamesIDs)  // published from forms.js (_showForm())
 
