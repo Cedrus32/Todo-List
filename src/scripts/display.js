@@ -19,9 +19,9 @@ const display = (() => {
     }
 
     // bind events
-    events.subscribe('projectCreated', _publishRenderDisplayEvents); // published from library.js (_createProject())
-    events.subscribe('taskCreated', _publishRenderDisplayEvents);    // published from library.js (_createTask())
-    events.subscribe('checklistItemCreated', _publishRenderDisplayEvents);   // published from library.js (_createChecklistItem())
+    // events.subscribe('projectCreated', _publishRenderDisplayEvents); // published from library.js (_createProject())
+    // events.subscribe('taskCreated', _publishRenderDisplayEvents);    // published from library.js (_createTask())
+    // events.subscribe('checklistItemCreated', _publishRenderDisplayEvents);   // published from library.js (_createChecklistItem())
 
 })();
 

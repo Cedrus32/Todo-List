@@ -28,38 +28,43 @@ const domSidebar = (() => {
     }
 
     // factories
-    const _renderProjectLink = function(id, title) {
-        let liID = `#view-project_${id}`;
-        let liProjectLink = li(title, liID);
+    const _renderProjectLink = function(project) {
+        if (project.id !== 0) {
+            let id = project.id;
+            let title = project.title;
 
-        liProjectLink.addEventListener('click', (e) => {
-            _openViewPreferenceQuery('project', e);
-        });
-        projectsList.appendChild(liProjectLink);
+            let liID = `#view_${id}`;
+            let liProjectLink = li(title, liID);
+
+            liProjectLink.addEventListener('click', (e) => {
+                _clickViewPreferenceLink('project', e);
+            });
+
+            projectsList.appendChild(liProjectLink);
+        };
     }
 
     // helpers
-    function _openViewPreferenceQuery(viewPreferenceType, event) {
-        let targetReference = '';
+    function _clickViewPreferenceLink(viewPreference, event) {
+        let queryReference = '';
 
-        if (viewPreferenceType === 'today') {
+        if (viewPreference === 'all') {
+
+        } else if (viewPreference === 'today') {
             // get today's date (from date time api)
             // target reference = today's date
-        } else if (viewPreferenceType === 'upcoming') {
+        } else if (viewPreference === 'upcoming') {
             // get today's date (drom date time api)
             // add 7 days to date
             // target reference = today's date
-        } else if (viewPreferenceType === 'project' || viewPreferenceType === 'tag') {
+        } else if (viewPreference === 'anytime'){
+
+        } else if (viewPreference === 'project') {
             let splitID = event.target.id.split('_');
-            if (splitID.length > 2) {
-                splitID.splice(0, 1);
-                targetReference = splitID.join('_');
-            } else {
-                targetReference = splitID[1];
-            };
+            queryReference = splitID[1];
         };
 
-        events.publish('openViewPreferenceQuery', viewPreferenceType, targetReference); // subscribed by library.js
+        events.publish('openViewPreferenceQuery', viewPreference, queryReference); // subscribed by library.js
     }
     function _removeProjectLink(linkReference) {
         let liProject = document.getElementById(`view-${linkReference}`);
@@ -70,7 +75,7 @@ const domSidebar = (() => {
 
     // bind events
     viewAllButton.addEventListener('click', (e) => {
-        _openViewPreferenceQuery('all', e);
+        _clickViewPreferenceLink('all', e);
     });
     viewTodayButton.addEventListener('click', () => {
         console.log('view tasks due today');
@@ -82,12 +87,12 @@ const domSidebar = (() => {
         console.log('view tasks with no due dates');
     });
     viewUnsortedButton.addEventListener('click', (e) => {
-        _openViewPreferenceQuery('project', e);
+        _clickViewPreferenceLink('project', e);
     });
     createProjectButton.addEventListener('click', () => {
         events.publish('clickCreateProject', 'project');    // subscribed by forms.js
     });
-    events.subscribe('renderProjectLink', _renderProjectLink); // published by sidebar.js
+    events.subscribe('projectCreated', _renderProjectLink); // published by sidebar.js
     events.subscribe('itemModified', _updateViewPreferenceLink);   // published by library.js (_modifyTask())
     events.subscribe('removeProjectFromSection', _removeProjectLink);   // published by library.js (_deleteProject());
 

@@ -6,7 +6,6 @@ const library = (() => {
     // dynamic data
     let _projectLibrary = [];
     let _taskLibrary = [];
-    let _tagLibrary = [];
     let _taskCounter = 0;
     let _projectCounter = 0;
 
@@ -92,6 +91,59 @@ const library = (() => {
         }
     }
 
+    // setter manager
+    function _setInstanceValues(values) {
+        console.log(values);
+        let libraryReference = values[0];
+        let instanceReference = values[1];
+        values.splice(0, 2);    // [title, description]
+                                // [type, title, description, dueDate, 'priority', 'projectID', [tags]]
+        console.log(libraryReference);
+        console.log(instanceReference);
+        console.log(values);
+
+
+        switch (libraryReference) {
+            case 'project':
+                switch (instanceReference) {
+                    case '':
+                        _createProject(values);
+                        break;
+                    default:
+                        _modifyProject(instanceReference, values);
+                };
+                break;
+            case 'task':
+                switch (instanceReference) {
+                    case '':
+                        //                         projectID            type       title    description  dueDate    priority             items
+                        let formValuesReordered = [parseInt(values[5]), values[0], values[1], values[2], values[3], parseInt(values[4]), values[6]]
+                        _createTask(formValuesReordered);
+                        break;
+                    default:
+                        _modifyTask(instanceReference, values);
+                };
+                break;
+            case 'checkbox':
+                let checklistItemReference = values[0];
+                let checklistItemContent = values[1];
+                for (let t = 0; t < (_taskLibrary.length); t++) {
+                    if (_taskLibrary[t].id == instanceReference) {
+                        let checkID = values[0];
+                        let taskInstance = _taskLibrary[t];
+
+                        switch (checkID) {
+                            case undefined:
+                                _createCheckbox(taskInstance, values);
+                                break;
+                            default:
+                                _modifyCheckbox(taskInstance, checklistItemReference, checklistItemContent); // formValues[0] needed to pass single value from formValues[]
+                        };
+                    };
+                };
+        };
+    }
+
     // getters
     function _queryItemInstance(itemReferences) {
         let libraryReference = itemReferences[0];
@@ -143,29 +195,33 @@ const library = (() => {
 
         events.publish('closeProjectOptionsQuery', nameIDArray) // subscribed by forms.js
     }
-    function _bundleInstances(viewType, queryReference) {
+    function _bundleInstances(viewPreference, queryReference) {
         let instanceBundle = [];
 
         let queryProjects = false;
         let queryTasks = false;
-        let queryTags = false;
         
-        switch (viewType) {
+        switch (viewPreference) {
             case 'all':
+                queryTasks = true;
+                break;
+            case 'today':
+                queryTasks = true;
+                break;
+            case 'upcoming':
+                queryTasks = true;
+                break;
+            case 'anytime':
                 queryTasks = true;
                 break;
             case 'project':
                 queryProjects = true;
-                break;
-            case 'tag':
-                queryTags = true;
         };
 
         console.log(`queryProjects: ${queryProjects}`);
         console.log(`queryTasks: ${queryTasks}`);
-        console.log(`queryTags: ${queryTags}`);
 
-        instanceBundle.push(viewType);
+        instanceBundle.push(viewPreference);
         if (queryProjects === true) {
             for (let p = 0; p < (_projectLibrary.length); p++) {
                 if (_projectLibrary[p].id == queryReference) {
@@ -178,20 +234,9 @@ const library = (() => {
                 };
             };
         } else if (queryTasks === true) {
-            if (viewType === 'all') {
+            if (viewPreference === 'all') {
                 for (let t = 0; t < (_taskLibrary.length); t++) {
                     instanceBundle.push(_taskLibrary[t]);
-                };
-            };
-        } else if (queryTags === true) {
-            instanceBundle.push(queryReference);
-            for (let t = 0; t < (_taskLibrary.length); t++) {
-                let tagsArray = _taskLibrary[t].tags;
-                for (let i = 0; i < (tagsArray.length); i++) {
-                    if (tagsArray[i] === queryReference) {
-                        instanceBundle.push(_taskLibrary[t]);
-                        break; // ? watch to see if this breaks out of whole loop
-                    };
                 };
             };
         };
@@ -200,49 +245,7 @@ const library = (() => {
         events.publish('updateDisplayView', instanceBundle);    // subscribed by domDisplay.js
     }
 
-    // setter manager
-    function _setInstanceValues(formValues) {
-        console.log(formValues);
-        let libraryReference = formValues[0];
-        let instanceReference = formValues[1];
-        formValues.splice(0, 2);    // [title, description]
-                                    // [type, title, description, dueDate, 'priority', 'projectID', [tags]]
-        console.log(libraryReference);
-        console.log(instanceReference);
-        console.log(formValues);
-        
-        if (libraryReference === 'project') {
-            if (instanceReference === '') {
-                _createProject(formValues);
-            } else {
-                _modifyProject(instanceReference, formValues);
-            };
-
-        } else if (libraryReference === 'task') {
-            if(instanceReference === '') {
-                //                         projectID                type           title          description    dueDate        priority
-                let formValuesReordered = [parseInt(formValues[5]), formValues[0], formValues[1], formValues[2], formValues[3], parseInt(formValues[4])]
-                _createTask(formValuesReordered);
-            } else {
-                _modifyTask(instanceReference, formValues);
-            };
-        } else if (libraryReference === 'checkbox') {
-            let checklistItemReference = formValues[0];
-            let checklistItemContent = formValues[1];
-            for (let t = 0; t < (_taskLibrary.length); t++) {
-                if (_taskLibrary[t].id == instanceReference) {
-                    let instanceItemArray = _taskLibrary[t].items;
-                    if (!instanceItemArray.some(item => item[0] == checklistItemReference)) {
-                        _createChecklistItem(instanceReference, formValues);
-                    } else {
-                        _modifyCheckbox(instanceReference, checklistItemReference, checklistItemContent); // formValues[0] needed to pass single value from formValues[]
-                    };
-                };
-            };
-        };
-    }
-
-    // setter helper methods
+    // create methods
     function _createProject(attributeArray) {
         let _id = _projectCounter;
         let _newProject = new Project(_id, ...attributeArray);
@@ -251,7 +254,7 @@ const library = (() => {
         _projectLibrary.push(_newProject);
         _projectCounter++;
 
-        events.publish('projectCreated', _newProject);  // subscribed by display.js, sidebar.js
+        events.publish('projectCreated', _newProject);  // subscribed by displayDOM.js, sidebar.js
     }
     function _createTask(attributeArray) {
         let _id = _taskCounter;
@@ -261,33 +264,32 @@ const library = (() => {
         _taskLibrary.push(_newTask);
         _taskCounter++;
 
-        _updateTagLibrary([], _newTask.tags);
-
-        events.publish('taskCreated', _newTask);    // subscribed by display.js, sidebar.js
+        events.publish('taskCreated', _newTask);    // subscribed by displayDOM.js
     }
-    function _createChecklistItem(taskID, itemValue) {
-        for (let t = 0; t < (_taskLibrary.length); t++) {
-            if (_taskLibrary[t].id == taskID) {
-                let taskInstance = _taskLibrary[t];
-                let itemListLength = taskInstance.items.length;
-                let newItemID;
-                if (taskInstance.items.length === 0) {
-                    newItemID = 0;
-                } else {
-                    let lastItemID = taskInstance.items[itemListLength - 1][0];
-                    newItemID = lastItemID + 1;
-                }
+    function _createCheckbox(task, itemValue) {
+        let checklistItemsLength = task.items.length;
+        let newItemID;
 
-                itemValue[0] = newItemID;
-                _taskLibrary[t].items.push(itemValue);
-                let _newCheckbox = ['checkbox', taskInstance.id, taskInstance.items[itemListLength][0], taskInstance.items[itemListLength][1]];
-                console.log('new checkbox:')
-                console.log(_taskLibrary[t].items);
-
-                events.publish('checklistItemCreated', _newCheckbox);    // subscribed by display.js
-            };
+        switch (checklistItemsLength) {
+            case 0:
+                newItemID = 0;
+                break;
+            default:
+                let lastItemID = task.items[checklistItemsLength - 1][0];
+                newItemID = lastItemID + 1;
         };
+
+        itemValue[0] = newItemID;
+        task.items.push(itemValue);
+        let _newCheckbox = ['checkbox', task.id, task.items[checklistItemsLength][0], task.items[checklistItemsLength][1]];
+        
+        console.log('new checkbox:')
+        console.log(task.items);
+
+        events.publish('checkboxCreated', _newCheckbox);    // subscribed by domDisplay.js
     }
+
+    // modify methods
     function _modifyProject(targetItemID, attributeArray) {
         //// console.log(attributeArray)
         let projectInstance;
@@ -370,26 +372,19 @@ const library = (() => {
 
         events.publish('itemModified', checkboxInstance);   // subscribed by domDisplay.js
     }
-    function _updateTagLibrary(oldTags, newTags) { // ! not complete, does not currently work
-        console.log(oldTags);
-        console.log(newTags);
-
-        // compare original & new tags
-
-        // for tags removed... find tag instance -> if tally === 1... delete, else... decrease by 1
-        // for tags added... find tag instance -> if exists... increase by 1, else... create new instance, set tally to 1
-    }
 
     // delete methods
     function _deleteProject(cardID) {
         let cardReferences = cardID.split('_');
         let projectReference = cardReferences[1];
         let projectLoopStart = _projectLibrary.length - 1;
+
         for (let p = projectLoopStart; p > -1; p--) {
             if (_projectLibrary[p].id == projectReference) {
                 _projectLibrary.splice(p, 1);
             };
         };
+
         let taskLoopStart = _taskLibrary.length - 1;
         for (let t = taskLoopStart; t > -1; t--) {
             if (_taskLibrary[t].projectID == projectReference) {
@@ -400,17 +395,14 @@ const library = (() => {
         console.log(_projectLibrary);
         console.log(_taskLibrary);
 
-        // * send notification to update sidebar (remove deleted project, select new project view)
-        // * ---> will in turn notify display to refresh
         console.log(cardID);
-        events.publish('removeProjectFromSection', cardID);    // subscribed by domDisplay.js
+        events.publish('removeProjectFromSection', cardID);    // subscribed by domDisplay.js, domSidebar.js
     }
     function _deleteTask(cardID) {
         let cardReferences = cardID.split('_');
         let taskReference = cardReferences[1];
         for (let t = 0; t < (_taskLibrary.length); t++) {
             if (_taskLibrary[t].id == taskReference) {
-                // projectReference = _taskLibrary[t].projectID;    // ? delete ?
                 _taskLibrary.splice(t, 1);
             };
         };
@@ -437,13 +429,20 @@ const library = (() => {
         events.publish('removeChecklistItemFromDisplay', checkID);  // subscribed by domDisplay.js
     }
 
-    // bind events
+    // event subscriptions
+
     events.subscribe('confirmInput', _setInstanceValues); //published from default.js (init()), forms.js (_confirmInput())
+
+    events.subscribe('openViewPreferenceQuery', _bundleInstances) // published from domSidebar.js (_clickViewPreferenceLink())
+
+    events.subscribe('confirmDeleteProject', _deleteProject);    // published from forms.js (confirmDeleteButton eventListener)
+    events.subscribe('clickDeleteTask', _deleteTask);    // published from domDisplay.js (_render...(task)Headers())
+    events.subscribe('clickDeleteChecklistItem', _deleteChecklistItem)  // published from domDisplay.js (_renderCheckboxControls())
+
+
+
+
     events.subscribe('openModifyFormQuery', _queryItemInstance);    // published from forms.js (_openModifyQuery())
     events.subscribe('openProjectOptionsQuery', _queryProjectNamesIDs)  // published from forms.js (_showForm())
-    events.subscribe('deleteProject', _deleteProject);    // published from forms.js (confirmDeleteButton eventListener)
-    events.subscribe('deleteTask', _deleteTask);    // published from domDisplay.js (_renderItemHeaders())
-    events.subscribe('clickDeleteChecklistItem', _deleteChecklistItem)  // published from domDisplay.js (_renderChecklistItemControls())
-    events.subscribe('openViewPreferenceQuery', _bundleInstances) // published from domDisplay.js (_openViewQuery)
 
 })();
