@@ -33,17 +33,17 @@ body {
 }
 
     header,
-    #view-prefs,
+    #sidebar,
     #display {
         padding: var(--main-pad);
     }
 
 
-/* --- VIEW PREFS */
-/* --- VIEW PREFS */
-/* --- VIEW PREFS */
+/* --- SIDEBAR */
+/* --- SIDEBAR */
+/* --- SIDEBAR */
 
-#view-prefs {
+#sidebar {
     /* display: flex;
     flex-flow: column;
     gap: var(--main-gap); */
@@ -57,7 +57,7 @@ body {
         gap: var(--main-gap);
     }
 
-        #view-prefs ul {
+        #sidebar ul {
             display: flex;
             flex-flow: column;
             gap: var(--main-gap);

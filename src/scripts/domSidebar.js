@@ -1,13 +1,14 @@
 import events from '../events.js';
 import { default as li} from './elements';
 
-// * factory module for sidebar DOM groupings
+// & manages sidebar section DOM <-> library communication
+// & contains factories for generating display section DOM elements / groupings
 
 const domSidebar = (() => {
     // data
 
     // cache dom
-    let viewPrefs = document.getElementById('view-prefs');
+    let viewPrefs = document.getElementById('sidebar');
     let title = document.getElementById('title');
 
     let viewAllButton = document.getElementById('view-all');

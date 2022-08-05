@@ -1,11 +1,11 @@
 header,
-#view-prefs,
+#sidebar,
 #display,
 .form-container {
     border: 1px solid black;
 }
 
-#view-prefs,
+#sidebar,
 .form-container {
     background-color: white;
 }
