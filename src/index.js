@@ -8,7 +8,6 @@ import defaultState from './scripts/default.js';
 import display from './scripts/display';
 import forms from './scripts/forms';
 import sidebar from './scripts/sidebar';
-import domSidebar from './scripts/domSidebar';
 import library from './scripts/library';
 import events from './events';
 
