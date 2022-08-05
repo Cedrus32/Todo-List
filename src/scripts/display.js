@@ -1,7 +1,8 @@
 import events from '../events';
 import { default as div, h1, h2, ul, li, span, input, label} from './elements';
 
-// * factory module for display DOM groupings
+// & manages display DOM <-> library communication
+// & contains factories for generating display section DOM elements / groupings
 
 const display = (() => {
     // data
