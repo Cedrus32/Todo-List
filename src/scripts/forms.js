@@ -98,9 +98,6 @@ const forms = (() => {
                 let formValues = _bundleFormValues();
                 _findErrors('hide');
                 _clearFormValues();
-                if (_currentForm === taskForm) {
-                    _removeProjectOptions();
-                };
                 events.publish('confirmInput', formValues);    // subscribed by library.js
                 break;
             case false:
@@ -110,7 +107,6 @@ const forms = (() => {
     function _cancelInput() {
         _hideForm();
         _clearFormValues();
-        _removeProjectOptions();
     }
     function _showDeleteProjectConfirmation() {
         deleteConfirmAlert.classList.remove('hide');
@@ -183,7 +179,7 @@ const forms = (() => {
         let projectDropdown = taskFormInputs[7];
         for (let i = 0; i < (array.length); i++) {
             let projectName = array[i][0];
-            let projectID = array[i][1]
+            let projectID = array[i][1];
             let optionProject = option(projectID, projectName);
             projectDropdown.appendChild(optionProject);
         };
@@ -235,7 +231,7 @@ const forms = (() => {
             case taskForm:
                 for (let i = 0; i < (taskFormInputs.length); i++) {
                     switch (true) {
-                        case ((1 === 0) || ((i > 2) && (i < 6)) || (i > 6)):
+                        case ((1 === 0) || ((i > 2) && (i < 6))):
                             taskFormInputs[i].value = '';
                             break;
                         case (i === 1):
@@ -246,6 +242,11 @@ const forms = (() => {
                             break;
                         case (i === 6):
                             taskFormInputs[i].selectedIndex = 0;
+                            break;
+                        case (i === 7):
+                            while (taskFormInputs[7].firstChild) {
+                                taskFormInputs[7].removeChild(taskFormInputs[7].lastChild);
+                            };
                     };
                 };
                 break;
@@ -253,13 +254,12 @@ const forms = (() => {
                 checkboxFormInputs.forEach(input => input.value = '');
         };
 
+        // if (_currentForm === taskForm) {
+        //     _removeProjectOptions();
+        // };
+
         _currentForm = '';
         _currentFormType = '';
-    }
-    function _removeProjectOptions() {
-        while (taskFormInputs[7].firstChild) {
-            taskFormInputs[7].removeChild(taskFormInputs[7].lastChild);
-        };
     }
     function _enableTaskTypeSelection() {
         taskFormInputs[1].disabled = false;
