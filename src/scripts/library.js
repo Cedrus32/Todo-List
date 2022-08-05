@@ -424,23 +424,14 @@ const library = (() => {
 
     // event subscriptions
 
+    events.subscribe('openViewPreferenceQuery', _bundleInstances) // published from domSidebar.js (_clickViewPreferenceLink())
+
     events.subscribe('confirmInput', _setInstanceValues); //published from default.js (init()), forms.js (_confirmInput())
 
     events.subscribe('openModifyInstanceQuery', _queryItemInstance);    // published from forms.js (_openModifyQuery())
-    events.subscribe('openViewPreferenceQuery', _bundleInstances) // published from domSidebar.js (_clickViewPreferenceLink())
+    events.subscribe('openProjectOptionsQuery', _queryProjectNamesIDs)  // published from forms.js (_showForm())
 
     events.subscribe('confirmDeleteProject', _deleteProject);    // published from forms.js (confirmDeleteButton eventListener)
     events.subscribe('clickDeleteTask', _deleteTask);    // published from domDisplay.js (_render...(task)Headers())
     events.subscribe('clickDeleteChecklistItem', _deleteChecklistItem)  // published from domDisplay.js (_renderCheckboxControls())
-
-
-
-
-
-
-
-
-
-    events.subscribe('openProjectOptionsQuery', _queryProjectNamesIDs)  // published from forms.js (_showForm())
-
 })();

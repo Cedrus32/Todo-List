@@ -312,21 +312,15 @@ const forms = (() => {
 
     // event subscriptions
 
-    events.subscribe('clickCreateItem', _openCreateForm);   // published from domDisplay.js (createTaskButton clickEvent, _renderChecklistSubheader()), sidebar.js ()
+    events.subscribe('clickCreateItem', _openCreateForm);   // published from domDisplay.js (createTaskButton clickEvent, _renderChecklistSubheader())
+    events.subscribe('clickCreateProject', _openCreateForm);    // publishing from domSidebar.js (createProjectButton clickEvent)
 
     events.subscribe('clickModifyItem', _openModifyInstanceQuery);  // publishing from domDisplay.js (_render...Header())
     events.subscribe('closeModifyInstanceQuery', _openModifyForm);  // publishing from library.js (_queryItemInstance());
 
-    events.subscribe('clickDeleteProject', _showDeleteProjectConfirmation);    // published from domDisplay.js (_renderProjectHeader())
-
-
-
-    
-    events.subscribe('clickCreateProject', _openCreateForm);    // publishing from domSidebar.js (createProjectButton clickEvent)
-    
     events.subscribe('closeProjectOptionsQuery', _renderProjectOptions);  // publishing from library.js (_queryProjectNameID())
-    
 
+    events.subscribe('clickDeleteProject', _showDeleteProjectConfirmation);    // published from domDisplay.js (_renderProjectHeader())
 })();
 
 export default forms;
