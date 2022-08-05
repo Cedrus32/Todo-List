@@ -233,10 +233,16 @@ const library = (() => {
                 };
             };
         } else if (queryTasks === true) {
-            if (viewPreference === 'all') {
-                for (let t = 0; t < (_taskLibrary.length); t++) {
-                    instanceBundle.push(_taskLibrary[t]);
-                };
+
+            switch (viewPreference) {
+                case 'all':
+                    for (let t = 0; t < (_taskLibrary.length); t++) {
+                        instanceBundle.push(_taskLibrary[t]);
+                    };
+                    break;
+                case 'anytime':
+                    // loop through all tasks
+                    // if task has no due date, push to instanceBundle
             };
         };
 
@@ -253,7 +259,7 @@ const library = (() => {
         _projectLibrary.push(_newProject);
         _projectCounter++;
 
-        events.publish('projectCreated', _newProject);  // subscribed by displayDOM.js, sidebar.js
+        events.publish('projectCreated', _newProject);  // subscribed by display.js, sidebar.js
     }
     function _createTask(attributeArray) {
         let _id = _taskCounter;

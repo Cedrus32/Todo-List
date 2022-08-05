@@ -44,15 +44,28 @@ const domSidebar = (() => {
     });
 
     // managers
-    function _updateViewPreferenceLink(itemInstance) {
-        if (itemInstance.type === 'project') {
-            let projectLink = document.getElementById(`view-project_${itemInstance.id}`);
-            projectLink.textContent = itemInstance.title;
-        } else if (itemInstance.type === 'singleton' || itemInstance.type === 'checklist') {
-            console.log('update tag link');
-            // delete any tags without tallies (set up tag tally library)
-            // loop through existing links, add any that do not exist // ? (use _renderTagLink())
+    function _clickViewPreferenceLink(viewPreference, event) {
+        let queryReference;
+
+        switch (viewPreference) {
+            case 'today':
+                // get today's date (from date time api)
+                // target reference = today's date
+                break;
+            case 'upcoming':
+                // get today's date (drom date time api)
+                // add 7 days to date
+                // target reference = today's date
+                break;
+            case 'project':
+                let splitID = event.target.id.split('_');
+                queryReference = splitID[1];
+            //     break;
+            // default:
+            //     queryReference = '';
         };
+
+        events.publish('openViewPreferenceQuery', viewPreference, queryReference); // subscribed by library.js
     }
 
     // factories
@@ -73,26 +86,11 @@ const domSidebar = (() => {
     }
 
     // helpers
-    function _clickViewPreferenceLink(viewPreference, event) {
-        let queryReference = '';
-
-        if (viewPreference === 'all') {
-
-        } else if (viewPreference === 'today') {
-            // get today's date (from date time api)
-            // target reference = today's date
-        } else if (viewPreference === 'upcoming') {
-            // get today's date (drom date time api)
-            // add 7 days to date
-            // target reference = today's date
-        } else if (viewPreference === 'anytime'){
-
-        } else if (viewPreference === 'project') {
-            let splitID = event.target.id.split('_');
-            queryReference = splitID[1];
+    function _modifyViewPreferenceLink(itemInstance) {
+        if (itemInstance.type === 'project') {
+            let projectLink = document.getElementById(`view-project_${itemInstance.id}`);
+            projectLink.textContent = itemInstance.title;
         };
-
-        events.publish('openViewPreferenceQuery', viewPreference, queryReference); // subscribed by library.js
     }
     function _removeProjectLink(linkReference) {
         let liProject = document.getElementById(`view-${linkReference}`);
@@ -103,6 +101,7 @@ const domSidebar = (() => {
 
     // event subscriptions
     
+    events.subscribe('projectCreated', _renderProjectLink); // published by library.js (_createProject())
 
 
 
@@ -112,8 +111,7 @@ const domSidebar = (() => {
 
 
 
-    events.subscribe('projectCreated', _renderProjectLink); // published by sidebar.js
-    events.subscribe('itemModified', _updateViewPreferenceLink);   // published by library.js (_modifyTask())
+    events.subscribe('itemModified', _modifyViewPreferenceLink);   // published by library.js (_modify...())
     events.subscribe('removeProjectFromSection', _removeProjectLink);   // published by library.js (_deleteProject());
 
 })();

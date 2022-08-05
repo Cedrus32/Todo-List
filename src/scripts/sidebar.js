@@ -25,8 +25,8 @@ const sidebar = (() => {
     title.addEventListener('click', () => {
         viewPrefs.classList.toggle('hide');
     });
-    events.subscribe('projectCreated', _publishRenderSidebarEvents);    // published by library.js
-    events.subscribe('taskCreated', _publishRenderSidebarEvents);   // published by library.js
+    // events.subscribe('projectCreated', _publishRenderSidebarEvents);    // published by library.js
+    // events.subscribe('taskCreated', _publishRenderSidebarEvents);   // published by library.js
 
 })();
 
