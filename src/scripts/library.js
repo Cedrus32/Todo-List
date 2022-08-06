@@ -164,7 +164,7 @@ const library = (() => {
                 for (let t = 0; t < (_taskLibrary.length); t++) {
                     if (_taskLibrary[t].id == instanceReference) {
                         let item = _taskLibrary[t];
-                        itemValueArray = [item.id, item.type, item.title, item.description, item.dueDate, item.priority, item.projectID, item.tags];
+                        itemValueArray = [item.id, item.type, item.title, item.description, item.dueDate, item.priority, item.projectID];
                     };
                 };
                 break;
