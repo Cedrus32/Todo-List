@@ -1,8 +1,8 @@
 import events from '../events';
 import { label, option } from './elements';
 
-// & manages form section DOMs <-> library/display communication
-//// contains factories for generating display section DOM elements / groupings
+// & manages display/sidebar section DOMs -> form section DOMs <-> library communication
+//// contains factories for generating form section DOM elements / groupings
 
 const forms = (() => {
     // data
@@ -326,17 +326,17 @@ const forms = (() => {
 
     // event subscriptions
 
-    events.subscribe('clickCreateItem', _openCreateForm);   // published from domDisplay.js (createTaskButton clickEvent, _renderChecklistSubheader())
-    events.subscribe('clickCreateProject', _openCreateForm);    // publishing from domSidebar.js (createProjectButton clickEvent)
+    events.subscribe('clickCreateItem', _openCreateForm);   // published from display.js (createTaskButton clickEvent, _renderChecklistSubheader())
+    events.subscribe('clickCreateProject', _openCreateForm);    // publishing from sidebar.js (createProjectButton clickEvent)
 
-    events.subscribe('clickModifyItem', _openModifyInstanceQuery);  // publishing from domDisplay.js (_render...Header())
+    events.subscribe('clickModifyItem', _openModifyInstanceQuery);  // publishing from display.js (_render...Header())
     events.subscribe('closeModifyInstanceQuery', _openModifyForm);  // publishing from library.js (_queryItemInstance());
 
     events.subscribe('projectCreated', _setCurrentProject); // published from library.js (_createProject())
     events.subscribe('updateDisplayView', _setCurrentProject) // published from library.js (_bundleInstances())
     events.subscribe('closeProjectOptionsQuery', _renderProjectOptions);  // publishing from library.js (_queryProjectNameID())
 
-    events.subscribe('clickDeleteProject', _showDeleteProjectConfirmation);    // published from domDisplay.js (_renderProjectHeader())
+    events.subscribe('clickDeleteProject', _showDeleteProjectConfirmation);    // published from display.js (_renderProjectHeader())
 })();
 
 export default forms;

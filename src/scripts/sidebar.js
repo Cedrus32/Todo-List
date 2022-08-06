@@ -103,6 +103,7 @@ const sidebar = (() => {
     // event subscriptions
     
     events.subscribe('projectCreated', _renderProjectLink); // published by library.js (_createProject())
+    events.subscribe('removeProjectFromSection', _removeProjectLink);   // published by library.js (_deleteProject());
 
 
 
@@ -113,7 +114,6 @@ const sidebar = (() => {
 
 
     events.subscribe('itemModified', _modifyViewPreferenceLink);   // published by library.js (_modify...())
-    events.subscribe('removeProjectFromSection', _removeProjectLink);   // published by library.js (_deleteProject());
 
 })();
 

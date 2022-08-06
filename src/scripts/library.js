@@ -395,7 +395,7 @@ const library = (() => {
         console.log(_taskLibrary);
 
         console.log(cardID);
-        events.publish('removeProjectFromSection', cardID);    // subscribed by domDisplay.js, domSidebar.js
+        events.publish('removeProjectFromSection', cardID);    // subscribed by display.js, sidebar.js
     }
     function _deleteTask(cardID) {
         let cardReferences = cardID.split('_');
@@ -430,7 +430,7 @@ const library = (() => {
 
     // event subscriptions
 
-    events.subscribe('openViewPreferenceQuery', _bundleInstances) // published from domSidebar.js (_clickViewPreferenceLink())
+    events.subscribe('openViewPreferenceQuery', _bundleInstances) // published from sidebar.js (_clickViewPreferenceLink())
 
     events.subscribe('confirmInput', _setInstanceValues); //published from default.js (init()), forms.js (_confirmInput())
 
@@ -438,6 +438,6 @@ const library = (() => {
     events.subscribe('openProjectOptionsQuery', _queryProjectNamesIDs)  // published from forms.js (_showForm())
 
     events.subscribe('confirmDeleteProject', _deleteProject);    // published from forms.js (confirmDeleteButton eventListener)
-    events.subscribe('clickDeleteTask', _deleteTask);    // published from domDisplay.js (_render...(task)Headers())
-    events.subscribe('clickDeleteChecklistItem', _deleteChecklistItem)  // published from domDisplay.js (_renderCheckboxControls())
+    events.subscribe('clickDeleteTask', _deleteTask);    // published from display.js (_render...(task)Headers())
+    events.subscribe('clickDeleteChecklistItem', _deleteChecklistItem)  // published from display.js (_renderCheckboxControls())
 })();
