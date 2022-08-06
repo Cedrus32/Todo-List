@@ -154,10 +154,10 @@ const forms = (() => {
                 };
                 break;
             case 'task':
-                if (values[7] === undefined) {
-                    values.splice(7, 1);
-                    console.log(values);
-                };
+                // if (values[7] === undefined) {
+                //     values.splice(7, 1);
+                //     console.log(values);
+                // };
     
                 for (let i = 0; i < (values.length); i++) {
                     switch (i) {
@@ -194,9 +194,14 @@ const forms = (() => {
 
             if (_currentProject === projectID) {
                 optionProject.selected = true;
-            }
+            };
 
             projectDropdown.appendChild(optionProject);
+        };
+    }
+    function _removeProjectOptions(taskFormInputsIndex) {
+        while (taskFormInputs[taskFormInputsIndex].firstChild) {
+            taskFormInputs[taskFormInputsIndex].removeChild(taskFormInputs[taskFormInputsIndex].lastChild);
         };
     }
     function _bundleFormValues() {
@@ -259,19 +264,13 @@ const forms = (() => {
                             taskFormInputs[i].selectedIndex = 0;
                             break;
                         case (i === 7):
-                            while (taskFormInputs[7].firstChild) {
-                                taskFormInputs[7].removeChild(taskFormInputs[7].lastChild);
-                            };
+                            _removeProjectOptions(i);
                     };
                 };
                 break;
             case checkboxForm:
                 checkboxFormInputs.forEach(input => input.value = '');
         };
-
-        // if (_currentForm === taskForm) {
-        //     _removeProjectOptions();
-        // };
 
         _currentForm = '';
         _currentFormType = '';
