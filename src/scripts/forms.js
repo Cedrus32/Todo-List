@@ -132,7 +132,13 @@ const forms = (() => {
         };
     }
     function _setCurrentProject(project) {
-        _currentProject = project.id;
+        switch (true) {
+            case (project[0] !== undefined):
+                _currentProject = project[1].id;
+                break;
+            default:
+                _currentProject = project.id;
+        };
     }
     function _showForm() {
         _currentForm.classList.remove('hide');
@@ -328,7 +334,7 @@ const forms = (() => {
     events.subscribe('closeModifyInstanceQuery', _openModifyForm);  // publishing from library.js (_queryItemInstance());
 
     events.subscribe('projectCreated', _setCurrentProject); // published from library.js (_createProject())
-    // events.subscribe('') // published from sidebar.js (...)
+    events.subscribe('updateDisplayView', _setCurrentProject) // published from library.js (_bundleInstances())
     events.subscribe('closeProjectOptionsQuery', _renderProjectOptions);  // publishing from library.js (_queryProjectNameID())
 
     events.subscribe('clickDeleteProject', _showDeleteProjectConfirmation);    // published from domDisplay.js (_renderProjectHeader())
