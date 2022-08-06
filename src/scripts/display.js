@@ -160,7 +160,7 @@ const display = (() => {
         let cardID = '#project_' + project.id;
         let projectCard = div('', '.card', '.project', cardID);
 
-        let projectHeader = _renderProjectHeader(project.title);
+        let projectHeader = _renderProjectHeader(project.id, project.title);
         let projectDescription = div(project.description, '.description');
 
         projectCard.append(projectHeader, projectDescription);
@@ -168,23 +168,26 @@ const display = (() => {
 
         _fillTaskCounter('');
     }
-    const _renderProjectHeader = function(title) {
+    const _renderProjectHeader = function(id, title) {
         let divHeader = div('', '.header');
 
         let h1Title = h1(title, '.title');
         let spanModify = span('...', '.project', '.modify');
-        let spanDelete = span('X', '.delete');
-
         // * project modify/delete events
         spanModify.addEventListener('click', (e) => {   // ! align to pass similar arguments?
             events.publish('clickModifyItem', e);   // subscribed by forms.js
         });
-        spanDelete.addEventListener('click', (e) => {
-            let cardID = e.target.closest('div.card').id;
-            events.publish('clickDeleteProject', cardID);   // subscribed by forms.js
-        });
+        divHeader.append(h1Title, spanModify);
 
-        divHeader.append(h1Title, spanModify, spanDelete);
+        if (id !== 0) {
+            let spanDelete = span('X', '.delete');
+            spanDelete.addEventListener('click', (e) => {
+                let cardID = e.target.closest('div.card').id;
+                events.publish('clickDeleteProject', cardID);   // subscribed by forms.js
+            });
+            divHeader.appendChild(spanDelete);
+        };
+        
         return divHeader;
     }
 
