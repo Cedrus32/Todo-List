@@ -93,8 +93,11 @@ const sidebar = (() => {
             projectLink.textContent = itemInstance.title;
         };
     }
-    function _removeProjectLink(linkReference) {
-        let liProject = document.getElementById(`view-${linkReference}`);
+    function _removeProjectLink(projectCardID) {
+        let linkReference = projectCardID.split('_')[1];
+        console.log(linkReference);
+
+        let liProject = document.getElementById(`view_${linkReference}`);
         let ulContainer = liProject.parentElement;
 
         ulContainer.removeChild(liProject);
