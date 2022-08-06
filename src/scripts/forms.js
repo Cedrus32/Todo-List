@@ -8,6 +8,7 @@ const forms = (() => {
     // data
     let _currentForm;
     let _currentFormType;
+    let _currentProject;
 
     // cache DOM
     let projectForm = document.getElementById('project-form');
@@ -53,6 +54,7 @@ const forms = (() => {
                 _setFormReferences(formReference);
                 if (formReference === 'task') {
                     _enableTaskTypeSelection();
+                    events.publish('openProjectOptionsQuery', '');  // subscribed by library.js
                 };
         };
         _showForm();
@@ -129,11 +131,11 @@ const forms = (() => {
                 _currentFormType = 'checkbox';
         };
     }
+    function _setCurrentProject(project) {
+        _currentProject = project.id;
+    }
     function _showForm() {
         _currentForm.classList.remove('hide');
-        if (_currentForm === taskForm) {
-            events.publish('openProjectOptionsQuery', '');  // subscribed by library.js
-        };
     }
     function _hideForm() {
         _currentForm.classList.add('hide');
@@ -169,6 +171,7 @@ const forms = (() => {
                             taskFormInputs[i + 1].value = values[i];
                     };
                 };
+                events.publish('openProjectOptionsQuery', '');  // subscribed by library.js
                 break;
             case 'checkbox':
                 let instanceReferences = `${values[1]}_${values[2]}`;
@@ -182,6 +185,11 @@ const forms = (() => {
             let projectName = array[i][0];
             let projectID = array[i][1];
             let optionProject = option(projectID, projectName);
+
+            if (_currentProject === projectID) {
+                optionProject.selected = true;
+            }
+
             projectDropdown.appendChild(optionProject);
         };
     }
@@ -319,6 +327,8 @@ const forms = (() => {
     events.subscribe('clickModifyItem', _openModifyInstanceQuery);  // publishing from domDisplay.js (_render...Header())
     events.subscribe('closeModifyInstanceQuery', _openModifyForm);  // publishing from library.js (_queryItemInstance());
 
+    events.subscribe('projectCreated', _setCurrentProject); // published from library.js (_createProject())
+    // events.subscribe('') // published from sidebar.js (...)
     events.subscribe('closeProjectOptionsQuery', _renderProjectOptions);  // publishing from library.js (_queryProjectNameID())
 
     events.subscribe('clickDeleteProject', _showDeleteProjectConfirmation);    // published from domDisplay.js (_renderProjectHeader())
