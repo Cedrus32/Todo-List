@@ -1,7 +1,8 @@
 import events from '../events';
 import { label, option } from './elements';
 
-// * manages interface between form DOM & library arrays
+// & manages form section DOMs <-> library/display communication
+//// contains factories for generating display section DOM elements / groupings
 
 const forms = (() => {
     // data
@@ -44,7 +45,7 @@ const forms = (() => {
         console.log(formReference);
 
         switch (true) {
-            case ((typeof formReference) === 'object'):   // * store task reference when creating new checklist item
+            case ((typeof formReference) === 'object'):   // * stores task reference when creating new checklist item
                 checkboxFormInputs[0].value = formReference[1];
                 _setFormReferences(formReference[0]);
                 break;

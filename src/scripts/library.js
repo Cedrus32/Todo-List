@@ -1,6 +1,6 @@
 import events from '../events';
 
-// * 'backend' manager module containing project/task states, classes, & methods
+// & 'backend' manager module containing project/task states, classes, & methods
 
 const library = (() => {
     // dynamic data
