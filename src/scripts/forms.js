@@ -1,45 +1,45 @@
 import events from '../events';
-import { label, option } from './elements';
+import { span, input, label, option, legend } from './elements';
 
 // & manages display/sidebar section DOMs -> form section DOMs <-> library communication
 // & contains factories for generating form section DOM elements / groupings
 
 const forms = (() => {
-    // data
-    let _currentForm;
+    // let _currentForm;
     let _currentFormType;
     let _currentProject;
 
     // cache DOM
-    let projectForm = document.getElementById('project-form');
-    let deleteConfirmAlert = document.getElementById('delete-confirm');
-    let taskForm = document.getElementById('task-form');
-    let checkboxForm = document.getElementById('checkbox-form');
+    let formContainer = document.querySelector('.form-container');
+    // let projectForm = document.getElementById('project-form');
+    // let deleteConfirmAlert = document.getElementById('delete-confirm');
+    // let taskForm = document.getElementById('task-form');
+    // let checkboxForm = document.getElementById('checkbox-form');
 
-    let projectFormInputs = projectForm.querySelectorAll('input');
-    let taskFormInputs = taskForm.querySelectorAll('.input');
-    let checkboxFormInputs = checkboxForm.querySelectorAll('input');
+    // let projectFormInputs = projectForm.querySelectorAll('input');
+    // let taskFormInputs = taskForm.querySelectorAll('.input');
+    // let checkboxFormInputs = checkboxForm.querySelectorAll('input');
 
     let confirmButtons = document.querySelectorAll('button.confirm');
     let cancelButtons = document.querySelectorAll('button.cancel');
-    let confirmDeleteFormButton = document.querySelector('button.delete-confirm');
-    let cancelDeleteFormButton = document.querySelector('button.delete-cancel');
+    // let confirmDeleteFormButton = document.querySelector('button.delete-confirm');
+    // let cancelDeleteFormButton = document.querySelector('button.delete-cancel');
 
     // event listeners
-    confirmButtons.forEach(btn => btn.addEventListener('click', (e) => {
-        _confirmInput(e);
-    }));
-    cancelButtons.forEach(btn => btn.addEventListener('click', () => {
-        _cancelInput();
-    }));
-    confirmDeleteFormButton.addEventListener('click', () => {
-        deleteConfirmAlert.classList.add('hide');
-        let projectCardID = document.querySelector('div.project.card').id;
-        events.publish('confirmDeleteProject', projectCardID);  // subscribed by library.js
-    })
-    cancelDeleteFormButton.addEventListener('click', () => {
-        deleteConfirmAlert.classList.add('hide');
-    });
+    // confirmButtons.forEach(btn => btn.addEventListener('click', (e) => {
+    //     _confirmInput(e);
+    // }));
+    // cancelButtons.forEach(btn => btn.addEventListener('click', () => {
+    //     _cancelInput();
+    // }));
+    // confirmDeleteFormButton.addEventListener('click', () => {
+    //     deleteConfirmAlert.classList.add('hide');
+    //     let projectCardID = document.querySelector('div.project.card').id;
+    //     events.publish('confirmDeleteProject', projectCardID);  // subscribed by library.js
+    // })
+    // cancelDeleteFormButton.addEventListener('click', () => {
+    //     deleteConfirmAlert.classList.add('hide');
+    // });
 
     // form managers
     function _openCreateForm(formReference) {
@@ -49,12 +49,18 @@ const forms = (() => {
             case ((typeof formReference) === 'object'):   // * stores task reference when creating new checklist item
                 checkboxFormInputs[0].value = formReference[1];
                 _setFormReferences(formReference[0]);
+                _renderCheckboxForm();
                 break;
             case ((typeof formReference) === 'string'):
                 _setFormReferences(formReference);
-                if (formReference === 'task') {
-                    _enableTaskTypeSelection();
-                    events.publish('openProjectOptionsQuery', '');  // subscribed by library.js
+                switch (_currentFormType) {
+                    case 'project':
+                        _renderProjectForm();
+                    //     break;
+                    // case 'task':
+                    //     _renderTaskForm();
+                    // case 'delete':
+                    //     _renderDeleteConfirmForm();
                 };
         };
         _showForm();
@@ -119,15 +125,15 @@ const forms = (() => {
     function _setFormReferences(formReference) {
         switch (formReference) {
             case 'project':
-                _currentForm = projectForm;
+                formContainer.id = 'project-form'
                 _currentFormType = 'project';
                 break;
             case 'task':
-                _currentForm = taskForm;
+                formContainer.id = 'task-form'
                 _currentFormType = 'task';
                 break;
             case 'checkbox':
-                _currentForm = checkboxForm;
+                formContainer.id = 'checkbox-form'
                 _currentFormType = 'checkbox';
         };
     }
@@ -141,7 +147,7 @@ const forms = (() => {
         };
     }
     function _showForm() {
-        _currentForm.classList.remove('hide');
+        formContainer.classList.remove('hide');
     }
     function _hideForm() {
         _currentForm.classList.add('hide');
@@ -154,10 +160,6 @@ const forms = (() => {
                 };
                 break;
             case 'task':
-                // if (values[7] === undefined) {
-                //     values.splice(7, 1);
-                //     console.log(values);
-                // };
     
                 for (let i = 0; i < (values.length); i++) {
                     switch (i) {
@@ -183,20 +185,6 @@ const forms = (() => {
                 let instanceReferences = `${values[1]}_${values[2]}`;
                 checkboxFormInputs[0].value = instanceReferences;
                 checkboxFormInputs[1].value = values[3];
-        };
-    }
-    function _renderProjectOptions(array) {
-        let projectDropdown = taskFormInputs[7];
-        for (let i = 0; i < (array.length); i++) {
-            let projectName = array[i][0];
-            let projectID = array[i][1];
-            let optionProject = option(projectID, projectName);
-
-            if (_currentProject === projectID) {
-                optionProject.selected = true;
-            };
-
-            projectDropdown.appendChild(optionProject);
         };
     }
     function _removeProjectOptions(taskFormInputsIndex) {
@@ -322,6 +310,46 @@ const forms = (() => {
     function _hideErrorMessage(input) {
         let label = input.previousElementSibling;
         label.lastChild.classList.add('hide');
+    }
+
+    // form factories
+    const _renderProjectOptions = function(array) {
+        let projectDropdown = taskFormInputs[7];
+        for (let i = 0; i < (array.length); i++) {
+            let projectName = array[i][0];
+            let projectID = array[i][1];
+            let optionProject = option(projectID, projectName);
+
+            if (_currentProject === projectID) {
+                optionProject.selected = true;
+            };
+
+            projectDropdown.appendChild(optionProject);
+        };
+    }
+    const _renderProjectForm = function() {
+        let formFieldset = formContainer.querySelector('fieldset');
+        console.log(formFieldset);
+
+        let fieldsetLegend = legend('Create a New Project', '');
+
+        let spanRequiredBadge = span('*', '.required-badge');
+        let spanErrorMessage = span('please include a title', '.error-message', '.hide');
+        let titleLabel = label('title ', 'project-title');
+        titleLabel.append(spanRequiredBadge, spanErrorMessage);
+        let titleInput = input('text', 'project-title', 'title');
+
+        let descriptionLabel = label('description', '.project-description');
+        let descriptionInput = input('text', 'project-description', 'description');
+
+        formFieldset.append(fieldsetLegend, titleLabel, titleInput, descriptionLabel, descriptionInput);
+    }
+    const _renderTaskForm = function() {
+        // render form inputs/labels
+
+        _enableTaskTypeSelection();
+
+        events.publish('openProjectOptionsQuery', '');  // subscribed by library.js
     }
 
     // event subscriptions
