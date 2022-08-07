@@ -405,11 +405,11 @@ const forms = (() => {
         let spanErrorMessage = span('please include a title', '.error-message', '.hide');
         let titleLabel = label('title ', 'project-title');
         titleLabel.append(spanRequiredBadge, spanErrorMessage);
-        let titleInput = input('text', 'checkbox-title', 'title', 'checkbox-title', '');
+        let inputTitle = input('text', 'checkbox-title', 'title', 'checkbox-title', '');
         inputTitle.required = true;
         inputTitle.ariaRequired = true;
 
-        formFieldset.append(fieldsetLegend, titleLabel, titleInput);
+        formFieldset.append(fieldsetLegend, titleLabel, inputTitle);
 
         formInputs = formContainer.querySelectorAll('input');
         formInputs[0].value = taskReference;    // * passed to library.js for indexing correct task
