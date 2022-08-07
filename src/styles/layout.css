@@ -101,8 +101,7 @@ fieldset {
             width: 50%;
         }
 
-#project-buttons,
-#task-buttons {
+.form-buttons {
     display: flex;
     justify-content: center;
 }
