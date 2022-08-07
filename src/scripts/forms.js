@@ -239,6 +239,7 @@ const forms = (() => {
         _currentFormType = '';
     }
     function _removeFormElements() {
+        let fieldsetChildrenLength = formFieldset.children.length;
         for (let i = 0; i < (fieldsetChildrenLength); i++) {
             while (formFieldset.firstChild) {
                 formFieldset.removeChild(formFieldset.lastChild);
