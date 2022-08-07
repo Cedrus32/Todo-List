@@ -1,5 +1,5 @@
 import events from '../events';
-import { default as div, span, input, label, select, option, legend } from './elements';
+import { default as div, span, p, input, label, select, option, legend } from './elements';
 
 // & manages display/sidebar section DOMs -> form section DOMs <-> library communication
 // & contains factories for generating form section DOM elements / groupings
@@ -61,9 +61,6 @@ const forms = (() => {
                         break;
                     case 'task':
                         _renderTaskForm();
-                        break;
-                    // case 'delete':
-                    //     _renderDeleteConfirmForm();
                 };
         };
 
@@ -105,18 +102,26 @@ const forms = (() => {
 
     // form actions
     function _confirmInput() {
-        let isValid = _validateForm();
-
-        switch(isValid) {
-            case true:
+        switch (_currentFormType) {
+            case 'delete-confirm':
                 _hideForm();
-                let formValues = _bundleFormValues();
-                _findErrors('hide');
+                let projectCardID = document.querySelector('div.project.card').id;
                 _clearFormValues();
-                events.publish('confirmInput', formValues);    // subscribed by library.js
+                events.publish('confirmDeleteProject', projectCardID);  // subscribed by library.js
                 break;
-            case false:
-                _findErrors('show');
+            default:
+                let isValid = _validateForm();
+                switch(isValid) {
+                    case true:
+                        _hideForm();
+                        let formValues = _bundleFormValues();
+                        _findErrors('hide');
+                        _clearFormValues();
+                        events.publish('confirmInput', formValues);    // subscribed by library.js
+                        break;
+                    case false:
+                        _findErrors('show');
+                };
         };
     }
     function _cancelInput() {
@@ -124,7 +129,9 @@ const forms = (() => {
         _clearFormValues();
     }
     function _showDeleteProjectConfirmation() {
-        deleteConfirmAlert.classList.remove('hide');
+        _setFormReferences('delete-confirm');
+        _renderDeleteConfirmationForm();
+        formContainer.classList.remove('hide');
     }
 
     // helper methods  
@@ -141,6 +148,10 @@ const forms = (() => {
             case 'checkbox':
                 formContainer.id = 'checkbox-form'
                 _currentFormType = 'checkbox';
+                break;
+            case 'delete-confirm':
+                formContainer.id = 'delete-confirm';
+                _currentFormType = 'delete-confirm';
         };
     }
     function _setCurrentProject(project) {
@@ -205,7 +216,6 @@ const forms = (() => {
     }
     function _bundleFormValues() {
         //// console.log(_currentFormType);
-        // formInputs = document.querySelectorAll('input');
         let formValues = [];
 
         switch (_currentFormType) {
@@ -242,11 +252,12 @@ const forms = (() => {
     }
     function _clearFormValues() {
         _removeFormElements();
-
-        if (formInputs[0].classList.contains('input')) {
-            formInputs[0].classList.remove('input');
+        if (_currentFormType !== 'delete-confirm') {
+            if (formInputs[0].classList.contains('input')) {
+                formInputs[0].classList.remove('input');
+            };
+            formInputs[0].value = '';
         };
-        formInputs[0].value = '';
         formInputs = '';
         _currentFormType = '';
     }
@@ -408,6 +419,14 @@ const forms = (() => {
 
         formInputs = formContainer.querySelectorAll('input');
         formInputs[0].value = taskReference;    // * passed to library.js for indexing correct task
+    }
+    const _renderDeleteConfirmationForm = function() {
+        let fieldsetLegend = legend('Delete this Project', '');
+
+        let p1 = p('Deleting a project will also delete all of its tasks.', '');
+        let p2 = p('Are you SURE you want to proceed?', '');
+        
+        formFieldset.append(fieldsetLegend, p1, p2);
     }
 
     // event subscriptions
