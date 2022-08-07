@@ -2,7 +2,7 @@ import events from '../events';
 import { label, option } from './elements';
 
 // & manages display/sidebar section DOMs -> form section DOMs <-> library communication
-//// contains factories for generating form section DOM elements / groupings
+// & contains factories for generating form section DOM elements / groupings
 
 const forms = (() => {
     // data

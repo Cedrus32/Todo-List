@@ -24,7 +24,7 @@ const sidebar = (() => {
     });
     
     viewAllButton.addEventListener('click', (e) => {
-        _clickViewPreferenceLink('all', e);
+        _changeViewPreference('all', e.target.id);
     });
     viewTodayButton.addEventListener('click', () => {
         console.log('view tasks due today');
@@ -36,17 +36,18 @@ const sidebar = (() => {
         console.log('view tasks with no due dates');
     });
     viewUnsortedButton.addEventListener('click', (e) => {
-        _clickViewPreferenceLink('project', e);
+        _changeViewPreference('project', e.target.id);
     });
     createProjectButton.addEventListener('click', () => {
         events.publish('clickCreateProject', 'project');    // subscribed by forms.js
     });
 
     // managers
-    function _clickViewPreferenceLink(viewPreference, event) {
+    function _changeViewPreference(preferenceKeyword, targetID) {
+        console.log(targetID);
         let queryReference;
 
-        switch (viewPreference) {
+        switch (preferenceKeyword) {
             case 'today':
                 // get today's date (from date time api)
                 // target reference = today's date
@@ -57,14 +58,14 @@ const sidebar = (() => {
                 // target reference = today's date
                 break;
             case 'project':
-                let splitID = event.target.id.split('_');
+                let splitID = targetID.split('_');
                 queryReference = splitID[1];
             //     break;
             // default:
             //     queryReference = '';
         };
 
-        events.publish('openViewPreferenceQuery', viewPreference, queryReference); // subscribed by library.js
+        events.publish('openViewPreferenceQuery', preferenceKeyword, queryReference); // subscribed by library.js
     }
 
     // factories
@@ -77,7 +78,7 @@ const sidebar = (() => {
             let liProjectLink = li(title, liID);
 
             liProjectLink.addEventListener('click', (e) => {
-                _clickViewPreferenceLink('project', e);
+                _changeViewPreference('project', e.target.id);
             });
 
             projectsList.appendChild(liProjectLink);
@@ -99,6 +100,14 @@ const sidebar = (() => {
         let ulContainer = liProject.parentElement;
 
         ulContainer.removeChild(liProject);
+
+        switch (true) {
+            case (ulContainer.children.length > 1):
+                _changeViewPreference('project', ulContainer.lastChild.id);
+                break;
+            default:
+                _changeViewPreference('project', 'project_0');
+        };
     }
 
     // event subscriptions
