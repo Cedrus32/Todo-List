@@ -156,7 +156,7 @@ const library = (() => {
                 for (let p = 0; p < (_projectLibrary.length); p++) {
                     if (_projectLibrary[p].id == instanceReference) {
                         let item = _projectLibrary[p];
-                        itemValueArray = [item.id, item.title, item.description];
+                        itemValueArray = ['project', item.id, item.title, item.description];
                     };
                 };
                 break;
@@ -164,7 +164,7 @@ const library = (() => {
                 for (let t = 0; t < (_taskLibrary.length); t++) {
                     if (_taskLibrary[t].id == instanceReference) {
                         let item = _taskLibrary[t];
-                        itemValueArray = [item.id, item.type, item.title, item.description, item.dueDate, item.priority, item.projectID];
+                        itemValueArray = ['task', item.id, item.type, item.title, item.description, item.dueDate, item.priority, item.projectID];
                     };
                 };
                 break;

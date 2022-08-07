@@ -12,7 +12,7 @@ const forms = (() => {
     // cache DOM
     let formContainer = document.querySelector('.form-container');
     let formFieldset = formContainer.querySelector('fieldset');
-    let formInputs;
+    let formInputs; // * queried after form elements are rendered
     // let projectForm = document.getElementById('project-form');
     // let deleteConfirmAlert = document.getElementById('delete-confirm');
     // let taskForm = document.getElementById('task-form');
@@ -59,12 +59,15 @@ const forms = (() => {
                     case 'project':
                         _renderProjectForm();
                         break;
-                    case 'task':
-                        _renderTaskForm();
+                    // case 'task':
+                    //     _renderTaskForm();
                     // case 'delete':
                     //     _renderDeleteConfirmForm();
                 };
         };
+
+        console.log(formInputs);
+
         _showForm();
     }
     function _openModifyInstanceQuery(event) {
@@ -80,22 +83,22 @@ const forms = (() => {
         };
 
         switch (isCheckbox) {
+            case false:
+                targetItemReferences = event.target.closest('div.card').id.split('_');
+                break;
             case true:
                 let formTypeReference = 'checkbox';
                 let taskReference = event.target.closest('div.card').id.split('_')[1];
                 let checkboxReference = event.target.closest('li.card').id.split('__')[1].split('_')[1];
                 targetItemReferences = [formTypeReference, [taskReference, checkboxReference]]; // * taskReference & checkboxReference must be bundled, split in library.js
-                break;
-            case false:
-                targetItemReferences = event.target.closest('div.card').id.split('_');
         };
 
-        _setFormReferences(targetItemReferences[0]);    // ? move to openModifyForm incase query fails?
         events.publish('openModifyInstanceQuery', targetItemReferences);  // subscribed by library.js
     }
     function _openModifyForm(itemValues) {
+        console.log(itemValues);
+        _setFormReferences(itemValues[0]);
         _fillFormValues(itemValues);
-        _disableTaskTypeSelection();
         _showForm();
     }
 
@@ -157,36 +160,39 @@ const forms = (() => {
     function _fillFormValues(values) {
         switch (_currentFormType) {
             case 'project':
-                for (let i = 0; i < (values.length); i++) {
-                    projectFormInputs[i].value = values[i];
+                _renderProjectForm();
+                // formInputs = document.querySelectorAll('input');
+                for (let i = 0; i < (formInputs.length); i++) {
+                    console.log(i);
+                    formInputs[i].value = values[i + 1];
                 };
                 break;
             case 'task':
-    
-                for (let i = 0; i < (values.length); i++) {
+                for (let i = 1; i < (values.length); i++) {
                     switch (i) {
                         case 0:
-                            taskFormInputs[i].value = values[i];
+                            formInputs[i].value = values[i];
                             break;
                         case 1:
                             switch (values[1]) {
                                 case 'singleton':
-                                    taskFormInputs[1].checked = true;
+                                    formInputs[1].checked = true;
                                     break;
                                 case 'checklist':
-                                    taskFormInputs[2].checked = true;
+                                    formInputs[2].checked = true;
                             };
                             break;
                         default:
-                            taskFormInputs[i + 1].value = values[i];
+                            formInputs[i + 1].value = values[i];
                     };
                 };
+                _disableTaskTypeSelection();
                 events.publish('openProjectOptionsQuery', '');  // subscribed by library.js
                 break;
             case 'checkbox':
                 let instanceReferences = `${values[1]}_${values[2]}`;
-                checkboxFormInputs[0].value = instanceReferences;
-                checkboxFormInputs[1].value = values[3];
+                formInputs[0].value = instanceReferences;
+                formInputs[1].value = values[3];
         };
     }
     function _removeProjectOptions(taskFormInputsIndex) {
@@ -196,6 +202,7 @@ const forms = (() => {
     }
     function _bundleFormValues() {
         //// console.log(_currentFormType);
+        formInputs = document.querySelectorAll('input');
         let formValues = [];
 
         switch (_currentFormType) {
@@ -311,7 +318,8 @@ const forms = (() => {
 
         formFieldset.append(fieldsetLegend, titleLabel, titleInput, descriptionLabel, descriptionInput);
 
-        formInputs = document.querySelectorAll('input');
+        formInputs = formContainer.querySelectorAll('input');
+        console.log(formInputs);
     }
     const _renderTaskForm = function() {
         // render form inputs/labels
