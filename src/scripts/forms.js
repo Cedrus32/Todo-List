@@ -13,19 +13,8 @@ const forms = (() => {
     let formContainer = document.querySelector('.form-container');
     let formFieldset = formContainer.querySelector('fieldset');
     let formInputs; // * queried after form elements are rendered
-    // let projectForm = document.getElementById('project-form');
-    // let deleteConfirmAlert = document.getElementById('delete-confirm');
-    // let taskForm = document.getElementById('task-form');
-    // let checkboxForm = document.getElementById('checkbox-form');
-
-    // let projectFormInputs = projectForm.querySelectorAll('input');
-    // let taskFormInputs = taskForm.querySelectorAll('.input');
-    // let checkboxFormInputs = checkboxForm.querySelectorAll('input');
-
     let confirmButton = document.querySelectorAll('button.confirm');
     let cancelButton = document.querySelectorAll('button.cancel');
-    // let confirmDeleteFormButton = document.querySelector('button.delete-confirm');
-    // let cancelDeleteFormButton = document.querySelector('button.delete-cancel');
 
     // event listeners
     confirmButton.forEach(btn => btn.addEventListener('click', (e) => {
@@ -34,14 +23,6 @@ const forms = (() => {
     cancelButton.forEach(btn => btn.addEventListener('click', () => {
         _cancelInput();
     }));
-    // confirmDeleteFormButton.addEventListener('click', () => {
-    //     deleteConfirmAlert.classList.add('hide');
-    //     let projectCardID = document.querySelector('div.project.card').id;
-    //     events.publish('confirmDeleteProject', projectCardID);  // subscribed by library.js
-    // })
-    // cancelDeleteFormButton.addEventListener('click', () => {
-    //     deleteConfirmAlert.classList.add('hide');
-    // });
 
     // form managers
     function _openCreateForm(formReference) {

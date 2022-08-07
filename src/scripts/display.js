@@ -72,7 +72,7 @@ const display = (() => {
                 cardID = `task_${itemInstance.id}`;
                 card = document.getElementById(cardID);
     
-                let taskValues = [itemInstance.title, itemInstance.description, itemInstance.dueDate, itemInstance.priority];
+                let taskValues = [itemInstance.title, itemInstance.description, itemInstance.dueDate, itemInstance.priority, itemInstance.projectID];
                 for (let i = 0; i < (taskValues.length); i++) {
                     switch(i) {
                         case 0:
@@ -98,6 +98,14 @@ const display = (() => {
                         case 3:
                             let priority = card.querySelector('.priority');
                             priority.textContent = taskValues[3];
+                            break;
+                        case 4:
+                            let currentProjectCardID = projectContainer.querySelector('.card').id;
+                            let currentProjectReference = currentProjectCardID.split('_')[1];
+                            console.log(currentProjectReference);
+                            if (taskValues[4] !== currentProjectReference) {
+                                _deleteTaskCard(cardID);
+                            };
                     };
                 };
                 break;
