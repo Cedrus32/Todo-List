@@ -219,7 +219,7 @@ const display = (() => {
         switch (task.type) {
             case 'singleton':
                 taskCard = div('', '.card', '.singleton', `#${cardID}`)
-                let singletonCheckmark = input(task.id);
+                let singletonCheckmark = input('checkbox', task.id, '');
                 let singletonCardContent = _renderSingletonContent(task.id, task.title, task.dueDate, task.description, task.priority);
                 taskCard.append(singletonCheckmark, singletonCardContent);
                 break;
@@ -331,7 +331,7 @@ const display = (() => {
         let liCard = li('', '.card', liCardID);
 
         let checkboxID = `${taskCardID}__checkbox_${checkID}`;  // # not needed vv
-        let checkbox = input(checkboxID);  // sets ID directly via default object prototype methods
+        let checkbox = input('checkbox', checkboxID, '');  // sets ID directly via default object prototype methods
         let labelCheckbox = label(checkContent, checkboxID, '');
         let checkboxControls = _renderCheckboxControls(checkboxID);
 
