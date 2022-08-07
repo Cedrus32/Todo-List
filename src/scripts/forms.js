@@ -313,10 +313,12 @@ const forms = (() => {
         let spanErrorMessage = span('please include a title', '.error-message', '.hide');
         let labelTitle = label('title ', 'project-title');
         labelTitle.append(spanRequiredBadge, spanErrorMessage);
-        let inputTitle = input('text', 'project-title', 'title');
+        let inputTitle = input('text', 'project-title', 'project-title', 'title', '');
+        inputTitle.required = true;
+        inputTitle.ariaRequired = true;
 
         let labelDescription = label('description', '.project-description');
-        let inputDescription = input('text', 'project-description', 'description');
+        let inputDescription = input('text', 'project-description', 'project-description', 'description', '');
 
         formFieldset.append(fieldsetLegend, labelTitle, inputTitle, labelDescription, inputDescription);
 
@@ -335,9 +337,11 @@ const forms = (() => {
 
         let spanRequiredBadge = span('*', '.required-badge');
         let spanErrorMessage = span('please include a title', '.error-message', '.hide');
-        let labelTitle = label('Title', 'task-title');
+        let labelTitle = label('Title ', 'task-title');
         labelTitle.append(spanRequiredBadge, spanErrorMessage);
-        let inputTitle = input('text', 'task-title', 'task-title', 'title', '.input')
+        let inputTitle = input('text', 'task-title', 'task-title', 'title', '.input');
+        inputTitle.required = true;
+        inputTitle.ariaRequired = true;
 
         // ...
 
@@ -360,7 +364,9 @@ const forms = (() => {
         let spanErrorMessage = span('please include a title', '.error-message', '.hide');
         let titleLabel = label('title ', 'project-title');
         titleLabel.append(spanRequiredBadge, spanErrorMessage);
-        let titleInput = input('text', 'project-title', 'title');
+        let titleInput = input('text', 'checkbox-title', 'checkbox-title', 'title', '');
+        inputTitle.required = true;
+        inputTitle.ariaRequired = true;
 
         formFieldset.append(fieldsetLegend, titleLabel, titleInput);
 
