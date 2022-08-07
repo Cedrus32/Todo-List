@@ -46,7 +46,7 @@ const display = (() => {
         };
     }
     function _updateItem(itemInstance) {
-        //// console.log(itemInstance);
+        console.log(itemInstance);
         let cardID;
         let card;
 

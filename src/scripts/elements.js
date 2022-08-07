@@ -65,7 +65,7 @@ const li = function(content, ...args) {
     _attributes = [];
     return element;
 }
-const input = function(type, id, name, placeholder, ...args) {
+const input = function(type, name, placeholder, id, ...args) {
     _attributes = [...args];
     element = document.createElement('input');
     if (_attributes.length > 0) {

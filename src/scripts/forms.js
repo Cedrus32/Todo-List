@@ -169,13 +169,15 @@ const forms = (() => {
                 break;
             case 'task':
                 _renderTaskForm();
+                console.log(values);
+                console.log(formInputs);
                 for (let i = 1; i < (values.length); i++) {
                     switch (i) {
-                        case 0:
-                            formInputs[i].value = values[i];
-                            break;
                         case 1:
-                            switch (values[1]) {
+                            formInputs[i - 1].value = values[i];
+                            break;
+                        case 2:
+                            switch (values[2]) {
                                 case 'singleton':
                                     formInputs[1].checked = true;
                                     break;
@@ -184,11 +186,10 @@ const forms = (() => {
                             };
                             break;
                         default:
-                            formInputs[i + 1].value = values[i];
+                            formInputs[i].value = values[i];
                     };
                 };
                 _disableTaskTypeSelection();
-                events.publish('openProjectOptionsQuery', '');  // subscribed by library.js
                 break;
             case 'checkbox':
                 _renderCheckboxForm();
@@ -244,6 +245,11 @@ const forms = (() => {
     }
     function _clearFormValues() {
         _removeFormElements();
+
+        if (formInputs[0].classList.contains('input')) {
+            formInputs[0].classList.remove('input');
+        };
+        formInputs[0].value = '';
         formInputs = '';
         _currentFormType = '';
     }
@@ -260,8 +266,8 @@ const forms = (() => {
         formInputs[2].disabled = false;
     }
     function _disableTaskTypeSelection() {
-        taskFormInputs[1].disabled = true;
-        taskFormInputs[2].disabled = true;
+        formInputs[1].disabled = true;
+        formInputs[2].disabled = true;
     }
     function _validateForm() {
         return formContainer.querySelector('form').checkValidity();
@@ -299,12 +305,12 @@ const forms = (() => {
         let spanErrorMessage = span('please include a title', '.error-message', '.hide');
         let labelTitle = label('title ', 'project-title');
         labelTitle.append(spanRequiredBadge, spanErrorMessage);
-        let inputTitle = input('text', 'project-title', 'project-title', 'title', '');
+        let inputTitle = input('text', 'project-title', 'title', 'project-title', '');
         inputTitle.required = true;
         inputTitle.ariaRequired = true;
 
         let labelDescription = label('description', '.project-description');
-        let inputDescription = input('text', 'project-description', 'project-description', 'description', '');
+        let inputDescription = input('text', 'project-description', 'description', 'project-description', '');
 
         formFieldset.append(fieldsetLegend, labelTitle, inputTitle, labelDescription, inputDescription);
 
@@ -313,11 +319,12 @@ const forms = (() => {
     const _renderTaskForm = function() {        
         let fieldsetLegend = legend('Create a New Task', '');
 
+        let labelTaskType = label('Task Type', '');
         let divTypeOptions = div('', '.type-options');
-        let radioSingleton = input('radio', 'singleton', 'type', '', '.input');
+        let radioSingleton = input('radio', 'type', '', 'singleton', '.input',);
         radioSingleton.checked = true;
         let labelSingleton = label('Single Task', 'singleton', '');
-        let radioChecklist = input('radio', 'checklist', 'type', '', '.input');
+        let radioChecklist = input('radio', 'type', '', 'checklist', '.input');
         let labelChecklist = label('Task List', 'checklist', '');
         divTypeOptions.append(radioSingleton, labelSingleton, radioChecklist, labelChecklist);
 
@@ -325,15 +332,15 @@ const forms = (() => {
         let spanErrorMessage = span('please include a title', '.error-message', '.hide');
         let labelTitle = label('Title ', 'task-title');
         labelTitle.append(spanRequiredBadge, spanErrorMessage);
-        let inputTitle = input('text', 'task-title', 'task-title', 'title', '.input');
+        let inputTitle = input('text', 'task-title', 'title', 'task-title', '.input');
         inputTitle.required = true;
         inputTitle.ariaRequired = true;
 
         let labelDescription = label('Task Description', 'description');
-        let inputDescription = input('text', 'task-description', 'description', 'description', '.input');
+        let inputDescription = input('text', 'description', 'description', 'task-description', '.input');
 
         let labelDueDate = label('Due Date', 'due-date');
-        let inputDueDate = input('date', 'due-date', 'due-date', '', '.input');
+        let inputDueDate = input('date', 'due-date', '', 'due-date', '.input');
 
         let divDropdowns = div('', '.dropdowns');
         let divPriority = div('', '');
@@ -364,18 +371,18 @@ const forms = (() => {
         divProject.append(labelProject, selectProject);
         divDropdowns.append(divPriority, divProject);
 
-        formFieldset.append(fieldsetLegend, divTypeOptions, labelTitle, inputTitle, labelDescription, inputDescription, labelDueDate, inputDueDate, divDropdowns);
+        formFieldset.append(fieldsetLegend, labelTaskType, divTypeOptions, labelTitle, inputTitle, labelDescription, inputDescription, labelDueDate, inputDueDate, divDropdowns);
 
-        let projectReference = formContainer.querySelector('input');
-        projectReference.classList.add('input');
-        console.log(projectReference);
-        projectReference.value = _currentProject;
+        let projectReferenceContainer = formContainer.querySelector('input');
+        projectReferenceContainer.classList.add('input');
+        console.log(projectReferenceContainer);
+        projectReferenceContainer.value = _currentProject;
 
         formInputs = formContainer.querySelectorAll('.input');
-        _enableTaskTypeSelection();
         events.publish('openProjectOptionsQuery', '');  // subscribed by library.js
     }
     const _renderProjectOptions = function(array) {
+        console.log(array);
         let projectDropdown = formInputs[7];
         console.log(formInputs);
         for (let i = 0; i < (array.length); i++) {
@@ -398,7 +405,7 @@ const forms = (() => {
         let spanErrorMessage = span('please include a title', '.error-message', '.hide');
         let titleLabel = label('title ', 'project-title');
         titleLabel.append(spanRequiredBadge, spanErrorMessage);
-        let titleInput = input('text', 'checkbox-title', 'checkbox-title', 'title', '');
+        let titleInput = input('text', 'checkbox-title', 'title', 'checkbox-title', '');
         inputTitle.required = true;
         inputTitle.ariaRequired = true;
 

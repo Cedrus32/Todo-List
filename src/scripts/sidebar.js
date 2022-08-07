@@ -74,7 +74,7 @@ const sidebar = (() => {
             let id = project.id;
             let title = project.title;
 
-            let liID = `#view_${id}`;
+            let liID = `#view-project_${id}`;
             let liProjectLink = li(title, liID);
 
             liProjectLink.addEventListener('click', (e) => {
