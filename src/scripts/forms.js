@@ -61,6 +61,9 @@ const forms = (() => {
                         break;
                     // case 'task':
                     //     _renderTaskForm();
+                    case 'checkbox':
+                        _renderCheckboxForm();
+                        break;
                     // case 'delete':
                     //     _renderDeleteConfirmForm();
                 };
@@ -161,7 +164,6 @@ const forms = (() => {
         switch (_currentFormType) {
             case 'project':
                 _renderProjectForm();
-                // formInputs = document.querySelectorAll('input');
                 for (let i = 0; i < (formInputs.length); i++) {
                     console.log(i);
                     formInputs[i].value = values[i + 1];
@@ -190,7 +192,8 @@ const forms = (() => {
                 events.publish('openProjectOptionsQuery', '');  // subscribed by library.js
                 break;
             case 'checkbox':
-                let instanceReferences = `${values[1]}_${values[2]}`;
+                _renderCheckboxForm();
+                let instanceReferences = `${values[1]}_${values[2]}`;   // * passed to library for indexing correct task && checklist item
                 formInputs[0].value = instanceReferences;
                 formInputs[1].value = values[3];
         };
@@ -319,7 +322,6 @@ const forms = (() => {
         formFieldset.append(fieldsetLegend, titleLabel, titleInput, descriptionLabel, descriptionInput);
 
         formInputs = formContainer.querySelectorAll('input');
-        console.log(formInputs);
     }
     const _renderTaskForm = function() {
         // render form inputs/labels
@@ -338,6 +340,7 @@ const forms = (() => {
         events.publish('openProjectOptionsQuery', '');  // subscribed by library.js
     }
     const _renderCheckboxForm = function(taskReference) {
+        console.log(taskReference);
         let fieldsetLegend = legend('Create a New Checklist Item', '');
 
         let spanRequiredBadge = span('*', '.required-badge');
@@ -348,8 +351,8 @@ const forms = (() => {
 
         formFieldset.append(fieldsetLegend, titleLabel, titleInput);
 
-        formInputs = document.querySelectorAll('input');
-        formInputs[0].value = taskReference;
+        formInputs = formContainer.querySelectorAll('input');
+        formInputs[0].value = taskReference;    // * passed to library.js for indexing correct task
     }
 
     // event subscriptions
