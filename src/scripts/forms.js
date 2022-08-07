@@ -205,7 +205,7 @@ const forms = (() => {
     }
     function _bundleFormValues() {
         //// console.log(_currentFormType);
-        formInputs = document.querySelectorAll('input');
+        // formInputs = document.querySelectorAll('input');
         let formValues = [];
 
         switch (_currentFormType) {
@@ -216,9 +216,10 @@ const forms = (() => {
                 };
                 break;
             case 'task':
-                //// console.log(formInputs);
+                console.log(formInputs);
                 formValues.push('task');
                 for (let i = 0; i < (formInputs.length); i++) {
+                    console.log(i);
                     if (i === 0 || ((i > 2) && (i < 8))) {
                         formValues.push(formInputs[i].value);
                     };
@@ -226,10 +227,6 @@ const forms = (() => {
                         if (formInputs[i].checked === true) {
                             formValues.push(formInputs[i].value);
                         };
-                    };
-                    if (i === 8) {
-                        let tagsArrayed = formInputs[i].value.split(' ');
-                        formValues.push(tagsArrayed);
                     };
                 };
                 break;
@@ -375,8 +372,6 @@ const forms = (() => {
 
         let projectReferenceContainer = formContainer.querySelector('input');
         projectReferenceContainer.classList.add('input');
-        console.log(projectReferenceContainer);
-        projectReferenceContainer.value = _currentProject;
 
         formInputs = formContainer.querySelectorAll('.input');
         events.publish('openProjectOptionsQuery', '');  // subscribed by library.js
