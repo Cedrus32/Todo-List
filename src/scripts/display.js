@@ -12,12 +12,7 @@ const display = (() => {
     let projectContainer = document.getElementById('project-container');
     let taskContainer = document.getElementById('task-container');
     let taskCountSpan = document.querySelector('div.tally span');
-    // let createTaskButton = document.querySelector('div.task-controls div.create');
 
-    // event listeners
-    // createTaskButton.addEventListener('click', () => {
-    //     events.publish('clickCreateItem', 'task');  // subscribed by forms.js
-    // });
     // * create task listener in _renderTaskCreateButton()
     // * modify & delete click listeners in _render...Header()
     // * create checklist item listener in _renderChecklistDescritionContainer()
@@ -212,7 +207,7 @@ const display = (() => {
         let taskControls = taskContainer.children[0];
         let controlsLength = taskControls.children.length;
         let lastControl = taskControls.children[controlsLength - 1];
-        
+
         if (lastControl.classList.contains('create')) {
             taskControls.removeChild(lastControl);
         };
