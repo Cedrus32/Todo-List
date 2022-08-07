@@ -9,7 +9,7 @@
     </head>
     <body>
 
-        <section id='sidebar' class=''>
+        <section id='sidebar' class='hide'>
             <div class='view-prefs-container'>
                 <ul id='static-views'>
                     <li id='view-all'>all</li>
@@ -33,95 +33,6 @@
             <div class='form-buttons'>
                 <button type='submit' class='confirm'>confirm</button>
                 <button class='cancel'>cancel</button>
-            </div>
-        </section>
-
-        <section id='project-form' class='form-container hide'>
-            <form>
-                <input class='target-project-id hide'>
-                <fieldset>
-                    <legend>Project</legend>
-                    <label for='project-title'>Project Name <span class='required-badge'>*</span> <span class='error-message hide'>please include a title</span></label>
-                    <input type='text' id='project-title' name='project-title' placeholder='name'
-                           aria-required='true' required>
-                    <label for='desc'>Project Description</label>
-                    <input type='text' id='project-description' name='desc' placeholder='description'
-                           aria-required='false'>
-                </fieldset>
-            </form>
-            <div id='project-buttons'>
-                <button type='submit' class='confirm'>confirm</button>
-                <button class='cancel'>cancel</button>
-            </div>
-        </section>
-        
-        <section id='task-form' class='form-container hide'>
-            <form>
-                <input class='target-task-id input hide'>
-                <fieldset>
-                    <legend>Task</legend>
-                    <label>Task Type</label>
-                    <div class='type-options'>
-                        <input type='radio' class='input' id='singleton' name='type' value='singleton' checked>
-                        <label for='singleton'>Single Task</label>
-                        <input type='radio' class='input' id='checklist' name='type' value='checklist'>
-                        <label for='checklist'>Task List</label>
-                    </div>
-                    <label for='task-title'>Task Name <span class='required-badge'>*</span> <span class='error-message hide'>please include a title</span></label>
-                    <input type='text' id='task-title' class='input' name='task-title' placeholder='name'
-                           aria-required='true' required>
-                    <label for='desc'>Task Description</label>
-                    <input type='text' id='task-description' class='input' name='desc' placeholder='description'
-                           aria-required='false'>
-                    <label for='date'>Due Date</label>
-                    <input type='date' id='due-date' class='input' name='date'
-                           aria-required='false'>
-                    <div class='dropdowns'>
-                        <div>
-                            <label for='priority'>Priority</label>
-                            <select id='priority' class='input' name='priority'>
-                                <option value='0'>none ( )</option>
-                                <option value='1'>low (!)</option>
-                                <option value='2'>medium (!!)</option>
-                                <option value='3'>high (!!!)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for='project'>Project</label>
-                            <select id='project' class='input' name='project'>
-                            </select>
-                        </div>
-                    </div>
-                </fieldset>
-            </form>
-            <div id='task-buttons'>
-                <button type='submit' class='confirm'>confirm</button>
-                <button class='cancel'>cancel</button>
-            </div>
-        </section>
-
-        <section id='checkbox-form' class='form-container hide'>
-            <form>
-                <input class='target-task-checkbox-ids hide'>
-                <fieldset>
-                    <legend>Checklist Item</legend>
-                    <label for='checkbox'>Checkbox Name <span class='required-badge'>*</span> <span class='error-message hide'>please include a title</span></label>
-                    <input type='text' id='checkbox-title' name='checkbox' placeholder='name'
-                           aria-required='true' required>
-                </fieldset>
-            </form>
-            <div id='checkbox-buttons'>
-                <button type='submit' class='confirm'>confirm</button>
-                <button class='cancel'>cancel</button>
-            </div>
-        </section>
-
-        <section id='delete-confirm' class='form-container hide'>
-            <p>Deleting a project will also delete all of its tasks.</p>
-            <p>Are you SURE you want to proceed?</p>
-            <div class='action-buttons'>
-                <button type='submit' class='delete-confirm'>Yes</button>
-                <button class='delete-cancel'>No</button>
             </div>
         </section>
 
