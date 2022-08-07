@@ -12,12 +12,13 @@ const display = (() => {
     let projectContainer = document.getElementById('project-container');
     let taskContainer = document.getElementById('task-container');
     let taskCountSpan = document.querySelector('div.tally span');
-    let createTaskButton = document.querySelector('div.task-controls div.create');
+    // let createTaskButton = document.querySelector('div.task-controls div.create');
 
     // event listeners
-    createTaskButton.addEventListener('click', () => {
-        events.publish('clickCreateItem', 'task');  // subscribed by forms.js
-    });
+    // createTaskButton.addEventListener('click', () => {
+    //     events.publish('clickCreateItem', 'task');  // subscribed by forms.js
+    // });
+    // * create task listener in _renderTaskCreateButton()
     // * modify & delete click listeners in _render...Header()
     // * create checklist item listener in _renderChecklistDescritionContainer()
 
@@ -27,11 +28,10 @@ const display = (() => {
         let viewPreference = instanceBundle[0];
         console.log(viewPreference);
 
-        _clearDisplay()
         switch (viewPreference) {
             case 'all':
+                _clearDisplay()
                 let taskHeader = h1(instanceBundle[0], '');
-                console.log(taskHeader);
                 projectContainer.appendChild(taskHeader);
                 for (let i = 1; i < (instanceBundle.length); i++) {
                     _renderTask(instanceBundle[i]);
@@ -41,7 +41,8 @@ const display = (() => {
                 for (let i = 1; i < (instanceBundle.length); i++) {
                     switch (i) {
                         case 1:
-                            _renderProject(instanceBundle[i]);
+                            let projectInstance = instanceBundle[i];
+                            _renderProject(projectInstance);
                             break;
                         default:
                             _renderTask(instanceBundle[i]);
@@ -127,6 +128,7 @@ const display = (() => {
             taskContainer.removeChild(taskContainer.lastChild);
             _fillTaskCounter('-');
         };
+        _removeTaskCreateButton();
     }
     function _deleteTaskCard(id) {
         let targetTask = document.getElementById(id);
@@ -166,6 +168,10 @@ const display = (() => {
         projectCard.append(projectHeader, projectDescription);
         projectContainer.appendChild(projectCard);
 
+        if (project.id !== 0) {
+            _renderTaskCreateButton();
+        };
+
         _fillTaskCounter('');
     }
     const _renderProjectHeader = function(id, title) {
@@ -192,6 +198,25 @@ const display = (() => {
     }
 
     // task factories
+    const _renderTaskCreateButton = function() {
+        let divCreate = div('+', '.create');
+
+        divCreate.addEventListener('click', () => {
+            events.publish('clickCreateItem', 'task');  // subscribed by forms.js
+        });
+
+        let taskControls = taskContainer.children[0];
+        taskControls.append(divCreate);
+    }
+    const _removeTaskCreateButton = function() {
+        let taskControls = taskContainer.children[0];
+        let controlsLength = taskControls.children.length;
+        let lastControl = taskControls.children[controlsLength - 1];
+        
+        if (lastControl.classList.contains('create')) {
+            taskControls.removeChild(lastControl);
+        };
+    }
     const _renderTask = function(task) {
         let cardID = 'task_' + task.id;
         let taskCard;
