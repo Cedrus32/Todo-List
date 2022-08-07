@@ -19,9 +19,7 @@ const display = (() => {
 
     // display manager
     function _updateDisplay(instanceBundle) {
-        console.log(instanceBundle);
         let viewPreference = instanceBundle[0];
-        console.log(viewPreference);
 
         switch (viewPreference) {
             case 'all':
@@ -46,7 +44,6 @@ const display = (() => {
         };
     }
     function _updateItem(itemInstance) {
-        console.log(itemInstance);
         let cardID;
         let card;
 
@@ -84,7 +81,6 @@ const display = (() => {
                                 case 'checklist':
                                     title = card.querySelector('.title');
                             };
-                            console.log(title);
                             title.textContent = taskValues[0];
                             break;
                         case 1:
@@ -102,7 +98,6 @@ const display = (() => {
                         case 4:
                             let currentProjectCardID = projectContainer.querySelector('.card').id;
                             let currentProjectReference = currentProjectCardID.split('_')[1];
-                            console.log(currentProjectReference);
                             if (taskValues[4] !== currentProjectReference) {
                                 _deleteTaskCard(cardID);
                             };
@@ -139,8 +134,6 @@ const display = (() => {
         _fillTaskCounter('-');
     }
     function _deleteChecklistItem(id) {
-        console.log(id);
-        console.log(document.querySelector(`input#${id}`));
         let liContainer = document.querySelector(`input#${id}`).parentElement;
         let ulContainer = liContainer.parentElement;
         ulContainer.removeChild(liContainer);
@@ -314,7 +307,6 @@ const display = (() => {
         // * checklist item create event
         spanCreate.addEventListener('click', (e) => {
             let taskReference = e.target.closest('div.card').id.split('_')[1];
-            console.log(taskReference);
             let formReferences = ['checkbox', taskReference];
             events.publish('clickCreateItem', formReferences);   // subscribed by forms.js
         });
@@ -325,7 +317,6 @@ const display = (() => {
     const _renderCheckboxContainer = function(taskCardID, items) {
         let ulItem = ul('', '.checkboxes');
 
-        console.log(items);
         for (let i = 0; i < (items.length); i++) {
             _renderCheckbox(ulItem, taskCardID, items[i]);
         };

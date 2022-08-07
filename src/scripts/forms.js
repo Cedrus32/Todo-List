@@ -26,7 +26,6 @@ const forms = (() => {
 
     // form managers
     function _openCreateForm(formReference) {
-        console.log(formReference);
 
         switch (true) {
             case ((typeof formReference) === 'object'):   // * stores task reference when creating new checklist item
@@ -44,8 +43,6 @@ const forms = (() => {
                         _renderTaskForm();
                 };
         };
-
-        console.log(formInputs);
 
         _showForm();
     }
@@ -75,7 +72,6 @@ const forms = (() => {
         events.publish('openModifyInstanceQuery', targetItemReferences);  // subscribed by library.js
     }
     function _openModifyForm(itemValues) {
-        console.log(itemValues);
         _setFormReferences(itemValues[0]);
         _fillFormValues(itemValues);
         _showForm();
@@ -155,14 +151,11 @@ const forms = (() => {
             case 'project':
                 _renderProjectForm();
                 for (let i = 0; i < (formInputs.length); i++) {
-                    console.log(i);
                     formInputs[i].value = values[i + 1];
                 };
                 break;
             case 'task':
                 _renderTaskForm();
-                console.log(values);
-                console.log(formInputs);
                 for (let i = 1; i < (values.length); i++) {
                     switch (i) {
                         case 1:
@@ -190,11 +183,6 @@ const forms = (() => {
                 formInputs[1].value = values[3];
         };
     }
-    function _removeProjectOptions(taskFormInputsIndex) {
-        while (taskFormInputs[taskFormInputsIndex].firstChild) {
-            taskFormInputs[taskFormInputsIndex].removeChild(taskFormInputs[taskFormInputsIndex].lastChild);
-        };
-    }
     function _bundleFormValues() {
         //// console.log(_currentFormType);
         let formValues = [];
@@ -207,10 +195,8 @@ const forms = (() => {
                 };
                 break;
             case 'task':
-                console.log(formInputs);
                 formValues.push('task');
                 for (let i = 0; i < (formInputs.length); i++) {
-                    console.log(i);
                     if (i === 0 || ((i > 2) && (i < 8))) {
                         formValues.push(formInputs[i].value);
                     };
@@ -228,7 +214,6 @@ const forms = (() => {
                 formValues.push(formInputs[1].value);
         };
 
-        console.log(formValues);
         return formValues;
     }
     function _clearFormValues() {
@@ -249,10 +234,6 @@ const forms = (() => {
                 formFieldset.removeChild(formFieldset.lastChild);
             };
         };
-    }
-    function _enableTaskTypeSelection() {
-        formInputs[1].disabled = false;
-        formInputs[2].disabled = false;
     }
     function _disableTaskTypeSelection() {
         formInputs[1].disabled = true;
@@ -369,9 +350,7 @@ const forms = (() => {
         events.publish('openProjectOptionsQuery', '');  // subscribed by library.js
     }
     const _renderProjectOptions = function(array) {
-        console.log(array);
         let projectDropdown = formInputs[7];
-        console.log(formInputs);
         for (let i = 0; i < (array.length); i++) {
             let projectName = array[i][0];
             let projectID = array[i][1];
@@ -385,7 +364,6 @@ const forms = (() => {
         };
     }
     const _renderCheckboxForm = function(taskReference) {
-        console.log(taskReference);
         let fieldsetLegend = legend('Create a New Checklist Item', '');
 
         let spanRequiredBadge = span('*', '.required-badge');

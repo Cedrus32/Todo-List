@@ -97,9 +97,9 @@ const library = (() => {
         let instanceReference = values[1];
         values.splice(0, 2);    // [title, description]
                                 // [type, title, description, dueDate, 'priority', 'projectID', [tags]]
-        console.log(libraryReference);
-        console.log(instanceReference);
-        console.log(values);
+        //// console.log(libraryReference);
+        //// console.log(instanceReference);
+        //// console.log(values);
 
 
         switch (libraryReference) {
@@ -147,8 +147,8 @@ const library = (() => {
     function _queryItemInstance(itemReferences) {
         let libraryReference = itemReferences[0];
         let instanceReference = itemReferences[1];
-        console.log(libraryReference);
-        console.log(instanceReference);
+        //// console.log(libraryReference);
+        //// console.log(instanceReference);
 
         let itemValueArray;
         switch (libraryReference) {
@@ -183,7 +183,7 @@ const library = (() => {
                 };
         };
 
-        console.log(itemValueArray);
+        //// console.log(itemValueArray);
         events.publish('closeModifyInstanceQuery', itemValueArray);   // subscribed by forms.js
     }
     function _queryProjectNamesIDs() {
@@ -217,8 +217,8 @@ const library = (() => {
                 queryProjects = true;
         };
 
-        console.log(`queryProjects: ${queryProjects}`);
-        console.log(`queryTasks: ${queryTasks}`);
+        //// console.log(`queryProjects: ${queryProjects}`);
+        //// console.log(`queryTasks: ${queryTasks}`);
 
         instanceBundle.push(viewPreference);
         if (queryProjects === true) {
@@ -246,7 +246,7 @@ const library = (() => {
             };
         };
 
-        console.log(instanceBundle);
+        //// console.log(instanceBundle);
         events.publish('updateDisplayView', instanceBundle);    // subscribed by domDisplay.js
     }
 
@@ -303,8 +303,8 @@ const library = (() => {
                 projectInstance = _projectLibrary[p];
             };
         };
-        console.log('original project instance:')
-        console.log(projectInstance);
+        //// console.log('original project instance:')
+        //// console.log(projectInstance);
         for (let a = 0; a < (attributeArray.length); a++) {
             switch(a) {
                 case 0:
@@ -327,8 +327,8 @@ const library = (() => {
                 taskInstance = _taskLibrary[t];
             };
         };
-        console.log('original task instance:')
-        console.log(taskInstance);
+        //// console.log('original task instance:')
+        //// console.log(taskInstance);
         for (let a = 1; a < (attributeArray.length); a++) {
             // [type, title, description, dueDate, 'priority', 'projectID']
             switch(a) {
@@ -364,8 +364,8 @@ const library = (() => {
                 checkboxInstance = ['checkbox', taskInstance.id, targetItemID, targetContent];
             };
         };
-        console.log('original task (checkbox) instance:')
-        console.log(taskInstance);
+        //// console.log('original task (checkbox) instance:')
+        //// console.log(taskInstance);
         console.log('modified task (checkbox) instance:')
         console.log(taskInstance.items);
 
@@ -394,7 +394,6 @@ const library = (() => {
         console.log(_projectLibrary);
         console.log(_taskLibrary);
 
-        console.log(cardID);
         events.publish('removeProjectFromSection', cardID);    // subscribed by display.js, sidebar.js
     }
     function _deleteTask(cardID) {
@@ -407,6 +406,7 @@ const library = (() => {
         };
         console.log('task delete results:')
         console.log(_taskLibrary);
+
         events.publish('removeTaskFromDisplay', cardID);    // subscribed by domDisplay.js
     }
     function _deleteChecklistItem(checkID) {
