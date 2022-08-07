@@ -49,18 +49,18 @@ const forms = (() => {
 
         switch (true) {
             case ((typeof formReference) === 'object'):   // * stores task reference when creating new checklist item
-                checkboxFormInputs[0].value = formReference[1];
+                let taskReference = formReference[1];
                 _setFormReferences(formReference[0]);
-                _renderCheckboxForm();
+                _renderCheckboxForm(taskReference);
                 break;
             case ((typeof formReference) === 'string'):
                 _setFormReferences(formReference);
                 switch (_currentFormType) {
                     case 'project':
                         _renderProjectForm();
-                    //     break;
-                    // case 'task':
-                    //     _renderTaskForm();
+                        break;
+                    case 'task':
+                        _renderTaskForm();
                     // case 'delete':
                     //     _renderDeleteConfirmForm();
                 };
@@ -314,10 +314,33 @@ const forms = (() => {
     }
     const _renderTaskForm = function() {
         // render form inputs/labels
+        let fieldsetLegend = legend('Create a New Task', '');
+
+        let spanRequiredBadge = span('*', '.required-badge');
+        let spanErrorMessage = span('please include a title', '.error-message', '.hide');
+        let titleLabel = label('title ', 'project-title');
+        titleLabel.append(spanRequiredBadge, spanErrorMessage);
+        let titleInput = input('text', 'project-title', 'title');
+
+        // ...
 
         _enableTaskTypeSelection();
 
         events.publish('openProjectOptionsQuery', '');  // subscribed by library.js
+    }
+    const _renderCheckboxForm = function(taskReference) {
+        let fieldsetLegend = legend('Create a New Checklist Item', '');
+
+        let spanRequiredBadge = span('*', '.required-badge');
+        let spanErrorMessage = span('please include a title', '.error-message', '.hide');
+        let titleLabel = label('title ', 'project-title');
+        titleLabel.append(spanRequiredBadge, spanErrorMessage);
+        let titleInput = input('text', 'project-title', 'title');
+
+        formFieldset.append(fieldsetLegend, titleLabel, titleInput);
+
+        formInputs = document.querySelectorAll('input');
+        formInputs[0].value = taskReference;
     }
 
     // event subscriptions
