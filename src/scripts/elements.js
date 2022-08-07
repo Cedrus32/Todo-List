@@ -65,12 +65,19 @@ const li = function(content, ...args) {
     _attributes = [];
     return element;
 }
-const input = function(type, id, placeholder) {
+const input = function(type, id, name, placeholder, ...args) {
+    _attributes = [...args];
     element = document.createElement('input');
+    if (_attributes.length > 0) {
+        _setAttributes(element, _attributes);
+    };
     element.type = type;
     element.id = String(id);
-    element.name = String(id);
+    element.name = String(name);
     element.placeholder = placeholder;
+    if (type === 'radio') {
+        element.value = String(id);
+    };
     return element;
 }
 const option = function(value, content) {

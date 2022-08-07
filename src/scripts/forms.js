@@ -1,5 +1,5 @@
 import events from '../events';
-import { span, input, label, option, legend } from './elements';
+import { default as div, span, input, label, option, legend } from './elements';
 
 // & manages display/sidebar section DOMs -> form section DOMs <-> library communication
 // & contains factories for generating form section DOM elements / groupings
@@ -59,10 +59,8 @@ const forms = (() => {
                     case 'project':
                         _renderProjectForm();
                         break;
-                    // case 'task':
-                    //     _renderTaskForm();
-                    case 'checkbox':
-                        _renderCheckboxForm();
+                    case 'task':
+                        _renderTaskForm();
                         break;
                     // case 'delete':
                     //     _renderDeleteConfirmForm();
@@ -170,6 +168,7 @@ const forms = (() => {
                 };
                 break;
             case 'task':
+                _renderTaskForm();
                 for (let i = 1; i < (values.length); i++) {
                     switch (i) {
                         case 0:
@@ -257,8 +256,8 @@ const forms = (() => {
         };
     }
     function _enableTaskTypeSelection() {
-        taskFormInputs[1].disabled = false;
-        taskFormInputs[2].disabled = false;
+        formInputs[1].disabled = false;
+        formInputs[2].disabled = false;
     }
     function _disableTaskTypeSelection() {
         taskFormInputs[1].disabled = true;
@@ -294,7 +293,7 @@ const forms = (() => {
 
     // form factories
     const _renderProjectOptions = function(array) {
-        let projectDropdown = taskFormInputs[7];
+        let projectDropdown = formInputs[7];
         for (let i = 0; i < (array.length); i++) {
             let projectName = array[i][0];
             let projectID = array[i][1];
@@ -312,32 +311,46 @@ const forms = (() => {
 
         let spanRequiredBadge = span('*', '.required-badge');
         let spanErrorMessage = span('please include a title', '.error-message', '.hide');
-        let titleLabel = label('title ', 'project-title');
-        titleLabel.append(spanRequiredBadge, spanErrorMessage);
-        let titleInput = input('text', 'project-title', 'title');
+        let labelTitle = label('title ', 'project-title');
+        labelTitle.append(spanRequiredBadge, spanErrorMessage);
+        let inputTitle = input('text', 'project-title', 'title');
 
-        let descriptionLabel = label('description', '.project-description');
-        let descriptionInput = input('text', 'project-description', 'description');
+        let labelDescription = label('description', '.project-description');
+        let inputDescription = input('text', 'project-description', 'description');
 
-        formFieldset.append(fieldsetLegend, titleLabel, titleInput, descriptionLabel, descriptionInput);
+        formFieldset.append(fieldsetLegend, labelTitle, inputTitle, labelDescription, inputDescription);
 
         formInputs = formContainer.querySelectorAll('input');
     }
-    const _renderTaskForm = function() {
-        // render form inputs/labels
+    const _renderTaskForm = function() {        
         let fieldsetLegend = legend('Create a New Task', '');
+
+        let divTypeOptions = div('', '.type-options');
+        let radioSingleton = input('radio', 'singleton', 'type', '', '.input');
+        radioSingleton.checked = true;
+        let labelSingleton = label('Single Task', 'singleton', '');
+        let radioChecklist = input('radio', 'checklist', 'type', '', '.input');
+        let labelChecklist = label('Task List', 'checklist', '');
+        divTypeOptions.append(radioSingleton, labelSingleton, radioChecklist, labelChecklist);
 
         let spanRequiredBadge = span('*', '.required-badge');
         let spanErrorMessage = span('please include a title', '.error-message', '.hide');
-        let titleLabel = label('title ', 'project-title');
-        titleLabel.append(spanRequiredBadge, spanErrorMessage);
-        let titleInput = input('text', 'project-title', 'title');
+        let labelTitle = label('Title', 'task-title');
+        labelTitle.append(spanRequiredBadge, spanErrorMessage);
+        let inputTitle = input('text', 'task-title', 'task-title', 'title', '.input')
 
         // ...
 
-        _enableTaskTypeSelection();
+        formFieldset.append(fieldsetLegend, divTypeOptions, labelTitle, inputTitle);
 
-        events.publish('openProjectOptionsQuery', '');  // subscribed by library.js
+        let projectReference = formContainer.querySelector('input');
+        projectReference.classList.add('input');
+        console.log(projectReference);
+        projectReference.value = _currentProject;
+
+        formInputs = formContainer.querySelectorAll('.input');
+        _enableTaskTypeSelection();
+        // events.publish('openProjectOptionsQuery', '');  // subscribed by library.js
     }
     const _renderCheckboxForm = function(taskReference) {
         console.log(taskReference);
