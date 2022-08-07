@@ -1,5 +1,5 @@
 import events from '../events';
-import { default as div, span, input, label, option, legend } from './elements';
+import { default as div, span, input, label, select, option, legend } from './elements';
 
 // & manages display/sidebar section DOMs -> form section DOMs <-> library communication
 // & contains factories for generating form section DOM elements / groupings
@@ -292,20 +292,6 @@ const forms = (() => {
     }
 
     // form factories
-    const _renderProjectOptions = function(array) {
-        let projectDropdown = formInputs[7];
-        for (let i = 0; i < (array.length); i++) {
-            let projectName = array[i][0];
-            let projectID = array[i][1];
-            let optionProject = option(projectID, projectName);
-
-            if (_currentProject === projectID) {
-                optionProject.selected = true;
-            };
-
-            projectDropdown.appendChild(optionProject);
-        };
-    }
     const _renderProjectForm = function() {
         let fieldsetLegend = legend('Create a New Project', '');
 
@@ -343,9 +329,42 @@ const forms = (() => {
         inputTitle.required = true;
         inputTitle.ariaRequired = true;
 
-        // ...
+        let labelDescription = label('Task Description', 'description');
+        let inputDescription = input('text', 'task-description', 'description', 'description', '.input');
 
-        formFieldset.append(fieldsetLegend, divTypeOptions, labelTitle, inputTitle);
+        let labelDueDate = label('Due Date', 'due-date');
+        let inputDueDate = input('date', 'due-date', 'due-date', '', '.input');
+
+        let divDropdowns = div('', '.dropdowns');
+        let divPriority = div('', '');
+        let labelPriority = label('Priority', 'priority', '');
+        let selectPriority = select('priority', '#priority', '.input');
+        for (let i = 0; i < 4; i++) {
+            let content;
+            switch (i) {
+                case 0:
+                    content = 'none ( )';
+                    break;
+                case 1:
+                    content = 'low (!)';
+                    break;
+                case 2:
+                    content = 'medium (!!)';
+                    break;
+                case 3:
+                    content = 'high (!!!)';
+            };
+            let optionPriority = option(i, content);
+            selectPriority.appendChild(optionPriority);
+        };
+        let divProject = div('', '');
+        let labelProject = label('Project', 'project', '');
+        let selectProject = select('project', '#project', '.input');
+        divPriority.append(labelPriority, selectPriority);
+        divProject.append(labelProject, selectProject);
+        divDropdowns.append(divPriority, divProject);
+
+        formFieldset.append(fieldsetLegend, divTypeOptions, labelTitle, inputTitle, labelDescription, inputDescription, labelDueDate, inputDueDate, divDropdowns);
 
         let projectReference = formContainer.querySelector('input');
         projectReference.classList.add('input');
@@ -354,7 +373,22 @@ const forms = (() => {
 
         formInputs = formContainer.querySelectorAll('.input');
         _enableTaskTypeSelection();
-        // events.publish('openProjectOptionsQuery', '');  // subscribed by library.js
+        events.publish('openProjectOptionsQuery', '');  // subscribed by library.js
+    }
+    const _renderProjectOptions = function(array) {
+        let projectDropdown = formInputs[7];
+        console.log(formInputs);
+        for (let i = 0; i < (array.length); i++) {
+            let projectName = array[i][0];
+            let projectID = array[i][1];
+            let optionProject = option(projectID, projectName);
+
+            if (_currentProject === projectID) {
+                optionProject.selected = true;
+            };
+
+            projectDropdown.appendChild(optionProject);
+        };
     }
     const _renderCheckboxForm = function(taskReference) {
         console.log(taskReference);

@@ -80,6 +80,15 @@ const input = function(type, id, name, placeholder, ...args) {
     };
     return element;
 }
+const select = function(name, ...args) {
+    _attributes = [...args];
+    element = document.createElement('select');
+    if (_attributes.length > 0) {
+        _setAttributes(element, _attributes);
+    };
+    element.name = name;
+    return element;
+}
 const option = function(value, content) {
     element = document.createElement('option');
     element.value = value;
@@ -119,4 +128,4 @@ function _setAttributes(element, attributes) {
     };
 }
 
-export { div as default, span, h1, h2, ul, li, input, option, label, legend };
+export { div as default, span, h1, h2, ul, li, input, select, option, label, legend };
