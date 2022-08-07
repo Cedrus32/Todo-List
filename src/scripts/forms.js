@@ -11,6 +11,8 @@ const forms = (() => {
 
     // cache DOM
     let formContainer = document.querySelector('.form-container');
+    let formFieldset = formContainer.querySelector('fieldset');
+    let formInputs;
     // let projectForm = document.getElementById('project-form');
     // let deleteConfirmAlert = document.getElementById('delete-confirm');
     // let taskForm = document.getElementById('task-form');
@@ -20,18 +22,18 @@ const forms = (() => {
     // let taskFormInputs = taskForm.querySelectorAll('.input');
     // let checkboxFormInputs = checkboxForm.querySelectorAll('input');
 
-    let confirmButtons = document.querySelectorAll('button.confirm');
-    let cancelButtons = document.querySelectorAll('button.cancel');
+    let confirmButton = document.querySelectorAll('button.confirm');
+    let cancelButton = document.querySelectorAll('button.cancel');
     // let confirmDeleteFormButton = document.querySelector('button.delete-confirm');
     // let cancelDeleteFormButton = document.querySelector('button.delete-cancel');
 
     // event listeners
-    // confirmButtons.forEach(btn => btn.addEventListener('click', (e) => {
-    //     _confirmInput(e);
-    // }));
-    // cancelButtons.forEach(btn => btn.addEventListener('click', () => {
-    //     _cancelInput();
-    // }));
+    confirmButton.forEach(btn => btn.addEventListener('click', (e) => {
+        _confirmInput(e);
+    }));
+    cancelButton.forEach(btn => btn.addEventListener('click', () => {
+        _cancelInput();
+    }));
     // confirmDeleteFormButton.addEventListener('click', () => {
     //     deleteConfirmAlert.classList.add('hide');
     //     let projectCardID = document.querySelector('div.project.card').id;
@@ -150,7 +152,7 @@ const forms = (() => {
         formContainer.classList.remove('hide');
     }
     function _hideForm() {
-        _currentForm.classList.add('hide');
+        formContainer.classList.add('hide');
     }
     function _fillFormValues(values) {
         switch (_currentFormType) {
@@ -193,75 +195,55 @@ const forms = (() => {
         };
     }
     function _bundleFormValues() {
-        //// console.log(_currentForm);
+        //// console.log(_currentFormType);
         let formValues = [];
 
-        switch (_currentForm) {
-            case projectForm:
+        switch (_currentFormType) {
+            case 'project':
                 formValues.push('project');
-                for (let i = 0; i < (projectFormInputs.length); i++) {
-                    formValues.push(projectFormInputs[i].value);
+                for (let i = 0; i < (formInputs.length); i++) {
+                    formValues.push(formInputs[i].value);
                 };
                 break;
-            case taskForm:
-                //// console.log(taskFormInputs);
+            case 'task':
+                //// console.log(formInputs);
                 formValues.push('task');
-                for (let i = 0; i < (taskFormInputs.length); i++) {
+                for (let i = 0; i < (formInputs.length); i++) {
                     if (i === 0 || ((i > 2) && (i < 8))) {
-                        formValues.push(taskFormInputs[i].value);
+                        formValues.push(formInputs[i].value);
                     };
                     if (i === 1 || i === 2) {
-                        if (taskFormInputs[i].checked === true) {
-                            formValues.push(taskFormInputs[i].value);
+                        if (formInputs[i].checked === true) {
+                            formValues.push(formInputs[i].value);
                         };
                     };
                     if (i === 8) {
-                        let tagsArrayed = taskFormInputs[i].value.split(' ');
+                        let tagsArrayed = formInputs[i].value.split(' ');
                         formValues.push(tagsArrayed);
                     };
                 };
                 break;
-            case checkboxForm:
+            case 'checkbox':
                 formValues.push('checkbox');
-                formValues.push(checkboxFormInputs[0].value.split('_')[0]);
-                formValues.push(checkboxFormInputs[0].value.split('_')[1]);
-                formValues.push(checkboxFormInputs[1].value);
+                formValues.push(formInputs[0].value.split('_')[0]);
+                formValues.push(formInputs[0].value.split('_')[1]);
+                formValues.push(formInputs[1].value);
         };
 
         console.log(formValues);
         return formValues;
     }
     function _clearFormValues() {
-        switch(_currentForm) {
-            case projectForm:
-                projectFormInputs.forEach(input => input.value = '');
-                break;
-            case taskForm:
-                for (let i = 0; i < (taskFormInputs.length); i++) {
-                    switch (true) {
-                        case ((1 === 0) || ((i > 2) && (i < 6))):
-                            taskFormInputs[i].value = '';
-                            break;
-                        case (i === 1):
-                            taskFormInputs[i].checked = true;
-                            break;
-                        case (i === 2):
-                            taskFormInputs[i].checked = false;
-                            break;
-                        case (i === 6):
-                            taskFormInputs[i].selectedIndex = 0;
-                            break;
-                        case (i === 7):
-                            _removeProjectOptions(i);
-                    };
-                };
-                break;
-            case checkboxForm:
-                checkboxFormInputs.forEach(input => input.value = '');
-        };
-
-        _currentForm = '';
+        _removeFormElements();
+        formInputs = '';
         _currentFormType = '';
+    }
+    function _removeFormElements() {
+        for (let i = 0; i < (fieldsetChildrenLength); i++) {
+            while (formFieldset.firstChild) {
+                formFieldset.removeChild(formFieldset.lastChild);
+            };
+        };
     }
     function _enableTaskTypeSelection() {
         taskFormInputs[1].disabled = false;
@@ -272,24 +254,11 @@ const forms = (() => {
         taskFormInputs[2].disabled = true;
     }
     function _validateForm() {
-        return _currentForm.querySelector('form').checkValidity();
+        return formContainer.querySelector('form').checkValidity();
     }
     function _findErrors(process) {
-        let inputs;
-
-        switch (_currentForm) {
-            case projectForm:
-                inputs = projectFormInputs;
-                break;
-            case taskForm:
-                inputs = taskFormInputs;
-                break;
-            case checkboxForm:
-                inputs = checkboxFormInputs;
-        };
-
         let titleInput;
-        inputs.forEach(input => {
+        formInputs.forEach(input => {
             if (input.id.split('-')[1] === 'title') {
                 titleInput = input;
             };
@@ -328,9 +297,6 @@ const forms = (() => {
         };
     }
     const _renderProjectForm = function() {
-        let formFieldset = formContainer.querySelector('fieldset');
-        console.log(formFieldset);
-
         let fieldsetLegend = legend('Create a New Project', '');
 
         let spanRequiredBadge = span('*', '.required-badge');
@@ -343,6 +309,8 @@ const forms = (() => {
         let descriptionInput = input('text', 'project-description', 'description');
 
         formFieldset.append(fieldsetLegend, titleLabel, titleInput, descriptionLabel, descriptionInput);
+
+        formInputs = document.querySelectorAll('input');
     }
     const _renderTaskForm = function() {
         // render form inputs/labels
