@@ -65,11 +65,12 @@ const li = function(content, ...args) {
     _attributes = [];
     return element;
 }
-const input = function(id) {
+const input = function(type, id, placeholder) {
     element = document.createElement('input');
-    element.type = 'checkbox';
+    element.type = type;
     element.id = String(id);
     element.name = String(id);
+    element.placeholder = placeholder;
     return element;
 }
 const option = function(value, content) {
@@ -89,6 +90,16 @@ const label = function(content, forReference, ...args) {
     _attributes = [];
     return element;
 }
+const legend = function(content, ...args) {
+    _attributes = [...args];
+    element = document.createElement('legend');
+    if (_attributes.length > 1) {
+        _setAttributes(element, _attributes);
+    };
+    element.textContent = content;
+    _attributes = [];
+    return element;
+}
 
 // helpers
 function _setAttributes(element, attributes) {
@@ -101,4 +112,4 @@ function _setAttributes(element, attributes) {
     };
 }
 
-export { div as default, span, h1, h2, ul, li, input, option, label};
+export { div as default, span, h1, h2, ul, li, input, option, label, legend };
