@@ -5,8 +5,6 @@ import { default as li} from './elements';
 // & contains factories for generating display section DOM elements / groupings
 
 const sidebar = (() => {
-    // data
-
     // cache dom
     let viewPrefs = document.getElementById('sidebar');
     let title = document.getElementById('title');
