@@ -175,9 +175,7 @@ const display = (() => {
         projectCard.append(projectHeader, projectDescription);
         projectContainer.appendChild(projectCard);
 
-        if (project.id !== 0) {
-            _renderTaskCreateButton();
-        };
+        _renderTaskCreateButton();
 
         _fillTaskCounter('');
     }
