@@ -20,14 +20,22 @@ const display = (() => {
     // display manager
     function _updateDisplay(instanceBundle) {
         let viewPreference = instanceBundle[0];
+        let viewPreferenceHeaderCard;
 
         switch (viewPreference) {
             case 'all':
                 _clearDisplay();
-                let viewCard = div('', '.card');
-                let viewHeader = h1(instanceBundle[0], '');
-                viewCard.appendChild(viewHeader);
-                projectContainer.appendChild(viewCard);
+                viewPreferenceHeaderCard = _renderViewPreferenceHeaderCard(instanceBundle[0]);
+                projectContainer.appendChild(viewPreferenceHeaderCard);
+                for (let i = 1; i < (instanceBundle.length); i++) {
+                    _renderTask(instanceBundle[i]);
+                };
+                break;
+            case 'anytime':
+                console.log(instanceBundle);
+                _clearDisplay();
+                viewPreferenceHeaderCard = _renderViewPreferenceHeaderCard(instanceBundle[0]);
+                projectContainer.appendChild(viewPreferenceHeaderCard);
                 for (let i = 1; i < (instanceBundle.length); i++) {
                     _renderTask(instanceBundle[i]);
                 };
@@ -100,7 +108,7 @@ const display = (() => {
                         case 4:
                             let currentProjectCardID = projectContainer.querySelector('.card').id;
                             let currentProjectReference = currentProjectCardID.split('_')[1];
-                            if (taskValues[4] !== currentProjectReference) {
+                            if (taskValues[4] != currentProjectReference) {
                                 _deleteTaskCard(cardID);
                             };
                     };
@@ -197,6 +205,13 @@ const display = (() => {
         };
         
         return divHeader;
+    }
+    const _renderViewPreferenceHeaderCard = function(title) {
+        let viewCard = div('', '.card');
+        let viewHeader = h1(title, '');
+        viewCard.appendChild(viewHeader);
+
+        return viewCard;
     }
 
     // task factories

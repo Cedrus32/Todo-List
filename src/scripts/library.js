@@ -241,13 +241,17 @@ const library = (() => {
                     };
                     break;
                 case 'anytime':
-                    // loop through all tasks
-                    // if task has no due date, push to instanceBundle
+                    for (let t = 0; t < (_taskLibrary.length); t++) {
+                        let task = _taskLibrary[t];
+                        if (task.dueDate === '') {
+                            instanceBundle.push(task);
+                        };
+                    };
             };
         };
 
-        //// console.log(instanceBundle);
-        events.publish('updateDisplayView', instanceBundle);    // subscribed by display.js
+        console.log(instanceBundle);
+        events.publish('updateDisplayView', instanceBundle);    // subscribed by display.js, forms.js
     }
 
     // create methods

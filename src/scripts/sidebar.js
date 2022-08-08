@@ -24,16 +24,16 @@ const sidebar = (() => {
     });
     
     viewAllButton.addEventListener('click', (e) => {
-        _changeViewPreference('all', e.target.id);
+        _changeViewPreference('all', '');
     });
     viewTodayButton.addEventListener('click', () => {
-        console.log('view tasks due today');
+        // console.log('view tasks due today');
     });
     viewUpcomingButton.addEventListener('click', () => {
-        console.log('view tasking due this week');
+        // console.log('view tasking due this week');
     });
-    viewAnytimeButton.addEventListener('click', () => {
-        console.log('view tasks with no due dates');
+    viewAnytimeButton.addEventListener('click', () => { // & <<<<<<<<<<
+        _changeViewPreference('anytime', '');
     });
     viewUnsortedButton.addEventListener('click', (e) => {
         _changeViewPreference('project', e.target.id);
@@ -49,20 +49,20 @@ const sidebar = (() => {
 
         switch (preferenceKeyword) {
             case 'today':
-                // get today's date (from date time api)
-                // target reference = today's date
+                // get today's date
+                // query task library looking for matches to validDates[i]
                 break;
             case 'upcoming':
-                // get today's date (drom date time api)
+                // get today's date
                 // add 7 days to date
                 // target reference = today's date
                 break;
             case 'project':
                 let splitID = targetID.split('_');
                 queryReference = splitID[1];
-            //     break;
-            // default:
-            //     queryReference = '';
+                break;
+            default:
+                queryReference = '';
         };
 
         events.publish('openViewPreferenceQuery', preferenceKeyword, queryReference); // subscribed by library.js

@@ -79,6 +79,7 @@ const forms = (() => {
 
     // form actions
     function _confirmInput() {
+        console.log(_currentFormType);
         switch (_currentFormType) {
             case 'delete-confirm':
                 _hideForm();
@@ -87,6 +88,7 @@ const forms = (() => {
                 events.publish('confirmDeleteProject', projectCardID);  // subscribed by library.js
                 break;
             default:
+                console.log('task or project')
                 let isValid = _validateForm();
                 switch(isValid) {
                     case true:
@@ -132,13 +134,21 @@ const forms = (() => {
         };
     }
     function _setCurrentProject(project) {
-        switch (true) {
-            case (project[0] !== undefined):
-                _currentProject = project[1].id;
-                break;
-            default:
-                _currentProject = project.id;
+        console.log(project.id)
+        console.log(project[1]);
+
+        if (project.id !== undefined) {
+            _currentProject = project.id;
         };
+        // switch (true) {
+        //     case (project.id !== undefined): // project instance
+        //         _currentProject = project.id;
+        //         break;
+            // default:    // instance bundle
+            //     console.log(project);
+            //     _currentProject = project[1].id;
+            //     console.log(_currentProject);
+        // };
     }
     function _showForm() {
         formContainer.classList.remove('hide');
