@@ -175,12 +175,15 @@ const display = (() => {
         let divHeader = div('', '.header');
 
         let h1Title = h1(title, '.title');
-        let spanModify = span('...', '.project', '.modify');
-        // * project modify/delete events
-        spanModify.addEventListener('click', (e) => {   // ! align to pass similar arguments?
-            events.publish('clickModifyItem', e);   // subscribed by forms.js
-        });
-        divHeader.append(h1Title, spanModify);
+        divHeader.appendChild(h1Title);
+        if (id !== 0) {
+            let spanModify = span('...', '.project', '.modify');
+            // * project modify/delete events
+            spanModify.addEventListener('click', (e) => {
+                events.publish('clickModifyItem', e);   // subscribed by forms.js
+            });
+            divHeader.appendChild(spanModify);
+        };
 
         if (id !== 0) {
             let spanDelete = span('X', '.delete');

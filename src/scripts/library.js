@@ -247,7 +247,7 @@ const library = (() => {
         };
 
         //// console.log(instanceBundle);
-        events.publish('updateDisplayView', instanceBundle);    // subscribed by domDisplay.js
+        events.publish('updateDisplayView', instanceBundle);    // subscribed by display.js
     }
 
     // create methods
