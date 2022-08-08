@@ -32,7 +32,7 @@ const sidebar = (() => {
     viewUpcomingButton.addEventListener('click', () => {
         _changeViewPreference('upcoming', '');
     });
-    viewAnytimeButton.addEventListener('click', () => { // & <<<<<<<<<<
+    viewAnytimeButton.addEventListener('click', () => {
         _changeViewPreference('anytime', '');
     });
     viewUnsortedButton.addEventListener('click', (e) => {
@@ -147,17 +147,8 @@ const sidebar = (() => {
     // event subscriptions
     
     events.subscribe('projectCreated', _renderProjectLink); // published by library.js (_createProject())
-    events.subscribe('removeProjectFromSection', _removeProjectLink);   // published by library.js (_deleteProject());
-
-
-
-
-
-
-
-
-
     events.subscribe('itemModified', _modifyViewPreferenceLink);   // published by library.js (_modify...())
+    events.subscribe('removeProjectFromSection', _removeProjectLink);   // published by library.js (_deleteProject());
 
 })();
 
