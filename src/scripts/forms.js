@@ -140,15 +140,6 @@ const forms = (() => {
         if (project.id !== undefined) {
             _currentProject = project.id;
         };
-        // switch (true) {
-        //     case (project.id !== undefined): // project instance
-        //         _currentProject = project.id;
-        //         break;
-            // default:    // instance bundle
-            //     console.log(project);
-            //     _currentProject = project[1].id;
-            //     console.log(_currentProject);
-        // };
     }
     function _showForm() {
         formContainer.classList.remove('hide');
