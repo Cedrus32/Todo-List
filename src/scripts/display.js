@@ -23,9 +23,11 @@ const display = (() => {
 
         switch (viewPreference) {
             case 'all':
-                _clearDisplay()
-                let taskHeader = h1(instanceBundle[0], '');
-                projectContainer.appendChild(taskHeader);
+                _clearDisplay();
+                let viewCard = div('', '.card');
+                let viewHeader = h1(instanceBundle[0], '');
+                viewCard.appendChild(viewHeader);
+                projectContainer.appendChild(viewCard);
                 for (let i = 1; i < (instanceBundle.length); i++) {
                     _renderTask(instanceBundle[i]);
                 };
