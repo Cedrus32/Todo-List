@@ -194,7 +194,7 @@ const library = (() => {
 
         events.publish('closeProjectOptionsQuery', nameIDArray) // subscribed by forms.js
     }
-    function _bundleInstances(viewPreference, queryReference) {
+    function _bundleInstances(viewPreference, queryReference) { // ! reduce repetition vvv
         let instanceBundle = [];
 
         let queryProjects = false;
