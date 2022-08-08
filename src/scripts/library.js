@@ -232,18 +232,35 @@ const library = (() => {
                     instanceBundle.push(_taskLibrary[t]);
                 };
             };
-        } else if (queryTasks === true) {
-
+        } else if (queryTasks === true) {   // ! reduce repetition
             switch (viewPreference) {
                 case 'all':
                     for (let t = 0; t < (_taskLibrary.length); t++) {
                         instanceBundle.push(_taskLibrary[t]);
                     };
                     break;
+                case 'today':
+                    for (let t = 0; t < (_taskLibrary.length); t++) {
+                        let task = _taskLibrary[t];
+                        if (task.dueDate === queryReference) {
+                            instanceBundle.push(task);
+                        }
+                    };
+                    break;
+                case 'upcoming':
+                    for (let t = 0; t < (_taskLibrary.length); t++) {
+                        let task = _taskLibrary[t];
+                        for (let i = 0; i < (queryReference.length); i++) {
+                            if (task.dueDate === queryReference[i]) {
+                                instanceBundle.push(task);
+                            };
+                        };
+                    };
+                    break;
                 case 'anytime':
                     for (let t = 0; t < (_taskLibrary.length); t++) {
                         let task = _taskLibrary[t];
-                        if (task.dueDate === '') {
+                        if (task.dueDate === queryReference) {
                             instanceBundle.push(task);
                         };
                     };

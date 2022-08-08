@@ -23,14 +23,14 @@ const sidebar = (() => {
         viewPrefs.classList.toggle('hide');
     });
     
-    viewAllButton.addEventListener('click', (e) => {
+    viewAllButton.addEventListener('click', () => {
         _changeViewPreference('all', '');
     });
     viewTodayButton.addEventListener('click', () => {
-        // console.log('view tasks due today');
+        _changeViewPreference('today', '');
     });
     viewUpcomingButton.addEventListener('click', () => {
-        // console.log('view tasking due this week');
+        _changeViewPreference('upcoming', '');
     });
     viewAnytimeButton.addEventListener('click', () => { // & <<<<<<<<<<
         _changeViewPreference('anytime', '');
@@ -49,13 +49,10 @@ const sidebar = (() => {
 
         switch (preferenceKeyword) {
             case 'today':
-                // get today's date
-                // query task library looking for matches to validDates[i]
+                queryReference = _getTodayDate();
                 break;
             case 'upcoming':
-                // get today's date
-                // add 7 days to date
-                // target reference = today's date
+                queryReference = _getUpcomingDate();
                 break;
             case 'project':
                 let splitID = targetID.split('_');
@@ -107,6 +104,44 @@ const sidebar = (() => {
             default:
                 _changeViewPreference('project', 'project_0');
         };
+    }
+    function _getTodayDate() {  // ! reduce repetition vvv
+        let rawDate = new Date();
+        let year = rawDate.getFullYear();
+        let month = rawDate.getMonth() + 1;
+        let date = rawDate.getDate();
+
+        if (month < 10) {
+            month = `0${month}`;
+        };
+        if (date < 10) {
+            date = `0${date}`;
+        };
+
+        let formattedDate = `${year}-${month}-${date}`;
+        return formattedDate;
+    }
+    function _getUpcomingDate() {   // ! reduce repetition ^^^
+        let validDates = [];
+        for (let i = 1; i < 8; i++) {
+            let rawDate = new Date();
+            rawDate.setDate(rawDate.getDate() + i);
+            let year = rawDate.getFullYear();
+            let month = rawDate.getMonth() + 1;
+            let date = rawDate.getDate();
+     
+            if (month < 10) {
+                 month = `0${month}`;
+             };
+             if (date < 10) {
+                 date = `0${date}`;
+             };
+     
+             let formattedDate = `${year}-${month}-${date}`;
+             validDates.push(formattedDate);
+        };
+
+        return validDates;
     }
 
     // event subscriptions
