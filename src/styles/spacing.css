@@ -46,14 +46,20 @@ body {
 /* --- SIDEBAR */
 
 #sidebar {
+    --y-offset: calc(calc(var(--main-pad) * 2) + 3.15em);
     position: absolute;
-    top: calc(calc(var(--main-pad) * 2) + 1.65em); left: 0em;
+    top: var(--y-offset); left: 0em;
+
+    height: calc(100vh - var(--y-offset));
+    width: 25vw;
 }
 
     .view-prefs-container {
         display: flex;
         flex-flow: column;
         gap: var(--lrg-gap);
+
+        padding-top: var(--lrg-gap);
     }
 
         #sidebar ul {
