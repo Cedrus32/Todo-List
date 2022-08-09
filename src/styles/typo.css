@@ -24,7 +24,7 @@ h2 {
 
 .tally,
 .tally span,
-.task-controls .create,
+.create,
 .view-prefs-container ul h4 {
     font-size: 1rem;
 }
@@ -46,4 +46,10 @@ h2 {
 
 .description {
     font-style: italic;
+}
+
+.card.project {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
 }
