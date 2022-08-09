@@ -55,6 +55,16 @@ const h2 = function(content, ...args) {
     _attributes = [];
     return element;
 }
+const h4 = function(content, ...args) {
+    _attributes = [...args];
+    element = document.createElement('h4');
+    if (_attributes.length > 0) {
+        _setAttributes(element, _attributes);
+    };
+    element.textContent = content;
+    _attributes = [];
+    return element;
+}
 const ul = function(content, ...args) {
     _attributes = [...args];
     element = document.createElement('ul');
@@ -138,4 +148,4 @@ function _setAttributes(element, attributes) {
     };
 }
 
-export { div as default, span, p, h1, h2, ul, li, input, select, option, label, legend };
+export { div as default, span, p, h1, h2, h4, ul, li, input, select, option, label, legend };

@@ -1,5 +1,5 @@
 import events from '../events';
-import { default as div, h1, h2, ul, li, span, input, label} from './elements';
+import { default as div, h1, h2, h4, ul, li, span, input, label} from './elements';
 
 // & manages display DOM <-> library communication
 // & contains factories for generating display section DOM elements / groupings
@@ -11,7 +11,7 @@ const display = (() => {
     // cache DOM
     let projectContainer = document.getElementById('project-container');
     let taskContainer = document.getElementById('task-container');
-    let taskCountSpan = document.querySelector('div.tally span');
+    let taskCountSpan = document.querySelector('h3.tally span');
 
     // * create task listener in _renderTaskCreateButton()
     // * modify & delete click listeners in _render...Header()
@@ -197,8 +197,8 @@ const display = (() => {
     const _renderProjectHeader = function(id, title) {
         let divHeader = div('', '.header');
 
-        let h1Title = h1(title, '.title');
-        divHeader.appendChild(h1Title);
+        let h2Title = h2(title, '.title');
+        divHeader.appendChild(h2Title);
         if (id !== 0) {
             let spanModify = span('...', '.project', '.modify');
             // * project modify/delete events
@@ -282,8 +282,8 @@ const display = (() => {
         let divHeader = div('', '.header');
 
         let labelCheckmarkTitle = label('', id, '.title');
-        let h2TitleContent = h2(title, '');
-        labelCheckmarkTitle.appendChild(h2TitleContent);
+        let h4TitleContent = h4(title, '');
+        labelCheckmarkTitle.appendChild(h4TitleContent);
 
         let spanDate = span(dueDate, '.date');
         let spanPriority = span(priority, '.priority');
@@ -313,7 +313,7 @@ const display = (() => {
     const _renderChecklistHeader = function(title, dueDate, priority) {
         let divHeader = div('', '.header');
 
-        let h2Title = h2(title, '.title');
+        let h4Title = h4(title, '.title');
         let spanDate = span(dueDate, '.date');
         let spanPriority = span(priority, '.priority');
         let spanModify = span('...', '.task', '.modify');
@@ -328,7 +328,7 @@ const display = (() => {
             events.publish('clickDeleteTask', cardID);   // subscribed by library.js
         });
 
-        divHeader.append(h2Title, spanDate, spanPriority, spanModify, spanDelete);
+        divHeader.append(h4Title, spanDate, spanPriority, spanModify, spanDelete);
         return divHeader;
     }
     const _renderChecklistSubheader = function(description) {
