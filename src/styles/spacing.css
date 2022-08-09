@@ -3,13 +3,15 @@
 /* GLOBAL */
 
 :root {
-    --small-pad: 0.25em;
-    --small-gap: 0.25em;
+    --xtra-small-pad: calc(0.25 * var(--main-pad));
+    --xtra-small-gap: calc(0.25 * var(--main-gap));
 
-    --med-pad: 0.5em;
+    --small-pad: calc(0.5 * var(--main-pad));
 
-    --main-pad: 1em;
-    --main-gap: 1em;
+    --main-pad: 1.25em;
+    --main-gap: 1.25em;
+
+    --med-pad: calc(1.5 * var(--main-pad));
 
     --lrg-gap: calc(2 * var(--main-gap))
 }
@@ -47,6 +49,7 @@ body {
 
 #sidebar {
     --y-offset: calc(calc(var(--main-pad) * 2) + 3.15em);
+    
     position: absolute;
     top: var(--y-offset); left: 0em;
 
@@ -149,7 +152,7 @@ fieldset {
             .display-container {
                 display: flex;
                 flex-flow: column;
-                gap: var(--small-gap);
+                gap: var(--xtra-small-gap);
 
                 padding: 1em;
             }
@@ -158,7 +161,7 @@ fieldset {
                     display: flex;
                     justify-content: flex-start;
                     align-items: center;
-                    gap: var(--small-gap);
+                    gap: var(--xtra-small-gap);
 
                     width: 100%;
                 }
@@ -169,7 +172,7 @@ fieldset {
                 
                 div.card,
                 .task-controls {
-                    padding: var(--med-pad);
+                    padding: var(--main-pad);
                 }
                 
                 .task-controls {
@@ -187,37 +190,37 @@ fieldset {
                 }
 
                     input[type='checkbox'] {
-                        margin-right: var(--small-pad);
+                        margin-right: var(--xtra-small-pad);
                     }
 
                     .singleton input[type='checkbox'] {
-                        margin-top: calc(var(--small-pad) * 1);
+                        margin-top: calc(var(--xtra-small-pad) * 1);
                     }
 
                     .content {
                         display: flex;
                         flex-flow: column;
-                        gap: var(--small-gap);
+                        gap: var(--xtra-small-gap);
 
                         width: 100%;
                     }
 
                         .details {
                             display: flex;
-                            gap: var(--small-gap);
+                            gap: var(--xtra-small-gap);
                             align-content: flex-start;
                         }
 
                             .tags {
                                 display: flex;
-                                gap: var(--small-gap);
+                                gap: var(--xtra-small-gap);
                                 flex-wrap: wrap;
                             }
 
                 .checklist {
                     display: flex;
                     flex-flow: column;
-                    gap: var(--small-gap);
+                    gap: var(--xtra-small-gap);
                 }
 
                     .description-container {
