@@ -1,16 +1,49 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500&display=swap');
 
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
 body,
 h3, h4, p,
-button, input, select, legend {
-    font-family: 'Open Sans', sans-serif;
+button, input, select, legend,
+.view-prefs-container ul li, 
+.card.project .description {
     font-size: 0.85rem;
 }
 
 h1 {
-    font-size: 1.75rem;
+    font-size: 2rem;
+    font-weight: 300;
 }
 
 h2 {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
+    font-weight: 300;
+}
+
+.tally,
+.tally span,
+.task-controls .create,
+.view-prefs-container ul h4 {
+    font-size: 1rem;
+}
+
+.date,
+.card.checklist .description, 
+.card.singleton .description {
+    font-size: 0.75rem;
+}
+
+.date, h1, h2,
+.view-prefs-container ul h4 {
+    font-weight: bold;
+}
+
+.card h4 {
+    font-weight: 500;
+}
+
+.description {
+    font-style: italic;
 }
