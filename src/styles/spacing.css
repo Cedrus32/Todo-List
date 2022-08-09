@@ -156,24 +156,27 @@ fieldset {
 
                 padding: 1em;
             }
-
-                .header {
-                    display: flex;
-                    justify-content: flex-start;
-                    align-items: center;
-                    gap: var(--xtra-small-gap);
-
-                    width: 100%;
-                }
-
-                    .title {
-                        margin-right: auto;
-                    }
                 
                 div.card,
                 .task-controls {
                     padding: var(--main-pad);
                 }
+
+                .card.project {
+                    display: flex;
+                    flex-flow: column;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                    .card.project .header {
+                        display: flex;
+                        align-items: center;
+                    }
+
+                        .title {
+                            margin-right: auto;
+                        }
                 
                 .task-controls {
                     display: flex;
@@ -188,6 +191,12 @@ fieldset {
                     display: flex;
                     align-items: flex-start;
                 }
+
+                    .singleton .header,
+                    .checklist .header {
+                        display: flex;
+                        gap: var(--xtra-small-gap);
+                    }
 
                     input[type='checkbox'] {
                         margin-right: var(--xtra-small-pad);
@@ -211,12 +220,6 @@ fieldset {
                             align-content: flex-start;
                         }
 
-                            .tags {
-                                display: flex;
-                                gap: var(--xtra-small-gap);
-                                flex-wrap: wrap;
-                            }
-
                 .checklist {
                     display: flex;
                     flex-flow: column;
@@ -227,7 +230,8 @@ fieldset {
                         display: flex;
                     }
 
-                        .description {
+                        .card.checklist .description,
+                        .card.singleton .description {
                             margin-right: auto;
                         }
 
@@ -238,4 +242,9 @@ fieldset {
 
                         .checklist ul li label {
                             margin-right: auto;
+                        }
+
+                        .checklist-item-controls {
+                            display: flex;
+                            gap: var(--xtra-small-gap);
                         }
