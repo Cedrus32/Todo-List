@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500&display=swap');
+
+body,
+h3, h4, p,
+button, input, select, legend {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.85rem;
+}
+
+h1 {
+    font-size: 1.75rem;
+}
+
+h2 {
+    font-size: 1.25rem;
+}

@@ -27,18 +27,6 @@ main {
     display: block;
 }
 
-/* correct font size on `h1` & 'h2' elements */
-/* within `section` and `article` contexts */
-/* in Chrome, Firefox, and Safari */
-
-h1 {
-    font-size: 1.5em;
-}
-
-h2 {
-    font-size: 1.25em;
-}
-
 /* standardize margins for `header` elements across broswers */
 
 h1, h2, h3, h4 {
@@ -69,8 +57,7 @@ img {
 
 button,
 input,
-select,
-textarea {
+select {
     font-family: inherit; /* 1 */
     font-size: 100%; /* 1 */
     line-height: 1.15; /* 1 */
