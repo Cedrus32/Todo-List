@@ -3,13 +3,15 @@
 /* GLOBAL */
 
 :root {
-    --main-pad: 1em;
-    --main-gap: 1em;
+    --small-pad: 0.25em;
+    --small-gap: 0.25em;
 
     --med-pad: 0.5em;
 
-    --small-pad: 0.25em;
-    --small-gap: 0.25em;
+    --main-pad: 1em;
+    --main-gap: 1em;
+
+    --lrg-gap: calc(2 * var(--main-gap))
 }
 
 .hide {
@@ -44,9 +46,6 @@ body {
 /* --- SIDEBAR */
 
 #sidebar {
-    /* display: flex;
-    flex-flow: column;
-    gap: var(--main-gap); */
     position: absolute;
     top: calc(calc(var(--main-pad) * 2) + 1.65em); left: 0em;
 }
@@ -54,7 +53,7 @@ body {
     .view-prefs-container {
         display: flex;
         flex-flow: column;
-        gap: var(--main-gap);
+        gap: var(--lrg-gap);
     }
 
         #sidebar ul {
