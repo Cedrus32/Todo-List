@@ -10,13 +10,13 @@ header,
     background-color: white;
 }
 
-.display-container {
+/* .display-container {
     border: 1px solid blue;
 }
 
 .card {
     border: 1px solid orangered;
-}
+} */
 
 section.form-container:not(.hide) ~ .show-filter {
     background-color: white;

@@ -8,8 +8,8 @@
 
     --small-pad: calc(0.5 * var(--main-pad));
 
-    --main-pad: 1.25em;
-    --main-gap: 1.25em;
+    --main-pad: 1em;
+    --main-gap: 1em;
 
     --med-pad: calc(1.5 * var(--main-pad));
 
@@ -165,17 +165,33 @@ fieldset {
                 .card.project {
                     display: flex;
                     flex-flow: column;
-                    justify-content: center;
                     align-items: center;
                 }
 
                     .card.project .header {
-                        display: flex;
-                        align-items: center;
+                        display: grid;
+                        grid-template-columns: 1fr auto;
+                        grid-template-rows: auto;
+                        grid-template-areas: 'title       controls'
+                                             'description .';
+
+                        width: 100%;
                     }
 
-                        .title {
-                            margin-right: auto;
+                        .card.project .title {
+                            grid-area: title;
+                            text-align: center;
+                        }
+
+                        .project-controls {
+                            grid-area: controls;
+                            display: flex;
+                            align-items: center;
+                        }
+
+                        .card.project .description {
+                            grid-area: description;
+                            text-align: center;
                         }
                 
                 .task-controls {
@@ -197,6 +213,11 @@ fieldset {
                         display: flex;
                         gap: var(--xtra-small-gap);
                     }
+
+                        .singleton .title,
+                        .checklist .title {
+                            margin-right: auto;
+                        }
 
                     input[type='checkbox'] {
                         margin-right: var(--xtra-small-pad);

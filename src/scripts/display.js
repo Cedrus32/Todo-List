@@ -183,38 +183,38 @@ const display = (() => {
 
         let cardID = '#project_' + project.id;
         let projectCard = div('', '.card', '.project', cardID);
+        let projectHeader = _renderProjectHeader(project.description, project.id, project.title);
 
-        let projectHeader = _renderProjectHeader(project.id, project.title);
-        let projectDescription = div(project.description, '.description');
-
-        projectCard.append(projectHeader, projectDescription);
+        projectCard.appendChild(projectHeader);
         projectContainer.appendChild(projectCard);
 
         _renderTaskCreateButton();
 
         _fillTaskCounter('');
     }
-    const _renderProjectHeader = function(id, title) {
+    const _renderProjectHeader = function(description, id, title) {
         let divHeader = div('', '.header');
 
         let h2Title = h2(title, '.title');
-        divHeader.appendChild(h2Title);
+        let projectDescription = div(description, '.description');
+        divHeader.append(h2Title, projectDescription);
         if (id !== 0) {
+            let divProjectControls = div('', '.project-controls');
+
             let spanModify = span('...', '.project', '.modify');
             // * project modify/delete events
             spanModify.addEventListener('click', (e) => {
                 events.publish('clickModifyItem', e);   // subscribed by forms.js
             });
-            divHeader.appendChild(spanModify);
-        };
 
-        if (id !== 0) {
             let spanDelete = span('X', '.delete');
             spanDelete.addEventListener('click', (e) => {
                 let cardID = e.target.closest('div.card').id;
                 events.publish('clickDeleteProject', cardID);   // subscribed by forms.js
             });
-            divHeader.appendChild(spanDelete);
+
+            divProjectControls.append(spanModify, spanDelete);
+            divHeader.appendChild(divProjectControls);
         };
         
         return divHeader;
