@@ -253,13 +253,13 @@ const display = (() => {
 
         switch (task.type) {
             case 'singleton':
-                taskCard = div('', '.card', '.singleton', `#${cardID}`)
+                taskCard = div('', '.card', '.singleton', `#${cardID}`, `.priority-${task.priority}`)
                 let singletonCheckmark = input('checkbox', '', '', task.id, '');
-                let singletonCardContent = _renderSingletonContent(task.id, task.title, task.dueDate, task.description, task.priority);
+                let singletonCardContent = _renderSingletonContent(task.id, task.title, task.dueDate, task.description);
                 taskCard.append(singletonCheckmark, singletonCardContent);
                 break;
             case 'checklist':
-                taskCard = div('', '.card', '.checklist', `#${cardID}`);
+                taskCard = div('', '.card', '.checklist', `#${cardID}`, `.priority-${task.priority}`);
                 let checklistCardContent = _renderChecklistCardContents(task.title, task.description, task.dueDate, task.priority);
                 let checklistItems = _renderCheckboxContainer(cardID, task.items);
                 taskCard.append(checklistCardContent, checklistItems);
@@ -269,16 +269,16 @@ const display = (() => {
 
         _fillTaskCounter('+');
     }
-    const _renderSingletonContent = function(id, title, dueDate, description, priority) {
+    const _renderSingletonContent = function(id, title, dueDate, description) {
         let divContent = div('', '.content');
 
-        let taskHeader = _renderSingletonHeader(id, title, dueDate, priority);
+        let taskHeader = _renderSingletonHeader(id, title, dueDate);
         let taskDescription = div(description, '.description');
 
         divContent.append(taskHeader, taskDescription);
         return divContent;
     }
-    const _renderSingletonHeader = function(id, title, dueDate, priority) {
+    const _renderSingletonHeader = function(id, title, dueDate) {
         let divHeader = div('', '.header');
 
         let labelCheckmarkTitle = label('', id, '.title');
@@ -286,12 +286,11 @@ const display = (() => {
         labelCheckmarkTitle.appendChild(h4TitleContent);
 
         let spanDate = span(dueDate, '.date');
-        let spanPriority = span(priority, '.priority');
         let imgModify = img('src/icons/edit.svg', 'modify task', '.task', '.modify');
         let imgDelete = img('src/icons/delete.svg', 'delete task', '.delete');
 
         // * singleton modify/delete events
-        imgModify.addEventListener('click', (e) => {   // ! align to pass similar arguments?
+        imgModify.addEventListener('click', (e) => {
             events.publish('clickModifyItem', e);   // subscribed by forms.js
         });
         imgDelete.addEventListener('click', (e) => {    // subscribed by library.js
@@ -299,23 +298,22 @@ const display = (() => {
             events.publish('clickDeleteTask', taskCardID);   // subscribed by library.js
         });
 
-        divHeader.append(labelCheckmarkTitle, spanDate, spanPriority, imgModify, imgDelete);
+        divHeader.append(labelCheckmarkTitle, spanDate, imgModify, imgDelete);
         return divHeader;
     }
-    const _renderChecklistCardContents = function(title, description, dueDate, priority) {
+    const _renderChecklistCardContents = function(title, description, dueDate) {
         let divContent = div('', '.content');
-        let checklistHeader = _renderChecklistHeader(title, dueDate, priority);
+        let checklistHeader = _renderChecklistHeader(title, dueDate);
         let checklistDescription = _renderChecklistSubheader(description);
         
         divContent.append(checklistHeader, checklistDescription);
         return divContent;
     }
-    const _renderChecklistHeader = function(title, dueDate, priority) {
+    const _renderChecklistHeader = function(title, dueDate) {
         let divHeader = div('', '.header');
 
         let h4Title = h4(title, '.title');
         let spanDate = span(dueDate, '.date');
-        let spanPriority = span(priority, '.priority');
         let imgModify = img('src/icons/edit.svg', 'modify task', '.task', '.modify');
         let imgDelete = img('src/icons/delete.svg', 'delete task', '.delete');
 
@@ -328,7 +326,7 @@ const display = (() => {
             events.publish('clickDeleteTask', cardID);   // subscribed by library.js
         });
 
-        divHeader.append(h4Title, spanDate, spanPriority, imgModify, imgDelete);
+        divHeader.append(h4Title, spanDate, imgModify, imgDelete);
         return divHeader;
     }
     const _renderChecklistSubheader = function(description) {
@@ -365,6 +363,7 @@ const display = (() => {
 
         let checkboxID = `${taskCardID}__checkbox_${checkID}`;  // # not needed vv
         let checkbox = input('checkbox', '', '', checkboxID, '');  // sets ID directly via default object prototype methods
+        // ! set priority class color
         let labelCheckbox = label(checkContent, checkboxID, '');
         let checkboxControls = _renderCheckboxControls(checkboxID);
 

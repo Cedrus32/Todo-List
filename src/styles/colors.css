@@ -10,14 +10,6 @@ header,
     background-color: white;
 }
 
-/* .display-container {
-    border: 1px solid blue;
-}
-
-.card {
-    border: 1px solid orangered;
-} */
-
 section.form-container:not(.hide) ~ .show-filter {
     background-color: white;
     filter: opacity(0.5);
@@ -35,4 +27,21 @@ input:invalid {
 .required-badge,
 .error-message {
     color: red;
+}
+
+
+.priority-0 {
+    background-color: #FFFFFF;
+}
+
+.priority-1 {
+    background-color: #A4F76A;
+}
+
+.priority-2 {
+    background-color: #FCF171;
+}
+
+.priority-3 {
+    background-color: #F09B91;
 }
