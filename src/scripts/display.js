@@ -1,5 +1,5 @@
 import events from '../events';
-import { default as div, h1, h2, h4, ul, li, span, input, label} from './elements';
+import { default as div, h1, h2, h4, ul, li, span, input, label, img } from './elements';
 
 // & manages display DOM <-> library communication
 // & contains factories for generating display section DOM elements / groupings
@@ -201,19 +201,19 @@ const display = (() => {
         if (id !== 0) {
             let divProjectControls = div('', '.project-controls');
 
-            let spanModify = span('...', '.project', '.modify');
+            let imgModify = img('src/icons/edit.svg', 'modify project', '.project', '.modify');
             // * project modify/delete events
-            spanModify.addEventListener('click', (e) => {
+            imgModify.addEventListener('click', (e) => {
                 events.publish('clickModifyItem', e);   // subscribed by forms.js
             });
 
-            let spanDelete = span('X', '.delete');
-            spanDelete.addEventListener('click', (e) => {
+            let imgDelete = img('src/icons/delete.svg', 'delete project', '.delete');
+            imgDelete.addEventListener('click', (e) => {
                 let cardID = e.target.closest('div.card').id;
                 events.publish('clickDeleteProject', cardID);   // subscribed by forms.js
             });
 
-            divProjectControls.append(spanModify, spanDelete);
+            divProjectControls.append(imgModify, imgDelete);
             divHeader.appendChild(divProjectControls);
         };
         
@@ -287,19 +287,19 @@ const display = (() => {
 
         let spanDate = span(dueDate, '.date');
         let spanPriority = span(priority, '.priority');
-        let spanModify = span('...', '.task', '.modify');
-        let spanDelete = span('X', '.delete');
+        let imgModify = img('src/icons/edit.svg', 'modify task', '.task', '.modify');
+        let imgDelete = img('src/icons/delete.svg', 'delete task', '.delete');
 
         // * singleton modify/delete events
-        spanModify.addEventListener('click', (e) => {   // ! align to pass similar arguments?
+        imgModify.addEventListener('click', (e) => {   // ! align to pass similar arguments?
             events.publish('clickModifyItem', e);   // subscribed by forms.js
         });
-        spanDelete.addEventListener('click', (e) => {    // subscribed by library.js
+        imgDelete.addEventListener('click', (e) => {    // subscribed by library.js
             let taskCardID = e.target.closest('div.card').id;
             events.publish('clickDeleteTask', taskCardID);   // subscribed by library.js
         });
 
-        divHeader.append(labelCheckmarkTitle, spanDate, spanPriority, spanModify, spanDelete);
+        divHeader.append(labelCheckmarkTitle, spanDate, spanPriority, imgModify, imgDelete);
         return divHeader;
     }
     const _renderChecklistCardContents = function(title, description, dueDate, priority) {
@@ -316,19 +316,19 @@ const display = (() => {
         let h4Title = h4(title, '.title');
         let spanDate = span(dueDate, '.date');
         let spanPriority = span(priority, '.priority');
-        let spanModify = span('...', '.task', '.modify');
-        let spanDelete = span('X', '.delete');
+        let imgModify = img('src/icons/edit.svg', 'modify task', '.task', '.modify');
+        let imgDelete = img('src/icons/delete.svg', 'delete task', '.delete');
 
         // * checklist modify/delete events
-        spanModify.addEventListener('click', (e) => {
+        imgModify.addEventListener('click', (e) => {
             events.publish('clickModifyItem', e);   // subscribed by forms.js
         });
-        spanDelete.addEventListener('click', (e) => {
+        imgDelete.addEventListener('click', (e) => {
             let cardID = e.target.closest('div.card').id;
             events.publish('clickDeleteTask', cardID);   // subscribed by library.js
         });
 
-        divHeader.append(h4Title, spanDate, spanPriority, spanModify, spanDelete);
+        divHeader.append(h4Title, spanDate, spanPriority, imgModify, imgDelete);
         return divHeader;
     }
     const _renderChecklistSubheader = function(description) {
@@ -384,19 +384,18 @@ const display = (() => {
     const _renderCheckboxControls = function(checkID) {
         let divControls = div('', '.checklist-item-controls');
 
-        let spanModify = span('...', '.task', '.modify');
-        let spanDelete = span('X', '.delete');
+        let imgModify = img('src/icons/edit.svg', 'modify task', '.task', '.modify');
+        let imgDelete = img('src/icons/delete.svg', 'delete task', '.delete');
 
         // * checklist item modify/delete events
-        spanModify.addEventListener('click', (e) => {
+        imgModify.addEventListener('click', (e) => {
             events.publish('clickModifyItem', e);    // subscribed by forms.js
         });
-        spanDelete.addEventListener('click', () => {
+        imgDelete.addEventListener('click', () => {
             events.publish('clickDeleteChecklistItem', checkID);    // subscribed by library.js
         });
 
-        divControls.appendChild(spanModify);
-        divControls.appendChild(spanDelete);
+        divControls.append(imgModify, imgDelete);
 
         return divControls;
     }

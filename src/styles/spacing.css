@@ -28,6 +28,10 @@ ul {
         padding: 0em;
     }
 
+img {
+    height: 1.25em;
+}
+
 body {
     display: flex;
     flex-flow: column;

@@ -136,6 +136,16 @@ const legend = function(content, ...args) {
     _attributes = [];
     return element;
 }
+const img = function(url, alt, ...args) {
+    _attributes = [...args];
+    element = document.createElement('img');
+    if (_attributes.length > 1) {
+        _setAttributes(element, _attributes);
+    };
+    element.src = `../${url}`;
+    element.alt = alt;
+    return element;
+}
 
 // helpers
 function _setAttributes(element, attributes) {
@@ -148,4 +158,4 @@ function _setAttributes(element, attributes) {
     };
 }
 
-export { div as default, span, p, h1, h2, h4, ul, li, input, select, option, label, legend };
+export { div as default, span, p, h1, h2, h4, ul, li, input, select, option, label, legend, img };
