@@ -36,7 +36,8 @@ h2 {
 }
 
 .date, h1, h2,
-.view-prefs-container ul h4 {
+/* .view-prefs-container ul h4, */
+.view-prefs-container ul span {
     font-weight: bold;
 }
 
