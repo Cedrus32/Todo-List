@@ -1,11 +1,12 @@
-header,
-#sidebar,
-#display,
-.form-container {
-    border: 1px solid black;
+#title {
+    background-color: #6A70BD;
+    color: white;
 }
 
-#sidebar,
+#sidebar {
+    background-color: #E9EAEC;
+}
+
 .form-container {
     background-color: white;
 }
