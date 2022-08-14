@@ -129,7 +129,7 @@ const label = function(content, forReference, ...args) {
 const legend = function(content, ...args) {
     _attributes = [...args];
     element = document.createElement('legend');
-    if (_attributes.length > 1) {
+    if (_attributes.length > 0) {
         _setAttributes(element, _attributes);
     };
     element.textContent = content;
@@ -139,7 +139,7 @@ const legend = function(content, ...args) {
 const img = function(url, alt, ...args) {
     _attributes = [...args];
     element = document.createElement('img');
-    if (_attributes.length > 1) {
+    if (_attributes.length > 0) {
         _setAttributes(element, _attributes);
     };
     element.src = `../${url}`;

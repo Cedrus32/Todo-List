@@ -101,7 +101,7 @@ const display = (() => {
                             let title;
                             switch (itemInstance.type) {
                                 case 'singleton':
-                                    title = card.querySelector('.title h2');
+                                    title = card.querySelector('.title h4');
                                     break;
                                 case 'checklist':
                                     title = card.querySelector('.title');
@@ -117,8 +117,10 @@ const display = (() => {
                             dueDate.textContent = taskValues[2];
                             break;
                         case 3:
+                            console.log(taskValues[3]);
                             let priority = card.querySelector('.priority');
-                            priority.textContent = taskValues[3];
+                            console.log(priority);
+                            priority.src = `../src/icons/priority-${taskValues[3]}.svg`;
                             break;
                         case 4:
                             let currentProjectCardID = projectContainer.querySelector('.card').id;
@@ -299,7 +301,7 @@ const display = (() => {
             case 3:
                 imgAlt = 'high priority';
         }
-        let imgPriority = img(`src/icons/priority-${priority}.svg`, imgAlt, `.priority-${priority}`);
+        let imgPriority = img(`src/icons/priority-${priority}.svg`, imgAlt, '.priority');
 
         let spanDate = span(dueDate, '.date');
         let imgModify = img('src/icons/edit.svg', 'modify task', '.task', '.modify');
@@ -345,7 +347,7 @@ const display = (() => {
             case 3:
                 imgAlt = 'high priority';
         }
-        let imgPriority = img(`src/icons/priority-${priority}.svg`, imgAlt, `.priority-${priority}`);
+        let imgPriority = img(`src/icons/priority-${priority}.svg`, imgAlt, '.priority');
 
         let imgModify = img('src/icons/edit.svg', 'modify task', '.task', '.modify');
         let imgDelete = img('src/icons/delete.svg', 'delete task', '.delete');
