@@ -23,38 +23,6 @@ const display = (() => {
         let viewPreferenceHeaderCard;
 
         switch (viewPreference) {   // ! reduce repetition
-            case 'all':
-                _clearDisplay();
-                viewPreferenceHeaderCard = _renderViewPreferenceHeaderCard(instanceBundle[0]);
-                projectContainer.appendChild(viewPreferenceHeaderCard);
-                for (let i = 1; i < (instanceBundle.length); i++) {
-                    _renderTask(instanceBundle[i]);
-                };
-                break;
-            case 'anytime':
-                _clearDisplay();
-                viewPreferenceHeaderCard = _renderViewPreferenceHeaderCard(instanceBundle[0]);
-                projectContainer.appendChild(viewPreferenceHeaderCard);
-                for (let i = 1; i < (instanceBundle.length); i++) {
-                    _renderTask(instanceBundle[i]);
-                };
-                break;
-            case 'today':
-                _clearDisplay();
-                viewPreferenceHeaderCard = _renderViewPreferenceHeaderCard(instanceBundle[0]);
-                projectContainer.appendChild(viewPreferenceHeaderCard);
-                for (let i = 1; i < (instanceBundle.length); i++) {
-                    _renderTask(instanceBundle[i]);
-                };
-                break;
-            case 'upcoming':
-                _clearDisplay();
-                viewPreferenceHeaderCard = _renderViewPreferenceHeaderCard(instanceBundle[0]);
-                projectContainer.appendChild(viewPreferenceHeaderCard);
-                for (let i = 1; i < (instanceBundle.length); i++) {
-                    _renderTask(instanceBundle[i]);
-                };
-                break;
             case 'project':
                 for (let i = 1; i < (instanceBundle.length); i++) {
                     switch (i) {
@@ -65,6 +33,14 @@ const display = (() => {
                         default:
                             _renderTask(instanceBundle[i]);
                     };
+                };
+                break;
+            default:
+                _clearDisplay();
+                viewPreferenceHeaderCard = _renderViewPreferenceHeaderCard(instanceBundle[0]);
+                projectContainer.appendChild(viewPreferenceHeaderCard);
+                for (let i = 1; i < (instanceBundle.length); i++) {
+                    _renderTask(instanceBundle[i]);
                 };
         };
     }
@@ -222,8 +198,8 @@ const display = (() => {
         return divHeader;
     }
     const _renderViewPreferenceHeaderCard = function(title) {
-        let viewCard = div('', '.card');
-        let viewHeader = h1(title, '');
+        let viewCard = div('', '.card', '.sort-due');
+        let viewHeader = h2(title, '');
         viewCard.appendChild(viewHeader);
 
         return viewCard;

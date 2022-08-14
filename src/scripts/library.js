@@ -201,16 +201,16 @@ const library = (() => {
         let queryTasks = false;
         
         switch (viewPreference) {
-            case 'all':
+            case 'All':
                 queryTasks = true;
                 break;
-            case 'today':
+            case 'Today':
                 queryTasks = true;
                 break;
-            case 'upcoming':
+            case 'Upcoming':
                 queryTasks = true;
                 break;
-            case 'anytime':
+            case 'Anytime':
                 queryTasks = true;
                 break;
             case 'project':
@@ -234,12 +234,12 @@ const library = (() => {
             };
         } else if (queryTasks === true) {   // ! reduce repetition
             switch (viewPreference) {
-                case 'all':
+                case 'All':
                     for (let t = 0; t < (_taskLibrary.length); t++) {
                         instanceBundle.push(_taskLibrary[t]);
                     };
                     break;
-                case 'today':
+                case 'Today':
                     for (let t = 0; t < (_taskLibrary.length); t++) {
                         let task = _taskLibrary[t];
                         if (task.dueDate === queryReference) {
@@ -247,7 +247,7 @@ const library = (() => {
                         }
                     };
                     break;
-                case 'upcoming':
+                case 'Upcoming':
                     for (let t = 0; t < (_taskLibrary.length); t++) {
                         let task = _taskLibrary[t];
                         for (let i = 0; i < (queryReference.length); i++) {
@@ -257,7 +257,7 @@ const library = (() => {
                         };
                     };
                     break;
-                case 'anytime':
+                case 'Anytime':
                     for (let t = 0; t < (_taskLibrary.length); t++) {
                         let task = _taskLibrary[t];
                         if (task.dueDate === queryReference) {
@@ -451,7 +451,7 @@ const library = (() => {
 
     // event subscriptions
 
-    events.subscribe('openViewPreferenceQuery', _bundleInstances) // published from sidebar.js (_clickViewPreferenceLink())
+    events.subscribe('openViewPreferenceQuery', _bundleInstances) // published from sidebar.js (_changeViewPreferencek())
 
     events.subscribe('confirmInput', _setInstanceValues); //published from default.js (init()), forms.js (_confirmInput())
 

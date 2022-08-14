@@ -189,6 +189,10 @@ fieldset {
                     align-items: center;
                 }
 
+                .card.sort-due {
+                    text-align: center;
+                }
+
                     .card.project .header {
                         display: grid;
                         grid-template-columns: 1fr auto;

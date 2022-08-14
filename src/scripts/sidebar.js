@@ -24,19 +24,19 @@ const sidebar = (() => {
     });
     
     viewAllButton.addEventListener('click', () => {
-        _changeViewPreference('all', '');
+        _changeViewPreference('All', '');
     });
     viewTodayButton.addEventListener('click', () => {
-        _changeViewPreference('today', '');
+        _changeViewPreference('Today', '');
     });
     viewUpcomingButton.addEventListener('click', () => {
-        _changeViewPreference('upcoming', '');
+        _changeViewPreference('Upcoming', '');
     });
     viewAnytimeButton.addEventListener('click', () => {
-        _changeViewPreference('anytime', '');
+        _changeViewPreference('Anytime', '');
     });
-    viewUnsortedButton.addEventListener('click', (e) => {
-        _changeViewPreference('project', e.target.id);
+    viewUnsortedButton.addEventListener('click', () => {
+        _changeViewPreference('project', viewUnsortedButton.id);
     });
     createProjectButton.addEventListener('click', () => {
         events.publish('clickCreateProject', 'project');    // subscribed by forms.js
