@@ -253,9 +253,9 @@ const display = (() => {
 
         switch (task.type) {
             case 'singleton':
-                taskCard = div('', '.card', '.singleton', `#${cardID}`, `.priority-${task.priority}`)
+                taskCard = div('', '.card', '.singleton', `#${cardID}`)
                 let singletonCheckmark = input('checkbox', '', '', task.id, '');
-                let singletonCardContent = _renderSingletonContent(task.id, task.title, task.dueDate, task.description);
+                let singletonCardContent = _renderSingletonContent(task.id, task.title, task.dueDate, task.description, task.priority);
                 taskCard.append(singletonCheckmark, singletonCardContent);
                 break;
             case 'checklist':
@@ -269,21 +269,37 @@ const display = (() => {
 
         _fillTaskCounter('+');
     }
-    const _renderSingletonContent = function(id, title, dueDate, description) {
+    const _renderSingletonContent = function(id, title, dueDate, description, priority) {
         let divContent = div('', '.content');
 
-        let taskHeader = _renderSingletonHeader(id, title, dueDate);
+        let taskHeader = _renderSingletonHeader(id, title, dueDate, priority);
         let taskDescription = div(description, '.description');
 
         divContent.append(taskHeader, taskDescription);
         return divContent;
     }
-    const _renderSingletonHeader = function(id, title, dueDate) {
+    const _renderSingletonHeader = function(id, title, dueDate, priority) {
         let divHeader = div('', '.header');
 
         let labelCheckmarkTitle = label('', id, '.title');
         let h4TitleContent = h4(title, '');
         labelCheckmarkTitle.appendChild(h4TitleContent);
+
+        let imgAlt;
+        switch (priority) {
+            case 0:
+                imgAlt = 'no priority';
+                break;
+            case 1:
+                imgAlt = 'low priority';
+                break;
+            case 2:
+                imgAlt = 'medium priority';
+                break;
+            case 3:
+                imgAlt = 'high priority';
+        }
+        let imgPriority = img(`src/icons/priority-${priority}.svg`, imgAlt, `.priority-${priority}`);
 
         let spanDate = span(dueDate, '.date');
         let imgModify = img('src/icons/edit.svg', 'modify task', '.task', '.modify');
@@ -298,22 +314,39 @@ const display = (() => {
             events.publish('clickDeleteTask', taskCardID);   // subscribed by library.js
         });
 
-        divHeader.append(labelCheckmarkTitle, spanDate, imgModify, imgDelete);
+        divHeader.append(labelCheckmarkTitle, spanDate, imgPriority, imgModify, imgDelete);
         return divHeader;
     }
-    const _renderChecklistCardContents = function(title, description, dueDate) {
+    const _renderChecklistCardContents = function(title, description, dueDate, priority) {
         let divContent = div('', '.content');
-        let checklistHeader = _renderChecklistHeader(title, dueDate);
+        let checklistHeader = _renderChecklistHeader(title, dueDate, priority);
         let checklistDescription = _renderChecklistSubheader(description);
         
         divContent.append(checklistHeader, checklistDescription);
         return divContent;
     }
-    const _renderChecklistHeader = function(title, dueDate) {
+    const _renderChecklistHeader = function(title, dueDate, priority) {
         let divHeader = div('', '.header');
 
         let h4Title = h4(title, '.title');
         let spanDate = span(dueDate, '.date');
+
+        let imgAlt;
+        switch (priority) {
+            case 0:
+                imgAlt = 'no priority';
+                break;
+            case 1:
+                imgAlt = 'low priority';
+                break;
+            case 2:
+                imgAlt = 'medium priority';
+                break;
+            case 3:
+                imgAlt = 'high priority';
+        }
+        let imgPriority = img(`src/icons/priority-${priority}.svg`, imgAlt, `.priority-${priority}`);
+
         let imgModify = img('src/icons/edit.svg', 'modify task', '.task', '.modify');
         let imgDelete = img('src/icons/delete.svg', 'delete task', '.delete');
 
@@ -326,7 +359,7 @@ const display = (() => {
             events.publish('clickDeleteTask', cardID);   // subscribed by library.js
         });
 
-        divHeader.append(h4Title, spanDate, imgModify, imgDelete);
+        divHeader.append(h4Title, spanDate, imgPriority, imgModify, imgDelete);
         return divHeader;
     }
     const _renderChecklistSubheader = function(description) {
