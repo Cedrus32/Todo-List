@@ -1,4 +1,4 @@
-// * factory class for base-level DOM elements
+// & factory class for base-level DOM elements
 
 // data
 let _attributes = [];

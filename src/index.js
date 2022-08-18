@@ -1,7 +1,7 @@
 import './styles/reset.css';
 import './styles/spacing.css';
 import './styles/typo.css';
-import './styles/shaping.css';
+import './styles/effects.css';
 import './styles/colors.css';
 
 import defaultState from './scripts/default.js';

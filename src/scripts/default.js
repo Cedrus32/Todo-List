@@ -22,7 +22,7 @@ const defaultState = (() => {
         events.publish('confirmInput', projectValues); // subscribed by library.js
     }
     function _createDefaultTask(taskValues) {
-        events.publish('confirmInput', taskValues);
+        events.publish('confirmInput', taskValues); // subscribed by library.js
     }
 
     return {
