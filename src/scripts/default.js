@@ -1,6 +1,6 @@
 import events from '../events.js'
 
-// * initiates default state
+// & initiates default state
 
 const defaultState = (() => {
     // data
