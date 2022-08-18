@@ -7,6 +7,7 @@
     --xtra-small-gap: calc(0.25 * var(--main-gap));
 
     --small-pad: calc(0.5 * var(--main-pad));
+    --small-gap: calc(0.5 * var(--main-gap));
 
     --main-pad: 1em;
     --main-gap: 1em;
@@ -97,36 +98,56 @@ body {
     
     width: 80%;
     max-width: 450px;
+
+    padding: var(--main-pad);
 }
 
-    section.form-container:not(.hide) ~ .show-filter {
-        position: absolute;
-        top: 0px; right: 0px;
-        z-index: 1;
+section.form-container:not(.hide) ~ .show-filter {
+    position: absolute;
+    top: 0px; right: 0px;
+    z-index: 1;
 
-        height: 100vh; width: 100vw;
+    height: 100vh; width: 100vw;
+}
+
+    form {
+        padding-bottom: var(--main-pad);
     }
 
-fieldset {
-    display: flex;
-    flex-flow: column;
-}
+            .input-label-group {
+                display: flex;
+                flex-flow: column;
+                gap: var(--xtra-small-gap);
 
-    .dropdowns {
+                margin-top: var(--small-pad);
+            }
+            
+                p {
+                    margin-top: var(--small-pad);
+                }
+
+            .dropdowns {
+                display: flex;
+            }
+
+                .dropdowns div {
+                    display: flex;
+                    flex-flow: column;
+
+                    width: 50%;
+                }
+
+    .form-buttons {
         display: flex;
+        justify-content: center;
+        gap: var(--small-gap);
     }
 
-        .dropdowns div {
-            display: flex;
-            flex-flow: column;
-
-            width: 50%;
+        button,
+        input,
+        select {
+            padding: var(--xtra-small-pad);
         }
-
-.form-buttons {
-    display: flex;
-    justify-content: center;
-}
 
 /* --- CONTENT */
 /* --- CONTENT */

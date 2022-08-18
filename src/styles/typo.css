@@ -19,7 +19,10 @@ h1 {
 
 h2 {
     font-size: 1.5rem;
-    font-weight: 300;
+}
+
+legend {
+    font-size: 1.25rem;
 }
 
 .tally,
@@ -35,8 +38,7 @@ h2 {
     font-size: 0.75rem;
 }
 
-.date, h1, h2,
-/* .view-prefs-container ul h4, */
+.date, h1, h2, legend,
 .view-prefs-container ul span {
     font-weight: bold;
 }

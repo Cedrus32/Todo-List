@@ -31,16 +31,16 @@ const forms = (() => {
             case ((typeof formReference) === 'object'):   // * stores task reference when creating new checklist item
                 let taskReference = formReference[1];
                 _setFormReferences(formReference[0]);
-                _renderCheckboxForm(taskReference);
+                _renderCheckboxForm(taskReference, 'Create New Checklist Item');
                 break;
             case ((typeof formReference) === 'string'):
                 _setFormReferences(formReference);
                 switch (_currentFormType) {
                     case 'project':
-                        _renderProjectForm();
+                        _renderProjectForm('Create New Project');
                         break;
                     case 'task':
-                        _renderTaskForm();
+                        _renderTaskForm('Create New Task');
                 };
         };
 
@@ -150,13 +150,13 @@ const forms = (() => {
     function _fillFormValues(values) {
         switch (_currentFormType) {
             case 'project':
-                _renderProjectForm();
+                _renderProjectForm('Edit Project');
                 for (let i = 0; i < (formInputs.length); i++) {
                     formInputs[i].value = values[i + 1];
                 };
                 break;
             case 'task':
-                _renderTaskForm();
+                _renderTaskForm('Edit Task');
                 for (let i = 1; i < (values.length); i++) {
                     switch (i) {
                         case 1:
@@ -178,9 +178,8 @@ const forms = (() => {
                 _disableTaskTypeSelection();
                 break;
             case 'checkbox':
-                _renderCheckboxForm();
                 let instanceReferences = `${values[1]}_${values[2]}`;   // * passed to library for indexing correct task && checklist item
-                formInputs[0].value = instanceReferences;
+                _renderCheckboxForm(instanceReferences, 'Edit Checklist Item');
                 formInputs[1].value = values[3];
         };
     }
@@ -269,27 +268,32 @@ const forms = (() => {
     }
 
     // form factories
-    const _renderProjectForm = function() {
-        let fieldsetLegend = legend('Create a New Project', '');
+    const _renderProjectForm = function(formTitle) {
+        let fieldsetLegend = legend(formTitle, '');
 
+        let titleDiv = div('', '.input-label-group');
         let spanRequiredBadge = span('*', '.required-badge');
         let spanErrorMessage = span('please include a title', '.error-message', '.hide');
-        let labelTitle = label('title ', 'project-title');
+        let labelTitle = label('Title ', 'project-title');
         labelTitle.append(spanRequiredBadge, spanErrorMessage);
         let inputTitle = input('text', 'project-title', 'title', 'project-title', '');
         inputTitle.required = true;
         inputTitle.ariaRequired = true;
+        titleDiv.append(labelTitle, inputTitle);
 
-        let labelDescription = label('description', '.project-description');
+        let descriptionDiv = div('', '.input-label-group');
+        let labelDescription = label('Description', '.project-description');
         let inputDescription = input('text', 'project-description', 'description', 'project-description', '');
+        descriptionDiv.append(labelDescription, inputDescription);
 
-        formFieldset.append(fieldsetLegend, labelTitle, inputTitle, labelDescription, inputDescription);
+        formFieldset.append(fieldsetLegend, titleDiv, descriptionDiv);
 
         formInputs = formContainer.querySelectorAll('input');
     }
-    const _renderTaskForm = function() {        
-        let fieldsetLegend = legend('Create a New Task', '');
+    const _renderTaskForm = function(formTitle) {        
+        let fieldsetLegend = legend(formTitle, '');
 
+        let typeDiv = div('', '.input-label-group');
         let labelTaskType = label('Task Type', '');
         let divTypeOptions = div('', '.type-options');
         let radioSingleton = input('radio', 'type', '', 'singleton', '.input',);
@@ -298,7 +302,9 @@ const forms = (() => {
         let radioChecklist = input('radio', 'type', '', 'checklist', '.input');
         let labelChecklist = label('Task List', 'checklist', '');
         divTypeOptions.append(radioSingleton, labelSingleton, radioChecklist, labelChecklist);
+        typeDiv.append(labelTaskType, divTypeOptions);
 
+        let titleDiv = div('', '.input-label-group');
         let spanRequiredBadge = span('*', '.required-badge');
         let spanErrorMessage = span('please include a title', '.error-message', '.hide');
         let labelTitle = label('Title ', 'task-title');
@@ -306,15 +312,20 @@ const forms = (() => {
         let inputTitle = input('text', 'task-title', 'title', 'task-title', '.input');
         inputTitle.required = true;
         inputTitle.ariaRequired = true;
+        titleDiv.append(labelTitle, inputTitle);
 
+        let descriptionDiv = div('', '.input-label-group');
         let labelDescription = label('Task Description', 'description');
         let inputDescription = input('text', 'description', 'description', 'task-description', '.input');
+        descriptionDiv.append(labelDescription, inputDescription);
 
+        let dueDateDiv = div('', '.input-label-group');
         let labelDueDate = label('Due Date', 'due-date');
         let inputDueDate = input('date', 'due-date', '', 'due-date', '.input');
+        dueDateDiv.append(labelDueDate, inputDueDate);
 
         let divDropdowns = div('', '.dropdowns');
-        let divPriority = div('', '');
+        let divPriority = div('', '.input-label-group');
         let labelPriority = label('Priority', 'priority', '');
         let selectPriority = select('priority', '#priority', '.input');
         for (let i = 0; i < 4; i++) {
@@ -335,14 +346,15 @@ const forms = (() => {
             let optionPriority = option(i, content);
             selectPriority.appendChild(optionPriority);
         };
-        let divProject = div('', '');
+        let divProject = div('', '.input-label-group');
         let labelProject = label('Project', 'project', '');
         let selectProject = select('project', '#project', '.input');
         divPriority.append(labelPriority, selectPriority);
         divProject.append(labelProject, selectProject);
         divDropdowns.append(divPriority, divProject);
 
-        formFieldset.append(fieldsetLegend, labelTaskType, divTypeOptions, labelTitle, inputTitle, labelDescription, inputDescription, labelDueDate, inputDueDate, divDropdowns);
+        formFieldset.append(fieldsetLegend, typeDiv, titleDiv, descriptionDiv, dueDateDiv, divDropdowns)
+        // formFieldset.append(fieldsetLegend, labelTaskType, divTypeOptions, labelTitle, inputTitle, labelDescription, inputDescription, labelDueDate, inputDueDate, divDropdowns);
 
         let projectReferenceContainer = formContainer.querySelector('input');
         projectReferenceContainer.classList.add('input');
@@ -364,24 +376,26 @@ const forms = (() => {
             projectDropdown.appendChild(optionProject);
         };
     }
-    const _renderCheckboxForm = function(taskReference) {
-        let fieldsetLegend = legend('Create a New Checklist Item', '');
+    const _renderCheckboxForm = function(taskReference, formTitle) {
+        let fieldsetLegend = legend(formTitle, '');
 
+        let titleDiv = div('', '.input-label-group');
         let spanRequiredBadge = span('*', '.required-badge');
         let spanErrorMessage = span('please include a title', '.error-message', '.hide');
-        let titleLabel = label('title ', 'project-title');
-        titleLabel.append(spanRequiredBadge, spanErrorMessage);
+        let labelTitle = label('Title ', 'project-title');
+        labelTitle.append(spanRequiredBadge, spanErrorMessage);
         let inputTitle = input('text', 'checkbox-title', 'title', 'checkbox-title', '');
         inputTitle.required = true;
         inputTitle.ariaRequired = true;
+        titleDiv.append(labelTitle, inputTitle);
 
-        formFieldset.append(fieldsetLegend, titleLabel, inputTitle);
+        formFieldset.append(fieldsetLegend, titleDiv);
 
         formInputs = formContainer.querySelectorAll('input');
         formInputs[0].value = taskReference;    // * passed to library.js for indexing correct task
     }
     const _renderDeleteConfirmationForm = function() {
-        let fieldsetLegend = legend('Delete this Project', '');
+        let fieldsetLegend = legend('Delete This Project', '');
 
         let p1 = p('Deleting a project will also delete all of its tasks.', '');
         let p2 = p('Are you SURE you want to proceed?', '');

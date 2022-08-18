@@ -37,7 +37,7 @@ h1, h2, h3, h4 {
 
 p {
     margin-top: 0;
-    margin-bottom: 1rem;
+    margin-bottom: 0rem;
 }
 
 
@@ -103,7 +103,7 @@ button:-moz-focusring,
 /* correct padding in Firefox */
 
 fieldset {
-    padding: 0.35em 0.75em 0.625em;
+    padding: 0;
 }
   
 /* 1. correct text wrapping in Edge, IE */
