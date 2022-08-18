@@ -56,6 +56,7 @@ body {
     
     position: absolute;
     top: var(--y-offset); left: 0em;
+    z-index: 1;
 
     height: calc(100vh - var(--y-offset));
     width: 25vw;
@@ -176,7 +177,7 @@ section.form-container:not(.hide) ~ .show-filter {
             align-items: center;
             gap: var(--main-gap);
 
-            z-index: 1;
+            z-index: 2;
         }
 
             header img {

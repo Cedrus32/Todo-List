@@ -1,0 +1,35 @@
+/* card hover */
+/* card hover */
+/* card hover */
+
+.card.singleton,
+.card.checklist {
+    border-radius: 0.5em;
+    position: relative;
+}
+
+.card.singleton,
+.card.checklist {
+    width: 100%;
+}
+
+.card.singleton::after,
+.card.checklist::after {
+    content: '';
+    position: absolute;
+    bottom: 0px; left: 0px;
+    z-index: -1;
+
+    background-color: hsl(220, 7%, 96%);
+
+    width: 100%;
+    height: 0px;
+    border-radius: 0.5em;
+}
+
+.card.singleton:hover::after,
+.card.checklist:hover::after {
+    height: 100%;
+    transition: all 0.20s ease-out;
+}
+
