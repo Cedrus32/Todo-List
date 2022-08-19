@@ -1,5 +1,5 @@
 import events from '../events.js';
-import { default as li} from './elements';
+import { li } from './elements';
 
 // & manages sidebar section DOM <-> library communication
 // & contains factories for generating display section DOM elements / groupings
@@ -73,6 +73,7 @@ const sidebar = (() => {
 
             let liID = `#view-project_${id}`;
             let liProjectLink = li(title, liID);
+            console.log(liProjectLink);
 
             liProjectLink.addEventListener('click', (e) => {
                 _changeViewPreference('project', e.target.id);
@@ -105,7 +106,7 @@ const sidebar = (() => {
                 _changeViewPreference('project', 'project_0');
         };
     }
-    function _getTodayDate() {  // ! reduce repetition vvv
+    function _getTodayDate() {
         let rawDate = new Date();
         let year = rawDate.getFullYear();
         let month = rawDate.getMonth() + 1;
@@ -121,7 +122,7 @@ const sidebar = (() => {
         let formattedDate = `${year}-${month}-${date}`;
         return formattedDate;
     }
-    function _getUpcomingDate() {   // ! reduce repetition ^^^
+    function _getUpcomingDate() {
         let validDates = [];
         for (let i = 1; i < 8; i++) {
             let rawDate = new Date();

@@ -6,10 +6,6 @@
 .card.checklist {
     border-radius: 0.5em;
     position: relative;
-}
-
-.card.singleton,
-.card.checklist {
     width: 100%;
 }
 
@@ -33,3 +29,31 @@
     transition: all 0.20s ease-out;
 }
 
+
+/* view preference hover */
+/* view preference hover */
+/* view preference hover */
+
+.view-prefs-container ul li {
+    border-radius: 0.5em;
+    position: relative;
+    width: 100%;
+}
+
+.view-prefs-container ul li::after {
+    content: '';
+    position: absolute;
+    bottom: 0px; left: 0px;
+    z-index: -1;
+
+    background-color: hsl(220, 7%, 100%);
+
+    width: 100%;
+    height: 0px;
+    border-radius: 0.5rem;
+}
+
+.view-prefs-container ul li:hover::after {
+    height: 100%;
+    transition: all 0.20s ease-out;
+}

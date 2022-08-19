@@ -1,5 +1,5 @@
 import events from '../events';
-import { default as div, h1, h2, h4, ul, li, span, input, label, img } from './elements';
+import { default as div, h2, h4, ul, li, span, input, label, img } from './elements';
 
 // & manages display DOM <-> library communication
 // & contains factories for generating display section DOM elements / groupings
