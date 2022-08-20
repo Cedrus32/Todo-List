@@ -65,7 +65,6 @@
 
 .project-icons-container img {
     border-radius: 0.5em;
-    /* background-color: transparent; */
 
     transition: background 0.20s ease-out;
 }
