@@ -69,6 +69,7 @@
     transition: background 0.20s ease-out;
 }
 
-.icon-selected {
+.icon-selected,
+.project-icons-container img:hover {
     background-color: hsl(236, 39%, 88%);
 }
