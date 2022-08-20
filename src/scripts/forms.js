@@ -1,5 +1,5 @@
 import events from '../events';
-import { default as div, span, p, input, label, select, option, legend } from './elements';
+import { default as div, span, p, input, label, select, option, legend, img } from './elements';
 
 // & manages display/sidebar section DOMs -> form section DOMs <-> library communication
 // & contains factories for generating form section DOM elements / groupings
@@ -286,7 +286,63 @@ const forms = (() => {
         let inputDescription = input('text', 'project-description', 'description', 'project-description', '');
         descriptionDiv.append(labelDescription, inputDescription);
 
-        formFieldset.append(fieldsetLegend, titleDiv, descriptionDiv);
+        let iconsDiv = div('', '.label-icons-group');
+        let labelIcons = label('Choose An Icon', '', '');
+        let iconsContainer = div('', '.project-icons-container');
+        for (let i = 0; i < 15; i++) {
+            let imgAlt;
+            switch (i) {
+                case 0:
+                    imgAlt = 'folder';
+                    break;
+                case 1:
+                    imgAlt = 'star';
+                    break;
+                case 2:
+                    imgAlt = 'hammer and wrench';
+                    break;
+                case 3:
+                    imgAlt = 'fork and soda cup';
+                    break;
+                case 4:
+                    imgAlt = 'dollar bills';
+                    break;
+                case 5:
+                    imgAlt = 'city buildings';
+                    break;
+                case 6:
+                    imgAlt = 'house';
+                    break;
+                case 7:
+                    imgAlt = 'gift';
+                    break;
+                case 8:
+                    imgAlt = 'car';
+                    break;
+                case 9:
+                    imgAlt = 'airplane';
+                    break;
+                case 10:
+                    imgAlt = 'baby carriage';
+                    break;
+                case 111:
+                    imgAlt = 'flower';
+                    break;
+                case 12:
+                    imgAlt = 'palm tree';
+                    break;
+                case 13:
+                    imgAlt = 'volley ball';
+                    break;
+                case 14:
+                    imgAlt = 'backpack';
+            };
+            let imgIcon = img(`src/icons/project-icons/${i}.svg`, imgAlt, '');
+            iconsContainer.appendChild(imgIcon);
+        }
+        iconsDiv.append(labelIcons, iconsContainer);
+
+        formFieldset.append(fieldsetLegend, titleDiv, descriptionDiv, iconsDiv);
 
         formInputs = formContainer.querySelectorAll('input');
     }

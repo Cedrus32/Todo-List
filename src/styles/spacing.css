@@ -128,6 +128,25 @@ section.form-container:not(.hide) ~ .show-filter {
                 p {
                     margin-top: var(--small-pad);
                 }
+            
+            .label-icons-group {
+                display: flex;
+                flex-flow: column;
+
+                margin-top: var(--main-pad);
+            }
+            
+                .project-icons-container {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: var(--xtra-small-gap);
+
+                    margin-top: var(--small-pad);
+                }
+
+                    .project-icons-container img {
+                        height: 2rem;
+                    }
 
             .dropdowns {
                 display: flex;
