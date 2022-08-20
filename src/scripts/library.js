@@ -12,11 +12,12 @@ const library = (() => {
     // factories
     class Project {
         // attributes
-        constructor(projectID, projectTitle, projectDescription) {
+        constructor(projectID, projectTitle, projectDescription, projectIcon) {
             this.type = 'project';
             this.id = projectID;
             this.title = projectTitle;
             this.description = projectDescription;
+            this.icon = projectIcon;
         }
 
         // setters
@@ -28,6 +29,11 @@ const library = (() => {
         set setDescription(value) {
             if (value !== this.description) {
                 this.description = value;
+            };
+        }
+        set setIcon(value) {
+            if (value !== this.icon) {
+                this.icon = value;
             };
         }
     }
