@@ -266,6 +266,16 @@ const forms = (() => {
         let label = input.previousElementSibling;
         label.lastChild.classList.add('hide');
     }
+    function _updateIconSelection(targetIcon) {
+        let availableIcons = document.querySelector('.project-icons-container').children;
+        for (let i = 0; i < (availableIcons.length); i++) {
+            if (availableIcons[i].classList.contains('icon-selected')) {
+                availableIcons[i].classList.remove('icon-selected');
+            };
+        };
+
+        targetIcon.classList.add('icon-selected');
+    }
 
     // form factories
     const _renderProjectForm = function(formTitle) {
@@ -291,9 +301,11 @@ const forms = (() => {
         let iconsContainer = div('', '.project-icons-container');
         for (let i = 0; i < 15; i++) {
             let imgAlt;
+            let imgClass = '';
             switch (i) {
                 case 0:
                     imgAlt = 'folder';
+                    imgClass = '.icon-selected';
                     break;
                 case 1:
                     imgAlt = 'star';
@@ -337,9 +349,13 @@ const forms = (() => {
                 case 14:
                     imgAlt = 'backpack';
             };
-            let imgIcon = img(`src/icons/project-icons/${i}.svg`, imgAlt, '');
+            let imgIcon = img(`src/icons/project-icons/${i}.svg`, imgAlt, imgClass);
+            imgIcon.addEventListener('click', (e) => {
+                _updateIconSelection(e.target);
+            });
+
             iconsContainer.appendChild(imgIcon);
-        }
+        };
         iconsDiv.append(labelIcons, iconsContainer);
 
         formFieldset.append(fieldsetLegend, titleDiv, descriptionDiv, iconsDiv);

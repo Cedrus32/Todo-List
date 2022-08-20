@@ -57,3 +57,19 @@
     height: 100%;
     transition: all 0.20s ease-out;
 }
+
+
+/* project icon selection */
+/* project icon selection */
+/* project icon selection */
+
+.project-icons-container img {
+    border-radius: 0.5em;
+    /* background-color: transparent; */
+
+    transition: background 0.20s ease-out;
+}
+
+.icon-selected {
+    background-color: hsl(236, 39%, 88%);
+}
