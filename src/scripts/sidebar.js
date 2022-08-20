@@ -23,19 +23,24 @@ const sidebar = (() => {
         viewPrefs.classList.toggle('hide');
     });
     
-    viewAllButton.addEventListener('click', () => {
+    viewAllButton.addEventListener('click', (e) => {
+        _updateSelectEffect(e.target);
         _changeViewPreference('All', '');
     });
-    viewTodayButton.addEventListener('click', () => {
+    viewTodayButton.addEventListener('click', (e) => {
+        _updateSelectEffect(e.target);
         _changeViewPreference('Today', '');
     });
-    viewUpcomingButton.addEventListener('click', () => {
+    viewUpcomingButton.addEventListener('click', (e) => {
+        _updateSelectEffect(e.target);
         _changeViewPreference('Upcoming', '');
     });
-    viewAnytimeButton.addEventListener('click', () => {
+    viewAnytimeButton.addEventListener('click', (e) => {
+        _updateSelectEffect(e.target);
         _changeViewPreference('Anytime', '');
     });
-    viewUnsortedButton.addEventListener('click', () => {
+    viewUnsortedButton.addEventListener('click', (e) => {
+        _updateSelectEffect(e.target);
         _changeViewPreference('project', viewUnsortedButton.id);
     });
     createProjectButton.addEventListener('click', () => {
@@ -76,10 +81,13 @@ const sidebar = (() => {
             console.log(liProjectLink);
 
             liProjectLink.addEventListener('click', (e) => {
+                _updateSelectEffect(e.target);
                 _changeViewPreference('project', e.target.id);
             });
 
             projectsList.appendChild(liProjectLink);
+            
+            _updateSelectEffect(liProjectLink);
         };
     }
 
@@ -101,9 +109,11 @@ const sidebar = (() => {
         switch (true) {
             case (ulContainer.children.length > 1):
                 _changeViewPreference('project', ulContainer.lastChild.id);
+                _updateSelectEffect(ulContainer.lastChild);
                 break;
             default:
                 _changeViewPreference('project', 'project_0');
+                _updateSelectEffect(viewUnsortedButton);
         };
     }
     function _getTodayDate() {
@@ -143,6 +153,25 @@ const sidebar = (() => {
         };
 
         return validDates;
+    }
+    function _updateSelectEffect(targetLink) {
+        _removeSelectEffect();
+        _addSelectEffect(targetLink);
+    }
+    function _addSelectEffect(targetLink) {
+        targetLink.classList.add('selected-view-preference');
+    }
+    function _removeSelectEffect() {
+        let sidebarLinks = [viewAllButton, viewTodayButton, viewUpcomingButton, viewAnytimeButton, viewUnsortedButton, ...projectsList.children];
+        sidebarLinks.splice(5, 1);
+        console.log(sidebarLinks);
+
+        for (let i = 0; i < (sidebarLinks.length); i++) {
+            let viewPreference = sidebarLinks[i];
+            if (viewPreference.classList.contains('selected-view-preference')) {
+                viewPreference.classList.remove('selected-view-preference');
+            };
+        };
     }
 
     // event subscriptions

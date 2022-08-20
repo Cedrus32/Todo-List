@@ -7,6 +7,10 @@
     background-color: #E9EAEC;
 }
 
+    .selected-view-preference {
+        background-color: hsl(220, 7%, 100%);
+    }
+
 .form-container {
     background-color: white;
 }
