@@ -9,8 +9,8 @@
     --small-pad: calc(0.5 * var(--main-pad));
     --small-gap: calc(0.5 * var(--main-gap));
 
-    --main-pad: 1em;
-    --main-gap: 1em;
+    --main-pad: 1rem;
+    --main-gap: 1rem;
 
     --med-pad: calc(1.5 * var(--main-pad));
 
@@ -26,11 +26,11 @@ ul {
 }
 
     li {
-        padding: 0em;
+        padding: 0rem;
     }
 
 img {
-    height: 1.25em;
+    height: 1.10rem;
 }
 
 body {
@@ -52,10 +52,10 @@ body {
 /* --- SIDEBAR */
 
 #sidebar {
-    --y-offset: calc(calc(var(--main-pad) * 2) + 3.15em);
+    --y-offset: calc(calc(var(--main-pad) * 2) + 3.15rem);
     
     position: absolute;
-    top: var(--y-offset); left: 0em;
+    top: var(--y-offset); left: 0rem;
     z-index: 1;
 
     height: calc(100vh - var(--y-offset));
@@ -202,7 +202,7 @@ section.form-container:not(.hide) ~ .show-filter {
         }
 
             header img {
-                height: 2em;
+                height: 2rem;
             }
 
 /* ------- DISPLAY */
@@ -218,7 +218,7 @@ section.form-container:not(.hide) ~ .show-filter {
                 flex-flow: column;
                 gap: var(--xtra-small-gap);
 
-                padding: 1em;
+                padding: var(--main-pad);
             }
                 
                 div.card,
