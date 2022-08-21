@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500&display=swap');
 
+:root {
+    font-size: clamp(1rem, 1.25vw, 2rem);
+}
+
 body {
     font-family: 'Open Sans', sans-serif;
 }
