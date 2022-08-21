@@ -1,5 +1,5 @@
 import events from '../events.js';
-import { li } from './elements';
+import { li, img } from './elements';
 
 // & manages sidebar section DOM <-> library communication
 // & contains factories for generating display section DOM elements / groupings
@@ -77,7 +77,60 @@ const sidebar = (() => {
             let title = project.title;
 
             let liID = `#view-project_${id}`;
-            let liProjectLink = li(title, liID);
+            let liProjectLink = li('', liID);
+            
+            let iconAlt;
+            switch (project.icon) {
+                case '00':
+                    iconAlt = 'folder';
+                    break;
+                case '01':
+                    iconAlt = 'star';
+                    break;
+                case '02':
+                    iconAlt = 'hammer and wrench';
+                    break;
+                case '03':
+                    iconAlt = 'fork and soda cup';
+                    break;
+                case '04':
+                    iconAlt = 'dollar bills';
+                    break;
+                case '05':
+                    iconAlt = 'city buildings';
+                    break;
+                case '06':
+                    iconAlt = 'house';
+                    break;
+                case '07':
+                    iconAlt = 'gift';
+                    break;
+                case '08':
+                    iconAlt = 'car';
+                    break;
+                case '09':
+                    iconAlt = 'airplane';
+                    break;
+                case '10':
+                    iconAlt = 'baby carriage';
+                    break;
+                case '11':
+                    iconAlt = 'flower';
+                    break;
+                case '12':
+                    iconAlt = 'palm tree';
+                    break;
+                case '13':
+                    iconAlt = 'volley ball';
+                    break;
+                case '14':
+                    iconAlt = 'backpack';
+            };
+            let projectIcon = img(`src/icons/project-icons/${project.icon}.svg`, iconAlt, '');
+            liProjectLink.appendChild(projectIcon);
+
+            liProjectLink.insertAdjacentText('beforeend', title);
+            
             console.log(liProjectLink);
 
             liProjectLink.addEventListener('click', (e) => {
