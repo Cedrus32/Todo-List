@@ -30,6 +30,15 @@
 }
 
 
+/* card icon hover */
+/* card icon hover */
+/* card icon hover */
+
+.card img:not(.priority):hover {
+    transform: scale(1.2)
+}
+
+
 /* view preference hover */
 /* view preference hover */
 /* view preference hover */
