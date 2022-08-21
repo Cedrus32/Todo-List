@@ -78,9 +78,25 @@ const sidebar = (() => {
 
             let liID = `#view-project_${id}`;
             let liProjectLink = li('', liID);
+            let projectIcon = _renderProjectIcon(project.icon);
+            liProjectLink.appendChild(projectIcon);
+            liProjectLink.insertAdjacentText('beforeend', title);
             
-            let iconAlt;
-            switch (project.icon) {
+            console.log(liProjectLink);
+
+            liProjectLink.addEventListener('click', (e) => {
+                _updateSelectEffect(e.target);
+                _changeViewPreference('project', e.target.id);
+            });
+
+            projectsList.appendChild(liProjectLink);
+            
+            _updateSelectEffect(liProjectLink);
+        };
+    }
+    const _renderProjectIcon = function(iconReference) {
+        let iconAlt;
+            switch (iconReference) {
                 case '00':
                     iconAlt = 'folder';
                     break;
@@ -126,29 +142,20 @@ const sidebar = (() => {
                 case '14':
                     iconAlt = 'backpack';
             };
-            let projectIcon = img(`src/icons/project-icons/${project.icon}.svg`, iconAlt, '');
-            liProjectLink.appendChild(projectIcon);
+            let icon = img(`src/icons/project-icons/${iconReference}.svg`, iconAlt, '');
 
-            liProjectLink.insertAdjacentText('beforeend', title);
-            
-            console.log(liProjectLink);
-
-            liProjectLink.addEventListener('click', (e) => {
-                _updateSelectEffect(e.target);
-                _changeViewPreference('project', e.target.id);
-            });
-
-            projectsList.appendChild(liProjectLink);
-            
-            _updateSelectEffect(liProjectLink);
-        };
+            return icon;
     }
 
     // helpers
     function _modifyViewPreferenceLink(itemInstance) {
         if (itemInstance.type === 'project') {
             let projectLink = document.getElementById(`view-project_${itemInstance.id}`);
-            projectLink.textContent = itemInstance.title;
+
+            projectLink.textContent = '';
+            let projectIcon = _renderProjectIcon(itemInstance.icon);
+            projectLink.appendChild(projectIcon);
+            projectLink.insertAdjacentText('beforeend', itemInstance.title);
         };
     }
     function _removeProjectLink(projectCardID) {
