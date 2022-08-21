@@ -397,12 +397,17 @@ const forms = (() => {
         let typeDiv = div('', '.input-label-group');
         let labelTaskType = label('Task Type', '');
         let divTypeOptions = div('', '.type-options');
+        
+        let divSingleton = div('', '.type-group');
         let radioSingleton = input('radio', 'type', '', 'singleton', '.input',);
         radioSingleton.checked = true;
         let labelSingleton = label('Single Task', 'singleton', '');
+        divSingleton.append(radioSingleton, labelSingleton);
+        let divChecklist = div('', '.type-group');
         let radioChecklist = input('radio', 'type', '', 'checklist', '.input');
         let labelChecklist = label('Task List', 'checklist', '');
-        divTypeOptions.append(radioSingleton, labelSingleton, radioChecklist, labelChecklist);
+        divChecklist.append(radioChecklist, labelChecklist);
+        divTypeOptions.append(divSingleton, divChecklist);
         typeDiv.append(labelTaskType, divTypeOptions);
 
         let titleDiv = div('', '.input-label-group');

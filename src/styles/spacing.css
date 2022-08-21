@@ -52,7 +52,7 @@ body {
 /* --- SIDEBAR */
 
 #sidebar {
-    --y-offset: calc(calc(var(--main-pad) * 2) + 3.15rem);
+    --y-offset: calc(calc(2rem + calc(var(--main-pad) * 2)));
     
     position: absolute;
     top: var(--y-offset); left: 0rem;
@@ -148,9 +148,16 @@ section.form-container:not(.hide) ~ .show-filter {
                         height: 2rem;
                     }
 
+            .type-options,
             .dropdowns {
                 display: flex;
+                gap: var(--small-gap);
             }
+
+                .type-group {
+                    display: flex;
+                    gap: var(--xtra-small-gap);
+                }
 
                 .dropdowns div {
                     display: flex;
