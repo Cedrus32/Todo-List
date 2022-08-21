@@ -4,7 +4,7 @@ import events from '../events.js'
 
 const defaultState = (() => {
     // data
-    let _sampleProjectValues = [['project', '', 'Unsorted', "This is your tasks' default location. Any tasks without a project live here."],
+    let _sampleProjectValues = [['project', '', 'Unsorted', "This is your tasks' default location. Any tasks without a project live here.", '../src/icons/project-icons/00.svg'],
                                ];
     let _sampleTaskValues = [['task', '', 'singleton', 'Task 1', 'this is a sample task', '2001-01-01', 3, 0],
                              ['task', '', 'singleton', 'Task 2', 'this is #2', '2002-02-02', 2, 0],

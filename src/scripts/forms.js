@@ -13,6 +13,7 @@ const forms = (() => {
     let formContainer = document.querySelector('.form-container');
     let formFieldset = formContainer.querySelector('fieldset');
     let formInputs; // * queried after form elements are rendered
+    let projectIcons; // * queried after project form is rendered
     let confirmButton = document.querySelectorAll('button.confirm');
     let cancelButton = document.querySelectorAll('button.cancel');
 
@@ -154,6 +155,11 @@ const forms = (() => {
                 for (let i = 0; i < (formInputs.length); i++) {
                     formInputs[i].value = values[i + 1];
                 };
+                for (let i = 0; i < (projectIcons.length); i++) {
+                    if (projectIcons[i].src.includes(values[values.length - 1])) {
+                        _updateIconSelection(projectIcons[i]);
+                    };
+                };
                 break;
             case 'task':
                 _renderTaskForm('Edit Task');
@@ -192,6 +198,13 @@ const forms = (() => {
                 formValues.push('project');
                 for (let i = 0; i < (formInputs.length); i++) {
                     formValues.push(formInputs[i].value);
+                };
+                for (let i = 0; i < (projectIcons.length); i++) {
+                    if (projectIcons[i].classList.contains('icon-selected')) {
+                        let splitImgSrc =  projectIcons[i].src.split('/');
+                        let selectedIconReference = splitImgSrc[splitImgSrc.length - 1].split('.')[0];
+                        formValues.push(selectedIconReference);
+                    };
                 };
                 break;
             case 'task':
@@ -267,10 +280,9 @@ const forms = (() => {
         label.lastChild.classList.add('hide');
     }
     function _updateIconSelection(targetIcon) {
-        let availableIcons = document.querySelector('.project-icons-container').children;
-        for (let i = 0; i < (availableIcons.length); i++) {
-            if (availableIcons[i].classList.contains('icon-selected')) {
-                availableIcons[i].classList.remove('icon-selected');
+        for (let i = 0; i < (projectIcons.length); i++) {
+            if (projectIcons[i].classList.contains('icon-selected')) {
+                projectIcons[i].classList.remove('icon-selected');
             };
         };
 
@@ -300,56 +312,72 @@ const forms = (() => {
         let labelIcons = label('Choose An Icon', '', '');
         let iconsContainer = div('', '.project-icons-container');
         for (let i = 0; i < 15; i++) {
+            let imgRef;
             let imgAlt;
             let imgClass = '';
             switch (i) {
                 case 0:
+                    imgRef = '00';
                     imgAlt = 'folder';
                     imgClass = '.icon-selected';
                     break;
                 case 1:
+                    imgRef = '01';
                     imgAlt = 'star';
                     break;
                 case 2:
+                    imgRef = '02';
                     imgAlt = 'hammer and wrench';
                     break;
                 case 3:
+                    imgRef = '03';
                     imgAlt = 'fork and soda cup';
                     break;
                 case 4:
+                    imgRef = '04';
                     imgAlt = 'dollar bills';
                     break;
                 case 5:
+                    imgRef = '05';
                     imgAlt = 'city buildings';
                     break;
                 case 6:
+                    imgRef = '06';
                     imgAlt = 'house';
                     break;
                 case 7:
+                    imgRef = '07';
                     imgAlt = 'gift';
                     break;
                 case 8:
+                    imgRef = '08';
                     imgAlt = 'car';
                     break;
                 case 9:
+                    imgRef = '09';
                     imgAlt = 'airplane';
                     break;
                 case 10:
+                    imgRef = '10';
                     imgAlt = 'baby carriage';
                     break;
-                case 111:
+                case 11:
+                    imgRef = '11';
                     imgAlt = 'flower';
                     break;
                 case 12:
+                    imgRef = '12';
                     imgAlt = 'palm tree';
                     break;
                 case 13:
+                    imgRef = '13';
                     imgAlt = 'volley ball';
                     break;
                 case 14:
+                    imgRef = '14';
                     imgAlt = 'backpack';
             };
-            let imgIcon = img(`src/icons/project-icons/${i}.svg`, imgAlt, imgClass);
+            let imgIcon = img(`src/icons/project-icons/${imgRef}.svg`, imgAlt, imgClass);
             imgIcon.addEventListener('click', (e) => {
                 _updateIconSelection(e.target);
             });
@@ -361,6 +389,7 @@ const forms = (() => {
         formFieldset.append(fieldsetLegend, titleDiv, descriptionDiv, iconsDiv);
 
         formInputs = formContainer.querySelectorAll('input');
+        projectIcons = document.querySelector('.project-icons-container').children;
     }
     const _renderTaskForm = function(formTitle) {        
         let fieldsetLegend = legend(formTitle, '');

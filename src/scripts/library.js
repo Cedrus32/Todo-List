@@ -162,7 +162,7 @@ const library = (() => {
                 for (let p = 0; p < (_projectLibrary.length); p++) {
                     if (_projectLibrary[p].id == instanceReference) {
                         let item = _projectLibrary[p];
-                        itemValueArray = ['project', item.id, item.title, item.description];
+                        itemValueArray = ['project', item.id, item.title, item.description, item.icon];
                     };
                 };
                 break;
@@ -339,6 +339,9 @@ const library = (() => {
                     break;
                 case 1:
                     projectInstance.setDescription = attributeArray[1];
+                    break;
+                case 2:
+                    projectInstance.setIcon = attributeArray[2];
             };
         };
         console.log('modified project instance:')
