@@ -46,6 +46,7 @@ body {
         ul#dynamic-views li span,
         h2, /* ! positioning thrown if overflow */
         h4.title,
+        div.card.project div.description,
         div.card.checklist div.description, 
         div.card.singleton div.description,
         li label {
