@@ -8,20 +8,38 @@
     </head>
     <body>
 
-        <section id='sidebar' class='hide'>
-            <div class='view-prefs-container'>
-                <ul id='static-views'>
-                    <li id='view-all'><img src='../src/icons/all.svg' alt='all tasks'>All</li>
-                    <li id='view-today'><img src='../src/icons/today.svg' alt='tasks due today'>Today</li>
-                    <li id='view-upcoming'><img src='../src/icons/upcoming.svg' alt='tasks due this week'>Upcoming</li>
-                    <li id='view-anytime'><img src='../src/icons/all.svg' alt='tasks due anytime'>Anytime</li>
-                    <li id='view-project_0'><img src='../src/icons/unsorted.svg' alt='unsorted tasks'>Unsorted</li>
-                </ul>
-                <ul id='dynamic-views'>
-                    <span><h4>Projects</h4><span class='create'>+</span></span>
-                </ul>
-            </div>
-        </section>
+        <div class='show-filter'></div>
+
+        <main>
+            <header id='title'>
+                <img src='../src/icons/hero.svg' alt='logo'>
+                <h1>ToDo List</h1>
+            </header>
+
+            <section id='sidebar'>
+                <div class='view-prefs-container'>
+                    <ul id='static-views'>
+                        <li id='view-all'><img src='../src/icons/all.svg' alt='all tasks'>All</li>
+                        <li id='view-today'><img src='../src/icons/today.svg' alt='tasks due today'>Today</li>
+                        <li id='view-upcoming'><img src='../src/icons/upcoming.svg' alt='tasks due this week'>Upcoming</li>
+                        <li id='view-anytime'><img src='../src/icons/all.svg' alt='tasks due anytime'>Anytime</li>
+                        <li id='view-project_0'><img src='../src/icons/unsorted.svg' alt='unsorted tasks'>Unsorted</li>
+                    </ul>
+                    <ul id='dynamic-views'>
+                        <span><h4>Projects</h4><span class='create'>+</span></span>
+                    </ul>
+                </div>
+            </section>
+
+            <section id='display'>
+                <div id='project-container' class='display-container'></div>
+                <div id='task-container' class='display-container'>
+                    <div class='task-controls'>
+                        <h3 class='tally'>Tasks (<span></span>)</h3>
+                    </div>
+                </div>
+            </section>
+        </main>
 
         <section class='form-container hide'>
             <form>
@@ -33,24 +51,6 @@
                 <button class='cancel'>cancel</button>
             </div>
         </section>
-
-        <div class='show-filter'></div>
-
-        <main>
-            <header id='title'>
-                <img src='../src/icons/hero.svg' alt='logo'>
-                <h1>ToDo List</h1>
-            </header>
-
-            <section id='display'>
-                <div id='project-container' class='display-container'></div>
-                <div id='task-container' class='display-container'>
-                    <div class='task-controls'>
-                        <h3 class='tally'>Tasks (<span></span>)</h3>
-                    </div>
-                </div>
-            </section>
-        </main>
         
         <script src='./index.main.js' async></script>
     </body>

@@ -43,7 +43,7 @@ legend {
 }
 
 .date, h1, h2, legend,
-.view-prefs-container ul span {
+.view-prefs-container ul span.create {
     font-weight: bold;
 }
 

@@ -12,15 +12,18 @@ const defaultState = (() => {
                             ];
 
     // event listeners
-    // window onResize --> publish to windowResize
+    window.addEventListener('resize', () => {
+        events.publish('windowResize', window.innerWidth);  // subscribed by sidebar.js, display.js
+    });
 
     // methods
     function init() {
-        // set layout classes
         _createDefaultProject(_sampleProjectValues[0]);
         for (let t = 0; t < (_sampleTaskValues.length); t++) {
             _createDefaultTask(_sampleTaskValues[t]);
         };
+
+        events.publish('initializeDefaultLayout', window.innerWidth);   // subscribed by sidebar.js, display.js
     }
     function _createDefaultProject(projectValues) {
         events.publish('confirmInput', projectValues); // subscribed by library.js

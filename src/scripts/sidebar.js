@@ -1,12 +1,11 @@
 import events from '../events.js';
-import { li, img } from './elements';
+import { span, li, img } from './elements';
 
 // & manages sidebar section DOM <-> library communication
 // & contains factories for generating display section DOM elements / groupings
 
 const sidebar = (() => {
     // cache dom
-    let viewPrefs = document.getElementById('sidebar');
     let title = document.getElementById('title');
     let sidebar = document.getElementById('sidebar');
 
@@ -17,11 +16,13 @@ const sidebar = (() => {
     let viewUnsortedButton = document.getElementById('view-project_0');
     let projectsList = document.getElementById('dynamic-views');
     let createProjectButton = document.querySelector('div.view-prefs-container span.create');
+    console.log(createProjectButton);
 
     // event listeners
     // ? hide sidebar when not focused ?
     title.addEventListener('click', () => {
         let isSmallScreen = _checkMediaQuery();
+        console.log(isSmallScreen);
         if (isSmallScreen) {
             _toggleSidebarVisibility();
         };
@@ -73,13 +74,28 @@ const sidebar = (() => {
 
         events.publish('openViewPreferenceQuery', preferenceKeyword, queryReference); // subscribed by library.js
     }
-    function _setSidebarVisibility() {        
+    function _setSidebarVisibility(width) { // ! not removing clearing sidebar classList on resize
+        console.log(width);
         switch (true) {
-            case (window.innerWidth < 600):
-                
-        }
+            case (width < 600):
+                if (sidebar.classList.contains('full-view')) {
+                    sidebar.classList = '';
+                };
+                sidebar.classList.add('compact-view');
+                sidebar.classList.add('hide-sidebar');
+                break;
+            case (width >= 600):
+                if (sidebar.classList.contains('compact-view')) {
+                    sidebar.classList = '';
+                };
+                sidebar.classList.add('full-view')
+                sidebar.classList.add('show-sidebar');
+        };
+        console.log(sidebar.classList);
     }
     function _toggleSidebarVisibility() {
+        console.log('enter _toggleSidebarVisibility');
+        console.log(sidebar.classList);
         switch (true) {
             case (sidebar.classList.contains('hide-sidebar')):
                 sidebar.classList.remove('hide-sidebar');
@@ -100,8 +116,8 @@ const sidebar = (() => {
             let liID = `#view-project_${id}`;
             let liProjectLink = li('', liID);
             let projectIcon = _renderProjectIcon(project.icon);
-            liProjectLink.appendChild(projectIcon);
-            liProjectLink.insertAdjacentText('beforeend', title);
+            let projectSpan = span(title, '');
+            liProjectLink.append(projectIcon, projectSpan);
             
             console.log(liProjectLink);
 
@@ -175,8 +191,8 @@ const sidebar = (() => {
 
             projectLink.textContent = '';
             let projectIcon = _renderProjectIcon(itemInstance.icon);
-            projectLink.appendChild(projectIcon);
-            projectLink.insertAdjacentText('beforeend', itemInstance.title);
+            let projectSpan = span(itemInstance.title, '');
+            projectLink.append(projectIcon, projectSpan);
         };
     }
     function _removeProjectLink(projectCardID) {
@@ -267,6 +283,9 @@ const sidebar = (() => {
     events.subscribe('projectCreated', _renderProjectLink); // published by library.js (_createProject())
     events.subscribe('itemModified', _modifyViewPreferenceLink);   // published by library.js (_modify...())
     events.subscribe('removeProjectFromSection', _removeProjectLink);   // published by library.js (_deleteProject());
+
+    events.subscribe('initializeDefaultLayout', _setSidebarVisibility); // published by default.js
+    events.subscribe('windowResize', _setSidebarVisibility);    // published by default.js
 
 })();
 

@@ -43,6 +43,22 @@ body {
         padding: var(--main-pad);
     }
 
+        ul#dynamic-views li span,
+        h2, /* ! positioning thrown if overflow */
+        h4.title,
+        div.card.checklist div.description, 
+        div.card.singleton div.description,
+        li label {
+            display: inline;
+            max-width: 100px;   /* * works with static width */
+
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+
+            background-color: pink;
+        }
+
 /* --- FORMS */
 /* --- FORMS */
 /* --- FORMS */
@@ -189,15 +205,11 @@ main.full-view {
         z-index: 1;
 
         height: calc(100vh - var(--y-offset));
-    }
-
-    #sidebar.compact-view {
-        width: auto;
+        width: calc(25vw);
     }
 
     #sidebar.full-view {
         grid-area: sidebar;
-        width: 25vw;
     }
 
         .view-prefs-container {

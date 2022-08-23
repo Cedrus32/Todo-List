@@ -9,6 +9,7 @@ const display = (() => {
     let _taskCounter = 0;
 
     // cache DOM
+    let mainContainer = document.querySelector('main');
     let projectContainer = document.getElementById('project-container');
     let taskContainer = document.getElementById('task-container');
     let taskCountSpan = document.querySelector('h3.tally span');
@@ -18,6 +19,16 @@ const display = (() => {
     // * create checklist item listener in _renderChecklistDescritionContainer()
 
     // display manager
+    function _setLayout(width) {
+        mainContainer.classList = '';
+        switch (true) {
+            case (width < 600):
+                mainContainer.classList.add('compact-view');
+                break;
+            case (width >= 600):
+                mainContainer.classList.add('full-view');
+        };
+    }
     function _updateDisplay(instanceBundle) {
         let viewPreference = instanceBundle[0];
         let viewPreferenceHeaderCard;
@@ -77,7 +88,7 @@ const display = (() => {
                             let title;
                             switch (itemInstance.type) {
                                 case 'singleton':
-                                    title = card.querySelector('.title h4');
+                                    title = card.querySelector('.title label');
                                     break;
                                 case 'checklist':
                                     title = card.querySelector('.title');
@@ -259,9 +270,10 @@ const display = (() => {
     const _renderSingletonHeader = function(id, title, dueDate, priority) {
         let divHeader = div('', '.header');
 
-        let labelCheckmarkTitle = label('', id, '.title');
-        let h4TitleContent = h4(title, '');
-        labelCheckmarkTitle.appendChild(h4TitleContent);
+        // let labelCheckmarkTitle = label('', id, '.title');
+        let h4TitleContent = h4('', '.title');
+        let labelCheckmarkTitle = label(title, id, '');
+        h4TitleContent.appendChild(labelCheckmarkTitle);
 
         let imgAlt;
         switch (priority) {
@@ -292,7 +304,7 @@ const display = (() => {
             events.publish('clickDeleteTask', taskCardID);   // subscribed by library.js
         });
 
-        divHeader.append(labelCheckmarkTitle, spanDate, imgPriority, imgModify, imgDelete);
+        divHeader.append(h4TitleContent, spanDate, imgPriority, imgModify, imgDelete);
         return divHeader;
     }
     const _renderChecklistCardContents = function(title, description, dueDate, priority) {
@@ -425,6 +437,9 @@ const display = (() => {
     events.subscribe('removeProjectFromSection', _clearDisplay) // published from library.js (_deleteProject())
     events.subscribe('removeTaskFromDisplay', _deleteTaskCard); // published from library.js (_deleteTask())
     events.subscribe('removeChecklistItemFromDisplay', _deleteChecklistItem)    // published from library.js (_deleteChecklistItem())
+
+    events.subscribe('initializeDefaultLayout', _setLayout);    // published by default.js
+    events.subscribe('windowResize', _setLayout);   // published by default.js
 })();
 
 export default display;
