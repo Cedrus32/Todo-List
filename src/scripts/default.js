@@ -11,8 +11,12 @@ const defaultState = (() => {
                              ['task', '', 'checklist', 'Task 3', 'this is a checklist', '2003-03-03', 1, 0, ['item 1', 'item 2', 'item 3']],
                             ];
 
+    // event listeners
+    // window onResize --> publish to windowResize
+
     // methods
     function init() {
+        // set layout classes
         _createDefaultProject(_sampleProjectValues[0]);
         for (let t = 0; t < (_sampleTaskValues.length); t++) {
             _createDefaultTask(_sampleTaskValues[t]);

@@ -8,6 +8,7 @@ const sidebar = (() => {
     // cache dom
     let viewPrefs = document.getElementById('sidebar');
     let title = document.getElementById('title');
+    let sidebar = document.getElementById('sidebar');
 
     let viewAllButton = document.getElementById('view-all');
     let viewTodayButton = document.getElementById('view-today');
@@ -20,7 +21,10 @@ const sidebar = (() => {
     // event listeners
     // ? hide sidebar when not focused ?
     title.addEventListener('click', () => {
-        viewPrefs.classList.toggle('hide');
+        let isSmallScreen = _checkMediaQuery();
+        if (isSmallScreen) {
+            _toggleSidebarVisibility();
+        };
     });
     
     viewAllButton.addEventListener('click', (e) => {
@@ -68,6 +72,23 @@ const sidebar = (() => {
         };
 
         events.publish('openViewPreferenceQuery', preferenceKeyword, queryReference); // subscribed by library.js
+    }
+    function _setSidebarVisibility() {        
+        switch (true) {
+            case (window.innerWidth < 600):
+                
+        }
+    }
+    function _toggleSidebarVisibility() {
+        switch (true) {
+            case (sidebar.classList.contains('hide-sidebar')):
+                sidebar.classList.remove('hide-sidebar');
+                sidebar.classList.add('show-sidebar');
+                break;
+            case (sidebar.classList.contains('show-sidebar')):
+                sidebar.classList.remove('show-sidebar');
+                sidebar.classList.add('hide-sidebar');
+        };
     }
 
     // factories
@@ -231,6 +252,13 @@ const sidebar = (() => {
             if (viewPreference.classList.contains('selected-view-preference')) {
                 viewPreference.classList.remove('selected-view-preference');
             };
+        };
+    }
+    function _checkMediaQuery() {
+        let windowSize = window.innerWidth;
+        console.log(windowSize);
+        if (windowSize < 600) {
+            return true;
         };
     }
 

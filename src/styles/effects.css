@@ -82,3 +82,30 @@
 .project-icons-container img:hover {
     background-color: hsl(236, 39%, 88%);
 }
+
+/* form hide/show */
+/* form hide/show */
+/* form hide/show */
+
+.hide-form {
+    display: none;
+}
+
+
+/* sidebar hide/show */
+/* sidebar hide/show */
+/* sidebar hide/show */
+
+#sidebar {
+    transition: transform 0.20s ease-out;
+}
+
+.show-sidebar {
+    transform: translateX(0px);
+    -webkit-transform: translateX(0px);
+}
+
+.hide-sidebar {
+    transform: translateX(-25vw);
+    -webkit-transform: translateX(-25vw);
+}
