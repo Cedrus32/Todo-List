@@ -15,8 +15,6 @@
     --med-pad: calc(1.5 * var(--main-pad));
 
     --lrg-gap: calc(2 * var(--main-gap))
-
-    width: 100%;
 }
 
 html, body {
@@ -49,13 +47,6 @@ main {
     width: inherit;
 }
 
-main.compact-view {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
-    grid-template-areas: 'title'
-                         'display';
-}
-
 main.full-view {
     grid-template-columns: 25vw 1fr;
     grid-template-rows: auto 1fr;
@@ -63,13 +54,68 @@ main.full-view {
                          'sidebar display'
 }
 
-#title {
-    grid-area: title;
+main.compact-view {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas: 'title'
+                         'display';
 }
 
-#sidebar {
-    grid-area: sidebar;
+#title {
+    grid-area: title;
 
+    z-index: 2;
+}
+
+#sidebar.full-view {
+    grid-area: sidebar;
+    height: 100%;
+}
+
+#sidebar.compact-view {
+    --y-offset: calc(calc(2rem + calc(var(--main-pad) * 2)));
+        
+    position: absolute;
+    top: var(--y-offset); left: 0rem;
+    z-index: 1;
+
+    height: calc(100vh - var(--y-offset));
+}
+
+#display {
+    grid-area: display;
+}
+
+
+/* OVERFLOW */
+/* OVERFLOW */
+/* OVERFLOW */
+
+#dynamic-views li span {
+    display: inline;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    max-width: 100%;
+
+    background-color: pink;
+}
+
+
+/* TITLE */
+/* TITLE */
+/* TITLE */
+
+
+
+
+/* SIDEBAR */
+/* SIDEBAR */
+/* SIDEBAR */
+
+#sidebar {
     display: flex;
     flex-flow: column;
 
@@ -89,31 +135,17 @@ main.full-view {
             width: inherit;
         }
 
-#display {
-    grid-area: display;
-}
+
+/* DISPLAY */
+/* DISPLAY */
+/* DISPLAY */
 
 
-/* OVERFLOW */
-/* OVERFLOW */
-/* OVERFLOW */
-
-#dynamic-views li span {
-    display: inline;
-
-    max-width: 100%;
-
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-
-    background-color: pink;
-}
 
 
-/* LAYOUTS */
-/* LAYOUTS */
-/* LAYOUTS */
+/* FORMS */
+/* FORMS */
+/* FORMS */
 
 .form-container {
     position: absolute;
