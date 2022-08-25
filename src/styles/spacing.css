@@ -86,12 +86,21 @@ main.compact-view {
     grid-area: display;
 }
 
+#display.full-view .display-container {
+    width: 75vw;
+}
+
+#display.compact-view .display-container {
+    width: 100vw;
+}
+
 
 /* OVERFLOW */
 /* OVERFLOW */
 /* OVERFLOW */
 
-#dynamic-views li span {
+#dynamic-views li span,
+.card.project .title, .card.project .description {
     display: inline;
 
     overflow: hidden;
@@ -140,7 +149,41 @@ main.compact-view {
 /* DISPLAY */
 /* DISPLAY */
 
+.card {
+    width: inherit;
+}
 
+    .card.project {
+        display: flex;
+        flex-flow: column;
+        
+        width: inherit;
+    }
+
+        .card.project .header {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            grid-template-rows: 1fr auto;
+            grid-template-areas: 'title       controls'
+                                 'description .';
+            
+            width: inherit;
+        }
+
+            .card.project .title {
+                grid-area: title;
+
+                width: inherit;
+            }
+
+            .project-controls {
+                grid-area: controls;
+                display: flex;
+            }
+
+            .card.project .description {
+                grid-area: description;
+            }
 
 
 /* FORMS */
