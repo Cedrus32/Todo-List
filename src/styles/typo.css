@@ -54,9 +54,3 @@ legend {
 .description {
     font-style: italic;
 }
-
-.card.project {
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-}

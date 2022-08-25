@@ -50,25 +50,25 @@ main {
 main.full-view {
     grid-template-columns: 25vw 1fr;
     grid-template-rows: auto 1fr;
-    grid-template-areas: 'title  title'
-                         'sidebar display'
+    grid-template-areas: 'main-title   main-title'
+                         'main-sidebar main-display'
 }
 
 main.compact-view {
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
-    grid-template-areas: 'title'
-                         'display';
+    grid-template-areas: 'main-title'
+                         'main-display';
 }
 
 #title {
-    grid-area: title;
+    grid-area: main-title;
 
     z-index: 2;
 }
 
 #sidebar.full-view {
-    grid-area: sidebar;
+    grid-area: main-sidebar;
     height: 100%;
 }
 
@@ -83,7 +83,7 @@ main.compact-view {
 }
 
 #display {
-    grid-area: display;
+    grid-area: main-display;
 }
 
 #display.full-view .display-container {
@@ -100,7 +100,8 @@ main.compact-view {
 /* OVERFLOW */
 
 #dynamic-views li span,
-.card.project .title, .card.project .description {
+.card.project .title, .card.project .description,
+.card.singleton .title, .card.checklist.title {
     display: inline;
 
     overflow: hidden;
@@ -149,41 +150,68 @@ main.compact-view {
 /* DISPLAY */
 /* DISPLAY */
 
-.card {
-    width: inherit;
+.display-container {
+    display: flex;
+    flex-flow: column;
+
+    /* width declared in LAYOUT */
 }
 
-    .card.project {
-        display: flex;
-        flex-flow: column;
-        
+    .card {
         width: inherit;
     }
 
-        .card.project .header {
+        .card.project {
             display: grid;
             grid-template-columns: 1fr auto;
-            grid-template-rows: 1fr auto;
-            grid-template-areas: 'title       controls'
-                                 'description .';
-            
-            width: inherit;
+            grid-template-rows: auto auto;
+            grid-template-areas: 'project-title       project-controls'
+                                 'project-description .';
+
+            background-color: green;
         }
 
             .card.project .title {
-                grid-area: title;
+                grid-area: project-title;
 
-                width: inherit;
+                max-width: inherit;
             }
 
             .project-controls {
-                grid-area: controls;
+                grid-area: project-controls;
                 display: flex;
             }
 
             .card.project .description {
-                grid-area: description;
+                grid-area: project-description;
+
+                width: inherit;
             }
+
+        .card.singleton {
+            display: flex;
+
+            width: inherit;
+        }
+
+        .card.checklist {
+            display: flex;
+            flex-flow: column;
+
+            width: inherit;
+        }
+
+            .card.singleton .header,
+            .card.checklist .header {
+                display: flex;
+
+                width: inherit;
+            }
+
+                .card.singleton .title,
+                .card.checklist .title {
+                    max-width: inherit;
+                }
 
 
 /* FORMS */

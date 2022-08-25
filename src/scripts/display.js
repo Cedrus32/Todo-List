@@ -170,19 +170,21 @@ const display = (() => {
             _clearDisplay();
         };
 
-        let cardID = '#project_' + project.id;
-        let projectCard = div('', '.card', '.project', cardID);
+        // let cardID = '#project_' + project.id;
+        // let projectCard = div('', '.card', '.project', cardID);
         let projectHeader = _renderProjectHeader(project.description, project.id, project.title);
 
-        projectCard.appendChild(projectHeader);
-        projectContainer.appendChild(projectCard);
+        // projectCard.appendChild(projectHeader);
+        // projectContainer.appendChild(projectCard);
+        projectContainer.appendChild(projectHeader);
 
         _renderTaskCreateButton();
 
         _fillTaskCounter('');
     }
     const _renderProjectHeader = function(description, id, title) {
-        let divHeader = div('', '.header');
+        let cardID = `#project_${id}`;
+        let divHeader = div('', '.card', '.project', cardID);
 
         let h2Title = h2(title, '.title');
         let projectDescription = div(description, '.description');
