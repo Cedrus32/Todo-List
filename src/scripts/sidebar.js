@@ -15,7 +15,7 @@ const sidebar = (() => {
     let viewAnytimeButton = document.getElementById('view-anytime');
     let viewUnsortedButton = document.getElementById('view-project_0');
     let projectsList = document.getElementById('dynamic-views');
-    let createProjectButton = document.querySelector('div.view-prefs-container span.create');
+    let createProjectButton = document.querySelector('#dynamic-views .create');
     console.log(createProjectButton);
 
     // event listeners

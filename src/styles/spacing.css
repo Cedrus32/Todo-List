@@ -15,140 +15,28 @@
     --med-pad: calc(1.5 * var(--main-pad));
 
     --lrg-gap: calc(2 * var(--main-gap))
+
+    width: 100%;
 }
 
-ul {
-    list-style: none;
+html, body {
+    height: 100vh;
+    width: 100vw;
 }
-
-    li {
-        padding: 0rem;
-    }
 
 img {
     height: 1.10rem;
 }
 
-body {
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+.hide {
+    display: none;
 }
 
-    header,
-    #sidebar,
-    #display {
-        padding: var(--main-pad);
-    }
-
-        ul#dynamic-views li span,
-        h2, /* ! positioning thrown if overflow */
-        h4.title,
-        div.card.project div.description,
-        div.card.checklist div.description, 
-        div.card.singleton div.description,
-        li label,
-        .input {
-            display: inline;
-            max-width: 100px;   /* * works with static width */
-
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-
-            background-color: pink;
-        }
-
-/* --- FORMS */
-/* --- FORMS */
-/* --- FORMS */
-
-.form-container {
-    position: absolute;
-    top: 50%; left:50%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
-    
-    width: 80%;
-    max-width: 450px;
-
-    padding: var(--main-pad);
+.header img,
+.project-icons-container img {
+    height: 2rem;
 }
 
-section.form-container:not(.hide) ~ .show-filter {
-    position: absolute;
-    top: 0px; right: 0px;
-    z-index: 1;
-
-    height: 100vh; width: 100vw;
-}
-
-    form {
-        padding-bottom: var(--main-pad);
-    }
-
-            .input-label-group {
-                display: flex;
-                flex-flow: column;
-                gap: var(--xtra-small-gap);
-
-                margin-top: var(--small-pad);
-            }
-            
-                p {
-                    margin-top: var(--small-pad);
-                }
-            
-            .label-icons-group {
-                display: flex;
-                flex-flow: column;
-
-                margin-top: var(--main-pad);
-            }
-            
-                .project-icons-container {
-                    display: flex;
-                    flex-wrap: wrap;
-                    gap: var(--xtra-small-gap);
-
-                    margin-top: var(--small-pad);
-                }
-
-                    .project-icons-container img {
-                        height: 2rem;
-                    }
-
-            .type-options,
-            .dropdowns {
-                display: flex;
-                gap: var(--small-gap);
-            }
-
-                .type-group {
-                    display: flex;
-                    gap: var(--xtra-small-gap);
-                }
-
-                .dropdowns div {
-                    display: flex;
-                    flex-flow: column;
-
-                    width: 50%;
-                }
-
-    .form-buttons {
-        display: flex;
-        justify-content: center;
-        gap: var(--small-gap);
-    }
-
-        button,
-        input,
-        select {
-            padding: var(--xtra-small-pad);
-        }
 
 /* LAYOUTS */
 /* LAYOUTS */
@@ -158,219 +46,81 @@ main {
     display: grid;
 
     height: inherit;
-    width: 100%;
+    width: inherit;
 }
 
 main.compact-view {
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
-    grid-template-areas: 'header'
+    grid-template-areas: 'title'
                          'display';
 }
 
 main.full-view {
     grid-template-columns: 25vw 1fr;
     grid-template-rows: auto 1fr;
-    grid-template-areas: 'header  header'
-                         'sidebar display';
+    grid-template-areas: 'title  title'
+                         'sidebar display'
 }
 
-/* ------- HEADER */
-/* ------- HEADER */
-/* ------- HEADER */
+#title {
+    grid-area: title;
+}
 
-    header {
-        grid-area: header;
+#sidebar {
+    grid-area: sidebar;
 
+    display: flex;
+    flex-flow: column;
+
+    width: 25vw;
+}
+
+    #sidebar ul {
         display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        gap: var(--main-gap);
+        flex-flow: column;
 
-        z-index: 2;
+        width: inherit;
     }
 
-        header img {
-            height: 2rem;
-        }
-
-
-/* --- SIDEBAR */
-/* --- SIDEBAR */
-/* --- SIDEBAR */
-
-    #sidebar {
-        --y-offset: calc(calc(2rem + calc(var(--main-pad) * 2)));
-        
-        position: absolute;
-        top: var(--y-offset); left: 0rem;
-        z-index: 1;
-
-        height: calc(100vh - var(--y-offset));
-        width: calc(25vw);
-    }
-
-    #sidebar.full-view {
-        grid-area: sidebar;
-    }
-
-        .view-prefs-container {
+        #sidebar li {
             display: flex;
-            flex-flow: column;
-            gap: var(--lrg-gap);
 
-            padding-top: var(--lrg-gap);
+            width: inherit;
         }
 
-            #sidebar ul {
-                display: flex;
-                flex-flow: column;
-                gap: var(--main-gap);
-            }
+#display {
+    grid-area: display;
+}
 
-                #sidebar ul span {
-                    display: flex;
-                    justify-content: space-between;
-                }
 
-                #sidebar li {
-                    display: flex;
-                    align-items: center;
-                    gap: var(--xtra-small-gap);
+/* OVERFLOW */
+/* OVERFLOW */
+/* OVERFLOW */
 
-                    padding: var(--xtra-small-pad);
-                }
+#dynamic-views li span {
+    display: inline;
 
-            
-/* ------- DISPLAY */
-/* ------- DISPLAY */
-/* ------- DISPLAY */
+    max-width: 100%;
 
-        #display {
-            grid-area: display;
-        }
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 
-            .display-container {
-                display: flex;
-                flex-flow: column;
-                gap: var(--xtra-small-gap);
+    background-color: pink;
+}
 
-                padding: var(--main-pad);
-            }
-                
-                div.card,
-                .task-controls {
-                    padding: var(--main-pad);
-                }
 
-                .card.project {
-                    display: flex;
-                    flex-flow: column;
-                    align-items: center;
-                }
+/* LAYOUTS */
+/* LAYOUTS */
+/* LAYOUTS */
 
-                .card.sort-due {
-                    text-align: center;
-                }
-
-                    .card.project .header {
-                        display: grid;
-                        grid-template-columns: 1fr auto;
-                        grid-template-rows: auto;
-                        grid-template-areas: 'title       controls'
-                                             'description .';
-
-                        width: 100%;
-                    }
-
-                        .card.project .title {
-                            grid-area: title;
-                            text-align: center;
-                        }
-
-                        .project-controls {
-                            grid-area: controls;
-                            display: flex;
-                            align-items: center;
-                        }
-
-                        .card.project .description {
-                            grid-area: description;
-                            text-align: center;
-                        }
-                
-                .task-controls {
-                    display: flex;
-                    justify-content: flex-start;
-                }
-
-                    .tally {
-                        margin-right: auto;
-                    }
-
-                .singleton {
-                    display: flex;
-                    align-items: flex-start;
-                }
-
-                    .singleton .header,
-                    .checklist .header {
-                        display: flex;
-                        gap: var(--xtra-small-gap);
-                    }
-
-                        .singleton .title,
-                        .checklist .title {
-                            margin-right: auto;
-                        }
-
-                    input[type='checkbox'] {
-                        margin-right: var(--xtra-small-pad);
-                    }
-
-                    .singleton input[type='checkbox'] {
-                        margin-top: calc(var(--xtra-small-pad) * 1);
-                    }
-
-                    .content {
-                        display: flex;
-                        flex-flow: column;
-                        gap: var(--xtra-small-gap);
-
-                        width: 100%;
-                    }
-
-                        .details {
-                            display: flex;
-                            gap: var(--xtra-small-gap);
-                            align-content: flex-start;
-                        }
-
-                .checklist {
-                    display: flex;
-                    flex-flow: column;
-                    gap: var(--xtra-small-gap);
-                }
-
-                    .description-container {
-                        display: flex;
-                    }
-
-                        .card.checklist .description,
-                        .card.singleton .description {
-                            margin-right: auto;
-                        }
-
-                    .checklist ul li {
-                        display: flex;
-                        align-items: center;
-                    }
-
-                        .checklist ul li label {
-                            margin-right: auto;
-                        }
-
-                        .checklist-item-controls {
-                            display: flex;
-                            gap: var(--xtra-small-gap);
-                        }
+.form-container {
+    position: absolute;
+    top: 50%; left:50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    
+    width: 80%;
+    max-width: 450px;
+}
