@@ -170,25 +170,20 @@ const display = (() => {
             _clearDisplay();
         };
 
-        // let cardID = '#project_' + project.id;
-        // let projectCard = div('', '.card', '.project', cardID);
-        let projectHeader = _renderProjectHeader(project.description, project.id, project.title);
-
-        // projectCard.appendChild(projectHeader);
-        // projectContainer.appendChild(projectCard);
-        projectContainer.appendChild(projectHeader);
+        let projectCard = _renderProjectCard(project.description, project.id, project.title);
+        projectContainer.appendChild(projectCard);
 
         _renderTaskCreateButton();
 
         _fillTaskCounter('');
     }
-    const _renderProjectHeader = function(description, id, title) {
+    const _renderProjectCard = function(description, id, title) {
         let cardID = `#project_${id}`;
-        let divHeader = div('', '.card', '.project', cardID);
+        let divCard = div('', '.card', '.project', cardID);
 
         let h2Title = h2(title, '.title');
         let projectDescription = div(description, '.description');
-        divHeader.append(h2Title, projectDescription);
+        divCard.append(h2Title, projectDescription);
         if (id !== 0) {
             let divProjectControls = div('', '.project-controls');
 
@@ -205,10 +200,10 @@ const display = (() => {
             });
 
             divProjectControls.append(imgModify, imgDelete);
-            divHeader.appendChild(divProjectControls);
+            divCard.appendChild(divProjectControls);
         };
         
-        return divHeader;
+        return divCard;
     }
     const _renderViewPreferenceHeaderCard = function(title) {
         let viewCard = div('', '.card', '.sort-due');
