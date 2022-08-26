@@ -106,7 +106,8 @@ main.compact-view {
 #dynamic-views li span,
 .card .title,
 .card .description,
-.checkboxes label {
+.checkboxes label,
+select#project {
     display: inline;
 
     overflow: hidden;
@@ -161,6 +162,10 @@ main.compact-view {
 
     /* width declared in LAYOUT */
 }
+
+    .task-controls {
+        display: flex;
+    }
 
     .card {
         width: inherit;
@@ -281,3 +286,32 @@ main.compact-view {
     width: 80%;
     max-width: 450px;
 }
+
+    .input-label-group {
+        display: flex;
+        flex-flow: column;
+
+        width: inherit;
+    }
+
+    .label-icons-group {
+        display: flex;
+        flex-flow: column;
+    }
+
+        .project-icons-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+    .type-options,
+    .dropdowns {
+        display: flex;
+    }
+
+        .dropdowns div {
+            display: flex;
+            flex-flow: column;
+
+            width: 50%;
+        }
