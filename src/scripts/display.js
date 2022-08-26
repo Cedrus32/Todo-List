@@ -241,12 +241,14 @@ const display = (() => {
             case 'singleton':
                 taskCard = div('', '.card', '.singleton', `#${cardID}`)
                 let singletonCheckmark = input('checkbox', '', '', task.id, '');
-                let singletonCardContent = _renderSingletonContent(task.id, task.title, task.dueDate, task.description, task.priority);
+                // let singletonCardContent = _renderSingletonContent(task.id, task.title, task.dueDate, task.description, task.priority);
+                let singletonCardContent = _renderCardContent(task.type, task.id, task.title, task.dueDate, task.description, task.priority);
                 taskCard.append(singletonCheckmark, singletonCardContent);
                 break;
             case 'checklist':
                 taskCard = div('', '.card', '.checklist', `#${cardID}`, `.priority-${task.priority}`);
-                let checklistCardContent = _renderChecklistCardContents(task.title, task.description, task.dueDate, task.priority);
+                // let checklistCardContent = _renderChecklistCardContents(task.title, task.description, task.dueDate, task.priority);
+                let checklistCardContent = _renderCardContent(task.type, '', task.title, task.dueDate, task.description, task.priority);
                 let checklistItems = _renderCheckboxContainer(cardID, task.items);
                 taskCard.append(checklistCardContent, checklistItems);
         };
@@ -255,22 +257,22 @@ const display = (() => {
 
         _fillTaskCounter('+');
     }
-    const _renderSingletonContent = function(id, title, dueDate, description, priority) {
+
+    const _renderCardContent = function(type, id, title, dueDate, description, priority) {
         let divContent = div('', '.content');
 
-        let taskHeader = _renderSingletonHeader(id, title, dueDate, priority);
-        let taskDescription = div(description, '.description');
+        let taskTitle = h4('', '.title');
+        switch (type) {
+            case 'singleton':
+                let labelCheckmarkTitle = label(title, id, '');
+                taskTitle.appendChild(labelCheckmarkTitle);
+                break;
+            case 'checklist':
+                taskTitle.textContent = title;
+                console.log(taskTitle);
+        };
 
-        divContent.append(taskHeader, taskDescription);
-        return divContent;
-    }
-    const _renderSingletonHeader = function(id, title, dueDate, priority) {
-        let divHeader = div('', '.header');
-
-        // let labelCheckmarkTitle = label('', id, '.title');
-        let h4TitleContent = h4('', '.title');
-        let labelCheckmarkTitle = label(title, id, '');
-        h4TitleContent.appendChild(labelCheckmarkTitle);
+        let spanDate = span(dueDate, '.date');
 
         let imgAlt;
         switch (priority) {
@@ -288,11 +290,10 @@ const display = (() => {
         }
         let imgPriority = img(`src/icons/priority-${priority}.svg`, imgAlt, '.priority');
 
-        let spanDate = span(dueDate, '.date');
         let imgModify = img('src/icons/edit.svg', 'modify task', '.task', '.modify');
         let imgDelete = img('src/icons/delete.svg', 'delete task', '.delete');
 
-        // * singleton modify/delete events
+        // * task modify/delete events
         imgModify.addEventListener('click', (e) => {
             events.publish('clickModifyItem', e);   // subscribed by forms.js
         });
@@ -301,9 +302,60 @@ const display = (() => {
             events.publish('clickDeleteTask', taskCardID);   // subscribed by library.js
         });
 
-        divHeader.append(h4TitleContent, spanDate, imgPriority, imgModify, imgDelete);
-        return divHeader;
+        let taskDescription = div(description, '.description');
+
+        divContent.append(taskTitle, spanDate, imgPriority, imgModify, imgDelete, taskDescription);
+        return divContent;
     }
+    // const _renderSingletonContent = function(id, title, dueDate, description, priority) {
+    //     let divContent = div('', '.content');
+
+    //     let taskHeader = _renderSingletonHeader(id, title, dueDate, priority);
+    //     let taskDescription = div(description, '.description');
+
+    //     divContent.append(taskHeader, taskDescription);
+    //     return divContent;
+    // }
+    // const _renderSingletonHeader = function(id, title, dueDate, priority) {
+    //     let divHeader = div('', '.header');
+
+    //     // let labelCheckmarkTitle = label('', id, '.title');
+    //     let h4TitleContent = h4('', '.title');
+    //     let labelCheckmarkTitle = label(title, id, '');
+    //     h4TitleContent.appendChild(labelCheckmarkTitle);
+
+    //     let imgAlt;
+    //     switch (priority) {
+    //         case 0:
+    //             imgAlt = 'no priority';
+    //             break;
+    //         case 1:
+    //             imgAlt = 'low priority';
+    //             break;
+    //         case 2:
+    //             imgAlt = 'medium priority';
+    //             break;
+    //         case 3:
+    //             imgAlt = 'high priority';
+    //     }
+    //     let imgPriority = img(`src/icons/priority-${priority}.svg`, imgAlt, '.priority');
+
+    //     let spanDate = span(dueDate, '.date');
+    //     let imgModify = img('src/icons/edit.svg', 'modify task', '.task', '.modify');
+    //     let imgDelete = img('src/icons/delete.svg', 'delete task', '.delete');
+
+    //     // * singleton modify/delete events
+    //     imgModify.addEventListener('click', (e) => {
+    //         events.publish('clickModifyItem', e);   // subscribed by forms.js
+    //     });
+    //     imgDelete.addEventListener('click', (e) => {    // subscribed by library.js
+    //         let taskCardID = e.target.closest('div.card').id;
+    //         events.publish('clickDeleteTask', taskCardID);   // subscribed by library.js
+    //     });
+
+    //     divHeader.append(h4TitleContent, spanDate, imgPriority, imgModify, imgDelete);
+    //     return divHeader;
+    // }
     const _renderChecklistCardContents = function(title, description, dueDate, priority) {
         let divContent = div('', '.content');
         let checklistHeader = _renderChecklistHeader(title, dueDate, priority);

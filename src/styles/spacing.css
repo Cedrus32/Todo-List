@@ -100,8 +100,7 @@ main.compact-view {
 /* OVERFLOW */
 
 #dynamic-views li span,
-.card.project .title, .card.project .description,
-.card.singleton .title, .card.checklist.title {
+.card .title, .card .description {
     display: inline;
 
     overflow: hidden;
@@ -168,7 +167,7 @@ main.compact-view {
             grid-template-areas: 'project-title       project-controls'
                                  'project-description .';
 
-            background-color: green;
+            width: inherit;
         }
 
             .card.project .title {
@@ -201,16 +200,40 @@ main.compact-view {
             width: inherit;
         }
 
-            .card.singleton .header,
-            .card.checklist .header {
-                display: flex;
+            .card .content {
+                display: grid;
+                grid-template-columns: 1fr auto auto auto auto;
+                grid-template-rows: auto auto;
+                grid-template-columns: 'title       date        priority    modify      delete'
+                                       'description description description description description';
 
                 width: inherit;
             }
 
-                .card.singleton .title,
-                .card.checklist .title {
-                    max-width: inherit;
+                .card:not(.project) .title {
+                    grid-template: title;
+
+                    width: 1fr;
+                }
+                
+                .card .date {
+                    grid-template: date;
+                }
+
+                .card .priority {
+                    grid-template: priority;
+                }
+
+                .card .modify {
+                    grid-template: modify;
+                }
+
+                .card .delete {
+                    grid-template: delete;
+                }
+
+                .card .description {
+                    grid-template: description;
                 }
 
 
