@@ -34,6 +34,7 @@ img {
     height: 1.10rem;
 }
 
+#title img,
 .header img,
 .project-icons-container img {
     height: 2rem;
@@ -124,7 +125,9 @@ select#project {
 /* TITLE */
 /* TITLE */
 
-
+#title {
+    display: flex;
+}
 
 
 /* SIDEBAR */
@@ -315,3 +318,7 @@ select#project {
 
             width: 50%;
         }
+
+.form-buttons {
+    display: flex;
+}
