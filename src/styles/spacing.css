@@ -117,7 +117,7 @@ select#project {
 
     max-width: 100%;
 
-    background-color: pink;
+    /* background-color: pink; */
 }
 
 
@@ -127,6 +127,8 @@ select#project {
 
 #title {
     display: flex;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 
@@ -148,8 +150,14 @@ select#project {
         width: inherit;
     }
 
+        #sidebar ul span {
+            display: flex;
+            justify-content: space-between;
+        }
+
         #sidebar li {
             display: flex;
+            align-items: center;
 
             width: inherit;
         }
@@ -168,6 +176,7 @@ select#project {
 
     .task-controls {
         display: flex;
+        justify-content: space-between;
     }
 
     .card {
@@ -184,8 +193,13 @@ select#project {
             width: inherit;
         }
 
+        .card.preference-header {
+            text-align: center;
+        }
+
             .card.project .title {
                 grid-area: title;
+                text-align: center;
 
                 max-width: inherit;
             }
@@ -193,16 +207,19 @@ select#project {
             .project-controls {
                 grid-area: controls;
                 display: flex;
+                align-items: center;
             }
 
             .card.project .description {
                 grid-area: description;
+                text-align: center;
 
                 width: inherit;
             }
 
         .card.singleton {
             display: flex;
+            align-items: flex-start;
 
             width: inherit;
         }
@@ -210,6 +227,7 @@ select#project {
         .card.checklist {
             display: flex;
             flex-flow: column;
+            justify-content: flex-start;
 
             width: inherit;
         }
@@ -321,4 +339,5 @@ select#project {
 
 .form-buttons {
     display: flex;
+    justify-content: center;
 }

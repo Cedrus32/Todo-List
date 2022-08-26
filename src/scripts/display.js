@@ -206,7 +206,7 @@ const display = (() => {
         return divCard;
     }
     const _renderViewPreferenceHeaderCard = function(title) {
-        let viewCard = div('', '.card', '.sort-due');
+        let viewCard = div('', '.card', '.preference-header');
         let viewHeader = h2(title, '');
         viewCard.appendChild(viewHeader);
 
