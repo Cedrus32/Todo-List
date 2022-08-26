@@ -16,7 +16,7 @@
     border-radius: 0.25rem;
 }
 
-section.form-container:not(.hide) ~ .show-filter {
+.form-container:not(.hide) ~ .show-filter {
     background-color: white;
     filter: opacity(0.5);
 }

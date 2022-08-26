@@ -91,6 +91,14 @@
     display: none;
 }
 
+.form-container:not(.hide) ~ .show-filter {
+    position: absolute;
+    top: 0px; right: 0px;
+    z-index: 1;
+
+    height: 100vh; width: 100vw;
+}
+
 
 /* sidebar hide/show */
 /* sidebar hide/show */
