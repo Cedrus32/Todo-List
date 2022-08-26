@@ -349,24 +349,6 @@ const display = (() => {
 
         _renderCheckbox(ulTarget, taskCardID, [checkReference, checkContent]);
     }
-    const _renderCheckboxControls = function(checkID) {
-        let divControls = div('', '.checklist-item-controls');
-
-        let imgModify = img('src/icons/edit.svg', 'modify task', '.task', '.modify');
-        let imgDelete = img('src/icons/delete.svg', 'delete task', '.delete');
-
-        // * checklist item modify/delete events
-        imgModify.addEventListener('click', (e) => {
-            events.publish('clickModifyItem', e);    // subscribed by forms.js
-        });
-        imgDelete.addEventListener('click', () => {
-            events.publish('clickDeleteChecklistItem', checkID);    // subscribed by library.js
-        });
-
-        divControls.append(imgModify, imgDelete);
-
-        return divControls;
-    }
 
 
 
