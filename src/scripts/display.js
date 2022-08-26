@@ -255,7 +255,6 @@ const display = (() => {
 
         _fillTaskCounter('+');
     }
-
     const _renderCardContent = function(type, id, title, dueDate, description, priority) {
         let divContent = div('', '.content');
 
@@ -323,11 +322,21 @@ const display = (() => {
 
         let checkboxID = `${taskCardID}__checkbox_${checkID}`;  // # not needed vv
         let checkbox = input('checkbox', '', '', checkboxID, '');  // sets ID directly via default object prototype methods
-        // ! set priority class color
+        
         let labelCheckbox = label(checkContent, checkboxID, '');
-        let checkboxControls = _renderCheckboxControls(checkboxID);
 
-        liCard.append(checkbox, labelCheckbox, checkboxControls);
+        let imgModify = img('src/icons/edit.svg', 'modify task', '.task', '.modify');
+        let imgDelete = img('src/icons/delete.svg', 'delete task', '.delete');
+
+        // * checklist item modify/delete events
+        imgModify.addEventListener('click', (e) => {
+            events.publish('clickModifyItem', e);    // subscribed by forms.js
+        });
+        imgDelete.addEventListener('click', () => {
+            events.publish('clickDeleteChecklistItem', checkID);    // subscribed by library.js
+        });
+
+        liCard.append(checkbox, labelCheckbox, imgModify, imgDelete);
         checklistContainer.appendChild(liCard);
     }
     const _renderNewCheckbox = function(checklistInstance) {

@@ -22,17 +22,25 @@ html, body {
     width: 100vw;
 }
 
-img {
-    height: 1.10rem;
+ul {
+    list-style: none;
 }
 
-.hide {
-    display: none;
+li {
+    padding: 0rem;
+}
+
+img {
+    height: 1.10rem;
 }
 
 .header img,
 .project-icons-container img {
     height: 2rem;
+}
+
+.hide {
+    display: none;
 }
 
 
@@ -100,7 +108,9 @@ main.compact-view {
 /* OVERFLOW */
 
 #dynamic-views li span,
-.card .title, .card .description {
+.card .title,
+.card .description,
+.checkboxes label {
     display: inline;
 
     overflow: hidden;
@@ -164,25 +174,25 @@ main.compact-view {
             display: grid;
             grid-template-columns: 1fr auto;
             grid-template-rows: auto auto;
-            grid-template-areas: 'project-title       project-controls'
-                                 'project-description .';
+            grid-template-areas: 'title       controls'
+                                 'description .';
 
             width: inherit;
         }
 
             .card.project .title {
-                grid-area: project-title;
+                grid-area: title;
 
                 max-width: inherit;
             }
 
             .project-controls {
-                grid-area: project-controls;
+                grid-area: controls;
                 display: flex;
             }
 
             .card.project .description {
-                grid-area: project-description;
+                grid-area: description;
 
                 width: inherit;
             }
@@ -235,6 +245,40 @@ main.compact-view {
                 .card .description {
                     grid-template: description;
                 }
+
+            .checkboxes .card {
+                display: grid;
+                grid-template-columns: auto 1fr auto auto auto;
+                grid-template-rows: auto;
+                grid-template-areas: 'check title modify delete';
+
+                width: inherit;
+            }
+
+                .checkboxes input {
+                    grid-area: check;
+                }
+
+                .checkboxes label {
+                    grid-area: title;
+                }
+
+                .checkboxes .modify {
+                    grid-area: modify;
+                }
+
+                .checkboxes .delete {
+                    grid-area: delete;
+                }
+
+                /* .checkboxes .card .content {
+                    display: grid;
+                    grid-template-columns: auto 1fr auto auto;
+                    grid-template-rows: auto;
+                    grid-template-areas: 'title modify delete';
+
+                    width: inherit;
+                } */
 
 
 /* FORMS */
