@@ -2,6 +2,8 @@
 /* GLOBAL */
 /* GLOBAL */
 
+/* ! adding back padding/margins */
+
 :root {
     --xtra-small-pad: calc(0.25 * var(--main-pad));
     --xtra-small-gap: calc(0.25 * var(--main-gap));
@@ -64,6 +66,12 @@ main.compact-view {
     grid-template-rows: auto 1fr;
     grid-template-areas: 'main-title'
                          'main-display';
+}
+
+#title,
+#sidebar,
+#display {
+    padding: var(--main-pad);
 }
 
 #title {
@@ -147,13 +155,12 @@ select#project {
         display: flex;
         flex-flow: column;
 
-        width: inherit;
+        width: 100%;
     }
 
         #sidebar ul .project-create {
             display: flex;
             justify-content: space-between;
-            background-color: orange;
         }
 
         #sidebar li {
@@ -299,44 +306,61 @@ select#project {
 /* FORMS */
 /* FORMS */
 
+/* ! fix dropdown width */
+/* ! (currently taking 50% of content...  */
+/* ! rather than 50% of parent) */
+
 .form-container {
     position: absolute;
     top: 50%; left:50%;
     transform: translate(-50%, -50%);
     z-index: 2;
     
-    width: 80%;
-    max-width: 450px;
+    width: 65vw;
 }
 
-    .input-label-group {
-        display: flex;
-        flex-flow: column;
-
+    form {
         width: inherit;
     }
 
-    .label-icons-group {
-        display: flex;
-        flex-flow: column;
-    }
-
-        .project-icons-container {
-            display: flex;
-            flex-wrap: wrap;
+        fieldset {
+            width: inherit;
         }
 
-    .type-options,
-    .dropdowns {
-        display: flex;
-    }
+            .input-label-group {
+                display: flex;
+                flex-flow: column;
 
-        .dropdowns div {
-            display: flex;
-            flex-flow: column;
+                width: inherit;
+            }
 
-            width: 50%;
-        }
+            .label-icons-group {
+                display: flex;
+                flex-flow: column;
+            }
+
+                .project-icons-container {
+                    display: flex;
+                    flex-wrap: wrap;
+                }
+
+            .type-options,
+            .dropdowns {
+                display: flex;
+                
+                width: inherit;
+            }
+
+                .dropdowns div {
+                    display: flex;
+                    flex-flow: column;
+
+                    max-width: 50%;
+                }
+
+                    .select#project {
+                        width: inherit;
+                    }
 
 .form-buttons {
     display: flex;
