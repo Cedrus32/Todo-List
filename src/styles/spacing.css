@@ -2,8 +2,6 @@
 /* GLOBAL */
 /* GLOBAL */
 
-/* ! adding back padding/margins */
-
 :root {
     --xtra-small-pad: calc(0.25 * var(--main-pad));
     --xtra-small-gap: calc(0.25 * var(--main-gap));
@@ -137,6 +135,7 @@ select#project {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    gap: var(--main-gap);
 }
 
 
@@ -147,6 +146,7 @@ select#project {
 #sidebar {
     display: flex;
     flex-flow: column;
+    gap: var(--lrg-gap);
 
     width: 25vw;
 }
@@ -154,6 +154,7 @@ select#project {
     #sidebar ul {
         display: flex;
         flex-flow: column;
+        gap: var(--main-gap);
 
         width: 100%;
     }
@@ -166,8 +167,11 @@ select#project {
         #sidebar li {
             display: flex;
             align-items: center;
+            gap: var(--xtra-small-gap);
 
             width: inherit;
+
+            padding: var(--xtra-small-pad);
         }
 
 
@@ -178,18 +182,32 @@ select#project {
 .display-container {
     display: flex;
     flex-flow: column;
+    gap: var(--xtra-small-gap);
 
     /* width declared in LAYOUT */
+
+    padding: var(--main-pad);
 }
 
     .task-controls {
         display: flex;
         justify-content: space-between;
+
+        padding: var(--main-pad);
     }
 
     .card {
         width: inherit;
     }
+
+    .card.singleton,
+    .card.checklist {
+        padding: var(--main-pad);
+    }
+
+        .card.preference-header {
+            text-align: center;
+        }
 
         .card.project {
             display: grid;
@@ -199,10 +217,6 @@ select#project {
                                  'description .';
 
             width: inherit;
-        }
-
-        .card.preference-header {
-            text-align: center;
         }
 
             .card.project .title {
@@ -232,10 +246,16 @@ select#project {
             width: inherit;
         }
 
+            .singleton input[type='checkbox'] {
+                margin-top: calc(var(--xtra-small-pad) * 1);
+                margin-right: var(--xtra-small-pad);
+            }
+
         .card.checklist {
             display: flex;
             flex-flow: column;
             justify-content: flex-start;
+            gap: var(--xtra-small-gap);
 
             width: inherit;
         }
@@ -287,6 +307,7 @@ select#project {
 
                 .checkboxes input {
                     grid-area: check;
+                    margin-right: var(--xtra-small-pad);
                 }
 
                 .checkboxes label {
@@ -306,21 +327,31 @@ select#project {
 /* FORMS */
 /* FORMS */
 
-/* ! fix dropdown width */
-/* ! (currently taking 50% of content...  */
-/* ! rather than 50% of parent) */
+button,
+input,
+select {
+    padding: var(--xtra-small-pad);
+}
 
 .form-container {
     position: absolute;
     top: 50%; left:50%;
     transform: translate(-50%, -50%);
     z-index: 2;
+
+    display: flex;
+    flex-flow: column;
+    gap: var(--main-pad);
     
     width: 65vw;
+    
+    padding: var(--main-pad);
 }
 
     form {
-        width: inherit;
+        width: calc(65vw - calc(2 * var(--main-pad)));
+
+        padding-bottom: var(--main-pad);
     }
 
         fieldset {
@@ -330,26 +361,44 @@ select#project {
             .input-label-group {
                 display: flex;
                 flex-flow: column;
+                gap: var(--xtra-small-gap);
 
                 width: inherit;
+
+                margin-top: var(--small-pad);
             }
+
+                p {
+                    margin-top: var(--small-pad);
+                }
 
             .label-icons-group {
                 display: flex;
                 flex-flow: column;
+
+                margin-top: var(--main-pad);
             }
 
                 .project-icons-container {
                     display: flex;
                     flex-wrap: wrap;
+                    gap: var(--xtra-small-gap);
+
+                    margin-top: var(--small-pad);
                 }
 
             .type-options,
             .dropdowns {
                 display: flex;
+                gap: var(--small-gap);
                 
                 width: inherit;
             }
+
+                .type-group {
+                    display: flex;
+                    gap: var(--xtra-small-gap);
+                }
 
                 .dropdowns div {
                     display: flex;
@@ -365,4 +414,5 @@ select#project {
 .form-buttons {
     display: flex;
     justify-content: center;
+    gap: var(--small-gap);
 }
