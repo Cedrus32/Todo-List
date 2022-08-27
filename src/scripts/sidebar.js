@@ -29,23 +29,28 @@ const sidebar = (() => {
     });
     
     viewAllButton.addEventListener('click', (e) => {
-        _updateSelectEffect(e.target);
+        let sidebarLink = e.target.closest('li');
+        _updateSelectEffect(sidebarLink);
         _changeViewPreference('All', '');
     });
     viewTodayButton.addEventListener('click', (e) => {
-        _updateSelectEffect(e.target);
+        let sidebarLink = e.target.closest('li');
+        _updateSelectEffect(sidebarLink);
         _changeViewPreference('Today', '');
     });
     viewUpcomingButton.addEventListener('click', (e) => {
-        _updateSelectEffect(e.target);
+        let sidebarLink = e.target.closest('li');
+        _updateSelectEffect(sidebarLink);
         _changeViewPreference('Upcoming', '');
     });
     viewAnytimeButton.addEventListener('click', (e) => {
-        _updateSelectEffect(e.target);
+        let sidebarLink = e.target.closest('li');
+        _updateSelectEffect(sidebarLink);
         _changeViewPreference('Anytime', '');
     });
     viewUnsortedButton.addEventListener('click', (e) => {
-        _updateSelectEffect(e.target);
+        let sidebarLink = e.target.closest('li');
+        _updateSelectEffect(sidebarLink);
         _changeViewPreference('project', viewUnsortedButton.id);
     });
     createProjectButton.addEventListener('click', () => {
@@ -74,7 +79,7 @@ const sidebar = (() => {
 
         events.publish('openViewPreferenceQuery', preferenceKeyword, queryReference); // subscribed by library.js
     }
-    function _setSidebarVisibility(width) { // ! not removing clearing sidebar classList on resize
+    function _setSidebarVisibility(width) {
         console.log(width);
         switch (true) {
             case (width < 600):
@@ -122,7 +127,7 @@ const sidebar = (() => {
             console.log(liProjectLink);
 
             liProjectLink.addEventListener('click', (e) => {
-                _updateSelectEffect(e.target);
+                _updateSelectEffect(e);
                 _changeViewPreference('project', e.target.id);
             });
 
