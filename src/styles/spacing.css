@@ -88,7 +88,7 @@ main.compact-view {
 }
 
 #sidebar.compact-view {
-    --y-offset: calc(calc(2rem + calc(var(--main-pad) * 2)));
+    --y-offset: calc(calc(2.75rem + calc(var(--main-pad) * 2)));
         
     position: absolute;
     top: var(--y-offset); left: 0rem;
@@ -119,8 +119,6 @@ select#project {
     text-overflow: ellipsis;
 
     max-width: 100%;
-
-    /* background-color: pink; */
 }
 
 
