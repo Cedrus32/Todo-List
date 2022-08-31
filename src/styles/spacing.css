@@ -99,20 +99,8 @@ main.compact-view {
 
 #display {
     grid-area: display;
-    /* width: clamp (calc(100vw - 200px), 75vw, calc(100vw - 300px)); */
-    /* width: calc(100vw - 200px); */
-    /* width: 75vw; */
-    /* width: calc(100vw - 300px); */
     width: 1fr;
 }
-
-/* #display.full-view .display-container {
-    width: 75vw;
-}
-
-#display.compact-view .display-container {
-    width: 100vw;
-} */
 
 
 /* OVERFLOW */
