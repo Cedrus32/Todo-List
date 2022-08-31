@@ -53,17 +53,17 @@ main {
 }
 
 main.full-view {
-    grid-template-columns: 25vw 1fr;
+    grid-template-columns: clamp(200px, 25vw, 300px) 1fr;
     grid-template-rows: auto 1fr;
-    grid-template-areas: 'main-title   main-title'
-                         'main-sidebar main-display'
+    grid-template-areas: 'title   title'
+                         'sidebar display'
 }
 
 main.compact-view {
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
-    grid-template-areas: 'main-title'
-                         'main-display';
+    grid-template-areas: 'title'
+                         'display';
 }
 
 #title,
@@ -73,13 +73,17 @@ main.compact-view {
 }
 
 #title {
-    grid-area: main-title;
+    grid-area: title;
 
     z-index: 2;
 }
 
+#sidebar {
+    width: clamp(200px, 25vw, 300px);
+}
+
 #sidebar.full-view {
-    grid-area: main-sidebar;
+    grid-area: sidebar;
     height: 100%;
 }
 
@@ -94,16 +98,21 @@ main.compact-view {
 }
 
 #display {
-    grid-area: main-display;
+    grid-area: display;
+    /* width: clamp (calc(100vw - 200px), 75vw, calc(100vw - 300px)); */
+    /* width: calc(100vw - 200px); */
+    /* width: 75vw; */
+    /* width: calc(100vw - 300px); */
+    width: 1fr;
 }
 
-#display.full-view .display-container {
+/* #display.full-view .display-container {
     width: 75vw;
 }
 
 #display.compact-view .display-container {
     width: 100vw;
-}
+} */
 
 
 /* OVERFLOW */
@@ -148,7 +157,7 @@ select#project {
     flex-flow: column;
     gap: var(--lrg-gap);
 
-    width: 25vw;
+    /* whidth declared in LAYOUT */
 }
 
     #sidebar ul {
@@ -230,6 +239,7 @@ select#project {
                 grid-area: controls;
                 display: flex;
                 align-items: center;
+                gap: var(--xtra-small-gap);
             }
 
             .card.project .description {
@@ -266,6 +276,7 @@ select#project {
                 grid-template-rows: auto auto;
                 grid-template-columns: 'title       date        priority    modify      delete'
                                        'description description description description description';
+                gap: var(--xtra-small-gap);
 
                 width: inherit;
             }
@@ -298,9 +309,10 @@ select#project {
 
             .checkboxes .card {
                 display: grid;
-                grid-template-columns: auto 1fr auto auto auto;
+                grid-template-columns: auto 1fr auto auto;
                 grid-template-rows: auto;
                 grid-template-areas: 'check title modify delete';
+                gap: var(--xtra-small-gap);
 
                 width: inherit;
             }
