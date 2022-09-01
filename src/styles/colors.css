@@ -1,18 +1,53 @@
+:root {
+    --background: #F0F2F6;
+    --ui: #FCFCFC;
+    --dark: #252525;
+}
+
+body {
+    background-color: var(--light-3);
+    color: var(--dark);
+}
+
+#title,
+#sidebar,
+.card.project,
+.card.singleton,
+.card.checklist {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
 #title {
-    background-color: #6A70BD;
-    color: white;
+    background-color: var(--ui);
 }
 
 #sidebar {
-    background-color: #E9EAEC;
+    background-color: var(--ui);
 }
+
+    .view-prefs ul li {
+        border-radius: 0.5em;
+    }
 
     .selected-view-preference {
         background-color: hsl(220, 7%, 100%);
     }
 
+#display {
+    background: var(--background);
+}
+
+    .card.project,
+    .card.singleton,
+    .card.checklist {
+        background-color: var(--ui);
+        border-radius: 0.5em;
+    }
+
 .form-container {
     background-color: white;
+
+    border: 1px solid black;
     border-radius: 0.25rem;
 }
 
@@ -21,25 +56,26 @@
     filter: opacity(0.5);
 }
 
-input,
-select {
-    border: 1px solid black;
-    border-radius: 0.25rem;
-}
-
-input:invalid {
-    border: 1px solid red;
-}
-
-.required-badge,
-.error-message {
-    color: red;
-}
-
-.form-container {
-    border: 1px solid black;
-}
-
     fieldset {
         border: none;
     }
+
+        .pronject-icons-container {
+            border-radius: 0.5em;
+        }
+
+        input,
+        select {
+            border: 1px solid black;
+            border-radius: 0.25rem;
+        }
+
+        input:invalid {
+            border: 1px solid red;
+        }
+
+        .required-badge,
+        .error-message {
+            color: red;
+        }
+

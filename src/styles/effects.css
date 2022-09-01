@@ -4,7 +4,7 @@
 
 .card.singleton,
 .card.checklist {
-    border-radius: 0.5em;
+    /* border-radius: 0.5em; */
     position: relative;
     width: 100%;
 }
@@ -20,7 +20,7 @@
 
     width: 100%;
     height: 0px;
-    border-radius: 0.5em;
+    /* border-radius: 0.5em; */
 }
 
 .card.singleton:hover::after,
@@ -44,7 +44,7 @@
 /* ! view preference hover */
 
 .view-prefs-container ul li {
-    border-radius: 0.5em;
+    /* border-radius: 0.5em; */
     position: relative;
     width: 100%;
 }
@@ -59,7 +59,7 @@
 
     width: 100%;
     height: 0px;
-    border-radius: 0.5em;
+    /* border-radius: 0.5em; */
 }
 
 .view-prefs-container ul li:hover::after {
@@ -73,7 +73,7 @@
 /* project icon selection */
 
 .project-icons-container img {
-    border-radius: 0.5em;
+    /* border-radius: 0.5em; */
 
     transition: background 0.20s ease-out;
 }
