@@ -44,7 +44,6 @@
 /* ! view preference hover */
 
 .view-prefs-container ul li {
-    /* border-radius: 0.5em; */
     position: relative;
     width: 100%;
 }
@@ -59,7 +58,6 @@
 
     width: 100%;
     height: 0px;
-    /* border-radius: 0.5em; */
 }
 
 .view-prefs-container ul li:hover::after {
@@ -73,8 +71,6 @@
 /* project icon selection */
 
 .project-icons-container img {
-    /* border-radius: 0.5em; */
-
     transition: background 0.20s ease-out;
 }
 
@@ -114,8 +110,6 @@
 }
 
 .hide-sidebar {
-    /* transform: translateX(-25vw); */
-    /* -webkit-transform: translateX(-25vw); */
     transform: translateX(clamp(-200px, -25vw, -300px));
     -webkit-transform: translateX(clamp(-200px, -25vw, -300px));
 }

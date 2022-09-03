@@ -45,14 +45,14 @@ body {
     }
 
 .form-container {
-    background-color: white;
+    background-color: var(--ui);
 
     border: 1px solid black;
     border-radius: 0.25rem;
 }
 
 .form-container:not(.hide) ~ .show-filter {
-    background-color: white;
+    background-color: var(--ui);
     filter: opacity(0.5);
 }
 
