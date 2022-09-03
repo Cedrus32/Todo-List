@@ -40,6 +40,12 @@ img {
     height: 2rem;
 }
 
+#title,
+#sidebar,
+#display {
+    padding: var(--main-pad);
+}
+
 
 /* LAYOUTS */
 /* LAYOUTS */
@@ -64,12 +70,6 @@ main.compact-view {
     grid-template-rows: auto 1fr;
     grid-template-areas: 'title'
                          'display';
-}
-
-#title,
-#sidebar,
-#display {
-    padding: var(--main-pad);
 }
 
 #title {
@@ -174,152 +174,155 @@ select#project {
 /* DISPLAY */
 /* DISPLAY */
 
+#display,
 .display-container {
     display: flex;
     flex-flow: column;
-    gap: var(--xtra-small-gap);
-
-    /* width declared in LAYOUT */
-
-    padding: var(--main-pad);
+    gap: var(--main-gap);
 }
 
-    .task-controls {
-        display: flex;
-        justify-content: space-between;
+    .display-container {
+        /* width declared in LAYOUT */
 
         padding: var(--main-pad);
     }
 
-    .card {
-        width: inherit;
-    }
-
-    .card.project,
-    .card.singleton,
-    .card.checklist {
-        padding: var(--main-pad);
-    }
-
-        .card.preference-header {
-            text-align: center;
-        }
-
-        .card.project {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            grid-template-rows: auto auto;
-            grid-template-areas: 'title       controls'
-                                 'description .';
-
-            width: inherit;
-        }
-
-            .card.project .title {
-                grid-area: title;
-                text-align: center;
-
-                max-width: inherit;
-            }
-
-            .project-controls {
-                grid-area: controls;
-                display: flex;
-                align-items: center;
-                gap: var(--xtra-small-gap);
-            }
-
-            .card.project .description {
-                grid-area: description;
-                text-align: center;
-
-                width: inherit;
-            }
-
-        .card.singleton {
+        .task-controls {
             display: flex;
-            align-items: flex-start;
+            justify-content: space-between;
 
+            padding: var(--main-pad);
+        }
+
+        .card {
             width: inherit;
         }
 
-            .singleton input[type='checkbox'] {
-                margin-top: calc(var(--xtra-small-pad) * 1);
-                margin-right: var(--xtra-small-pad);
-            }
-
+        .card.project,
+        .card.singleton,
         .card.checklist {
-            display: flex;
-            flex-flow: column;
-            justify-content: flex-start;
-            gap: var(--xtra-small-gap);
-
-            width: inherit;
+            padding: var(--main-pad);
         }
 
-            .card .content {
+            .card.preference-header {
+                text-align: center;
+            }
+
+            .card.project {
                 display: grid;
-                grid-template-columns: 1fr auto auto auto auto;
+                grid-template-columns: 1fr auto;
                 grid-template-rows: auto auto;
-                grid-template-columns: 'title       date        priority    modify      delete'
-                                       'description description description description description';
-                gap: var(--xtra-small-gap);
+                grid-template-areas: 'title       controls'
+                                    'description .';
 
                 width: inherit;
             }
 
-                .card:not(.project) .title {
-                    grid-template: title;
+                .card.project .title {
+                    grid-area: title;
+                    text-align: center;
 
-                    width: 1fr;
-                }
-                
-                .card .date {
-                    grid-template: date;
+                    max-width: inherit;
                 }
 
-                .card .priority {
-                    grid-template: priority;
+                .project-controls {
+                    grid-area: controls;
+                    display: flex;
+                    align-items: center;
+                    gap: var(--xtra-small-gap);
                 }
 
-                .card .modify {
-                    grid-template: modify;
+                .card.project .description {
+                    grid-area: description;
+                    text-align: center;
+
+                    width: inherit;
                 }
 
-                .card .delete {
-                    grid-template: delete;
-                }
-
-                .card .description {
-                    grid-template: description;
-                }
-
-            .checkboxes .card {
-                display: grid;
-                grid-template-columns: auto 1fr auto auto;
-                grid-template-rows: auto;
-                grid-template-areas: 'check title modify delete';
-                gap: var(--xtra-small-gap);
+            .card.singleton {
+                display: flex;
+                align-items: flex-start;
 
                 width: inherit;
             }
 
-                .checkboxes input {
-                    grid-area: check;
+                .singleton input[type='checkbox'] {
+                    margin-top: calc(var(--xtra-small-pad) * 1);
                     margin-right: var(--xtra-small-pad);
                 }
 
-                .checkboxes label {
-                    grid-area: title;
+            .card.checklist {
+                display: flex;
+                flex-flow: column;
+                justify-content: flex-start;
+                gap: var(--xtra-small-gap);
+
+                width: inherit;
+            }
+
+                .card .content {
+                    display: grid;
+                    grid-template-columns: 1fr auto auto auto auto;
+                    grid-template-rows: auto auto;
+                    grid-template-columns: 'title       date        priority    modify      delete'
+                                        'description description description description description';
+                    gap: var(--xtra-small-gap);
+
+                    width: inherit;
                 }
 
-                .checkboxes .modify {
-                    grid-area: modify;
+                    .card:not(.project) .title {
+                        grid-template: title;
+
+                        width: 1fr;
+                    }
+                    
+                    .card .date {
+                        grid-template: date;
+                    }
+
+                    .card .priority {
+                        grid-template: priority;
+                    }
+
+                    .card .modify {
+                        grid-template: modify;
+                    }
+
+                    .card .delete {
+                        grid-template: delete;
+                    }
+
+                    .card .description {
+                        grid-template: description;
+                    }
+
+                .checkboxes .card {
+                    display: grid;
+                    grid-template-columns: auto 1fr auto auto;
+                    grid-template-rows: auto;
+                    grid-template-areas: 'check title modify delete';
+                    gap: var(--xtra-small-gap);
+
+                    width: inherit;
                 }
 
-                .checkboxes .delete {
-                    grid-area: delete;
-                }
+                    .checkboxes input {
+                        grid-area: check;
+                        margin-right: var(--xtra-small-pad);
+                    }
+
+                    .checkboxes label {
+                        grid-area: title;
+                    }
+
+                    .checkboxes .modify {
+                        grid-area: modify;
+                    }
+
+                    .checkboxes .delete {
+                        grid-area: delete;
+                    }
 
 
 /* FORMS */

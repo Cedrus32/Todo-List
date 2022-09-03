@@ -29,10 +29,6 @@ body {
         border-radius: 0.5em;
     }
 
-    .selected-view-preference {
-        background-color: hsl(220, 7%, 100%);
-    }
-
 #display {
     background: var(--background);
 }
@@ -49,11 +45,6 @@ body {
 
     border: 1px solid black;
     border-radius: 0.25rem;
-}
-
-.form-container:not(.hide) ~ .show-filter {
-    background-color: var(--ui);
-    filter: opacity(0.5);
 }
 
     fieldset {

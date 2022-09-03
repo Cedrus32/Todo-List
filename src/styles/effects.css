@@ -54,7 +54,7 @@
     bottom: 0px; left: 0px;
     z-index: -1;
 
-    background-color: hsl(220, 7%, 100%);
+    background-color: var(--background);
 
     width: 100%;
     height: 0px;
@@ -63,6 +63,10 @@
 .view-prefs-container ul li:hover::after {
     height: 100%;
     transition: all 0.20s ease-out;
+}
+
+.selected-view-preference {
+    background-color: var(--background);
 }
 
 
@@ -93,6 +97,11 @@
     z-index: 1;
 
     height: 100vh; width: 100vw;
+}
+
+.form-container:not(.hide) ~ .show-filter {
+    background-color: var(--ui);
+    filter: opacity(0.5);
 }
 
 
