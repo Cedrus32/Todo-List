@@ -149,7 +149,7 @@ select#project {
     #sidebar ul {
         display: flex;
         flex-flow: column;
-        gap: var(--main-gap);
+        gap: var(--small-gap);
 
         width: 100%;
     }
@@ -165,8 +165,6 @@ select#project {
             gap: var(--xtra-small-gap);
 
             width: inherit;
-
-            padding: var(--xtra-small-pad);
         }
 
 
@@ -199,6 +197,7 @@ select#project {
         }
 
         .card.project,
+        .card.preference-header,
         .card.singleton,
         .card.checklist {
             padding: var(--main-pad);
@@ -336,11 +335,6 @@ select {
 }
 
 .form-container {
-    position: absolute;
-    top: 50%; left:50%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
-
     display: flex;
     flex-flow: column;
     gap: var(--main-pad);

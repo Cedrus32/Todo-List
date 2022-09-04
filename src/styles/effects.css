@@ -39,16 +39,26 @@
 }
 
 
-/* ! view preference hover */
-/* ! view preference hover */
-/* ! view preference hover */
+/* view preference hover */
+/* view preference hover */
+/* view preference hover */
 
-.view-prefs-container ul li {
-    position: relative;
-    width: 100%;
+/* ! fix overlay position to cover title */
+/* ! fix initial selected-view-preference on load page (should be on Unsorted) */
+/* ! fix added projects not changing views when clicked */
+
+#sidebar li,
+#sidebar li:after {
+    border-radius: 0.5em;
 }
 
-.view-prefs-container ul li::after {
+#sidebar li {
+    position: relative;
+    width: 100%;
+    padding: var(--small-pad);
+}
+
+#sidebar li::after {
     content: '';
     position: absolute;
     bottom: 0px; left: 0px;
@@ -60,7 +70,12 @@
     height: 0px;
 }
 
-.view-prefs-container ul li:hover::after {
+#sidebar li:hover::after,
+.selected-view-preference {
+    box-shadow: inset rgba(0, 0, 0, 0.1) 0px 0px 12px 1px;
+}
+
+#sidebar li:hover::after {
     height: 100%;
     transition: all 0.20s ease-out;
 }
@@ -83,6 +98,7 @@
     background-color: hsl(236, 39%, 88%);
 }
 
+
 /* form hide/show */
 /* form hide/show */
 /* form hide/show */
@@ -94,14 +110,19 @@
 .form-container:not(.hide) ~ .show-filter {
     position: absolute;
     top: 0px; right: 0px;
-    z-index: 1;
+    z-index: 2;
+
+    background-color: var(--ui);
+    filter: opacity(0.5);
 
     height: 100vh; width: 100vw;
 }
 
-.form-container:not(.hide) ~ .show-filter {
-    background-color: var(--ui);
-    filter: opacity(0.5);
+.form-container:not(.hide) {
+    position: absolute;
+    top: 50%; left:50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
 }
 
 
