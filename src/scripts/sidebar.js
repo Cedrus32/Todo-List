@@ -48,11 +48,6 @@ const sidebar = (() => {
         _updateSelectEffect(sidebarLink);
         _changeViewPreference('Anytime', '');
     });
-    viewUnsortedButton.addEventListener('click', (e) => {
-        let sidebarLink = e.target.closest('li');
-        _updateSelectEffect(sidebarLink);
-        _changeViewPreference('project', viewUnsortedButton.id);
-    });
     createProjectButton.addEventListener('click', () => {
         events.publish('clickCreateProject', 'project');    // subscribed by forms.js
     });
@@ -114,12 +109,12 @@ const sidebar = (() => {
 
     // factories
     const _renderProjectLink = function(project) {
-        if (project.id !== 0) {
-            let id = project.id;
+        let id = project.id;
             let title = project.title;
 
             let liID = `#view-project_${id}`;
             let liProjectLink = li('', liID);
+            console.log(project.icon);
             let projectIcon = _renderProjectIcon(project.icon);
             let projectSpan = span(title, '');
             liProjectLink.append(projectIcon, projectSpan);
@@ -127,16 +122,17 @@ const sidebar = (() => {
             console.log(liProjectLink);
 
             liProjectLink.addEventListener('click', (e) => {
-                _updateSelectEffect(e);
-                _changeViewPreference('project', e.target.id);
+                let targetLink = e.target.closest('li');
+                _updateSelectEffect(targetLink);
+                _changeViewPreference('project', targetLink.id);
             });
 
             projectsList.appendChild(liProjectLink);
             
             _updateSelectEffect(liProjectLink);
-        };
     }
     const _renderProjectIcon = function(iconReference) {
+        console.log(iconReference);
         let iconAlt;
             switch (iconReference) {
                 case '00':
@@ -261,11 +257,12 @@ const sidebar = (() => {
         _addSelectEffect(targetLink);
     }
     function _addSelectEffect(targetLink) {
+        console.log({targetLink});
         targetLink.classList.add('selected-view-preference');
     }
     function _removeSelectEffect() {
-        let sidebarLinks = [viewAllButton, viewTodayButton, viewUpcomingButton, viewAnytimeButton, viewUnsortedButton, ...projectsList.children];
-        sidebarLinks.splice(5, 1);
+        console.log(projectsList.children);
+        let sidebarLinks = [viewAllButton, viewTodayButton, viewUpcomingButton, viewAnytimeButton, ...projectsList.children];
         console.log(sidebarLinks);
 
         for (let i = 0; i < (sidebarLinks.length); i++) {

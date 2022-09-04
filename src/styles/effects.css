@@ -43,10 +43,6 @@
 /* view preference hover */
 /* view preference hover */
 
-/* ! fix overlay position to cover title */
-/* ! fix initial selected-view-preference on load page (should be on Unsorted) */
-/* ! fix added projects not changing views when clicked */
-
 #sidebar li,
 #sidebar li:after {
     border-radius: 0.5em;
