@@ -13,7 +13,7 @@ const forms = (() => {
     let formContainer = document.querySelector('.form-container');
     let formFieldset = formContainer.querySelector('fieldset');
     let formInputs; // * queried after form elements are rendered
-    let projectIcons; // * queried after project form is rendered
+    let projectIconContainers; // * queried after project form is rendered
     let confirmButton = document.querySelectorAll('button.confirm');
     let cancelButton = document.querySelectorAll('button.cancel');
 
@@ -155,9 +155,10 @@ const forms = (() => {
                 for (let i = 0; i < (formInputs.length); i++) {
                     formInputs[i].value = values[i + 1];
                 };
-                for (let i = 0; i < (projectIcons.length); i++) {
-                    if (projectIcons[i].src.includes(values[values.length - 1])) {
-                        _updateIconSelection(projectIcons[i]);
+                for (let i = 0; i < (projectIconContainers.length); i++) {
+                    let projectIcon = projectIconContainers[i].children[0];
+                    if (projectIcon.src.includes(values[values.length - 1])) {
+                        _updateIconSelection(projectIconContainers[i]);
                     };
                 };
                 break;
@@ -199,9 +200,10 @@ const forms = (() => {
                 for (let i = 0; i < (formInputs.length); i++) {
                     formValues.push(formInputs[i].value);
                 };
-                for (let i = 0; i < (projectIcons.length); i++) {
-                    if (projectIcons[i].classList.contains('icon-selected')) {
-                        let splitImgSrc =  projectIcons[i].src.split('/');
+                for (let i = 0; i < (projectIconContainers.length); i++) {
+                    if (projectIconContainers[i].classList.contains('icon-selected')) {
+                        let projectIcon = projectIconContainers[i].children[0]
+                        let splitImgSrc = projectIcon.src.split('/');
                         let selectedIconReference = splitImgSrc[splitImgSrc.length - 1].split('.')[0];
                         formValues.push(selectedIconReference);
                     };
@@ -282,8 +284,8 @@ const forms = (() => {
     function _updateIconSelection(target) {
         let targetContainer = target.closest('div');
         console.log(targetContainer);
-        for (let i = 0; i < (projectIcons.length); i++) {
-            let iconContainer = projectIcons[i].closest('div');
+        for (let i = 0; i < (projectIconContainers.length); i++) {
+            let iconContainer = projectIconContainers[i].closest('div');
             if (iconContainer.classList.contains('icon-selected')) {
                 iconContainer.classList.remove('icon-selected');
             };
@@ -396,7 +398,7 @@ const forms = (() => {
         formFieldset.append(fieldsetLegend, titleDiv, descriptionDiv, iconsDiv);
 
         formInputs = formContainer.querySelectorAll('input');
-        projectIcons = document.querySelector('.project-icons-container').children;
+        projectIconContainers = document.querySelector('.project-icons-container').children;
     }
     const _renderTaskForm = function(formTitle) {        
         let fieldsetLegend = legend(formTitle, '');
