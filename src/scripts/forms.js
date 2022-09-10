@@ -283,7 +283,7 @@ const forms = (() => {
         let targetContainer = target.closest('div');
         console.log(targetContainer);
         for (let i = 0; i < (projectIcons.length); i++) {
-            let iconContainer = projectIcons[i].parentElement;
+            let iconContainer = projectIcons[i].closest('div');
             if (iconContainer.classList.contains('icon-selected')) {
                 iconContainer.classList.remove('icon-selected');
             };
