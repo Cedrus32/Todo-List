@@ -317,8 +317,8 @@ const forms = (() => {
         for (let i = 0; i < 15; i++) {
             let imgContainer = div('', '');
             if (i === 0) {
-                imgContainer.classList.add('.icon-selected');
-            }
+                imgContainer.classList.add('icon-selected');
+            };
             imgContainer.addEventListener('click', (e) => {
                 _updateIconSelection(e.target);
             });
