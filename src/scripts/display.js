@@ -306,7 +306,8 @@ const display = (() => {
         if (type === 'checklist') {
             let divCreate = div('+', '.create');
             divCreate.addEventListener('click', (e) => {
-                let taskReference = e.target.closest('.div.card').id.split('_')[1];
+                console.log(e.target.closest('div.card'));
+                let taskReference = e.target.closest('div.card').id.split('_')[1];
                 let formReferences = ['checkbox', taskReference];
                 events.publish('clickCreateItem', formReferences); // subscribed by forms.js
             });
