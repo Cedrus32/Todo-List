@@ -104,9 +104,7 @@ const display = (() => {
                             dueDate.textContent = taskValues[2];
                             break;
                         case 3:
-                            console.log(taskValues[3]);
                             let priority = card.querySelector('.priority');
-                            console.log(priority);
                             priority.src = `../src/icons/priority-${taskValues[3]}.svg`;
                             break;
                         case 4:
@@ -266,7 +264,6 @@ const display = (() => {
                 break;
             case 'checklist':
                 taskTitle.textContent = title;
-                console.log(taskTitle);
         };
 
         let spanDate = span(dueDate, '.date');
@@ -306,7 +303,6 @@ const display = (() => {
         if (type === 'checklist') {
             let divCreate = div('+', '.create');
             divCreate.addEventListener('click', (e) => {
-                console.log(e.target.closest('div.card'));
                 let taskReference = e.target.closest('div.card').id.split('_')[1];
                 let formReferences = ['checkbox', taskReference];
                 events.publish('clickCreateItem', formReferences); // subscribed by forms.js

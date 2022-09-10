@@ -273,7 +273,7 @@ const library = (() => {
             };
         };
 
-        console.log(instanceBundle);
+        //// console.log(instanceBundle);
         events.publish('updateDisplayView', instanceBundle);    // subscribed by display.js, forms.js
     }
 

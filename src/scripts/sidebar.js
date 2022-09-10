@@ -16,13 +16,11 @@ const sidebar = (() => {
     let viewUnsortedButton = document.getElementById('view-project_0');
     let projectsList = document.getElementById('dynamic-views');
     let createProjectButton = document.querySelector('#dynamic-views .create');
-    console.log(createProjectButton);
 
     // event listeners
     // ? hide sidebar when not focused ?
     title.addEventListener('click', () => {
         let isSmallScreen = _checkMediaQuery();
-        console.log(isSmallScreen);
         if (isSmallScreen) {
             _toggleSidebarVisibility();
         };
@@ -54,7 +52,6 @@ const sidebar = (() => {
 
     // managers
     function _changeViewPreference(preferenceKeyword, targetID) {
-        console.log(targetID);
         let queryReference;
 
         switch (preferenceKeyword) {
@@ -75,7 +72,6 @@ const sidebar = (() => {
         events.publish('openViewPreferenceQuery', preferenceKeyword, queryReference); // subscribed by library.js
     }
     function _setSidebarVisibility(width) {
-        console.log(width);
         switch (true) {
             case (width < 600):
                 if (sidebar.classList.contains('full-view')) {
@@ -91,11 +87,8 @@ const sidebar = (() => {
                 sidebar.classList.add('full-view')
                 sidebar.classList.add('show-sidebar');
         };
-        console.log(sidebar.classList);
     }
     function _toggleSidebarVisibility() {
-        console.log('enter _toggleSidebarVisibility');
-        console.log(sidebar.classList);
         switch (true) {
             case (sidebar.classList.contains('hide-sidebar')):
                 sidebar.classList.remove('hide-sidebar');
@@ -114,12 +107,9 @@ const sidebar = (() => {
 
             let liID = `#view-project_${id}`;
             let liProjectLink = li('', liID);
-            console.log(project.icon);
             let projectIcon = _renderProjectIcon(project.icon);
             let projectSpan = span(title, '');
             liProjectLink.append(projectIcon, projectSpan);
-            
-            console.log(liProjectLink);
 
             liProjectLink.addEventListener('click', (e) => {
                 let targetLink = e.target.closest('li');
@@ -132,7 +122,6 @@ const sidebar = (() => {
             _updateSelectEffect(liProjectLink);
     }
     const _renderProjectIcon = function(iconReference) {
-        console.log(iconReference);
         let iconAlt;
             switch (iconReference) {
                 case '00':
@@ -257,13 +246,10 @@ const sidebar = (() => {
         _addSelectEffect(targetLink);
     }
     function _addSelectEffect(targetLink) {
-        console.log({targetLink});
         targetLink.classList.add('selected-view-preference');
     }
     function _removeSelectEffect() {
-        console.log(projectsList.children);
         let sidebarLinks = [viewAllButton, viewTodayButton, viewUpcomingButton, viewAnytimeButton, ...projectsList.children];
-        console.log(sidebarLinks);
 
         for (let i = 0; i < (sidebarLinks.length); i++) {
             let viewPreference = sidebarLinks[i];
@@ -274,7 +260,6 @@ const sidebar = (() => {
     }
     function _checkMediaQuery() {
         let windowSize = window.innerWidth;
-        console.log(windowSize);
         if (windowSize < 600) {
             return true;
         };

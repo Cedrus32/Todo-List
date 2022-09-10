@@ -80,7 +80,7 @@ const forms = (() => {
 
     // form actions
     function _confirmInput() {
-        console.log(_currentFormType);
+        //// console.log(_currentFormType);
         switch (_currentFormType) {
             case 'delete-confirm':
                 _hideForm();
@@ -89,7 +89,6 @@ const forms = (() => {
                 events.publish('confirmDeleteProject', projectCardID);  // subscribed by library.js
                 break;
             default:
-                console.log('task or project')
                 let isValid = _validateForm();
                 switch(isValid) {
                     case true:
@@ -283,7 +282,6 @@ const forms = (() => {
     }
     function _updateIconSelection(target) {
         let targetContainer = target.closest('div');
-        console.log(targetContainer);
         for (let i = 0; i < (projectIconContainers.length); i++) {
             let iconContainer = projectIconContainers[i].closest('div');
             if (iconContainer.classList.contains('icon-selected')) {
