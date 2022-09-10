@@ -439,7 +439,9 @@ const library = (() => {
 
         events.publish('removeTaskFromDisplay', cardID);    // subscribed by domDisplay.js
     }
-    function _deleteChecklistItem(checkID) {
+    function _deleteChecklistItem(event) {
+        let checkID = event.target.closest('li.card').id;
+        console.log(checkID);
         let taskReference = checkID.split('__')[0].split('_')[1];
         let checkReference = checkID.split('__')[1].split('_')[1];
         for (let t = 0; t < (_taskLibrary.length); t++) {

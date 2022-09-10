@@ -148,7 +148,7 @@ const display = (() => {
         _fillTaskCounter('-');
     }
     function _deleteChecklistItem(id) {
-        let liContainer = document.querySelector(`input#${id}`).parentElement;
+        let liContainer = document.querySelector(`li#${id}`);
         let ulContainer = liContainer.parentElement;
         ulContainer.removeChild(liContainer);
     }
@@ -344,8 +344,8 @@ const display = (() => {
         imgModify.addEventListener('click', (e) => {
             events.publish('clickModifyItem', e);    // subscribed by forms.js
         });
-        imgDelete.addEventListener('click', () => {
-            events.publish('clickDeleteChecklistItem', checkID);    // subscribed by library.js
+        imgDelete.addEventListener('click', (e) => {
+            events.publish('clickDeleteChecklistItem', e);    // subscribed by library.js
         });
 
         liCard.append(checkbox, labelCheckbox, imgModify, imgDelete);
