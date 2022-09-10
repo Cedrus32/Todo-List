@@ -35,8 +35,7 @@ img {
 }
 
 #title img,
-.header img,
-.project-icons-container img {
+.header img {
     height: 2rem;
 }
 

@@ -48,6 +48,11 @@
     border-radius: 0.5em;
 }
 
+.selected-view-preference {
+    box-shadow: inset rgba(0, 0, 0, 0.1) 0px 0px 12px 1px;
+    background-color: var(--background);
+}
+
 #sidebar li {
     position: relative;
     width: 100%;
@@ -66,18 +71,10 @@
     height: 0px;
 }
 
-#sidebar li:hover::after,
-.selected-view-preference {
-    box-shadow: inset rgba(0, 0, 0, 0.1) 0px 0px 12px 1px;
-}
-
 #sidebar li:hover::after {
+    box-shadow: inset rgba(0, 0, 0, 0.1) 0px 0px 12px 1px;
     height: 100%;
     transition: all 0.20s ease-out;
-}
-
-.selected-view-preference {
-    background-color: var(--background);
 }
 
 
@@ -86,12 +83,39 @@
 /* project icon selection */
 
 .project-icons-container img {
-    transition: background 0.20s ease-out;
+    height: 100%; width: 100%;
 }
 
-.icon-selected,
-.project-icons-container img:hover {
-    background-color: hsl(236, 39%, 88%);
+.project-icons-container div,
+.project-icons-container div::after {
+    border-radius: 0.5em;
+    height: calc(2rem + calc(2 * var(--xtra-small-pad)));
+    padding: var(--xtra-small-pad);
+}
+
+.icon-selected {
+    background-color: var(--background);
+    box-shadow: inset rgba(0, 0, 0, 0.1) 0px 0px 12px 1px;
+}
+
+.project-icons-container div {
+    position: relative;
+}
+
+.project-icons-container div::after {
+    content: '';
+    position: absolute;
+    bottom: 0px; left: 0px;
+    z-index: -1;
+
+    width: 100%; height: 0px;
+}
+
+.project-icons-container div:hover::after {
+    background-color: var(--background);
+    box-shadow: inset rgba(0, 0, 0, 0.1) 0px 0px 12px 1px;
+    height: 100%;
+    transition: all 0.20s ease-out;
 }
 
 

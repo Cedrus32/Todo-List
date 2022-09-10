@@ -279,14 +279,17 @@ const forms = (() => {
         let label = input.previousElementSibling;
         label.lastChild.classList.add('hide');
     }
-    function _updateIconSelection(targetIcon) {
+    function _updateIconSelection(target) {
+        let targetContainer = target.closest('div');
+        console.log(targetContainer);
         for (let i = 0; i < (projectIcons.length); i++) {
-            if (projectIcons[i].classList.contains('icon-selected')) {
-                projectIcons[i].classList.remove('icon-selected');
+            let iconContainer = projectIcons[i].parentElement;
+            if (iconContainer.classList.contains('icon-selected')) {
+                iconContainer.classList.remove('icon-selected');
             };
         };
 
-        targetIcon.classList.add('icon-selected');
+        targetContainer.classList.add('icon-selected');
     }
 
     // form factories
@@ -312,14 +315,20 @@ const forms = (() => {
         let labelIcons = label('Choose An Icon', '', '');
         let iconsContainer = div('', '.project-icons-container');
         for (let i = 0; i < 15; i++) {
+            let imgContainer = div('', '');
+            if (i === 0) {
+                imgContainer.classList.add('.icon-selected');
+            }
+            imgContainer.addEventListener('click', (e) => {
+                _updateIconSelection(e.target);
+            });
+
             let imgRef;
             let imgAlt;
-            let imgClass = '';
             switch (i) {
                 case 0:
                     imgRef = '00';
                     imgAlt = 'folder';
-                    imgClass = '.icon-selected';
                     break;
                 case 1:
                     imgRef = '01';
@@ -377,12 +386,10 @@ const forms = (() => {
                     imgRef = '14';
                     imgAlt = 'backpack';
             };
-            let imgIcon = img(`src/icons/project-icons/${imgRef}.svg`, imgAlt, imgClass);
-            imgIcon.addEventListener('click', (e) => {
-                _updateIconSelection(e.target);
-            });
+            let imgIcon = img(`src/icons/project-icons/${imgRef}.svg`, imgAlt);
 
-            iconsContainer.appendChild(imgIcon);
+            imgContainer.appendChild(imgIcon);
+            iconsContainer.appendChild(imgContainer);
         };
         iconsDiv.append(labelIcons, iconsContainer);
 
