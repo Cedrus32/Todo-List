@@ -245,7 +245,7 @@ const display = (() => {
                 taskCard.append(singletonCheckmark, singletonCardContent);
                 break;
             case 'checklist':
-                taskCard = div('', '.card', '.checklist', `#${cardID}`, `.priority-${task.priority}`);
+                taskCard = div('', '.card', '.checklist', `#${cardID}`, `.priority-${task.priority}`); // ! move .priority-${}
                 let checklistCardContent = _renderCardContent(task.type, '', task.title, task.dueDate, task.description, task.priority);
                 let checklistItems = _renderCheckboxContainer(cardID, task.items);
                 taskCard.append(checklistCardContent, checklistItems);
@@ -302,6 +302,17 @@ const display = (() => {
         let taskDescription = div(description, '.description');
 
         divContent.append(taskTitle, spanDate, imgPriority, imgModify, imgDelete, taskDescription);
+
+        if (type === 'checklist') {
+            let divCreate = div('+', '.create');
+            divCreate.addEventListener('click', (e) => {
+                let taskReference = e.target.closest('.div.card').id.split('_')[1];
+                let formReferences = ['checkbox', taskReference];
+                events.publish('clickCreateItem', formReferences); // subscribed by forms.js
+            });
+            divContent.appendChild(divCreate);
+        };
+        
         return divContent;
     }
     const _renderCheckboxContainer = function(taskCardID, items) {

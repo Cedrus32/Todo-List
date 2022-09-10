@@ -520,7 +520,7 @@ const forms = (() => {
 
     // event subscriptions
 
-    events.subscribe('clickCreateItem', _openCreateForm);   // published from display.js (createTaskButton clickEvent, _renderChecklistSubheader())
+    events.subscribe('clickCreateItem', _openCreateForm);   // published from display.js (.create clickEvents)
     events.subscribe('clickCreateProject', _openCreateForm);    // publishing from sidebar.js (createProjectButton clickEvent)
 
     events.subscribe('clickModifyItem', _openModifyInstanceQuery);  // publishing from display.js (_render...Header())

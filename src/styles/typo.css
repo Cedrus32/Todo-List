@@ -52,6 +52,10 @@ legend {
     font-weight: 500;
 }
 
+.card .create {
+    text-align: center;
+}
+
 .description {
     font-style: italic;
 }
