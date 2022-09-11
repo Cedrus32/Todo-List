@@ -55,10 +55,10 @@ const sidebar = (() => {
         let queryReference;
 
         switch (preferenceKeyword) {
-            case 'today':
+            case 'Today':
                 queryReference = _getTodayDate();
                 break;
-            case 'upcoming':
+            case 'Upcoming':
                 queryReference = _getUpcomingDate();
                 break;
             case 'project':
