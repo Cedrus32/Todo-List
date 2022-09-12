@@ -110,7 +110,7 @@ const display = (() => {
                         case 4:
                             let currentProjectCardID = projectContainer.querySelector('.card').id;
                             let currentProjectReference = currentProjectCardID.split('_')[1];
-                            if (taskValues[4] != currentProjectReference) {
+                            if (currentProjectReference !== undefined && taskValues[4] != currentProjectReference) {
                                 _deleteTaskCard(cardID);
                             };
                     };
