@@ -1,4 +1,6 @@
-const local = (() => {
+import events from './events';
+
+const localStorage = (() => {
     function storageAvailable(type) {
         let storage;
         try {
@@ -24,11 +26,24 @@ const local = (() => {
                 (storage && storage.length !== 0);
         }
     }
+    function check() {
+        let localStorageAvailable;
+        if (storageAvailable('localStorage')) {
+            // Yippee! We can use localStorage awesomeness
+            localStorageAvailable = true;
+          }
+          else {
+            // Too bad, no localStorage for us
+            localStorageAvailable = false;
+          }
+
+          events.publish('storageCheckComplete', localStorageAvailable);    // subscribed by default.js
+    }
 
     return {
-        storageAvailable,   // used by index.js
+        check,   // used by index.js
     }
 
 })();
 
-export default local;
+export default localStorage;

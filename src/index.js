@@ -10,18 +10,9 @@ import forms from './scripts/forms';
 import sidebar from './scripts/sidebar';
 import library from './scripts/library';
 import events from './events';
-import local from './local';
+import localStorage from './local';
 
-// actions
 
-if (local.storageAvailable('localStorage')) {
-    // Yippee! We can use localStorage awesomeness
-    events.publish('initializeDefaultLayout', window.innerWidth);   // subscribed by sidebar.js, display.js
-  }
-  else {
-    // Too bad, no localStorage for us
-    console.log('lS error')
-  }
-
-defaultState.init();
+// defaultState.init();
+localStorage.check();
 events.viewEvents();

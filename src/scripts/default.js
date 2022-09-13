@@ -12,13 +12,15 @@ const defaultState = (() => {
                             ];
 
     // methods
-    function init() {
+    function init(localStorageAvailable) {
         _createDefaultProject(_sampleProjectValues[0]);
-        for (let t = 0; t < (_sampleTaskValues.length); t++) {
-            _createDefaultTask(_sampleTaskValues[t]);
+        if (localStorageAvailable === true) {
+            for (let t = 0; t < (_sampleTaskValues.length); t++) {
+                _createDefaultTask(_sampleTaskValues[t]);
+            };
         };
 
-        // events.publish('initializeDefaultLayout', window.innerWidth);   // subscribed by sidebar.js, display.js
+        events.publish('initializeDefaultLayout', window.innerWidth);   // subscribed by sidebar.js, display.js
     }
     function _createDefaultProject(projectValues) {
         events.publish('confirmInput', projectValues); // subscribed by library.js
@@ -27,9 +29,10 @@ const defaultState = (() => {
         events.publish('confirmInput', taskValues); // subscribed by library.js
     }
 
-    return {
-        init,   // used by index.js
-    }
+
+    // event subscriptions
+
+    events.subscribe('storageCheckComplete', init); // subscribed by local.js (check())
 
 })();
 
