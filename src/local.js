@@ -27,21 +27,34 @@ const localStorage = (() => {
         }
     }
     function check() {
-        let localStorageAvailable;
+        let loadLocal;
+        let loadDefault;
         if (storageAvailable('localStorage')) {
-            // Yippee! We can use localStorage awesomeness
-            localStorageAvailable = true;
-          }
-          else {
-            // Too bad, no localStorage for us
-            localStorageAvailable = false;
-          }
+            // set way to check if localStorage has PREVIOUSLY been accessed (load from localStorage) ...
+            // ... OR if localStorage has NOT been accessed (load from default.js)
+            console.log(Storage.length);
+            if (Storage.length === 0) {
+                loadLocal = false;
+                loadDefault = true;
+            } else {
+                loadLocal = true;
+                loadDefault = false;
+            };
+          } else {
+            // throws error per storageAvailable()
+          };
 
-          events.publish('storageCheckComplete', localStorageAvailable);    // subscribed by default.js
+          events.publish('storageCheckComplete', loadLocal, loadDefault);    // subscribed by default.js
+    }
+
+    // quality control
+    function clearLocal() {
+        Storage.clear;
     }
 
     return {
         check,   // used by index.js
+        clearLocal, // used ...
     }
 
 })();

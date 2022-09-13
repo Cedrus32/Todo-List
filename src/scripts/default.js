@@ -12,13 +12,17 @@ const defaultState = (() => {
                             ];
 
     // methods
-    function init(localStorageAvailable) {
-        _createDefaultProject(_sampleProjectValues[0]);
-        if (localStorageAvailable === true) {
+    function init(loadLocalData, loadDefaultData) {
+        if (loadLocalData === true) {
+            // load local data
+        } else if (loadDefaultData === true) {
+            _createDefaultProject(_sampleProjectValues[0]);
             for (let t = 0; t < (_sampleTaskValues.length); t++) {
                 _createDefaultTask(_sampleTaskValues[t]);
             };
         };
+
+        // if localStorage NOT available, page loads blank
 
         events.publish('initializeDefaultLayout', window.innerWidth);   // subscribed by sidebar.js, display.js
     }
