@@ -18,6 +18,11 @@ const display = (() => {
     // * modify & delete click listeners in _render...Header()
     // * create checklist item listener in _renderChecklistDescritionContainer()
 
+    // bind events
+    window.addEventListener('resize', () => {
+        events.publish('windowResize', window.innerWidth);  // subscribed by sidebar.js, display.js
+    });
+
     // display manager
     function _setLayout(width) {
         mainContainer.classList = '';

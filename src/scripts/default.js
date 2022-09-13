@@ -11,11 +11,6 @@ const defaultState = (() => {
                              ['task', '', 'checklist', 'Task 3', 'this is a checklist', '2003-03-03', 1, 0, ['item 1', 'item 2', 'item 3']],
                             ];
 
-    // event listeners
-    window.addEventListener('resize', () => {
-        events.publish('windowResize', window.innerWidth);  // subscribed by sidebar.js, display.js
-    });
-
     // methods
     function init() {
         _createDefaultProject(_sampleProjectValues[0]);
@@ -23,7 +18,7 @@ const defaultState = (() => {
             _createDefaultTask(_sampleTaskValues[t]);
         };
 
-        events.publish('initializeDefaultLayout', window.innerWidth);   // subscribed by sidebar.js, display.js
+        // events.publish('initializeDefaultLayout', window.innerWidth);   // subscribed by sidebar.js, display.js
     }
     function _createDefaultProject(projectValues) {
         events.publish('confirmInput', projectValues); // subscribed by library.js
