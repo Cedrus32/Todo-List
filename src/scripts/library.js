@@ -9,6 +9,17 @@ const library = (() => {
     let _taskCounter = 0;
     let _projectCounter = 0;
 
+    // actions
+    // ? research json structure -- set project/task libraries or just push objects directly?
+    //// ! when creating... set key:value pair (key === project/task_id && value === project/task object)
+    // ! when modifying... index by key ^^^, rewrite value
+    // ! when displaying... get key:value pair, create array via ?? split string by "," ??, send to DOM with established logic
+   
+    // localStorage.setItem('projectLibrary', 'test');  // * WORKING
+    // localStorage.setItem('taskLibrary', 'test');     // * WORKING
+    // localStorage.clear();
+    // console.log(localStorage.length);
+
     // factories
     class Project {
         // attributes
@@ -280,20 +291,28 @@ const library = (() => {
     // create methods
     function _createProject(attributeArray) {
         let _id = _projectCounter;
+        let _storageKey = `project_${_projectCounter}`; // * NEW
         let _newProject = new Project(_id, ...attributeArray);
         console.log('new project:')
         console.log(_newProject);
-        _projectLibrary.push(_newProject);
+        // _projectLibrary.push(_newProject);  // ! OLD
+        localStorage.setItem(_storageKey, JSON.stringify(_newProject)); // * NEW
+        console.log(localStorage.getItem(_storageKey));
+        console.log(`ls.length (create project): ${localStorage.length}`);
         _projectCounter++;
 
         events.publish('projectCreated', _newProject);  // subscribed by display.js, sidebar.js
     }
     function _createTask(attributeArray) {
         let _id = _taskCounter;
+        let _storageKey = `task_${_taskCounter}`;  // * NEW
         let _newTask = new Task(_id, ...attributeArray);
         console.log('new task:')
         console.log(_newTask);
-        _taskLibrary.push(_newTask);
+        // _taskLibrary.push(_newTask);    // ! OLD
+        localStorage.setItem(_storageKey, JSON.stringify(_newTask));   // * NEW
+        console.log(localStorage.getItem(_storageKey));
+        console.log(`ls.length (create task): ${localStorage.length}`);
         _taskCounter++;
 
         events.publish('taskCreated', _newTask);    // subscribed by displayDOM.js
@@ -312,7 +331,12 @@ const library = (() => {
         };
 
         itemValue[0] = newItemID;
-        task.items.push(itemValue);
+        // task.items.push(itemValue); // ! OLD
+        let taskObject = JSON.parse(localStorage.getItem(`task_${task.id}`));   // * NEW
+        taskObject.items.push(itemValue);   // * NEW
+        console.log(taskObject);
+        localStorage.setItem(`task_${taskObject.id}`, JSON.stringify(taskObject));  // * NEW
+        console.log(`ls.length (create checkbox): ${localStorage.length}`);
         let _newCheckbox = ['checkbox', task.id, task.items[checklistItemsLength][0], task.items[checklistItemsLength][1]];
         
         console.log('new checkbox:')

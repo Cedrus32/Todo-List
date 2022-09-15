@@ -10,9 +10,8 @@ import forms from './scripts/forms';
 import sidebar from './scripts/sidebar';
 import library from './scripts/library';
 import events from './events';
-import localStorage from './local';
+import storage from './local';
 
 
-// defaultState.init();
-localStorage.check();
+storage.check();
 events.viewEvents();

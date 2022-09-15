@@ -1,6 +1,6 @@
 import events from './events';
 
-const localStorage = (() => {
+const storage = (() => {
     function storageAvailable(type) {
         let storage;
         try {
@@ -10,7 +10,6 @@ const localStorage = (() => {
             storage.removeItem(x);
             return true;
         }
-        
         catch (e) {
             return e instanceof DOMException && (
                 // everything except Firefox
@@ -30,33 +29,27 @@ const localStorage = (() => {
         let loadLocal;
         let loadDefault;
         if (storageAvailable('localStorage')) {
-            // set way to check if localStorage has PREVIOUSLY been accessed (load from localStorage) ...
-            // ... OR if localStorage has NOT been accessed (load from default.js)
-            console.log(Storage.length);
-            if (Storage.length === 0) {
+            console.log(localStorage.length);
+            if (localStorage.length === undefined) {
                 loadLocal = false;
                 loadDefault = true;
             } else {
-                loadLocal = true;
-                loadDefault = false;
+                // loadLocal = true;
+                // loadDefault = false;
+                loadLocal = false;
+                loadDefault = true;
             };
-          } else {
+        } else {
             // throws error per storageAvailable()
-          };
+        };
 
           events.publish('storageCheckComplete', loadLocal, loadDefault);    // subscribed by default.js
     }
 
-    // quality control
-    function clearLocal() {
-        Storage.clear;
-    }
-
     return {
         check,   // used by index.js
-        clearLocal, // used ...
     }
 
 })();
 
-export default localStorage;
+export default storage;
