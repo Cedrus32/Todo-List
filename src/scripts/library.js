@@ -140,7 +140,7 @@ const library = (() => {
             case 'checkbox':
                 let checklistItemReference = values[0];
                 let checklistItemContent = values[1];
-                let taskInstance = JSON.parse(localStorage.getItem(`task_${instanceReference}`));   // * NEW
+                let taskInstance = JSON.parse(localStorage.getItem(`task_${instanceReference}`));
                 switch (checklistItemReference) {
                     case undefined:
                         _createCheckbox(taskInstance, values);
@@ -148,20 +148,6 @@ const library = (() => {
                     default:
                         _modifyCheckbox(taskInstance, checklistItemReference, checklistItemContent); // formValues[0] needed to pass single value from formValues[]
                 };
-                // for (let t = 0; t < (_taskLibrary.length); t++) {    // ! OLD
-                //     if (_taskLibrary[t].id == instanceReference) {
-                //         let checkID = values[0];
-                //         let taskInstance = _taskLibrary[t];
-
-                //         switch (checkID) {
-                //             case undefined:
-                //                 _createCheckbox(taskInstance, values);
-                //                 break;
-                //             default:
-                //                 _modifyCheckbox(taskInstance, checklistItemReference, checklistItemContent); // formValues[0] needed to pass single value from formValues[]
-                //         };
-                //     };
-                // };
         };
     }
 
@@ -176,41 +162,19 @@ const library = (() => {
         let itemValueArray;
         switch (libraryReference) {
             case 'project':
-                // for (let p = 0; p < (_projectLibrary.length); p++) { // ! OLD
-                //     if (_projectLibrary[p].id == instanceReference) {
-                //         let item = _projectLibrary[p];
-                //         itemValueArray = ['project', item.id, item.title, item.description, item.icon];
-                //     };
-                // };
-                item = JSON.parse(localStorage.getItem(`${libraryReference}_${instanceReference}`));    // * NEW
-                itemValueArray = ['project', item.id, item.title, item.description, item.icon]; // * NEW
+                item = JSON.parse(localStorage.getItem(`${libraryReference}_${instanceReference}`));
+                itemValueArray = ['project', item.id, item.title, item.description, item.icon];
                 break;
             case 'task':
-                // for (let t = 0; t < (_taskLibrary.length); t++) {    // ! OLD
-                //     if (_taskLibrary[t].id == instanceReference) {
-                //         let item = _taskLibrary[t];
-                //         itemValueArray = ['task', item.id, item.type, item.title, item.description, item.dueDate, item.priority, item.projectID];
-                //     };
-                // };
-                item = JSON.parse(localStorage.getItem(`${libraryReference}_${instanceReference}`));    // * NEW
-                itemValueArray = ['task', item.id, item.type, item.title, item.description, item.dueDate, item.priority, item.projectID];   // * NEW
+                item = JSON.parse(localStorage.getItem(`${libraryReference}_${instanceReference}`));
+                itemValueArray = ['task', item.id, item.type, item.title, item.description, item.dueDate, item.priority, item.projectID];
                 break;
             case 'checkbox':
                 let taskReference = instanceReference[0];       // * unbundled from domDisplay.js (_openModifyFormQuery())
                 let checkboxReference = instanceReference[1];   // * unbundled from domDisplay.js (_openModifyFormQuery())
-                // for (let t = 0; t < (_taskLibrary.length); t++) {    // ! OLD
-                //     if (_taskLibrary[t].id == taskReference) {
-                //         let checklistItems = _taskLibrary[t].items;
-                //         for (let i = 0; i < (checklistItems.length); i++) {
-                //             if (checklistItems[i][0] == checkboxReference) {
-                //                 itemValueArray = ['checkbox', taskReference, checklistItems[i][0], checklistItems[i][1]];
-                //             };
-                //         };
-                //     };
-                // };
-                let taskInstance = JSON.parse(localStorage.getItem(`task_${taskReference}`));   // * NEW
-                let checklistItems = taskInstance.items;    // * NEW
-                for (let i = 0; i < (checklistItems.length); i++) { // * NEW
+                let taskInstance = JSON.parse(localStorage.getItem(`task_${taskReference}`));
+                let checklistItems = taskInstance.items;
+                for (let i = 0; i < (checklistItems.length); i++) {
                     if (checklistItems[i][0] == checkboxReference) {
                         itemValueArray = ['checkbox', taskReference, checklistItems[i][0], checklistItems[i][1]];
                     };
@@ -256,18 +220,7 @@ const library = (() => {
 
         instanceBundle.push(viewPreference);
         if (queryProjects === true) {
-            // for (let p = 0; p < (_projectLibrary.length); p++) { // ! OLD
-            //     if (_projectLibrary[p].id == queryReference) {
-            //         instanceBundle.push(_projectLibrary[p]);
-            //     };
-            // };
-            // for (let t = 0; t < (_taskLibrary.length); t++) {    // ! OLD
-            //     if (_taskLibrary[t].projectID == queryReference) {
-            //         instanceBundle.push(_taskLibrary[t]);
-            //     };
-            // };
-            
-            for (let i = 0; i < localStorage.length; i++) { // * NEW
+            for (let i = 0; i < localStorage.length; i++) {
                 let storageKey = localStorage.key(i);
                 let item = JSON.parse(localStorage.getItem(storageKey));
                 if (item.type === 'project' && item.id === queryReference) {
@@ -279,10 +232,7 @@ const library = (() => {
         } else if (queryTasks === true) {   // ! reduce repetition
             switch (viewPreference) {
                 case 'All':
-                    // for (let t = 0; t < (_taskLibrary.length); t++) {    // ! OLD
-                    //     instanceBundle.push(_taskLibrary[t]);
-                    // };
-                    for (let i = 0; i < localStorage.length; i++) { // * NEW
+                    for (let i = 0; i < localStorage.length; i++) {
                         let storageKey = localStorage.key(i);
                         let item = JSON.parse(localStorage.getItem(storageKey));
                         if (item.type !== 'project') {
@@ -291,13 +241,7 @@ const library = (() => {
                     };
                     break;
                 case 'Today':
-                    // for (let t = 0; t < (_taskLibrary.length); t++) {    // ! OLD
-                    //     let task = _taskLibrary[t];
-                    //     if (task.dueDate === queryReference) {
-                    //         instanceBundle.push(task);
-                    //     }
-                    // };
-                    for (let i = 0; i < localStorage.length; i++) { // * NEW
+                    for (let i = 0; i < localStorage.length; i++) {
                         let storageKey = localStorage.key(i);
                         let item = JSON.parse(localStorage.getItem(storageKey));
                         if (item.type !== 'project' && item.dueDate === queryReference) {
@@ -306,15 +250,7 @@ const library = (() => {
                     };
                     break;
                 case 'Upcoming':
-                    // for (let t = 0; t < (_taskLibrary.length); t++) {    // ! OLD
-                    //     let task = _taskLibrary[t];
-                    //     for (let i = 0; i < (queryReference.length); i++) {
-                    //         if (task.dueDate === queryReference[i]) {
-                    //             instanceBundle.push(task);
-                    //         };
-                    //     };
-                    // };
-                    for (let i = 0; i < localStorage.length; i++) { // * NEW
+                    for (let i = 0; i < localStorage.length; i++) {
                         let storageKey = localStorage.key(i);
                         let item = JSON.parse(localStorage.getItem(storageKey));
                         if (item.type !== 'project') {
@@ -327,13 +263,7 @@ const library = (() => {
                     };
                     break;
                 case 'Anytime':
-                    // for (let t = 0; t < (_taskLibrary.length); t++) {    // ! OLD
-                    //     let task = _taskLibrary[t];
-                    //     if (task.dueDate === queryReference) {
-                    //         instanceBundle.push(task);
-                    //     };
-                    // };
-                    for (let i = 0; i < localStorage.length; i++) { // * NEW
+                    for (let i = 0; i < localStorage.length; i++) {
                         let storageKey = localStorage.key(i);
                         let item = JSON.parse(localStorage.getItem(storageKey));
                         if (item.type !== 'project' && item.dueDate === queryReference) {
@@ -350,28 +280,26 @@ const library = (() => {
     // create methods
     function _createProject(attributeArray) {
         let _id = _projectCounter;
-        let _storageKey = `project_${_projectCounter}`; // * NEW
+        let _storageKey = `project_${_projectCounter}`;
         let _newProject = new Project(_id, ...attributeArray);
         console.log('new project:')
         console.log(_newProject);
-        // _projectLibrary.push(_newProject);  // ! OLD
-        localStorage.setItem(_storageKey, JSON.stringify(_newProject)); // * NEW
-        console.log(JSON.parse(localStorage.getItem(_storageKey))); // * NEW
-        console.log(`ls.length (create project): ${localStorage.length}`);  // * NEW
+        localStorage.setItem(_storageKey, JSON.stringify(_newProject));
+        console.log(JSON.parse(localStorage.getItem(_storageKey)));
+        console.log(`ls.length (create project): ${localStorage.length}`);
         _projectCounter++;
 
         events.publish('projectCreated', _newProject);  // subscribed by display.js, sidebar.js
     }
     function _createTask(attributeArray) {
         let _id = _taskCounter;
-        let _storageKey = `task_${_taskCounter}`;  // * NEW
+        let _storageKey = `task_${_taskCounter}`;
         let _newTask = new Task(_id, ...attributeArray);
         console.log('new task:')
         console.log(_newTask);
-        // _taskLibrary.push(_newTask);    // ! OLD
-        localStorage.setItem(_storageKey, JSON.stringify(_newTask));   // * NEW
-        console.log(JSON.parse(localStorage.getItem(_storageKey))); // * NEW
-        console.log(`ls.length (create task): ${localStorage.length}`); // * NEW
+        localStorage.setItem(_storageKey, JSON.stringify(_newTask));
+        console.log(JSON.parse(localStorage.getItem(_storageKey)));
+        console.log(`ls.length (create task): ${localStorage.length}`);
         _taskCounter++;
 
         events.publish('taskCreated', _newTask);    // subscribed by displayDOM.js
@@ -390,12 +318,11 @@ const library = (() => {
         };
 
         itemValue[0] = newItemID;
-        // task.items.push(itemValue); // ! OLD
-        let taskObject = JSON.parse(localStorage.getItem(`task_${task.id}`));   // * NEW
-        taskObject.items.push(itemValue);   // * NEW
-        console.log(taskObject);    // * NEW
-        localStorage.setItem(`task_${taskObject.id}`, JSON.stringify(taskObject));  // * NEW
-        console.log(`ls.length (create checkbox): ${localStorage.length}`); // * NEW
+        let taskObject = JSON.parse(localStorage.getItem(`task_${task.id}`));
+        taskObject.items.push(itemValue);
+        console.log(taskObject);
+        localStorage.setItem(`task_${taskObject.id}`, JSON.stringify(taskObject));
+        console.log(`ls.length (create checkbox): ${localStorage.length}`);
         let _newCheckbox = ['checkbox', task.id, task.items[checklistItemsLength][0], task.items[checklistItemsLength][1]];
         
         console.log('new checkbox:')
@@ -408,15 +335,10 @@ const library = (() => {
     function _modifyProject(targetItemID, attributeArray) {
         //// console.log(attributeArray)
         let projectInstance;
-        // for (let p = 0; p < (_projectLibrary.length); p++) { // ! OLD
-        //     if (_projectLibrary[p].id == targetItemID) {
-        //         projectInstance = _projectLibrary[p];
-        //     };
-        // };
-        let storageKey = `project_${targetItemID}`; // * NEW
+        let storageKey = `project_${targetItemID}`;
         console.log(storageKey);
-        projectInstance = JSON.parse(localStorage.getItem(storageKey)); // * NEW
-        console.log(projectInstance);   // * NEW
+        projectInstance = JSON.parse(localStorage.getItem(storageKey));
+        console.log(projectInstance);
         //// console.log('original project instance:')
         //// console.log(projectInstance);
         for (let a = 0; a < (attributeArray.length); a++) {
@@ -433,22 +355,17 @@ const library = (() => {
         };
         console.log('modified project instance:')
         console.log(projectInstance);
-        localStorage.setItem(storageKey, JSON.stringify(projectInstance));  // * NEW
-        console.log(localStorage.length);   // * NEW
+        localStorage.setItem(storageKey, JSON.stringify(projectInstance));
+        console.log(localStorage.length);
 
         events.publish('itemModified', projectInstance);  // subscribed by domDisplay.js, domSidebar.js
     }
     function _modifyTask(targetItemID, attributeArray) {
         //// console.log(attributeArray);
         let taskInstance;
-        // for (let t = 0; t < (_taskLibrary.length); t++) {    // ! OLD
-        //     if (_taskLibrary[t].id == targetItemID) {
-        //         taskInstance = _taskLibrary[t];
-        //     };
-        // };
-        let storageKey = `task_${targetItemID}`;    // * NEW
+        let storageKey = `task_${targetItemID}`;
         console.log(storageKey);
-        taskInstance = JSON.parse(localStorage.getItem(storageKey));    // * NEW
+        taskInstance = JSON.parse(localStorage.getItem(storageKey));
         console.log(taskInstance);
         //// console.log('original task instance:')
         //// console.log(taskInstance);
@@ -473,8 +390,8 @@ const library = (() => {
         };
         console.log('modified task instance:')
         console.log(taskInstance);
-        localStorage.setItem(storageKey, JSON.stringify(taskInstance)); // * NEW
-        console.log(localStorage.length);   // * NEW
+        localStorage.setItem(storageKey, JSON.stringify(taskInstance));
+        console.log(localStorage.length);
 
         events.publish('itemModified', taskInstance);  // subscribed by domDisplay.js, domSidebar.js
     }
@@ -493,7 +410,7 @@ const library = (() => {
         //// console.log(taskInstance);
         console.log('modified task (checkbox) instance:')
         console.log(taskInstance.items);
-        localStorage.setItem(`task_${taskInstance.id}`, JSON.stringify(taskInstance));  // * NEW
+        localStorage.setItem(`task_${taskInstance.id}`, JSON.stringify(taskInstance));
 
         events.publish('itemModified', checkboxInstance);   // subscribed by domDisplay.js
     }
@@ -503,28 +420,15 @@ const library = (() => {
         console.log(cardID);
         let cardReferences = cardID.split('_');
         let projectReference = cardReferences[1];
-        // let projectLoopStart = _projectLibrary.length - 1;   // ! OLD
+        localStorage.removeItem(cardID);
 
-        // for (let p = projectLoopStart; p > -1; p--) {    // ! OLD
-        //     if (_projectLibrary[p].id == projectReference) {
-        //         _projectLibrary.splice(p, 1);
-        //     };
-        // };
-        localStorage.removeItem(cardID);    // * NEW
-
-        // let taskLoopStart = _taskLibrary.length - 1;  // ! OLD
-        // for (let t = taskLoopStart; t > -1; t--) {
-        //     if (_taskLibrary[t].projectID == projectReference) {
-        //         _taskLibrary.splice(t, 1);
-        //     };
-        // };
-        let loopStart = localStorage.length - 1;    // * NEW
-        for (let i = loopStart; i > -1; i--) {  // * NEW
+        let loopStart = localStorage.length - 1;
+        for (let i = loopStart; i > -1; i--) {
             let storageKey = localStorage.key(i);
             let storageObject = JSON.parse(localStorage.getItem(storageKey));
             if (storageObject.type !== 'project') {
                 if (storageObject.projectID == projectReference) {
-                    localStorage.removeItem(storageKey);    // * NEW
+                    localStorage.removeItem(storageKey);
                 };
             };
         };
@@ -539,12 +443,7 @@ const library = (() => {
         console.log(cardID);
         let cardReferences = cardID.split('_');
         let taskReference = cardReferences[1];
-        // for (let t = 0; t < (_taskLibrary.length); t++) {    // ! OLD
-        //     if (_taskLibrary[t].id == taskReference) {
-        //         _taskLibrary.splice(t, 1);
-        //     };
-        // };
-        localStorage.removeItem(cardID);    // * NEW
+        localStorage.removeItem(cardID);
 
         console.log('task delete results:')
         console.log(_taskLibrary);
@@ -554,31 +453,18 @@ const library = (() => {
     function _deleteChecklistItem(event) {
         let checkID = event.target.closest('li.card').id;
         console.log(checkID);
-        // let taskReference = checkID.split('__')[0].split('_')[1];    // ! OLD
         let taskReference = checkID.split('__')[0];
         let checkReference = checkID.split('__')[1].split('_')[1];
-        // for (let t = 0; t < (_taskLibrary.length); t++) {    // ! OLD
-        //     if (_taskLibrary[t].id == taskReference) {
-        //         let checklistItemsArray = _taskLibrary[t].items;
-        //         for (let i = 0; i < (checklistItemsArray.length); i++) {
-        //             if (checklistItemsArray[i][0] == checkReference) {
-        //                 checklistItemsArray.splice(i, 1);
-        //                 console.log('checklist item delete results:')
-        //                 console.log(checklistItemsArray);
-        //             };
-        //         };
-        //     };
-        // };
-        let taskInstance = JSON.parse(localStorage.getItem(taskReference)); // * NEW
-        let checklistItemsArray = taskInstance.items;   // * NEW
-        for (let i = 0; i < (checklistItemsArray.length); i++) {    // * NEW
+        let taskInstance = JSON.parse(localStorage.getItem(taskReference));
+        let checklistItemsArray = taskInstance.items;
+        for (let i = 0; i < (checklistItemsArray.length); i++) {
             if (checklistItemsArray[i][0] == checkReference) {
                 checklistItemsArray.splice(i, 1);
                 console.log('checklist item delete results:');
                 console.log(checklistItemsArray);
             };
         };
-        localStorage.setItem(cardID, JSON.stringify(itemInstance)); // * NEW
+        localStorage.setItem(cardID, JSON.stringify(itemInstance));
 
         events.publish('removeChecklistItemFromDisplay', checkID);  // subscribed by domDisplay.js
     }
