@@ -187,24 +187,23 @@ const display = (() => {
         let h2Title = h2(title, '.title');
         let projectDescription = div(description, '.description');
         divCard.append(h2Title, projectDescription);
-        if (id !== 0) {
-            let divProjectControls = div('', '.project-controls');
 
-            let imgModify = img('src/icons/edit.svg', 'modify project', '.project', '.modify');
-            // * project modify/delete events
-            imgModify.addEventListener('click', (e) => {
-                events.publish('clickModifyItem', e);   // subscribed by forms.js
-            });
+        let divProjectControls = div('', '.project-controls');
 
-            let imgDelete = img('src/icons/delete.svg', 'delete project', '.delete');
-            imgDelete.addEventListener('click', (e) => {
-                let cardID = e.target.closest('div.card').id;
-                events.publish('clickDeleteProject', cardID);   // subscribed by forms.js
-            });
+        let imgModify = img('src/icons/edit.svg', 'modify project', '.project', '.modify');
+        // * project modify/delete events
+        imgModify.addEventListener('click', (e) => {
+            events.publish('clickModifyItem', e);   // subscribed by forms.js
+        });
 
-            divProjectControls.append(imgModify, imgDelete);
-            divCard.appendChild(divProjectControls);
-        };
+        let imgDelete = img('src/icons/delete.svg', 'delete project', '.delete');
+        imgDelete.addEventListener('click', (e) => {
+            let cardID = e.target.closest('div.card').id;
+            events.publish('clickDeleteProject', cardID);   // subscribed by forms.js
+        });
+
+        divProjectControls.append(imgModify, imgDelete);
+        divCard.appendChild(divProjectControls);
         
         return divCard;
     }
