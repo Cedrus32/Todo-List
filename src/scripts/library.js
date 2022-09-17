@@ -1,6 +1,6 @@
 import events from '../events';
 
-// & 'backend' manager module containing project/task states, classes, & methods
+// & backend manager module containing project/task classes & methods
 
 const library = (() => {
     // dynamic data
@@ -9,12 +9,7 @@ const library = (() => {
     let _taskCounter = 0;
     let _projectCounter = 0;
 
-    // actions
-    // ? research json structure -- set project/task libraries or just push objects directly?
-    //// ! when creating... set key:value pair (key === project/task_id && value === project/task object)
-    //// ! when modifying... index by key ^^^, rewrite value
-    //// ! when displaying... get key:value pair, create array via ?? split string by "," ??, send to DOM with established logic
-
+    // action
     // localStorage.clear();
 
     // factories
@@ -52,46 +47,12 @@ const library = (() => {
                 };
             };
         }
-
-        // setters
-        set setTitle(value) {
-            if (value !== this.title) {
-                this.title = value;
-            };
-        }
-        set setDescription(value) {
-            if (value !== this.description) {
-                this.description = value;
-            };
-        }
-        set setDueDate(value) {
-            if (value != this.dueDate) {
-                this.dueDate = value;
-            };
-        }
-        set setPriority(value) {
-            if (value != this.priority) {
-                this.priority = value;
-            };
-        }
-        set setProjectID(value) {
-            if (value != this.projectID) {
-                this.projectID = value;
-            };
-        }
-        set setCheckboxItem(valueArray) {
-            let index = valueArray[0];
-            let content = valueArray[1];
-            if (content !== this.items[index][1]) {
-                this.items[index][1] = content;
-            };
-        }
     }
 
     // setter
     function _setInstanceValues(values) {
         let libraryReference = values[0];
-        let instanceReference = values[1];  // ! NO VALUE
+        let instanceReference = values[1];
         values.splice(0, 2);    // [title, description]
                                 // [type, title, description, dueDate, 'priority', 'projectID', [tags]]
         console.log(instanceReference);

@@ -1,6 +1,6 @@
 import events from '../events.js'
 
-// & initiates default state
+// & initiates startup state
 
 const defaultState = (() => {
     // data
@@ -12,9 +12,19 @@ const defaultState = (() => {
                             ];
 
     // methods
-    function init(loadLocalData, loadDefaultData) {
+    function startup(loadLocalData, loadDefaultData) {
         if (loadLocalData === true) {
-            // load local data
+            console.log(localStorage.length);
+            for (let i = 0; i < (localStorage.length); i++) {
+                let storageKey = localStorage.key(i);
+                console.log(storageKey);
+                let item = JSON.parse(localStorage.getItem(storageKey));
+                if (item.type === 'project') {
+                    events.publish('projectCreated', item);
+                } else if (item.type !== 'project') {
+                    events.publish('taskCreated', item);
+                };
+            };
         } else if (loadDefaultData === true) {
             _createDefaultProject(_sampleProjectValues[0]);
             for (let t = 0; t < (_sampleTaskValues.length); t++) {
@@ -36,7 +46,7 @@ const defaultState = (() => {
 
     // event subscriptions
 
-    events.subscribe('storageCheckComplete', init); // subscribed by local.js (check())
+    events.subscribe('storageCheckComplete', startup); // subscribed by local.js (check())
 
 })();
 

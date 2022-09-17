@@ -1,5 +1,7 @@
 import events from './events';
 
+// & backend manager module containing localStorage methods
+
 const storage = (() => {
     function storageAvailable(type) {
         let storage;
@@ -34,16 +36,16 @@ const storage = (() => {
                 loadLocal = false;
                 loadDefault = true;
             } else {
-                // loadLocal = true;
-                // loadDefault = false;
-                loadLocal = false;
-                loadDefault = true;
+                loadLocal = true;
+                loadDefault = false;
+                // loadLocal = false;
+                // loadDefault = true;
             };
         } else {
             // throws error per storageAvailable()
         };
 
-          events.publish('storageCheckComplete', loadLocal, loadDefault);    // subscribed by default.js
+        events.publish('storageCheckComplete', loadLocal, loadDefault);    // subscribed by default.js
     }
 
     return {
