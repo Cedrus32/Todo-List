@@ -10,7 +10,7 @@ import forms from './scripts/forms';
 import sidebar from './scripts/sidebar';
 import library from './scripts/library';
 import events from './events';
-import storage from './local';
+import storage from './storage';
 
 
 storage.check();

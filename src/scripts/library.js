@@ -15,7 +15,7 @@ const library = (() => {
     //// ! when modifying... index by key ^^^, rewrite value
     //// ! when displaying... get key:value pair, create array via ?? split string by "," ??, send to DOM with established logic
 
-    localStorage.clear();
+    // localStorage.clear();
 
     // factories
     class Project {
