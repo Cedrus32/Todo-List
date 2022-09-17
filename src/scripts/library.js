@@ -108,12 +108,11 @@ const library = (() => {
     // setter
     function _setInstanceValues(values) {
         let libraryReference = values[0];
-        let instanceReference = values[1];
+        let instanceReference = values[1];  // ! NO VALUE
         values.splice(0, 2);    // [title, description]
                                 // [type, title, description, dueDate, 'priority', 'projectID', [tags]]
-        //// console.log(libraryReference);
-        //// console.log(instanceReference);
-        //// console.log(values);
+        console.log(instanceReference);
+        console.log(values);
 
 
         switch (libraryReference) {
@@ -186,14 +185,21 @@ const library = (() => {
     }
     function _queryProjectNamesIDs() {
         let nameIDArray = [];
-        for (let p = 0; p < (_projectLibrary.length); p++) {
-            nameIDArray.push([_projectLibrary[p].title, _projectLibrary[p].id]);
+        for (let i = 0; i < localStorage.length; i++) {
+            let storageKey = localStorage.key(i);
+            let item = JSON.parse(localStorage.getItem(storageKey));
+            if (item.type === 'project') {
+                let projectTitle = JSON.parse(localStorage.getItem(storageKey)).title;
+                let projectID = JSON.parse(localStorage.getItem(storageKey)).id;
+                nameIDArray.push([projectTitle, projectID]);
+            };
         };
 
+        console.log(nameIDArray);
         events.publish('closeProjectOptionsQuery', nameIDArray) // subscribed by forms.js
     }
     function _bundleInstances(viewPreference, queryReference) { // ! reduce repetition vvv
-        let instanceBundle = [];    // & CURRENT POINT IN REFACTORING
+        let instanceBundle = [];
 
         let queryProjects = false;
         let queryTasks = false;
@@ -223,9 +229,10 @@ const library = (() => {
             for (let i = 0; i < localStorage.length; i++) {
                 let storageKey = localStorage.key(i);
                 let item = JSON.parse(localStorage.getItem(storageKey));
-                if (item.type === 'project' && item.id === queryReference) {
-                    instanceBundle.push(item);
-                } else if (item.type !== 'project' && item.projectID === queryReference) {
+                console.log(item);
+                if ((item.type === 'project') && (item.id == queryReference)) {
+                    instanceBundle.splice(1, 0, item);
+                } else if ((item.type !== 'project') && (item.projectID == queryReference)) {
                     instanceBundle.push(item);
                 };
             };
@@ -273,7 +280,7 @@ const library = (() => {
             };
         };
 
-        //// console.log(instanceBundle);
+        console.log(instanceBundle);
         events.publish('updateDisplayView', instanceBundle);    // subscribed by display.js, forms.js
     }
 
@@ -292,6 +299,7 @@ const library = (() => {
         events.publish('projectCreated', _newProject);  // subscribed by display.js, sidebar.js
     }
     function _createTask(attributeArray) {
+        console.log(attributeArray);
         let _id = _taskCounter;
         let _storageKey = `task_${_taskCounter}`;
         let _newTask = new Task(_id, ...attributeArray);

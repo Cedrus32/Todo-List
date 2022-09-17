@@ -209,6 +209,7 @@ const forms = (() => {
                 };
                 break;
             case 'task':
+                console.log(formInputs);
                 formValues.push('task');
                 for (let i = 0; i < (formInputs.length); i++) {
                     if (i === 0 || ((i > 2) && (i < 8))) {
@@ -398,7 +399,7 @@ const forms = (() => {
         formInputs = formContainer.querySelectorAll('input');
         projectIconContainers = document.querySelector('.project-icons-container').children;
     }
-    const _renderTaskForm = function(formTitle) {        
+    const _renderTaskForm = function(formTitle) {
         let fieldsetLegend = legend(formTitle, '');
 
         let typeDiv = div('', '.input-label-group');
@@ -467,7 +468,6 @@ const forms = (() => {
         divDropdowns.append(divPriority, divProject);
 
         formFieldset.append(fieldsetLegend, typeDiv, titleDiv, descriptionDiv, dueDateDiv, divDropdowns)
-        // formFieldset.append(fieldsetLegend, labelTaskType, divTypeOptions, labelTitle, inputTitle, labelDescription, inputDescription, labelDueDate, inputDueDate, divDropdowns);
 
         let projectReferenceContainer = formContainer.querySelector('input');
         projectReferenceContainer.classList.add('input');
@@ -476,6 +476,7 @@ const forms = (() => {
         events.publish('openProjectOptionsQuery', '');  // subscribed by library.js
     }
     const _renderProjectOptions = function(array) {
+        console.log(array);
         let projectDropdown = formInputs[7];
         for (let i = 0; i < (array.length); i++) {
             let projectName = array[i][0];
