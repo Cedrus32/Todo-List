@@ -475,5 +475,5 @@ const library = (() => {
     events.subscribe('clickDeleteTask', _deleteTask);    // published from display.js (_render...(task)Headers())
     events.subscribe('clickDeleteChecklistItem', _deleteChecklistItem)  // published from display.js (_renderCheckboxControls())
 
-    events.subscribe('setState', setState); // published from default.js
+    events.subscribe('setStartupState', setState); // published from default.js
 })();

@@ -13,7 +13,6 @@ const startup = (() => {
 
     // methods
     function startup(loadLocalData, loadDefaultData) {
-        events.publish('setState', '');
         if (loadLocalData === true) {
             let storageKey;
             let item;
@@ -40,6 +39,7 @@ const startup = (() => {
 
         // if localStorage NOT available, page loads blank
 
+        events.publish('setStartupState', '');
         events.publish('initializeDefaultLayout', window.innerWidth);   // subscribed by sidebar.js, display.js
     }
     function _createDefaultProject(projectValues) {

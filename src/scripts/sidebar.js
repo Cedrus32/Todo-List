@@ -175,6 +175,10 @@ const sidebar = (() => {
     }
 
     // helpers
+    function _setStartupViewPreference() {
+        _updateSelectEffect(viewAllButton);
+        _changeViewPreference('All', '');
+    }
     function _modifyViewPreferenceLink(itemInstance) {
         if (itemInstance.type === 'project') {
             let projectLink = document.getElementById(`view-project_${itemInstance.id}`);
@@ -271,6 +275,7 @@ const sidebar = (() => {
     events.subscribe('itemModified', _modifyViewPreferenceLink);   // published by library.js (_modify...())
     events.subscribe('removeProjectFromSection', _removeProjectLink);   // published by library.js (_deleteProject());
 
+    events.subscribe('setStartupState', _setStartupViewPreference);    // published by startup.js
     events.subscribe('initializeDefaultLayout', _setSidebarVisibility); // published by default.js
     events.subscribe('windowResize', _setSidebarVisibility);    // published by default.js
 
