@@ -27,23 +27,6 @@ const library = (() => {
             this.description = projectDescription;
             this.icon = projectIcon;
         }
-
-        // setters
-        set setTitle(value) {
-            if (value !== this.title) {
-                this.title = value;
-            };
-        }
-        set setDescription(value) {
-            if (value !== this.description) {
-                this.description = value;
-            };
-        }
-        set setIcon(value) {
-            if (value !== this.icon) {
-                this.icon = value;
-            };
-        }
     }
 
     class Task {
@@ -348,21 +331,30 @@ const library = (() => {
         //// console.log('original project instance:')
         //// console.log(projectInstance);
         for (let a = 0; a < (attributeArray.length); a++) {
+            let value = attributeArray[a];
             switch(a) {
                 case 0:
-                    projectInstance.setTitle = attributeArray[0];
+                    if (projectInstance.title !== value) {
+                        projectInstance.title = value;
+                    };
                     break;
                 case 1:
-                    projectInstance.setDescription = attributeArray[1];
+                    if (projectInstance.description !== value) {
+                        projectInstance.description = value;
+                    };
                     break;
                 case 2:
-                    projectInstance.setIcon = attributeArray[2];
+                    if (projectInstance.icon !== value) {
+                        projectInstance.icon = attributeArray[2];
+                    };
             };
         };
         console.log('modified project instance:')
         console.log(projectInstance);
         localStorage.setItem(storageKey, JSON.stringify(projectInstance));
         console.log(localStorage.length);
+
+        console.log(projectInstance);
 
         events.publish('itemModified', projectInstance);  // subscribed by domDisplay.js, domSidebar.js
     }
@@ -376,22 +368,33 @@ const library = (() => {
         //// console.log('original task instance:')
         //// console.log(taskInstance);
         for (let a = 1; a < (attributeArray.length); a++) {
+            let value = attributeArray[a];
             // [type, title, description, dueDate, 'priority', 'projectID']
             switch(a) {
                 case 1:
-                    taskInstance.setTitle = attributeArray[1];
+                    if (taskInstance.title !== value) {
+                        taskInstance.title = value;
+                    };
                     break;
                 case 2:
-                    taskInstance.description = attributeArray[2];
+                    if (taskInstance.title !== value) {
+                        taskInstance.description = value;  
+                    };
                     break;
                 case 3:
-                    taskInstance.setDueDate = attributeArray[3];
+                    if (taskInstance.title !== value) {
+                        taskInstance.dueDate = value;
+                    };
                     break;
                 case 4:
-                    taskInstance.setPriority = parseInt(attributeArray[4]);
+                    if (taskInstance.title !== value) {
+                        taskInstance.priority = parseInt(value);  
+                    };
                     break;
                 case 5:
-                    taskInstance.setProjectID = parseInt(attributeArray[5]);
+                    if (taskInstance.title !== value) {
+                        taskInstance.projectID = parseInt(value);  
+                    };
             };
         };
         console.log('modified task instance:')
@@ -402,13 +405,17 @@ const library = (() => {
         events.publish('itemModified', taskInstance);  // subscribed by domDisplay.js, domSidebar.js
     }
     function _modifyCheckbox(taskInstance, targetItemID, targetContent) {
+        console.log(taskInstance);
+        console.log(targetItemID);
+        console.log(targetContent);
         //// console.log(targetItemID, targetContent);
         let checkboxInstance;
         let targetChecklistItems = taskInstance.items;
         for (let i = 0; i < (targetChecklistItems.length); i++) {
             if (targetChecklistItems[i][0] == targetItemID) {
-                let targetValueArray = [i, targetContent];  // * i represents item index
-                taskInstance.setCheckboxItem = targetValueArray;
+                if (taskInstance.items[i][1] !== targetContent) {
+                    taskInstance.items[i][1] = targetContent;
+                };
                 checkboxInstance = ['checkbox', taskInstance.id, targetItemID, targetContent];
             };
         };
