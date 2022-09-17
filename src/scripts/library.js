@@ -326,10 +326,8 @@ const library = (() => {
         };
 
         itemValue[0] = newItemID;
-        let taskObject = JSON.parse(localStorage.getItem(`task_${task.id}`));
-        taskObject.items.push(itemValue);
-        console.log(taskObject);
-        localStorage.setItem(`task_${taskObject.id}`, JSON.stringify(taskObject));
+        task.items.push(itemValue);
+        localStorage.setItem(`task_${task.id}`, JSON.stringify(task));
         console.log(`ls.length (create checkbox): ${localStorage.length}`);
         let _newCheckbox = ['checkbox', task.id, task.items[checklistItemsLength][0], task.items[checklistItemsLength][1]];
         
