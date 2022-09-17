@@ -40,6 +40,7 @@ const storage = (() => {
                 loadDefault = false;
                 // loadLocal = false;
                 // loadDefault = true;
+                // localStorage.clear();
             };
         } else {
             // throws error per storageAvailable()

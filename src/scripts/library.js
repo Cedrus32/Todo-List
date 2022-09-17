@@ -4,13 +4,31 @@ import events from '../events';
 
 const library = (() => {
     // dynamic data
-    let _projectLibrary = [];
-    let _taskLibrary = [];
-    let _taskCounter = 0;
-    let _projectCounter = 0;
+    let taskCount;
+    let projectCount;
 
-    // action
-    // localStorage.clear();
+    // state methods
+    function setState() {
+        console.log(taskCount);
+        console.log(localStorage.getItem('projectCount'));
+        if (localStorage.getItem('projectCount') === null) {
+            taskCount = 0;
+            localStorage.setItem('taskCount', taskCount);
+            projectCount = 0;
+            localStorage.setItem('projectCount', projectCount);
+        } else {
+            taskCount = JSON.parse(localStorage.getItem('taskCount'));
+            projectCount = JSON.parse(localStorage.getItem('projectCount'));
+        };
+    }
+    function upProjectCount() {
+        projectCount++;
+        localStorage.setItem('projectCount', JSON.stringify(projectCount));
+    }
+    function upTaskCount() {
+        taskCount++;
+        localStorage.setItem('taskCount', JSON.stringify(taskCount));
+    }
 
     // factories
     class Project {
@@ -55,8 +73,8 @@ const library = (() => {
         let instanceReference = values[1];
         values.splice(0, 2);    // [title, description]
                                 // [type, title, description, dueDate, 'priority', 'projectID', [tags]]
-        console.log(instanceReference);
-        console.log(values);
+        // console.log(instanceReference);
+        // console.log(values);
 
 
         switch (libraryReference) {
@@ -173,7 +191,6 @@ const library = (() => {
             for (let i = 0; i < localStorage.length; i++) {
                 let storageKey = localStorage.key(i);
                 let item = JSON.parse(localStorage.getItem(storageKey));
-                console.log(item);
                 if ((item.type === 'project') && (item.id == queryReference)) {
                     instanceBundle.splice(1, 0, item);
                 } else if ((item.type !== 'project') && (item.projectID == queryReference)) {
@@ -230,29 +247,31 @@ const library = (() => {
 
     // create methods
     function _createProject(attributeArray) {
-        let _id = _projectCounter;
-        let _storageKey = `project_${_projectCounter}`;
+        let _id = projectCount;
+        let _storageKey = `project_${projectCount}`;
         let _newProject = new Project(_id, ...attributeArray);
         console.log('new project:')
-        console.log(_newProject);
+        //// console.log(_newProject);
         localStorage.setItem(_storageKey, JSON.stringify(_newProject));
         console.log(JSON.parse(localStorage.getItem(_storageKey)));
         console.log(`ls.length (create project): ${localStorage.length}`);
-        _projectCounter++;
+        // _projectCounter++;
+        upProjectCount();
 
         events.publish('projectCreated', _newProject);  // subscribed by display.js, sidebar.js
     }
     function _createTask(attributeArray) {
-        console.log(attributeArray);
-        let _id = _taskCounter;
-        let _storageKey = `task_${_taskCounter}`;
+        //// console.log(attributeArray);
+        let _id = taskCount;
+        let _storageKey = `task_${taskCount}`;
         let _newTask = new Task(_id, ...attributeArray);
         console.log('new task:')
-        console.log(_newTask);
+        // console.log(_newTask);
         localStorage.setItem(_storageKey, JSON.stringify(_newTask));
         console.log(JSON.parse(localStorage.getItem(_storageKey)));
         console.log(`ls.length (create task): ${localStorage.length}`);
-        _taskCounter++;
+        // _taskCounter++;
+        upTaskCount();
 
         events.publish('taskCreated', _newTask);    // subscribed by displayDOM.js
     }
@@ -275,8 +294,8 @@ const library = (() => {
         console.log(`ls.length (create checkbox): ${localStorage.length}`);
         let _newCheckbox = ['checkbox', task.id, task.items[checklistItemsLength][0], task.items[checklistItemsLength][1]];
         
-        console.log('new checkbox:')
-        console.log(task.items);
+        // console.log('new checkbox:')
+        // console.log(task.items);
 
         events.publish('checkboxCreated', _newCheckbox);    // subscribed by domDisplay.js
     }
@@ -310,8 +329,8 @@ const library = (() => {
                     };
             };
         };
-        console.log('modified project instance:')
-        console.log(projectInstance);
+        // console.log('modified project instance:')
+        // console.log(projectInstance);
         localStorage.setItem(storageKey, JSON.stringify(projectInstance));
         console.log(localStorage.length);
 
@@ -358,8 +377,8 @@ const library = (() => {
                     };
             };
         };
-        console.log('modified task instance:')
-        console.log(taskInstance);
+        // console.log('modified task instance:')
+        // console.log(taskInstance);
         localStorage.setItem(storageKey, JSON.stringify(taskInstance));
         console.log(localStorage.length);
 
@@ -382,8 +401,8 @@ const library = (() => {
         };
         //// console.log('original task (checkbox) instance:')
         //// console.log(taskInstance);
-        console.log('modified task (checkbox) instance:')
-        console.log(taskInstance.items);
+        // console.log('modified task (checkbox) instance:')
+        // console.log(taskInstance.items);
         localStorage.setItem(`task_${taskInstance.id}`, JSON.stringify(taskInstance));
 
         events.publish('itemModified', checkboxInstance);   // subscribed by domDisplay.js
@@ -455,4 +474,6 @@ const library = (() => {
     events.subscribe('confirmDeleteProject', _deleteProject);    // published from forms.js (confirmDeleteButton eventListener)
     events.subscribe('clickDeleteTask', _deleteTask);    // published from display.js (_render...(task)Headers())
     events.subscribe('clickDeleteChecklistItem', _deleteChecklistItem)  // published from display.js (_renderCheckboxControls())
+
+    events.subscribe('setState', setState); // published from default.js
 })();

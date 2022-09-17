@@ -237,7 +237,6 @@ const display = (() => {
         };
     }
     const _renderTask = function(task) {
-        console.log(task);
         let cardID = 'task_' + task.id;
         let taskCard;
 

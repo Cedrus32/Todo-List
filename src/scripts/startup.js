@@ -2,7 +2,7 @@ import events from '../events.js'
 
 // & initiates startup state
 
-const defaultState = (() => {
+const startup = (() => {
     // data
     let _sampleProjectValues = [['project', '', 'Unsorted', "This is your tasks' default location. Any tasks without a project live here.", '00'],
                                ];
@@ -13,18 +13,24 @@ const defaultState = (() => {
 
     // methods
     function startup(loadLocalData, loadDefaultData) {
+        events.publish('setState', '');
         if (loadLocalData === true) {
-            console.log(localStorage.length);
+            let storageKey;
+            let item;
             for (let i = 0; i < (localStorage.length); i++) {
-                let storageKey = localStorage.key(i);
-                console.log(storageKey);
-                let item = JSON.parse(localStorage.getItem(storageKey));
+                storageKey = localStorage.key(i);
+                item = JSON.parse(localStorage.getItem(storageKey));
                 if (item.type === 'project') {
                     events.publish('projectCreated', item);
-                } else if (item.type !== 'project') {
-                    events.publish('taskCreated', item);
                 };
             };
+            for (let i = 0; i < (localStorage.length); i++) {
+                storageKey = localStorage.key(i);
+                item = JSON.parse(localStorage.getItem(storageKey));
+                if ((item.type !== 'project') && (item.projectID === 0)) {
+                    events.publish('taskCreated', item);
+                };
+            }
         } else if (loadDefaultData === true) {
             _createDefaultProject(_sampleProjectValues[0]);
             for (let t = 0; t < (_sampleTaskValues.length); t++) {
@@ -50,4 +56,4 @@ const defaultState = (() => {
 
 })();
 
-export default defaultState;
+export default startup;
