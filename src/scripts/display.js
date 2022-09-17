@@ -254,6 +254,9 @@ const display = (() => {
                 taskCard.append(checklistCardContent, checklistItems);
         };
 
+        console.log(task);
+        console.log(taskContainer);
+        console.log(taskCard);
         taskContainer.appendChild(taskCard);
 
         _fillTaskCounter('+');

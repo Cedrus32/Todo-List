@@ -203,7 +203,7 @@ const library = (() => {
                     for (let i = 0; i < localStorage.length; i++) {
                         let storageKey = localStorage.key(i);
                         let item = JSON.parse(localStorage.getItem(storageKey));
-                        if (item.type !== 'project') {
+                        if (item.type === 'singleton' || item.type === 'checklist') {
                             instanceBundle.push(item);
                         };
                     };
@@ -212,7 +212,7 @@ const library = (() => {
                     for (let i = 0; i < localStorage.length; i++) {
                         let storageKey = localStorage.key(i);
                         let item = JSON.parse(localStorage.getItem(storageKey));
-                        if (item.type !== 'project' && item.dueDate === queryReference) {
+                        if ((item.type === 'singleton' || item.type === 'checklist') && item.dueDate === queryReference) {
                             instanceBundle.push(item);
                         };
                     };
@@ -221,7 +221,7 @@ const library = (() => {
                     for (let i = 0; i < localStorage.length; i++) {
                         let storageKey = localStorage.key(i);
                         let item = JSON.parse(localStorage.getItem(storageKey));
-                        if (item.type !== 'project') {
+                        if (item.type === 'singleton' || item.type === 'checklist') {
                             for (let j = 0; j < (queryReference.length); j++) {
                                 if (item.dueDate === queryReference[j]) {
                                     instanceBundle.push(item);
@@ -234,7 +234,7 @@ const library = (() => {
                     for (let i = 0; i < localStorage.length; i++) {
                         let storageKey = localStorage.key(i);
                         let item = JSON.parse(localStorage.getItem(storageKey));
-                        if (item.type !== 'project' && item.dueDate === queryReference) {
+                        if ((item.type === 'singleton' || item.type === 'checklist') && item.dueDate === queryReference) {
                             instanceBundle.push(item);
                         };
                     };
