@@ -13,7 +13,7 @@ const sidebar = (() => {
     let viewTodayButton = document.getElementById('view-today');
     let viewUpcomingButton = document.getElementById('view-upcoming');
     let viewAnytimeButton = document.getElementById('view-anytime');
-    let viewUnsortedButton = document.getElementById('view-project_0');
+    // let viewUnsortedButton = document.getElementById('view-project_0');
     let projectsList = document.getElementById('dynamic-views');
     let createProjectButton = document.querySelector('#dynamic-views .create');
 
@@ -198,14 +198,14 @@ const sidebar = (() => {
         ulContainer.removeChild(liProject);
 
         switch (true) {
-            case (ulContainer.children.length > 1):
+            case (ulContainer.childElementCount < 1):
                 _changeViewPreference('project', ulContainer.lastChild.id);
                 _updateSelectEffect(ulContainer.lastChild);
                 break;
-            default:
-                _changeViewPreference('project', 'project_0');
-                _updateSelectEffect(viewUnsortedButton);
-        };
+            case (ulContainer.childElementCount === 1):
+                _changeViewPreference('All', '');
+                _updateSelectEffect(viewAllButton);
+        }
     }
     function _getTodayDate() {
         let rawDate = new Date();
@@ -275,7 +275,7 @@ const sidebar = (() => {
     events.subscribe('itemModified', _modifyViewPreferenceLink);   // published by library.js (_modify...())
     events.subscribe('removeProjectFromSection', _removeProjectLink);   // published by library.js (_deleteProject());
 
-    events.subscribe('setStartupState', _setStartupViewPreference);    // published by startup.js
+    events.subscribe('setStartupView', _setStartupViewPreference);    // published by startup.js
     events.subscribe('initializeDefaultLayout', _setSidebarVisibility); // published by default.js
     events.subscribe('windowResize', _setSidebarVisibility);    // published by default.js
 

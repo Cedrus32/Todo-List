@@ -4,32 +4,29 @@ import events from '../events.js'
 
 const startup = (() => {
     // data
-    let _sampleProjectValues = [['project', '', 'Unsorted', "This is your tasks' default location. Any tasks without a project live here.", '00'],
+    let _sampleProjectValues = [['project', '', 'Errands', '', '08'],
                                ];
-    let _sampleTaskValues = [['task', '', 'singleton', 'Task 1', 'this is a sample task', '2001-01-01', 3, 0],
-                             ['task', '', 'singleton', 'Task 2', 'this is #2', '2002-02-02', 2, 0],
-                             ['task', '', 'checklist', 'Task 3', 'this is a checklist', '2003-03-03', 1, 0, ['item 1', 'item 2', 'item 3']],
+    let _sampleTaskValues = [['task', '', 'singleton', 'return jeans', '!! remember receipt', '', 1, 0],
+                             ['task', '', 'singleton', 'pick up package @ post office', '', '', 2, 0],
+                             ['task', '', 'checklist', 'groceries', '', '', 0, 0, ['milk', 'coffee', 'pasta', 'spaghetti sauce', 'lettuce', 'salad dressing']],
                             ];
 
     // methods
     function startup(loadLocalData, loadDefaultData) {
+        events.publish('setStartupState', '');
+        
         if (loadLocalData === true) {
             let storageKey;
             let item;
             for (let i = 0; i < (localStorage.length); i++) {
                 storageKey = localStorage.key(i);
                 item = JSON.parse(localStorage.getItem(storageKey));
+                console.log(storageKey);
+                console.log(item);
                 if (item.type === 'project') {
-                    events.publish('projectCreated', item);
+                    events.publish('projectCreated', item); // subscribed by sidebar.js, display.js
                 };
             };
-            for (let i = 0; i < (localStorage.length); i++) {
-                storageKey = localStorage.key(i);
-                item = JSON.parse(localStorage.getItem(storageKey));
-                if ((item.type !== 'project') && (item.projectID === 0)) {
-                    events.publish('taskCreated', item);
-                };
-            }
         } else if (loadDefaultData === true) {
             _createDefaultProject(_sampleProjectValues[0]);
             for (let t = 0; t < (_sampleTaskValues.length); t++) {
@@ -39,7 +36,7 @@ const startup = (() => {
 
         // if localStorage NOT available, page loads blank
 
-        events.publish('setStartupState', '');
+        events.publish('setStartupView', '');  // subscribed by sidebar.js
         events.publish('initializeDefaultLayout', window.innerWidth);   // subscribed by sidebar.js, display.js
     }
     function _createDefaultProject(projectValues) {

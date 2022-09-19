@@ -30,17 +30,17 @@ const storage = (() => {
     function check() {
         let loadLocal;
         let loadDefault;
+        // localStorage.clear();
         if (storageAvailable('localStorage')) {
-            console.log(localStorage.length);
-            if (localStorage.length === undefined) {
+            console.log(localStorage.getItem('previousLoad'));
+            if (localStorage.getItem('previousLoad') === null) {
+                localStorage.setItem('previousLoad', 'true');
                 loadLocal = false;
                 loadDefault = true;
             } else {
+                console.log(`localStorage.length: ${localStorage.length}`);
                 loadLocal = true;
                 loadDefault = false;
-                // loadLocal = false;
-                // loadDefault = true;
-                // localStorage.clear();
             };
         } else {
             // throws error per storageAvailable()

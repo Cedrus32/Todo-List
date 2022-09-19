@@ -9,7 +9,7 @@ const library = (() => {
 
     // state methods
     function setState() {
-        console.log(taskCount);
+        console.log(projectCount);
         console.log(localStorage.getItem('projectCount'));
         if (localStorage.getItem('projectCount') === null) {
             taskCount = 0;
@@ -427,8 +427,8 @@ const library = (() => {
         };
 
         console.log('project delete results:')
-        console.log(_projectLibrary);
-        console.log(_taskLibrary);
+        // console.log(_projectLibrary);
+        // console.log(_taskLibrary);
 
         events.publish('removeProjectFromSection', cardID);    // subscribed by display.js, sidebar.js
     }
@@ -439,7 +439,7 @@ const library = (() => {
         localStorage.removeItem(cardID);
 
         console.log('task delete results:')
-        console.log(_taskLibrary);
+        // console.log(_taskLibrary);
 
         events.publish('removeTaskFromDisplay', cardID);    // subscribed by domDisplay.js
     }
