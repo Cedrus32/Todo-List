@@ -365,8 +365,7 @@ const display = (() => {
         _renderCheckbox(ulTarget, taskCardID, [checkReference, checkContent]);
     }
 
-
-
+    
     // event subscriptions
 
     events.subscribe('updateDisplayView', _updateDisplay);  // published from library.js (_bundleInstances())

@@ -13,18 +13,21 @@ const startup = (() => {
 
     // methods
     function startup(loadLocalData, loadDefaultData) {
-        events.publish('setStartupState', '');
+        events.publish('setCountersOnPageLoad', '');  // subscribed by library.js, 
         
         if (loadLocalData === true) {
+            console.log('loading localStorage ...')
             let storageKey;
             let item;
             for (let i = 0; i < (localStorage.length); i++) {
                 storageKey = localStorage.key(i);
                 item = JSON.parse(localStorage.getItem(storageKey));
-                console.log(storageKey);
+                console.log(`storageKey: ${storageKey}`);
+                console.log('storageValue (item):');
                 console.log(item);
                 if (item.type === 'project') {
                     events.publish('projectCreated', item); // subscribed by sidebar.js, display.js
+                    // * tasks rendered via 'setStartupView' event vvv
                 };
             };
         } else if (loadDefaultData === true) {

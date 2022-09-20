@@ -8,9 +8,8 @@ const library = (() => {
     let projectCount;
 
     // state methods
-    function setState() {
-        console.log(projectCount);
-        console.log(localStorage.getItem('projectCount'));
+    function setCounters() {
+        console.log(`project counter (for ID & state check): ${localStorage.getItem('projectCount')}`)
         if (localStorage.getItem('projectCount') === null) {
             taskCount = 0;
             localStorage.setItem('taskCount', taskCount);
@@ -151,13 +150,12 @@ const library = (() => {
             let storageKey = localStorage.key(i);
             let item = JSON.parse(localStorage.getItem(storageKey));
             if (item.type === 'project') {
-                let projectTitle = JSON.parse(localStorage.getItem(storageKey)).title;
-                let projectID = JSON.parse(localStorage.getItem(storageKey)).id;
+                let projectTitle = item.title;
+                let projectID = item.id;
                 nameIDArray.push([projectTitle, projectID]);
             };
         };
 
-        console.log(nameIDArray);
         events.publish('closeProjectOptionsQuery', nameIDArray) // subscribed by forms.js
     }
     function _bundleInstances(viewPreference, queryReference) { // ! reduce repetition vvv
@@ -475,5 +473,5 @@ const library = (() => {
     events.subscribe('clickDeleteTask', _deleteTask);    // published from display.js (_render...(task)Headers())
     events.subscribe('clickDeleteChecklistItem', _deleteChecklistItem)  // published from display.js (_renderCheckboxControls())
 
-    events.subscribe('setStartupState', setState); // published from default.js
+    events.subscribe('setCountersOnPageLoad', setCounters); // published from default.js
 })();
