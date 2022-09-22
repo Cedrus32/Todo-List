@@ -156,6 +156,8 @@ const library = (() => {
             };
         };
 
+        // ** sort nameIDArray by projectID
+
         events.publish('closeProjectOptionsQuery', nameIDArray) // subscribed by forms.js
     }
     function _bundleInstances(viewPreference, queryReference) { // ! reduce repetition vvv
@@ -195,30 +197,23 @@ const library = (() => {
                     instanceBundle.push(item);
                 };
             };
-        } else if (queryTasks === true) {   // ! reduce repetition
-            switch (viewPreference) {
-                case 'All':
-                    for (let i = 0; i < localStorage.length; i++) {
-                        let storageKey = localStorage.key(i);
-                        let item = JSON.parse(localStorage.getItem(storageKey));
+        } else if (queryTasks === true) {
+            for (let i = 0; i < localStorage.length; i++) {
+                let storageKey = localStorage.key(i);
+                let item = JSON.parse(localStorage.getItem(storageKey));
+
+                switch (viewPreference) {
+                    case 'All':
                         if (item.type === 'singleton' || item.type === 'checklist') {
                             instanceBundle.push(item);
                         };
-                    };
-                    break;
-                case 'Today':
-                    for (let i = 0; i < localStorage.length; i++) {
-                        let storageKey = localStorage.key(i);
-                        let item = JSON.parse(localStorage.getItem(storageKey));
+                        break;
+                    case 'Today':
                         if ((item.type === 'singleton' || item.type === 'checklist') && item.dueDate === queryReference) {
                             instanceBundle.push(item);
                         };
-                    };
-                    break;
-                case 'Upcoming':
-                    for (let i = 0; i < localStorage.length; i++) {
-                        let storageKey = localStorage.key(i);
-                        let item = JSON.parse(localStorage.getItem(storageKey));
+                        break;
+                    case 'Upcoming':
                         if (item.type === 'singleton' || item.type === 'checklist') {
                             for (let j = 0; j < (queryReference.length); j++) {
                                 if (item.dueDate === queryReference[j]) {
@@ -226,21 +221,96 @@ const library = (() => {
                                 };
                             };
                         };
-                    };
-                    break;
-                case 'Anytime':
-                    for (let i = 0; i < localStorage.length; i++) {
-                        let storageKey = localStorage.key(i);
-                        let item = JSON.parse(localStorage.getItem(storageKey));
+                        break;
+                    case 'Anytime':
                         if ((item.type === 'singleton' || item.type === 'checklist') && item.dueDate === queryReference) {
                             instanceBundle.push(item);
                         };
-                    };
+                };
             };
         };
 
-        console.log(instanceBundle);
-        events.publish('updateDisplayView', instanceBundle);    // subscribed by display.js, forms.js
+        let sortedBundle = _sortBundle(instanceBundle);
+        console.log(sortedBundle);
+
+        events.publish('updateDisplayView', sortedBundle);    // subscribed by display.js, forms.js
+    }
+
+    // sort methods
+    function _sortBundle(array) {
+        let sortPreference = array[0];
+        switch (sortPreference) {
+            case 'project':
+                _sortTaskIDs(array, sortPreference);
+                break;
+            default:
+                // _sortProjectIDs(array);
+                _sortTaskIDs(array, sortPreference)
+        };
+
+        return array;
+    }
+
+    // ! ?? HOW TO ORGANIZE SORTING FUNCTIONALITY FOR VIEW PREFS & PROJECTS ??
+
+                    // ! PROJECTS ONLY NEED TO SORT BY TASK ID
+
+                    // ! OTHER VIEW PREFS NEED TO SORT BY PROJECT -> TASK ID
+                    // ! EACH VIEW PREF LOOKS AT DIFFERENT PARAMETER TO DECIDE WHETHER TO SORT
+                    // !        ... ALL -- NO SPECIFIC REFERENCE, SORT BY PROJ -> TASK ID
+                    // !        ... TODAY -- ALREADY FILTERED IN QUERY BUNDLE, SORT BY PROJ -> TASK ID
+                    // !        ... UPCOMING -- SORT BY CLOSEST-to-FURTHEST DATE -> PROJ -> TASK ID
+                    // !        ... ANYTIME -- ALREADY FILTERED IN QUERY BUNDLE, SORT BY PROJ -> TASK ID
+
+    function _sortProjectIDs(array) {
+        // ! sort array items by project ID (unneeded for project view)
+    }
+    function _sortTaskIDs(array, sortPreference) {
+        // ! sort array items by task ID within the project grouping
+        console.log(array);
+
+        let sortingArray = true;
+
+        while (sortingArray === true) {
+            sortingArray = false;
+
+            let shouldSortItem = true;
+            let sortPreference = array[0];
+            let currentItem;
+            let nextItem;
+
+            for (let i = 1; i < array.length - 1; i++) {
+                shouldSortItem = false;
+                currentItem = array[i];
+                nextItem = array[i + 1];
+
+                // switch (sortReference) {
+                //     case 'All':
+                //         // ...
+                //         break;
+                // }
+
+                console.log(`index... ${i}`);
+                console.log('currentItem...');
+                console.log(currentItem);
+                console.log('nextItem...');
+                console.log(nextItem);
+
+                if (parseInt(currentItem.id) > parseInt(nextItem.id)) {
+                    shouldSortItem = true;
+                    array.splice(i + 1, 1); // at next index, remove 1 item
+                    array.splice(i, 0, nextItem);   // at current index, add 1 item
+                    sortingArray = true;
+                    break;
+                };
+            };
+        };
+
+        console.log(array); // ! sorting correctly...
+        return array;   // ! ...but not returning the array
+    }
+    function _sortDueDates(array) {
+        // ! sort array items by due date (closest to furthest)
     }
 
     // create methods

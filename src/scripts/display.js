@@ -35,6 +35,7 @@ const display = (() => {
         };
     }
     function _updateDisplay(instanceBundle) {
+        console.log(instanceBundle);
         let viewPreference = instanceBundle[0];
         let viewPreferenceHeaderCard;
 
@@ -365,7 +366,7 @@ const display = (() => {
         _renderCheckbox(ulTarget, taskCardID, [checkReference, checkContent]);
     }
 
-    
+
     // event subscriptions
 
     events.subscribe('updateDisplayView', _updateDisplay);  // published from library.js (_bundleInstances())
