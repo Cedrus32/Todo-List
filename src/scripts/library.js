@@ -16,17 +16,17 @@ const library = (() => {
             projectCount = 0;
             localStorage.setItem('projectCount', projectCount);
         } else {
-            taskCount = JSON.parse(localStorage.getItem('taskCount'));
-            projectCount = JSON.parse(localStorage.getItem('projectCount'));
+            taskCount = parseInt(JSON.parse(localStorage.getItem('taskCount')));
+            projectCount = parseInt(JSON.parse(localStorage.getItem('projectCount')));
         };
     }
     function upProjectCount() {
         projectCount++;
-        localStorage.setItem('projectCount', JSON.stringify(projectCount));
+        localStorage.setItem('projectCount', projectCount);
     }
     function upTaskCount() {
         taskCount++;
-        localStorage.setItem('taskCount', JSON.stringify(taskCount));
+        localStorage.setItem('taskCount', taskCount);
     }
 
     // factories
@@ -231,9 +231,9 @@ const library = (() => {
         };
 
         let sortedBundle = _sortBundle(instanceBundle);
-        console.log(sortedBundle);
 
-        events.publish('updateDisplayView', sortedBundle);    // subscribed by display.js, forms.js
+        events.publish('updateDisplayView', sortedBundle);    // subscribed by display.js
+        events.publish('setCurrentProject', sortedBundle[1]);    // subscribed by forms.js
     }
 
     // sort methods
@@ -241,6 +241,10 @@ const library = (() => {
         let sortPreference = array[0];
         switch (sortPreference) {
             case 'project':
+                _sortTaskIDs(array, sortPreference);
+                break;
+            case 'Upcoming':
+                _sortDueDates(array, sortPreference);
                 _sortTaskIDs(array, sortPreference);
                 break;
             default:
@@ -262,6 +266,8 @@ const library = (() => {
                     // !        ... UPCOMING -- SORT BY CLOSEST-to-FURTHEST DATE -> PROJ -> TASK ID
                     // !        ... ANYTIME -- ALREADY FILTERED IN QUERY BUNDLE, SORT BY PROJ -> TASK ID
 
+    // ! new tasks on earlier projects are assigned newest project ID
+
     function _sortProjectIDs(array) {
         // ! sort array items by project ID (unneeded for project view)
     }
@@ -279,35 +285,42 @@ const library = (() => {
             let currentItem;
             let nextItem;
 
+            
             for (let i = 1; i < array.length - 1; i++) {
-                shouldSortItem = false;
-                currentItem = array[i];
-                nextItem = array[i + 1];
+                let currentItem = array[i];
+                if (currentItem.type === 'project' && i !== 1) {
+                    let projectItem = array[i];
+                    array.splice(i, 1); // at current index, remove 1 item
+                    array.splice(1, 0, projectItem);    // at index 1, add 1 item
+                } else if (currentItem.type === 'singleton' || currentItem.type === 'checklist') {
+                    shouldSortItem = false;
+                    nextItem = array[i + 1];
 
-                // switch (sortReference) {
-                //     case 'All':
-                //         // ...
-                //         break;
-                // }
+                    // switch (sortPreference) {
+                    //     case 'All':
+                    //         // ...
+                    //         break;
+                    // };
 
-                console.log(`index... ${i}`);
-                console.log('currentItem...');
-                console.log(currentItem);
-                console.log('nextItem...');
-                console.log(nextItem);
+                    console.log(`index... ${i}`);
+                    console.log('currentItem...');
+                    console.log(currentItem);
+                    console.log('nextItem...');
+                    console.log(nextItem);
 
-                if (parseInt(currentItem.id) > parseInt(nextItem.id)) {
-                    shouldSortItem = true;
-                    array.splice(i + 1, 1); // at next index, remove 1 item
-                    array.splice(i, 0, nextItem);   // at current index, add 1 item
-                    sortingArray = true;
-                    break;
+                    if (parseInt(currentItem.id) > parseInt(nextItem.id)) {
+                        shouldSortItem = true;
+                        array.splice(i + 1, 1); // at next index, remove 1 item
+                        array.splice(i, 0, nextItem);   // at current index, add 1 item
+                        sortingArray = true;
+                        break;
+                    };
                 };
             };
         };
 
-        console.log(array); // ! sorting correctly...
-        return array;   // ! ...but not returning the array
+        console.log(array);
+        return array;
     }
     function _sortDueDates(array) {
         // ! sort array items by due date (closest to furthest)

@@ -115,6 +115,7 @@ const forms = (() => {
 
     // helper methods  
     function _setFormReferences(formReference) {
+        console.log(formReference);
         switch (formReference) {
             case 'project':
                 formContainer.id = 'project-form'
@@ -135,7 +136,6 @@ const forms = (() => {
     }
     function _setCurrentProject(project) {
         //// console.log(project.id)
-        //// console.log(project[1]);
 
         if (project.id !== undefined) {
             _currentProject = project.id;
@@ -476,14 +476,13 @@ const forms = (() => {
         events.publish('openProjectOptionsQuery', '');  // subscribed by library.js
     }
     const _renderProjectOptions = function(array) {
-        console.log(array);
         let projectDropdown = formInputs[7];
         for (let i = 0; i < (array.length); i++) {
             let projectName = array[i][0];
             let projectID = array[i][1];
             let optionProject = option(projectID, projectName);
 
-            if (_currentProject === projectID) {
+            if (_currentProject == projectID) {
                 optionProject.selected = true;
             };
 
@@ -526,7 +525,7 @@ const forms = (() => {
     events.subscribe('closeModifyInstanceQuery', _openModifyForm);  // publishing from library.js (_queryItemInstance());
 
     events.subscribe('projectCreated', _setCurrentProject); // published from library.js (_createProject())
-    events.subscribe('updateDisplayView', _setCurrentProject) // published from library.js (_bundleInstances())
+    events.subscribe('setCurrentProject', _setCurrentProject) // published from library.js (_bundleInstances())
     events.subscribe('closeProjectOptionsQuery', _renderProjectOptions);  // publishing from library.js (_queryProjectNameID())
 
     events.subscribe('clickDeleteProject', _showDeleteProjectConfirmation);    // published from display.js (_renderProjectHeader())
