@@ -17,19 +17,7 @@ const startup = (() => {
         
         if (loadLocalData === true) {
             console.log('loading localStorage ...')
-            let storageKey;
-            let item;
-            for (let i = 0; i < (localStorage.length); i++) {
-                storageKey = localStorage.key(i);
-                item = JSON.parse(localStorage.getItem(storageKey));
-                console.log(`storageKey: ${storageKey}`);
-                console.log('storageValue (item):');
-                console.log(item);
-                if (item.type === 'project') {
-                    events.publish('projectCreated', item); // subscribed by sidebar.js, display.js
-                    // * tasks rendered via 'setStartupView' event vvv
-                };
-            };
+            events.publish('openGetLocalDataQuery', '');
         } else if (loadDefaultData === true) {
             _createDefaultProject(_sampleProjectValues[0]);
             for (let t = 0; t < (_sampleTaskValues.length); t++) {
@@ -39,8 +27,17 @@ const startup = (() => {
 
         // if localStorage NOT available, page loads blank
 
-        events.publish('setStartupView', '');  // subscribed by sidebar.js
         events.publish('initializeDefaultLayout', window.innerWidth);   // subscribed by sidebar.js, display.js
+    }
+    function _loadLocalData(array) {
+        for (let i = 0; i < (array.length); i++) {
+            let item = array[i];
+            console.log(item);
+            events.publish('projectCreated', item); // subscribed by sidebar.js, display.js
+            // * tasks rendered via 'setStartupView' event vvv
+        };
+
+        events.publish('setStartupView', '');  // subscribed by sidebar.js
     }
     function _createDefaultProject(projectValues) {
         events.publish('confirmInput', projectValues); // subscribed by library.js
@@ -52,7 +49,8 @@ const startup = (() => {
 
     // event subscriptions
 
-    events.subscribe('storageCheckComplete', startup); // subscribed by local.js (check())
+    events.subscribe('storageCheckComplete', startup); // published by local.js (check())
+    events.subscribe('closeGetStartupDataQuery', _loadLocalData); // published by library.js (...)
 
 })();
 

@@ -112,6 +112,20 @@ const library = (() => {
     }
 
     // getters
+    function _bundleStartupData() {
+        let instanceBundle = [];
+        for (let i = 0; i < localStorage.length; i++) {
+            let storageKey = localStorage.key(i);
+            let item = JSON.parse(localStorage.getItem(storageKey));
+            if (item.type === 'project') {
+                instanceBundle.push(item);
+            };
+        };
+
+        let sortedBundle = _sortProjectIDs(instanceBundle);
+        console.log(sortedBundle);
+        events.publish('closeGetStartupDataQuery', sortedBundle); // subscribed by startup.js
+    }
     function _queryItemInstance(itemReferences) {
         let libraryReference = itemReferences[0];
         let instanceReference = itemReferences[1];
@@ -191,6 +205,7 @@ const library = (() => {
             for (let i = 0; i < localStorage.length; i++) {
                 let storageKey = localStorage.key(i);
                 let item = JSON.parse(localStorage.getItem(storageKey));
+
                 if ((item.type === 'project') && (item.id == queryReference)) {
                     instanceBundle.splice(1, 0, item);
                 } else if ((item.type !== 'project') && (item.projectID == queryReference)) {
@@ -270,6 +285,34 @@ const library = (() => {
 
     function _sortProjectIDs(array) {
         // ! sort array items by project ID (unneeded for project view)
+        let sortingArray = true;
+
+        while (sortingArray === true) {
+            sortingArray = false;
+
+            let currentItem;
+            let nextItem;
+
+            for (let i = 0; i < array.length - 1; i++) {
+                currentItem = array[i];
+                nextItem = array[i + 1];
+
+                if (parseInt(currentItem.id) > parseInt(nextItem.id)) {
+                    console.log(`index... ${i}`);
+                    console.log('currentItem...');
+                    console.log(currentItem);
+                    console.log('nextItem...');
+                    console.log(nextItem);
+
+                    array.splice(i + 1, 1); // at next index, remove 1 item
+                    array.splice(i, 0, nextItem);   // at current index, add 1 item
+                    sortingArray = true;
+                    break;
+                };
+            };
+        };
+
+        return array;
     }
     function _sortTaskIDs(array, sortPreference) {
         // ! sort array items by task ID within the project grouping
@@ -287,7 +330,7 @@ const library = (() => {
 
             
             for (let i = 1; i < array.length - 1; i++) {
-                let currentItem = array[i];
+                currentItem = array[i];
                 if (currentItem.type === 'project' && i !== 1) {
                     let projectItem = array[i];
                     array.splice(i, 1); // at current index, remove 1 item
@@ -552,5 +595,6 @@ const library = (() => {
     events.subscribe('clickDeleteTask', _deleteTask);    // published from display.js (_render...(task)Headers())
     events.subscribe('clickDeleteChecklistItem', _deleteChecklistItem)  // published from display.js (_renderCheckboxControls())
 
-    events.subscribe('setCountersOnPageLoad', setCounters); // published from default.js
+    events.subscribe('setCountersOnPageLoad', setCounters); // published from startup.js
+    events.subscribe('openGetLocalDataQuery', _bundleStartupData);    // published from startup.js
 })();
