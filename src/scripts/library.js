@@ -507,10 +507,6 @@ const library = (() => {
             };
         };
 
-        console.log('project delete results:')
-        // console.log(_projectLibrary);
-        // console.log(_taskLibrary);
-
         events.publish('removeProjectFromSection', cardID);    // subscribed by display.js, sidebar.js
     }
     function _deleteTask(cardID) {

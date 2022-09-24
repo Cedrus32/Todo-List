@@ -39,7 +39,7 @@ const display = (() => {
         let viewPreference = instanceBundle[0];
         let viewPreferenceHeaderCard;
 
-        switch (viewPreference) {   // ! reduce repetition
+        switch (viewPreference) {
             case 'project':
                 for (let i = 1; i < (instanceBundle.length); i++) {
                     switch (i) {

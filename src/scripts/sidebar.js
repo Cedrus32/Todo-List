@@ -191,21 +191,35 @@ const sidebar = (() => {
     }
     function _removeProjectLink(projectCardID) {
         let linkReference = projectCardID.split('_')[1];
-
         let liProject = document.getElementById(`view-project_${linkReference}`);
         let ulContainer = liProject.parentElement;
 
-        ulContainer.removeChild(liProject);
-
+        let selectDirection;
         switch (true) {
-            case (ulContainer.childElementCount < 1):
-                _changeViewPreference('project', ulContainer.lastChild.id);
-                _updateSelectEffect(ulContainer.lastChild);
+            case (liProject === ulContainer.children[1]):
+                selectDirection = 'next';
+                break;
+            default:
+                selectDirection = 'previous';
+        };
+
+        ulContainer.removeChild(liProject);
+        switch (true) {
+            case (ulContainer.childElementCount > 1):
+                switch (selectDirection) {
+                    case 'previous':
+                        _changeViewPreference('project', ulContainer.lastChild.id);
+                        _updateSelectEffect(ulContainer.lastChild);
+                        break;
+                    default:
+                        _changeViewPreference('project', ulContainer.children[1].id);
+                        _updateSelectEffect(ulContainer.children[1]);
+                };
                 break;
             case (ulContainer.childElementCount === 1):
                 _changeViewPreference('All', '');
                 _updateSelectEffect(viewAllButton);
-        }
+        };
     }
     function _getTodayDate() {
         let rawDate = new Date();

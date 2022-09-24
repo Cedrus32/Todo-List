@@ -136,8 +136,7 @@ const forms = (() => {
     }
     function _setCurrentProject(project) {
         //// console.log(project.id)
-
-        if (project.id !== undefined) {
+        if (project !== undefined) {
             _currentProject = project.id;
         };
     }
