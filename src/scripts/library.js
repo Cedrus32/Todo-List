@@ -122,7 +122,7 @@ const library = (() => {
             };
         };
 
-        let sortedBundle = _sortProjectIDs(instanceBundle);
+        let sortedBundle = _sortStartupProjects(instanceBundle);
         console.log(sortedBundle);
         events.publish('closeGetStartupDataQuery', sortedBundle); // subscribed by startup.js
     }
@@ -245,29 +245,28 @@ const library = (() => {
             };
         };
 
-        let sortedBundle = _sortBundle(instanceBundle);
+        let sortedBundle = _sortSwitch(instanceBundle);
 
         events.publish('updateDisplayView', sortedBundle);    // subscribed by display.js
         events.publish('setCurrentProject', sortedBundle[1]);    // subscribed by forms.js
     }
 
     // sort methods
-    function _sortBundle(array) {
+    function _sortSwitch(array) {
         let sortPreference = array[0];
+        let sortedArray;
         switch (sortPreference) {
-            case 'project':
-                _sortTaskIDs(array, sortPreference);
-                break;
             case 'Upcoming':
-                _sortDueDates(array, sortPreference);
-                _sortTaskIDs(array, sortPreference);
+                sortedArray = _sortByDueDate(array);
+                break;
+            case 'project':
+                sortedArray = _sortByTaskID(array);
                 break;
             default:
-                // _sortProjectIDs(array);
-                _sortTaskIDs(array, sortPreference)
+                sortedArray = _sortByProjectID(array);
         };
 
-        return array;
+        return sortedArray;
     }
 
     // ! ?? HOW TO ORGANIZE SORTING FUNCTIONALITY FOR VIEW PREFS & PROJECTS ??
@@ -281,10 +280,7 @@ const library = (() => {
                     // !        ... UPCOMING -- SORT BY CLOSEST-to-FURTHEST DATE -> PROJ -> TASK ID
                     // !        ... ANYTIME -- ALREADY FILTERED IN QUERY BUNDLE, SORT BY PROJ -> TASK ID
 
-    // ! new tasks on earlier projects are assigned newest project ID
-
-    function _sortProjectIDs(array) {
-        // ! sort array items by project ID (unneeded for project view)
+    function _sortStartupProjects(array) {
         let sortingArray = true;
 
         while (sortingArray === true) {
@@ -314,59 +310,145 @@ const library = (() => {
 
         return array;
     }
-    function _sortTaskIDs(array, sortPreference) {
-        // ! sort array items by task ID within the project grouping
+    function _sortByProjectID(array) {
+        // initialize & populate groups
+        let groupedTasks = [];
+        for (let i = 1; i < array.length; i++) {
+            let item = array[i];
+            let idKey = String(item.projectID);
+            if (!groupedTasks[idKey]) {
+                groupedTasks[idKey] = [];
+            };
+            groupedTasks[idKey].push(item);
+        };
+        array = [array[0]];
+        console.log(groupedTasks);
         console.log(array);
 
-        let sortingArray = true;
+        // sort groups
+        let sortingGroups = true;
+        while (sortingGroups === true) {
+            sortingGroups = false;
 
-        while (sortingArray === true) {
-            sortingArray = false;
+            for (let i = 0; i < groupedTasks.length - 1; i++) {
+                let currentGroup = groupedTasks[i];
+                let nextGroup = groupedTasks[i + 1];
 
-            let shouldSortItem = true;
-            let sortPreference = array[0];
-            let currentItem;
-            let nextItem;
-
-            
-            for (let i = 1; i < array.length - 1; i++) {
-                currentItem = array[i];
-                if (currentItem.type === 'project' && i !== 1) {
-                    let projectItem = array[i];
-                    array.splice(i, 1); // at current index, remove 1 item
-                    array.splice(1, 0, projectItem);    // at index 1, add 1 item
-                } else if (currentItem.type === 'singleton' || currentItem.type === 'checklist') {
-                    shouldSortItem = false;
-                    nextItem = array[i + 1];
-
-                    // switch (sortPreference) {
-                    //     case 'All':
-                    //         // ...
-                    //         break;
-                    // };
-
+                if (parseInt(currentGroup[0].projectID) > parseInt(nextGroup[0].projectID)) {
                     console.log(`index... ${i}`);
                     console.log('currentItem...');
-                    console.log(currentItem);
-                    console.log('nextItem...');
-                    console.log(nextItem);
+                    console.log(currentGroup);
+                    console.log('nextGroup...');
+                    console.log(nextGroup);
 
-                    if (parseInt(currentItem.id) > parseInt(nextItem.id)) {
-                        shouldSortItem = true;
-                        array.splice(i + 1, 1); // at next index, remove 1 item
-                        array.splice(i, 0, nextItem);   // at current index, add 1 item
-                        sortingArray = true;
+                    groupedTasks.splice(i + 1, 1);  // at next index, remove 1 item
+                    groupedTasks.splice(i, 0, nextGroup);   // at current index, add 1 item
+                    sortingGroups = true;
+                    break;
+                };
+            };
+        };
+        console.log(groupedTasks);
+
+        // sort tasks inside groups
+        for (let i = 0; i < groupedTasks.length; i++) {
+            let currentGroup = groupedTasks[i];
+            console.log(currentGroup);
+
+            let sortingTasks = true;
+            while (sortingTasks === true) {
+                sortingTasks = false;
+
+                for (let j = 0; j < currentGroup.length - 1; j++) {
+                    let currentTask = currentGroup[j];
+                    let nextTask = currentGroup[j + 1];
+
+                    if (parseInt(currentTask.id) > parseInt(nextTask.id)) {
+                        console.log(`index... ${j}`);
+                        console.log('currentTask...');
+                        console.log(currentTask.id);
+                        console.log('nextTask...');
+                        console.log(nextTask.id);
+
+                        currentGroup.splice(j + 1, 1);   // at next index, remove 1 item
+                        currentGroup.splice(j, 0, nextTask); // at current index, add 1 item
+                        sortingTasks = true;
                         break;
                     };
                 };
             };
         };
+        console.log(groupedTasks);
 
+        // re-populate array...
+        for (let i = 0; i < groupedTasks.length; i++) {
+            let currentTask = groupedTasks[i];
+            for (let j = 0; j < currentTask.length; j++) {
+                array.push(currentTask[j]);
+            };
+        };
         console.log(array);
+
         return array;
     }
-    function _sortDueDates(array) {
-        // ! sort array items by due date (closest to furthest)
+    function _sortByTaskID(array) {
+        for (let i = 1; i < array.length; i++) {
+            let currentItem = array[i];
+            if (currentItem.type === 'project' && i !== 1) {
+                let projectItem = array[i];
+                array.splice(i, 1); // at current index, remove 1 item
+                array.splice(1, 0, projectItem);    // at index 1, add 1 item
+                sortingTasks = true;
+                break;
+            };
+        };
+
+        let sortingTasks = true;
+        while (sortingTasks === true) {
+            sortingTasks = false;
+            for (let i = 2; i < array.length - 1; i++) {
+                let currentTask = array[i];
+                let nextTask = array[i + 1];
+
+                if (parseInt(currentTask.id) > parseInt(nextTask.id)) {
+                    console.log(`index... ${i}`);
+                    console.log('currentTask...');
+                    console.log(currentTask.id);
+                    console.log('nextTask...');
+                    console.log(nextTask.id);
+
+                    array.splice(i + 1, 1); // at current index, remove 1 item
+                    array.splice(i, 0, nextTask);   // at current index, add 1 item
+                    sortingTasks = true;
+                    break;
+                };
+            };
+        };
+
+        return array;
+    }
+    function _sortByDueDate(array) {
+        // initialize & populat groups
+        let groupedTasks = [];
+        for (let i = 1; i < array.length; i++) {
+            let item = array[i];
+            let idKey = String(item.dueDate);
+            if (!groupedTasks[idKey]) {
+                groupedTasks[idKey] = [];
+            };
+            groupedTasks[idKey].push(item);
+        };
+        console.log(groupedTasks);
+
+        // sort groups
+
+        // sort projects inside groups
+
+        // sort tasks inside projects
+
+        // repopulate array
+
+        return array;
     }
 
     // create methods
