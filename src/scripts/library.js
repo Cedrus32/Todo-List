@@ -340,7 +340,6 @@ const library = (() => {
         // sort tasks inside groups
         for (let i = 0; i < groupedTasks.length; i++) {
             let currentGroup = groupedTasks[i];
-            console.log(currentGroup);
 
             let sortingTasks = true;
             while (sortingTasks === true) {
@@ -351,12 +350,6 @@ const library = (() => {
                     let nextTask = currentGroup[j + 1];
 
                     if (parseInt(currentTask.id) > parseInt(nextTask.id)) {
-                        console.log(`index... ${j}`);
-                        console.log('currentTask...');
-                        console.log(currentTask.id);
-                        console.log('nextTask...');
-                        console.log(nextTask.id);
-
                         currentGroup.splice(j + 1, 1);   // at next index, remove 1 item
                         currentGroup.splice(j, 0, nextTask); // at current index, add 1 item
                         sortingTasks = true;
