@@ -293,13 +293,26 @@ const library = (() => {
     function _sortByProjectID(array) {
         // initialize & populate groups
         let groupedTasks = [];
-        for (let i = 1; i < array.length; i++) {
+        let groupCounter = 0;
+        for (let i = 1; i < (array.length); i++) {
             let item = array[i];
-            let idKey = String(item.projectID);
-            if (!groupedTasks[idKey]) {
-                groupedTasks[idKey] = [];
+            if (i === 1) {
+                groupedTasks[groupCounter] = [];
+                groupedTasks[groupCounter].push(item);
+                groupCounter++;
+            } else {
+                let existingGroupsLength = groupedTasks.length;
+                for (let j = 0; j < existingGroupsLength; j++) {
+                    if (groupedTasks[j][0].projectID === item.projectID) {
+                        groupedTasks[j].push(item);
+                        break;
+                    } else if (j === existingGroupsLength - 1 && groupedTasks[j][0].projectID !== item.projectID) {
+                        groupedTasks[groupCounter] = [];
+                        groupedTasks[groupCounter].push(item);
+                        groupCounter++;
+                    };
+                };
             };
-            groupedTasks[idKey].push(item);
         };
         array = [array[0]];
         //// console.log(groupedTasks);
@@ -308,10 +321,9 @@ const library = (() => {
         // sort groups
         let sortingGroups = true;
         while (sortingGroups === true) {
-            console.log('enter sortingGroups...')
             sortingGroups = false;
 
-            for (let i = 0; i < groupedTasks.length - 1; i++) {
+            for (let i = 0; i < (groupedTasks.length - 1); i++) {
                 let currentGroup = groupedTasks[i];
                 let nextGroup = groupedTasks[i + 1];
 
