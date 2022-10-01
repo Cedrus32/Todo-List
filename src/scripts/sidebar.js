@@ -219,6 +219,7 @@ const sidebar = (() => {
             case (ulContainer.childElementCount === 1):
                 _changeViewPreference('All', '');
                 _updateSelectEffect(viewAllButton);
+                events.publish('resetCounters', '');
         };
     }
     function _getTodayDate() {

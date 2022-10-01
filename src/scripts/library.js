@@ -10,7 +10,7 @@ const library = (() => {
     // state methods
     function setCounters() {
         console.log(`project counter (for ID & state check): ${localStorage.getItem('projectCount')}`)
-        if (localStorage.getItem('projectCount') === null) {
+        if ((localStorage.getItem('projectCount') === null) || (localStorage.length === 3)) {
             taskCount = 0;
             localStorage.setItem('taskCount', taskCount);
             projectCount = 0;
@@ -774,4 +774,5 @@ const library = (() => {
 
     events.subscribe('setCountersOnPageLoad', setCounters); // published from startup.js
     events.subscribe('openGetLocalDataQuery', _bundleStartupData);    // published from startup.js
+    events.subscribe('resetCounters', setCounters); // published from sidebar.js
 })();
