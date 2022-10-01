@@ -174,7 +174,7 @@ const library = (() => {
 
         events.publish('closeProjectOptionsQuery', nameIDArray) // subscribed by forms.js
     }
-    function _bundleInstances(viewPreference, queryReference) { // ! reduce repetition vvv
+    function _bundleInstances(viewPreference, queryReference) {
         let instanceBundle = [];
 
         let queryProjects = false;
@@ -268,38 +268,18 @@ const library = (() => {
 
         return sortedArray;
     }
-
-    // ! ?? HOW TO ORGANIZE SORTING FUNCTIONALITY FOR VIEW PREFS & PROJECTS ??
-
-                    // ! PROJECTS ONLY NEED TO SORT BY TASK ID
-
-                    // ! OTHER VIEW PREFS NEED TO SORT BY PROJECT -> TASK ID
-                    // ! EACH VIEW PREF LOOKS AT DIFFERENT PARAMETER TO DECIDE WHETHER TO SORT
-                    // !        ... ALL -- NO SPECIFIC REFERENCE, SORT BY PROJ -> TASK ID
-                    // !        ... TODAY -- ALREADY FILTERED IN QUERY BUNDLE, SORT BY PROJ -> TASK ID
-                    // !        ... UPCOMING -- SORT BY CLOSEST-to-FURTHEST DATE -> PROJ -> TASK ID
-                    // !        ... ANYTIME -- ALREADY FILTERED IN QUERY BUNDLE, SORT BY PROJ -> TASK ID
-
     function _sortStartupProjects(array) {
         let sortingArray = true;
-
         while (sortingArray === true) {
             sortingArray = false;
 
             let currentItem;
             let nextItem;
-
             for (let i = 0; i < array.length - 1; i++) {
                 currentItem = array[i];
                 nextItem = array[i + 1];
 
                 if (parseInt(currentItem.id) > parseInt(nextItem.id)) {
-                    console.log(`index... ${i}`);
-                    console.log('currentItem...');
-                    console.log(currentItem);
-                    console.log('nextItem...');
-                    console.log(nextItem);
-
                     array.splice(i + 1, 1); // at next index, remove 1 item
                     array.splice(i, 0, nextItem);   // at current index, add 1 item
                     sortingArray = true;
@@ -322,12 +302,13 @@ const library = (() => {
             groupedTasks[idKey].push(item);
         };
         array = [array[0]];
-        console.log(groupedTasks);
-        console.log(array);
+        //// console.log(groupedTasks);
+        //// console.log(array);
 
         // sort groups
         let sortingGroups = true;
         while (sortingGroups === true) {
+            console.log('enter sortingGroups...')
             sortingGroups = false;
 
             for (let i = 0; i < groupedTasks.length - 1; i++) {
@@ -335,12 +316,6 @@ const library = (() => {
                 let nextGroup = groupedTasks[i + 1];
 
                 if (parseInt(currentGroup[0].projectID) > parseInt(nextGroup[0].projectID)) {
-                    console.log(`index... ${i}`);
-                    console.log('currentItem...');
-                    console.log(currentGroup);
-                    console.log('nextGroup...');
-                    console.log(nextGroup);
-
                     groupedTasks.splice(i + 1, 1);  // at next index, remove 1 item
                     groupedTasks.splice(i, 0, nextGroup);   // at current index, add 1 item
                     sortingGroups = true;
@@ -348,7 +323,7 @@ const library = (() => {
                 };
             };
         };
-        console.log(groupedTasks);
+        //// console.log(groupedTasks);
 
         // sort tasks inside groups
         for (let i = 0; i < groupedTasks.length; i++) {
@@ -378,16 +353,17 @@ const library = (() => {
                 };
             };
         };
-        console.log(groupedTasks);
+        //// console.log(groupedTasks);
 
         // re-populate array...
-        for (let i = 0; i < groupedTasks.length; i++) {
-            let currentTask = groupedTasks[i];
-            for (let j = 0; j < currentTask.length; j++) {
-                array.push(currentTask[j]);
+        for (let i = 0; i < (groupedTasks.length); i++) {
+            let currentProject = groupedTasks[i];
+            for (let j = 0; j < (currentProject.length); j++) {
+                let currentTask = currentProject[j];
+                array.push(currentTask);
             };
         };
-        console.log(array);
+        //// console.log(array);
 
         return array;
     }
@@ -428,25 +404,139 @@ const library = (() => {
         return array;
     }
     function _sortByDueDate(array) {
-        // initialize & populat groups
+        // initialize & populate date groups
         let groupedTasks = [];
-        for (let i = 1; i < array.length; i++) {
+        let groupCounter = 0;
+        for (let i = 1; i < (array.length); i++) {
             let item = array[i];
-            let idKey = String(item.dueDate);
-            if (!groupedTasks[idKey]) {
-                groupedTasks[idKey] = [];
+            if (i === 1) {
+                groupedTasks[groupCounter] = [];
+                groupedTasks[groupCounter].push(item);
+                groupCounter++;
+            } else {
+                let existingGroupsLength = groupedTasks.length;
+                for (let j = 0; j < existingGroupsLength; j++) {
+                    if (groupedTasks[j][0].dueDate === item.dueDate) {
+                        groupedTasks[j].push(item);
+                        break;
+                    } else if (j === existingGroupsLength - 1 && groupedTasks[j][0].dueDate !== item.dueDate) {
+                        groupedTasks[groupCounter] = [];
+                        groupedTasks[groupCounter].push(item);
+                        groupCounter++;
+                    };
+                };
             };
-            groupedTasks[idKey].push(item);
         };
-        console.log(groupedTasks);
+        array = [array[0]];
+        //// console.log(groupedTasks);
+        //// console.log(array);
 
-        // sort groups
+        // sort dates
+        let sortingDates = true;
+        while (sortingDates === true) {
+            sortingDates = false;
+            
+            for (let i = 0; i < groupedTasks.length - 1; i++) {
+                let currentGroup = groupedTasks[i];
+                let nextGroup = groupedTasks[i + 1];
+
+                if (currentGroup[0].dueDate > nextGroup[0].dueDate) {
+                    groupedTasks.splice(i + 1, 1);  // at next index, remove 1 item
+                    groupedTasks.splice(i, 0, nextGroup);   // at current index, add 1 item
+                    sortingDates = true;
+                    break;
+                };
+            };
+        };
+        //// console.log(groupedTasks);
+
+        // initialize & populate project groups
+        for (let i = 0; i < (groupedTasks.length); i++) {
+            let groupedProjects = [];
+            groupCounter = 0;
+            for (let j = 0; j < (groupedTasks[i].length); j++) {
+                let item = groupedTasks[i][j];
+                if (j === 0) {
+                    groupedProjects[groupCounter] = [];
+                    groupedProjects[groupCounter].push(item);
+                    groupCounter++;
+                } else {
+                    let existingGroupsLength = groupedProjects.length;
+                    for (let k = 0; k < existingGroupsLength; k++) {
+                        if (groupedProjects[k][0].projectID === item.projectID) {
+                            groupedProjects[k].push(item);
+                            break;
+                        } else if (k === existingGroupsLength - 1 && groupedProjects[k][0].projectID !== item.projectID) {
+                            groupedProjects[groupCounter] = [];
+                            groupedProjects[groupCounter].push(item);
+                            groupCounter++;
+                        };
+                    };
+                };
+            };
+            groupedTasks[i] = groupedProjects;
+        };
+        //// console.log(groupedTasks);
 
         // sort projects inside groups
+        let sortingProjects = true;
+        while (sortingProjects === true) {
+            sortingProjects = false;
+
+            for (let i = 0; i < groupedTasks.length; i++) {
+                let dateGroup = groupedTasks[i];
+                for (let j = 0; j < (dateGroup.length - 1); j++) {
+                    let currentProjectGroup = dateGroup[j];
+                    let nextProjectGroup = dateGroup[j + 1];
+
+                    if (currentProjectGroup[0].projectID > nextProjectGroup[0].projectID) {
+                        dateGroup.splice(j + 1, 1);  // at next index, remove 1 item
+                        dateGroup.splice(j, 0, nextProjectGroup);    // at current index, add 1 item
+                        sortingProjects = true;
+                        break;
+                    };
+                };
+            };
+        };
+        //// console.log(groupedTasks);
 
         // sort tasks inside projects
+        let sortingTasks = true;
+        while (sortingTasks === true) {
+            sortingTasks = false;
+
+            for (let i = 0; i < (groupedTasks.length); i++) {
+                let dateGroup = groupedTasks[i];
+                for (let j = 0; j < (dateGroup.length); j++) {
+                    let projectGroup = dateGroup[j];
+                    for (let k = 0; k < (projectGroup.length - 1); k++) {
+                        let currentTask = projectGroup[k];
+                        let nextTask = projectGroup[k + 1];
+
+                        if (currentTask.id > nextTask.id) {
+                            projectGroup.splice(k + 1, 1);  // at next index, remove 1 item
+                            projectGroup.splice(k, 0, nextTask);    // at current index, add 1 item
+                            sortingTasks = true;
+                            break;
+                        };
+                    };
+                };
+            };
+        };
+        //// console.log(groupedTasks);
 
         // repopulate array
+        for (let i = 0; i < (groupedTasks.length); i++) {
+            let currentDate = groupedTasks[i];
+            for (let j = 0; j < (currentDate.length); j++) {
+                let currentProject = currentDate[j];
+                for (let k = 0; k < (groupedTasks[i][j].length); k++) {
+                    let currentTask = currentProject[k];
+                    array.push(currentTask);
+                };
+            };
+        };
+        //// console.log(array);
 
         return array;
     }
