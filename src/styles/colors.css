@@ -38,33 +38,3 @@ body {
         border-radius: 0.5em;
     }
 
-.form-container {
-    background-color: var(--ui);
-
-    border: 1px solid black;
-    border-radius: 0.25rem;
-}
-
-    fieldset {
-        border: none;
-    }
-
-        .project-icons-container {
-            border-radius: 0.5em;
-        }
-
-        input,
-        select {
-            border: 1px solid black;
-            border-radius: 0.25rem;
-        }
-
-        input:invalid {
-            border: 1px solid red;
-        }
-
-        .required-badge,
-        .error-message {
-            color: red;
-        }
-
