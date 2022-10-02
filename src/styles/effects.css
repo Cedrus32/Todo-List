@@ -4,7 +4,6 @@
 
 .card.singleton,
 .card.checklist {
-    /* border-radius: 0.5em; */
     position: relative;
     width: 100%;
 }
@@ -14,19 +13,25 @@
     content: '';
     position: absolute;
     bottom: 0px; left: 0px;
-    z-index: -1;
+    /* z-index: -1; */
 
-    background-color: hsl(220, 7%, 96%);
+    border: 1px solid transparent;
+    border-radius: 0.5em;
 
-    width: 100%;
-    height: 0px;
-    /* border-radius: 0.5em; */
+    width: 100%; height: 100%;
 }
 
 .card.singleton:hover::after,
 .card.checklist:hover::after {
-    height: 100%;
+    z-index: 1;
+
     transition: all 0.20s ease-out;
+    border: 1px solid rgb(37, 37, 37, 0.1);
+}
+
+.card.singleton:hover *,
+.card.checklist:hover * {
+    z-index: 2;
 }
 
 
