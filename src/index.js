@@ -1,6 +1,7 @@
 import './styles/reset.css';
 import './styles/spacing.css';
 import './styles/typo.css';
+import './styles/forms.css';
 import './styles/effects.css';
 import './styles/colors.css';
 
