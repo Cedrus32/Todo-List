@@ -1,3 +1,95 @@
+input[type='checkbox'],
+input[type='radio'] {
+    appearance: none;
+}
+
+/* START FROM RESET */
+/* START FROM RESET */
+/* START FROM RESET */
+
+/* FORMS ========================= */
+
+/* 1. change font styles in all browsers */
+/* 2. remove margin in Firefox and Safari */
+
+button,
+input,
+select {
+    font-family: inherit; /* 1 */
+    font-size: 100%; /* 1 */
+    line-height: 1.15; /* 1 */
+    margin: 0; /* 2 */
+}
+
+/* show overflow in IE, Edge */
+
+button,
+input {
+    overflow: visible;
+}
+
+/* remove inheritance of text transform in Edge, Firefox, IE */
+
+button,
+select {
+    text-transform: none;
+}
+
+/* correct the inability to style clickable types in iOS, Safari */
+
+button,
+[type="button"] {
+    appearance: button;
+}
+
+/* remove inner border, padding in Firefox */
+
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner {
+    border-style: none;
+    padding: 0;
+}
+
+/* restore focus styles unset by previous rule ^^ */
+
+button:-moz-focusring,
+[type="button"]:-moz-focusring {
+    outline: 1px dotted ButtonText;
+}
+
+/* correct padding in Firefox */
+
+fieldset {
+    padding: 0;
+}
+  
+/* 1. correct text wrapping in Edge, IE */
+/* 2. correct color inheritance from `fieldset` elements in IE */
+/* 3. remove padding so devs aren't caught out when they zero-out */
+/*    `fieldset`elements in all browsers */
+
+legend {
+    box-sizing: border-box; /* 1 */
+    color: inherit; /* 2 */
+    display: table; /* 1 */
+    max-width: 100%; /* 1 */
+    padding: 0; /* 3 */
+    white-space: normal; /* 1 */
+}
+
+/* 1. add correct box sizing in IE 10 */
+/* 2. remove padding in IE 10 */
+
+[type="checkbox"],
+[type="radio"] {
+    box-sizing: border-box; /* 1 */
+    padding: 0; /* 2 */
+}
+
+/* END FROM RESET */
+/* END FROM RESET */
+/* END FROM RESET */
+
 .form-container {
     background-color: var(--ui);
 
