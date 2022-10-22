@@ -132,7 +132,8 @@ const img = function(url, alt, ...args) {
     if (_attributes.length > 0) {
         _setAttributes(element, _attributes);
     };
-    element.src = `../${url}`;
+    // element.src = `../${url}`;
+    element.src = url;
     element.alt = alt;
     return element;
 }

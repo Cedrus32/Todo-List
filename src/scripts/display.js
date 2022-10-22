@@ -1,5 +1,6 @@
 import events from '../events';
 import { default as div, h2, h4, ul, li, span, input, label, img } from './elements';
+import iconsArray from './icons';
 
 // & manages display DOM <-> library communication
 // & contains factories for generating display section DOM elements / groupings
@@ -111,7 +112,7 @@ const display = (() => {
                             break;
                         case 3:
                             let priority = card.querySelector('.priority');
-                            priority.src = `../src/icons/priority-${taskValues[3]}.svg`;
+                            priority.src = iconsArray[`priority-${taskValues[3]}`];
                             break;
                         case 4:
                             let currentProjectCardID = projectContainer.querySelector('.card').id;
@@ -191,13 +192,13 @@ const display = (() => {
 
         let divProjectControls = div('', '.project-controls');
 
-        let imgModify = img('src/icons/edit.svg', 'modify project', '.project', '.modify');
+        let imgModify = img(iconsArray['edit'], 'modify project', '.project', '.modify');
         // * project modify/delete events
         imgModify.addEventListener('click', (e) => {
             events.publish('clickModifyItem', e);   // subscribed by forms.js
         });
 
-        let imgDelete = img('src/icons/delete.svg', 'delete project', '.delete');
+        let imgDelete = img(iconsArray['delete'], 'delete project', '.delete');
         imgDelete.addEventListener('click', (e) => {
             let cardID = e.target.closest('div.card').id;
             events.publish('clickDeleteProject', cardID);   // subscribed by forms.js
@@ -248,7 +249,7 @@ const display = (() => {
                 taskCard.append(singletonCheckmark, singletonCardContent);
                 break;
             case 'checklist':
-                taskCard = div('', '.card', '.checklist', `#${cardID}`, `.priority-${task.priority}`); // ! move .priority-${}
+                taskCard = div('', '.card', '.checklist', `#${cardID}`, `.priority-${task.priority}`);
                 let checklistCardContent = _renderCardContent(task.type, '', task.title, task.dueDate, task.description, task.priority);
                 let checklistItems = _renderCheckboxContainer(cardID, task.items);
                 taskCard.append(checklistCardContent, checklistItems);
@@ -290,10 +291,10 @@ const display = (() => {
             case 3:
                 imgAlt = 'high priority';
         }
-        let imgPriority = img(`src/icons/priority-${priority}.svg`, imgAlt, '.priority');
+        let imgPriority = img(iconsArray[`priority-${priority}`], imgAlt, '.priority');
 
-        let imgModify = img('src/icons/edit.svg', 'modify task', '.task', '.modify');
-        let imgDelete = img('src/icons/delete.svg', 'delete task', '.delete');
+        let imgModify = img(iconsArray['edit'], 'modify task', '.task', '.modify');
+        let imgDelete = img(iconsArray['delete'], 'delete task', '.delete');
 
         // * task modify/delete events
         imgModify.addEventListener('click', (e) => {
@@ -341,8 +342,8 @@ const display = (() => {
         
         let labelCheckbox = label(checkContent, checkboxID, '');
 
-        let imgModify = img('src/icons/edit.svg', 'modify task', '.task', '.modify');
-        let imgDelete = img('src/icons/delete.svg', 'delete task', '.delete');
+        let imgModify = img(iconsArray['edit'], 'modify task', '.task', '.modify');
+        let imgDelete = img(iconsArray['delete'], 'delete task', '.delete');
 
         // * checklist item modify/delete events
         imgModify.addEventListener('click', (e) => {
