@@ -1,5 +1,6 @@
 import events from '../events';
 import { default as div, span, p, input, label, select, option, legend, img } from './elements';
+import iconsArray from './icons';
 
 // & manages display/sidebar section DOMs -> form section DOMs <-> library communication
 // & contains factories for generating form section DOM elements / groupings
@@ -386,7 +387,8 @@ const forms = (() => {
                     imgRef = '14';
                     imgAlt = 'backpack';
             };
-            let imgIcon = img(`src/icons/project-icons/${imgRef}.svg`, imgAlt);
+            // let imgIcon = img(`src/icons/project-icons/${imgRef}.svg`, imgAlt);
+            let imgIcon = img(iconsArray[imgRef], imgAlt);
 
             imgContainer.appendChild(imgIcon);
             iconsContainer.appendChild(imgContainer);

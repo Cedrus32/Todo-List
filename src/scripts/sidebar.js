@@ -1,10 +1,14 @@
 import events from '../events.js';
 import { span, li, img } from './elements';
+import iconsArray from './icons';
 
 // & manages sidebar section DOM <-> library communication
 // & contains factories for generating display section DOM elements / groupings
 
 const sidebar = (() => {
+    // cache icon path
+    let iconPath = '';
+
     // cache dom
     let title = document.getElementById('title');
     let sidebar = document.getElementById('sidebar');
@@ -13,7 +17,6 @@ const sidebar = (() => {
     let viewTodayButton = document.getElementById('view-today');
     let viewUpcomingButton = document.getElementById('view-upcoming');
     let viewAnytimeButton = document.getElementById('view-anytime');
-    // let viewUnsortedButton = document.getElementById('view-project_0');
     let projectsList = document.getElementById('dynamic-views');
     let createProjectButton = document.querySelector('#dynamic-views .create');
 
@@ -169,7 +172,8 @@ const sidebar = (() => {
                 case '14':
                     iconAlt = 'backpack';
             };
-            let icon = img(`src/icons/project-icons/${iconReference}.svg`, iconAlt, '');
+
+            let icon = img(iconsArray[iconReference], iconAlt, '');
 
             return icon;
     }

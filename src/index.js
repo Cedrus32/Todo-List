@@ -3,6 +3,7 @@ import './styles/spacing.css';
 import './styles/typo.css';
 import './styles/effects.css';
 import './styles/colors.css';
+import iconsArray from './scripts/icons.js';
 
 import startup from './scripts/startup.js';
 import display from './scripts/display';
